@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Matteo Giorgetti — Portfolio Interface</title>
-    <meta name="description" content="Matteo Giorgetti's experimental digital portfolio." />
+    <title>Matteo Giorgetti — Pit Wall Portfolio</title>
+    <meta name="description" content="Explore Matteo Giorgetti's experimental pit-wall portfolio experience." />
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,171 +12,208 @@
     <link rel="stylesheet" href="/css/portfolio.css" />
 </head>
 <body>
-    <div class="hud">
-        <div class="hud__logo">Matteo Giorgetti</div>
-        <div class="hud__nav" role="navigation" aria-label="Section shortcuts">
-            <button type="button" class="hud__nav-btn" data-target="scene-hero">Boot</button>
-            <button type="button" class="hud__nav-btn" data-target="scene-lab">Lab</button>
-            <button type="button" class="hud__nav-btn" data-target="scene-projects">Launch</button>
-            <button type="button" class="hud__nav-btn" data-target="scene-trace">Trace</button>
-            <button type="button" class="hud__nav-btn" data-target="scene-contact">Ping</button>
+    <header class="pit-nav" role="banner">
+        <div class="pit-nav__brand">Matteo Giorgetti Pit Wall</div>
+        <div class="pit-nav__links" role="navigation" aria-label="Section shortcuts">
+            <button type="button" class="pit-nav__btn" data-target="module-grid">Grid</button>
+            <button type="button" class="pit-nav__btn" data-target="module-lab">Pods</button>
+            <button type="button" class="pit-nav__btn" data-target="module-circuit">Circuit</button>
+            <button type="button" class="pit-nav__btn" data-target="module-projects">Paddock</button>
+            <button type="button" class="pit-nav__btn" data-target="module-logbook">Logbook</button>
+            <button type="button" class="pit-nav__btn" data-target="module-contact">Pit Radio</button>
         </div>
-        <div class="hud__progress" aria-hidden="true">
-            <div class="hud__progress-meter"></div>
-        </div>
-    </div>
-    <main class="deck">
-        <section id="scene-hero" class="scene scene--hero" aria-labelledby="hero-title">
-            <div class="hero-console">
-                <div class="console__header">
-                    <span class="led led--green" aria-hidden="true"></span>
-                    BOOT SEQUENCE
-                </div>
-                <pre id="boot-log" class="console__output" data-lines='[
-                    "Initializing creative systems...",
-                    "Loading neural archives...",
-                    "Synchronizing robotics lab footage...",
-                    "Decrypting experimental projects...",
-                    "Compiling Matteo Giorgetti v2.0...",
-                    "Ready. Request a module to explore."
-                ]'></pre>
-                <div class="hero-intro">
-                    <h1 id="hero-title">Inventive Technologist crafting tactile AI experiences.</h1>
+        <div class="pit-nav__status" aria-live="polite">Systems nominal</div>
+    </header>
+    <main class="pit-lane">
+        <section id="module-grid" class="module module--intro" data-module data-status="Grid oversight" aria-labelledby="grid-title">
+            <div class="intro-grid">
+                <div class="intro-panel intro-panel--primary">
+                    <div class="start-light" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <h1 id="grid-title">Inventive technologist engineering wow-factor interfaces.</h1>
                     <p>
-                        Welcome inside the deck. Each sector reveals a different experiment — from AI-powered storytelling to tangible robotics.
-                        Navigate via the HUD or scroll to progress through the control rooms.
+                        Matteo Giorgetti turns experiments into production-ready experiences. Each lab pod mixes AI systems,
+                        tangible hardware, and interactive storytelling that feel like a front-row seat on a race weekend.
                     </p>
-                    <div class="hero-actions">
-                        <a class="hero-link" href="/resume.html">Access dossier</a>
-                        <a class="hero-link" href="/projects.html">Full project archive</a>
+                    <div class="intro-actions">
+                        <a class="intro-link" href="/resume.html">Download dossier</a>
+                        <a class="intro-link" href="/projects.html">View full archive</a>
                     </div>
                 </div>
+                <aside class="intro-panel intro-panel--boards" aria-label="Telemetry boards">
+                    <div class="status-board" data-status-board data-frames='[
+                        "Crew ready · Robotics pit checks complete",
+                        "AI strategy core loaded · waiting for prompt",
+                        "Story engine calibrating · characters in formation",
+                        "Finance co-pilot · projecting new lap delta"
+                    ]'>
+                        <div class="status-board__label">Rolling feed</div>
+                        <div class="status-board__entry"></div>
+                    </div>
+                    <div class="intel-grid">
+                        <div class="intel-card">
+                            <h2>Focus Lanes</h2>
+                            <ul>
+                                <li>AI copilots for money, motion, and mystery</li>
+                                <li>Robotics and tangible interfaces</li>
+                                <li>Hybrid storytelling experiments</li>
+                            </ul>
+                        </div>
+                        <div class="intel-card">
+                            <h2>Latest podiums</h2>
+                            <p>Budget Buddy, Neural Noir, HoloVinyl, VictorIA, ReminderZ.</p>
+                            <a class="intro-link intro-link--small" href="/projects.html">Inspect results</a>
+                        </div>
+                    </div>
+                </aside>
             </div>
         </section>
-        <section id="scene-lab" class="scene scene--lab" aria-labelledby="lab-title">
-            <div class="lab-grid">
-                <div class="lab-brief">
-                    <h2 id="lab-title">Lab status: Iterating on human + machine rituals</h2>
-                    <p>
-                        Matteo designs experimental interfaces where AI, hardware, and playful storytelling intersect. The lab is structured into three active workstations. Scroll to inspect their telemetry cards — each pulses when new data is detected.
-                    </p>
-                </div>
-                <div class="lab-stacks">
-                    <article class="stack-card" data-signal>
-                        <header>Adaptive AI Companions</header>
-                        <p>
-                            Building responsive agents that interpret emotion and intent to provide coaching, financial insight, or narrative twists in real time.
-                        </p>
-                        <span class="stack-tag">Conversational design · ML prototyping</span>
+        <section id="module-lab" class="module module--lab" data-module data-status="Strategy pods" aria-labelledby="lab-title">
+            <div class="lab-shell">
+                <header class="module-header">
+                    <h2 id="lab-title">Strategy pods · choose your seat</h2>
+                    <p>Each pod is a live environment blending sensors, software, and narrative craft. Hover to arm the module.</p>
+                </header>
+                <div class="pod-grid">
+                    <article class="pod" data-signal>
+                        <h3>Adaptive Companions</h3>
+                        <p>Emotion-aware assistants that translate financial, health, and coaching insights into daily rituals.</p>
+                        <span>Conversational design · ML prototyping</span>
                     </article>
-                    <article class="stack-card" data-signal>
-                        <header>Tangible Story Hardware</header>
-                        <p>
-                            Connecting physical artifacts with digital memory, blending sensors and web tech to give keepsakes living backstories.
-                        </p>
-                        <span class="stack-tag">IoT · Embedded play</span>
+                    <article class="pod" data-signal>
+                        <h3>Story Hardware</h3>
+                        <p>Artifacts that react to touch, proximity, or sound — giving keepsakes a responsive digital ghost.</p>
+                        <span>IoT · Embedded play</span>
                     </article>
-                    <article class="stack-card" data-signal>
-                        <header>Robotic Performance</header>
-                        <p>
-                            Engineering robotic agents that challenge humans at classic games and coordinate with bespoke AI brains.
-                        </p>
-                        <span class="stack-tag">Mechatronics · Control systems</span>
+                    <article class="pod" data-signal>
+                        <h3>Performance Robotics</h3>
+                        <p>Competitive machines tuned with bespoke AI brains to duel humans on stage and on screen.</p>
+                        <span>Mechatronics · Control systems</span>
                     </article>
                 </div>
             </div>
         </section>
-        <section id="scene-projects" class="scene scene--projects" aria-labelledby="projects-title">
+        <section id="module-circuit" class="module module--circuit" data-module data-status="Circuit run" aria-labelledby="circuit-title">
+            <div class="circuit-shell">
+                <header class="module-header">
+                    <h2 id="circuit-title">Circuit moment · scroll to send the car</h2>
+                    <p>The portfolio takes a formation lap. The faster you scroll, the more the HUD responds.</p>
+                </header>
+                <div class="circuit-track" data-animate>
+                    <div class="circuit-lights" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="circuit-car" role="img" aria-label="Formula 1 car speeding across the track">
+                        <div class="car-body">
+                            <span class="car-front"></span>
+                            <span class="car-cockpit"></span>
+                            <span class="car-wing"></span>
+                        </div>
+                        <div class="car-wheel car-wheel--front"></div>
+                        <div class="car-wheel car-wheel--rear"></div>
+                    </div>
+                    <div class="circuit-pit" aria-hidden="true">Pit crew ready</div>
+                </div>
+            </div>
+        </section>
+        <section id="module-projects" class="module module--projects" data-module data-status="Paddock dossiers" aria-labelledby="projects-title">
             <div class="projects-shell">
-                <div class="projects-core">
-                    <h2 id="projects-title">Launchpad</h2>
-                    <p>Orbiting icons represent Matteo's flagship builds. Select a node to open its dossier.</p>
-                </div>
-                <div class="project-orbit" role="list">
-                    <button class="project-node" role="listitem" data-title="Budget Buddy"
-                        data-description="AI-driven budgeting partner translating goals into daily rituals." data-link="/project_details/project-budget-buddy.html">
+                <header class="module-header">
+                    <h2 id="projects-title">Paddock dossiers</h2>
+                    <p>Select a tile to open the dossier. Each tile shows the energy level from the telemetry feed.</p>
+                </header>
+                <div class="dossier-grid" role="list">
+                    <button class="dossier" role="listitem" data-title="Budget Buddy" data-description="AI-driven budgeting partner translating goals into daily rituals." data-link="/project_details/project-budget-buddy.html">
                         <span>Budget Buddy</span>
+                        <em>Finance Copilot</em>
                     </button>
-                    <button class="project-node" role="listitem" data-title="Neural Noir"
-                        data-description="Interactive murder-mystery that rewrites itself through player decisions and AI improv." data-link="/project_details/project-neural-noir.html">
+                    <button class="dossier" role="listitem" data-title="Neural Noir" data-description="Interactive murder mystery co-written with AI suspects and clues." data-link="/project_details/project-neural-noir.html">
                         <span>Neural Noir</span>
+                        <em>Story Engine</em>
                     </button>
-                    <button class="project-node" role="listitem" data-title="HoloVinyl"
-                        data-description="Music + memory installation linking physical tokens to evolving soundscapes." data-link="/project_details/project-holovinyl.html">
+                    <button class="dossier" role="listitem" data-title="HoloVinyl" data-description="Music + memory installation linking NFC tokens to evolving soundscapes." data-link="/project_details/project-holovinyl.html">
                         <span>HoloVinyl</span>
+                        <em>Sonic Relic</em>
                     </button>
-                    <button class="project-node" role="listitem" data-title="Pokémon Card Generator"
-                        data-description="Custom Pokémon-style deck builder that fuses user prompts with diffusion art." data-link="/project_details/project-pokemon-card-generator.html">
+                    <button class="dossier" role="listitem" data-title="Pokémon Card Generator" data-description="Custom Pokémon-style deck builder fusing user prompts with diffusion art." data-link="/project_details/project-pokemon-card-generator.html">
                         <span>Pokémon Deck</span>
+                        <em>Playful ML</em>
                     </button>
-                    <button class="project-node" role="listitem" data-title="VictorIA"
-                        data-description="Robotic arm strategist mastering Connect-4 using Matteo's bespoke AI playbook." data-link="/project_details/project-victoria.html">
+                    <button class="dossier" role="listitem" data-title="VictorIA" data-description="Robotic arm strategist mastering Connect-4 using a bespoke AI playbook." data-link="/project_details/project-victoria.html">
                         <span>VictorIA</span>
+                        <em>Robotic Duelist</em>
                     </button>
-                    <button class="project-node" role="listitem" data-title="ReminderZ"
-                        data-description="Desktop productivity cockpit synchronizing tasks, notes, and AI drafting." data-link="/project_details/project-remainder-v0.html">
+                    <button class="dossier" role="listitem" data-title="ReminderZ" data-description="Desktop productivity cockpit synchronizing tasks, notes, and AI drafting." data-link="/project_details/project-remainder-v0.html">
                         <span>ReminderZ</span>
+                        <em>Ops Console</em>
                     </button>
                 </div>
             </div>
         </section>
-        <section id="scene-trace" class="scene scene--trace" aria-labelledby="trace-title">
-            <div class="trace-grid">
-                <div class="trace-brief">
-                    <h2 id="trace-title">Mission trace</h2>
-                    <p>Scroll through the logbook — every milestone lights up as it becomes visible.</p>
-                </div>
-                <ol class="trace-timeline">
-                    <li class="trace-event" data-signal>
-                        <h3>2025 · Autonomous Finance Companion</h3>
-                        <p>Shipping Budget Buddy's conversational interface to make money talk approachable and actionable.</p>
+        <section id="module-logbook" class="module module--logbook" data-module data-status="Race log" aria-labelledby="logbook-title">
+            <div class="logbook-shell">
+                <header class="module-header">
+                    <h2 id="logbook-title">Race log</h2>
+                    <p>Milestones flash when the observer hits them. Scroll to trigger each beacon.</p>
+                </header>
+                <ol class="logbook" role="list">
+                    <li class="log-entry" data-signal>
+                        <h3>2025 — Autonomous Finance Companion</h3>
+                        <p>Shipping Budget Buddy's conversational interface to make money talk approachable.</p>
                     </li>
-                    <li class="trace-event" data-signal>
-                        <h3>2024 · Detective stories reimagined</h3>
-                        <p>Launched Neural Noir to let players interrogate AI suspects and co-author noir narratives.</p>
+                    <li class="log-entry" data-signal>
+                        <h3>2024 — Detective stories reimagined</h3>
+                        <p>Launched Neural Noir so players interrogate AI suspects and co-author noir narratives.</p>
                     </li>
-                    <li class="trace-event" data-signal>
-                        <h3>2023 · Hybrid music memories</h3>
-                        <p>Built HoloVinyl, pairing NFC tokens with spatialized tracks curated through a web dashboard.</p>
+                    <li class="log-entry" data-signal>
+                        <h3>2023 — Hybrid music memories</h3>
+                        <p>Built HoloVinyl, pairing NFC tokens with spatialized tracks via a responsive dashboard.</p>
                     </li>
-                    <li class="trace-event" data-signal>
-                        <h3>2022 · Playful robotics</h3>
-                        <p>Coached VictorIA, a custom robotic arm that responds to human opponents with measured strategy.</p>
+                    <li class="log-entry" data-signal>
+                        <h3>2022 — Playful robotics</h3>
+                        <p>Coached VictorIA, a custom robotic arm that responds to human opponents with strategy.</p>
                     </li>
                 </ol>
             </div>
         </section>
-        <section id="scene-contact" class="scene scene--contact" aria-labelledby="contact-title">
-            <div class="contact-console">
-                <h2 id="contact-title">Ping the lab</h2>
-                <p>
-                    The control room is always listening for intriguing collaborations. Patch in a message or explore additional documents.
-                </p>
+        <section id="module-contact" class="module module--contact" data-module data-status="Pit radio" aria-labelledby="contact-title">
+            <div class="contact-shell">
+                <header class="module-header">
+                    <h2 id="contact-title">Pit radio</h2>
+                    <p>Ready for your next build? Patch in a message or download extra telemetry.</p>
+                </header>
                 <div class="contact-actions">
-                    <a class="hero-link" href="mailto:giorgettimatteo04@gmail.com">Send transmission</a>
-                    <a class="hero-link" href="/contact.html">Open contact form</a>
-                </div>
-                <div class="contact-actions">
-                    <a class="hero-link" href="/resume.html">Download dossier</a>
-                    <a class="hero-link" href="https://github.com/Inventure71" target="_blank" rel="noopener">GitHub</a>
+                    <a class="intro-link" href="mailto:giorgettimatteo04@gmail.com">Send a message</a>
+                    <a class="intro-link" href="/contact.html">Open contact form</a>
+                    <a class="intro-link" href="/resume.html">Grab the resume</a>
+                    <a class="intro-link" href="https://github.com/Inventure71" target="_blank" rel="noopener">GitHub</a>
                 </div>
             </div>
         </section>
     </main>
-    <div class="project-window" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="project-window-title" aria-describedby="project-window-description">
-        <div class="project-window__frame">
-            <header class="project-window__header">
-                <span class="project-window__title">Project dossier</span>
-                <button class="project-window__close" aria-label="Close dossier">×</button>
+    <div class="dossier-window" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="dossier-window-title" aria-describedby="dossier-window-description">
+        <div class="dossier-window__frame">
+            <header class="dossier-window__header">
+                <span class="dossier-window__title">Project dossier</span>
+                <button class="dossier-window__close" aria-label="Close dossier">×</button>
             </header>
-            <div class="project-window__body">
-                <h3 id="project-window-title"></h3>
-                <p id="project-window-description"></p>
-                <a id="project-window-link" class="hero-link" href="#" target="_blank" rel="noopener">Open full case file</a>
+            <div class="dossier-window__body">
+                <h3 id="dossier-window-title"></h3>
+                <p id="dossier-window-description"></p>
+                <a id="dossier-window-link" class="intro-link" href="#" target="_blank" rel="noopener">Open full case file</a>
             </div>
         </div>
     </div>
-    <div class="window-backdrop" aria-hidden="true"></div>
+    <div class="dossier-backdrop" aria-hidden="true"></div>
     <script src="/js/portfolio.js" defer></script>
 </body>
 </html>

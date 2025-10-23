@@ -1,36 +1,22 @@
-(function () {
-    const bootLog = document.getElementById('boot-log');
-    if (bootLog) {
-        try {
-            const lines = JSON.parse(bootLog.dataset.lines);
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (prefersReducedMotion) {
-                bootLog.textContent = lines.join('\n');
-            } else {
-                bootLog.textContent = '';
-                let index = 0;
-                const typeNext = () => {
-                    if (index >= lines.length) return;
-                    bootLog.textContent += `${lines[index]}\n`;
-                    index += 1;
-                    setTimeout(typeNext, 550);
-                };
-                setTimeout(typeNext, 350);
-            }
-        } catch (error) {
-            console.warn('Unable to parse boot log lines', error);
-        }
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    const navButtons = Array.from(document.querySelectorAll('.pit-nav__btn'));
+    const modules = Array.from(document.querySelectorAll('[data-module]'));
+    const statusEl = document.querySelector('.pit-nav__status');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const navButtons = Array.from(document.querySelectorAll('.hud__nav-btn'));
-    if (navButtons.length) {
-        navButtons[0].classList.add('is-active');
-    }
-    const sections = Array.from(document.querySelectorAll('.scene'));
+    let currentFocus = 'Systems nominal';
+    let currentSpeed = 'Idle';
 
-    navButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const targetId = btn.dataset.target;
+    const updateStatus = () => {
+        if (!statusEl) return;
+        statusEl.textContent = `${currentFocus} · Speed ${currentSpeed}`;
+    };
+
+    updateStatus();
+
+    navButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const targetId = button.getAttribute('data-target');
             const target = document.getElementById(targetId);
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -38,107 +24,172 @@
         });
     });
 
-    const progressEl = document.querySelector('.hud__progress-meter');
-    const updateProgress = () => {
-        if (!progressEl) return;
-        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = scrollable <= 0 ? 0 : (window.scrollY / scrollable);
-        progressEl.style.width = `${Math.min(Math.max(progress, 0), 1) * 100}%`;
+    const activateNav = (id) => {
+        navButtons.forEach((button) => {
+            button.classList.toggle('is-active', button.getAttribute('data-target') === id);
+        });
     };
 
-    updateProgress();
-    window.addEventListener('scroll', updateProgress, { passive: true });
-
-    const highlightObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            const { id } = entry.target;
-            navButtons.forEach((btn) => {
-                const isActive = btn.dataset.target === id;
-                btn.classList.toggle('is-active', isActive);
+    const moduleObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const moduleId = entry.target.id;
+                    activateNav(moduleId);
+                    const status = entry.target.getAttribute('data-status');
+                    if (status) {
+                        currentFocus = status.charAt(0).toUpperCase() + status.slice(1);
+                        updateStatus();
+                    }
+                    entry.target.querySelectorAll('[data-signal]').forEach((signalEl) => {
+                        signalEl.classList.add('is-active');
+                    });
+                }
             });
-        });
-    }, { threshold: 0.55 });
+        },
+        {
+            threshold: 0.55,
+        }
+    );
 
-    sections.forEach((section) => highlightObserver.observe(section));
+    modules.forEach((module) => moduleObserver.observe(module));
 
-    const signalObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.dataset.active = 'true';
-            } else {
-                entry.target.dataset.active = 'false';
-            }
-        });
-    }, { threshold: 0.35 });
+    const signalObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-active');
+                }
+            });
+        },
+        { threshold: 0.4 }
+    );
 
-    document.querySelectorAll('[data-signal]').forEach((node) => {
-        signalObserver.observe(node);
+    document.querySelectorAll('[data-signal]').forEach((el) => signalObserver.observe(el));
+
+    const animateTargets = Array.from(document.querySelectorAll('[data-animate]'));
+    const animateObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-active');
+                    if (prefersReducedMotion) {
+                        entry.target.querySelectorAll('.circuit-car').forEach((car) => {
+                            car.style.animation = 'none';
+                            car.style.transform = 'translateX(0)';
+                        });
+                    }
+                }
+            });
+        },
+        { threshold: 0.4 }
+    );
+
+    animateTargets.forEach((target) => animateObserver.observe(target));
+
+    const statusBoards = Array.from(document.querySelectorAll('[data-status-board]'));
+    statusBoards.forEach((board) => {
+        try {
+            const frames = JSON.parse(board.getAttribute('data-frames'));
+            if (!Array.isArray(frames) || frames.length === 0) return;
+            const entry = board.querySelector('.status-board__entry');
+            let index = 0;
+            const rotate = () => {
+                if (!entry) return;
+                entry.textContent = frames[index];
+                index = (index + 1) % frames.length;
+            };
+            rotate();
+            setInterval(rotate, 4200);
+        } catch (error) {
+            console.error('Failed to parse status board frames', error);
+        }
     });
 
-    const projectWindow = document.querySelector('.project-window');
-    const backdrop = document.querySelector('.window-backdrop');
-    const windowTitle = document.getElementById('project-window-title');
-    const windowDescription = document.getElementById('project-window-description');
-    const windowLink = document.getElementById('project-window-link');
-    const closeBtn = projectWindow ? projectWindow.querySelector('.project-window__close') : null;
-    let activeTrigger = null;
+    const dossierButtons = Array.from(document.querySelectorAll('.dossier'));
+    const dossierWindow = document.querySelector('.dossier-window');
+    const dossierBackdrop = document.querySelector('.dossier-backdrop');
+    const closeButton = document.querySelector('.dossier-window__close');
+    const titleEl = document.getElementById('dossier-window-title');
+    const descEl = document.getElementById('dossier-window-description');
+    const linkEl = document.getElementById('dossier-window-link');
 
-    const openProjectWindow = (trigger) => {
-        if (!projectWindow || !backdrop || !closeBtn || !windowTitle || !windowDescription || !windowLink) return;
-        const { title, description, link } = trigger.dataset;
-        windowTitle.textContent = title || 'Project';
-        windowDescription.textContent = description || '';
-        if (link) {
-            windowLink.href = link;
-            windowLink.classList.remove('is-disabled');
-            windowLink.setAttribute('aria-disabled', 'false');
-        } else {
-            windowLink.href = '#';
-            windowLink.classList.add('is-disabled');
-            windowLink.setAttribute('aria-disabled', 'true');
+    let activeDossier = null;
+
+    const openDossier = (button) => {
+        if (!dossierWindow || !dossierBackdrop) return;
+        const title = button.getAttribute('data-title');
+        const description = button.getAttribute('data-description');
+        const link = button.getAttribute('data-link');
+        if (titleEl) titleEl.textContent = title || '';
+        if (descEl) descEl.textContent = description || '';
+        if (linkEl && link) {
+            linkEl.href = link;
         }
-        projectWindow.classList.add('is-visible');
-        projectWindow.setAttribute('aria-hidden', 'false');
-        backdrop.classList.add('is-visible');
-        closeBtn.focus({ preventScroll: true });
-        activeTrigger = trigger;
-        document.body.style.overflow = 'hidden';
+        dossierWindow.setAttribute('aria-hidden', 'false');
+        dossierBackdrop.classList.add('is-visible');
+        button.classList.add('is-active');
+        dossierWindow.focus();
+        activeDossier = button;
     };
 
-    const closeProjectWindow = () => {
-        if (!projectWindow || !backdrop) return;
-        projectWindow.classList.remove('is-visible');
-        projectWindow.setAttribute('aria-hidden', 'true');
-        backdrop.classList.remove('is-visible');
-        document.body.style.overflow = '';
-        if (activeTrigger) {
-            activeTrigger.focus({ preventScroll: true });
-            activeTrigger = null;
+    const closeDossier = () => {
+        if (!dossierWindow || !dossierBackdrop) return;
+        dossierWindow.setAttribute('aria-hidden', 'true');
+        dossierBackdrop.classList.remove('is-visible');
+        dossierButtons.forEach((btn) => btn.classList.remove('is-active'));
+        if (activeDossier) {
+            activeDossier.focus({ preventScroll: true });
+            activeDossier = null;
         }
     };
 
-    document.querySelectorAll('.project-node').forEach((node) => {
-        node.addEventListener('click', () => openProjectWindow(node));
-        node.addEventListener('keydown', (event) => {
+    dossierButtons.forEach((button) => {
+        button.addEventListener('click', () => openDossier(button));
+        button.addEventListener('keydown', (event) => {
             if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
-                openProjectWindow(node);
+                openDossier(button);
             }
         });
     });
 
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeProjectWindow);
-    }
-
-    if (backdrop) {
-        backdrop.addEventListener('click', closeProjectWindow);
-    }
+    closeButton?.addEventListener('click', closeDossier);
+    dossierBackdrop?.addEventListener('click', closeDossier);
 
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && projectWindow && projectWindow.classList.contains('is-visible')) {
-            closeProjectWindow();
+        if (event.key === 'Escape') {
+            closeDossier();
         }
     });
-})();
+
+    if (dossierWindow) {
+        dossierWindow.setAttribute('tabindex', '-1');
+    }
+
+    let lastScrollY = window.scrollY;
+    let lastTime = performance.now();
+
+    const classifySpeed = (value) => {
+        if (value < 120) return 'Idle';
+        if (value < 320) return 'Coasting';
+        if (value < 600) return 'Push';
+        return 'Flat-out';
+    };
+
+    window.addEventListener(
+        'scroll',
+        () => {
+            const now = performance.now();
+            const deltaTime = now - lastTime;
+            if (deltaTime === 0) return;
+            const deltaY = Math.abs(window.scrollY - lastScrollY);
+            const speed = (deltaY / deltaTime) * 1000; // px per second
+            currentSpeed = classifySpeed(speed);
+            updateStatus();
+            lastScrollY = window.scrollY;
+            lastTime = now;
+        },
+        { passive: true }
+    );
+});
