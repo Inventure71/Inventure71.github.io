@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -12,24 +12,45 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        <script>
+            (function () {
+                try {
+                    var storageKey = 'mg-color-theme';
+                    var storedTheme = localStorage.getItem(storageKey);
+                    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    var theme = storedTheme || (prefersDark ? 'dark' : 'light');
+                    document.documentElement.dataset.theme = theme;
+                    document.documentElement.style.colorScheme = theme;
+                } catch (error) {
+                    document.documentElement.dataset.theme = 'light';
+                }
+            })();
+        </script>
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <!-- Modern Design System -->
+        <link href="css/modern.css" rel="stylesheet" />
     </head>
-    <body class="d-flex flex-column h-100 bg-dark">
+    <body class="d-flex flex-column h-100 resume-page">
         <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark py-3">
+        <nav class="navbar navbar-expand-lg py-3">
             <div class="container px-5">
                 <a class="navbar-brand" href="index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
-                        <li class="nav-item"><a class="nav-link text-light" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link text-light" href="resume.html">Resume</a></li>
-                        <li class="nav-item"><a class="nav-link text-light" href="projects.html">Projects</a></li>
-                        <li class="nav-item"><a class="nav-link text-light" href="contact.html">Contact</a></li>
-                    </ul>
+                    <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
+                        <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
+                            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
+                            <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                        </ul>
+                        <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle aria-label="Toggle color scheme">
+                            <i class="bi bi-moon"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -37,11 +58,11 @@
         <!-- Page Content -->
         <main class="flex-shrink-0">
             <div class="container px-5 py-5">
-                <div class="text-center mb-5">
-                    <h1 class="display-4 fw-bolder mb-0"><span class="text-gradient d-inline">Resume</span></h1>
+                <div class="text-center mb-5 fade-in">
+                    <h1 class="display-4 fw-bolder mb-0 slide-in-up"><span class="text-gradient d-inline">Resume</span></h1>
                 </div>
                 <!-- Contact Information -->
-                <div class="card overflow-hidden shadow rounded-4 border-0 mb-4">
+                <div class="card overflow-hidden shadow rounded-4 border-0 mb-4 fade-in">
                     <div class="card-body p-4">
                         <div class="text-center">
                             <h2 class="text-primary fw-bolder mb-3 fs-2">Hi I am Matteo Giorgetti</h2>
@@ -56,12 +77,12 @@
                 
 
                 <!-- Education Section -->
-                <section class="mb-5">
-                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span class="text-gradient d-inline">Education</span></h2>
-                    <div class="row gx-5 justify-content-center">
+                <section class="resume-section mb-5">
+                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center slide-in-up"><span class="text-gradient d-inline">Education</span></h2>
+                    <div class="row gx-5 justify-content-center stagger-children">
                         <!-- IE University -->
                         <div class="col-lg-6 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
+                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100 fade-in">
                                 <div class="card-body p-4">
                                     <div class="text-secondary fw-bolder mb-2">2024 - Present</div>
                                     <div class="mb-2">
@@ -70,7 +91,7 @@
                                     </div>
                                     <div class="fst-italic">
                                         BSc Computer Science & AI
-                                        <span class="badge bg-gradient-primary-to-secondary text-white ms-2">GPA: 9.2</span>
+                                        <span class="badge ms-2">GPA: 9.2</span>
                                     </div>
                                     <p class="mt-2">
                                         Focused on AI/ML with coursework in advanced mathematics and computer vision.
@@ -81,7 +102,7 @@
 
                         <!-- H-FARM School -->
                         <div class="col-lg-6 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
+                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100 fade-in">
                                 <div class="card-body p-4">
                                     <div class="text-secondary fw-bolder mb-2">2021 - 2024</div>
                                     <div class="mb-2">
@@ -89,7 +110,7 @@
                                         <div>Roncade, Italy</div>
                                     </div>
                                     <div class="fst-italic">
-                                        IB Diploma: <span class="badge bg-gradient-primary-to-secondary text-white ms-2">40/45</span>
+                                        IB Diploma: <span class="badge ms-2">40/45</span>
                                     </div>
                                     <p class="mt-2">
                                         Extended Essay and Internal Assessment focused on neural network mathematics.
@@ -101,7 +122,7 @@
                 </section>
 
                 <!-- CO-CURRICULAR AND EXTRACURRICULAR ACTIVITIES Section --> 
-                <section class="mb-5">
+                <section class="resume-section mb-5">
                     <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span class="text-gradient d-inline">Co-Curricular And Extracurricular Activities</span></h2>
                     <div class="row gx-5 justify-content-center">
                         <!-- Google Developer Students Club -->
@@ -155,7 +176,7 @@
                 </section>
 
                 <!-- Volunteering Activities Section --> 
-                <section class="mb-5">
+                <section class="resume-section mb-5">
                     <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span class="text-gradient d-inline">Volunteering Activities</span></h2>
                      <div class="row gx-5 justify-content-center">
                         <!--  Automation of donation classification -->
@@ -209,7 +230,7 @@
                 </section>
 
                 <!-- Competitions Section --> 
-                <section class="mb-5">
+                <section class="resume-section mb-5">
                     <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span class="text-gradient d-inline">Competitions</span></h2>
                     <div class="row gx-5 justify-content-center">
                         <!-- Tech Venture Bootcamp  -->
@@ -220,7 +241,7 @@
                                     <div class="mb-2">
                                         <div class="fw-bold"> Tech Venture Bootcamp</div>
                                         <div>Madrid, Spain</div>
-                                        <span class="badge bg-gradient-primary-to-secondary text-white mt-1">People's Choice Award</span>
+                                        <span class="badge mt-1">People's Choice Award</span>
                                     </div>
                                     <p class="mt-2">
                                         Developed Budget Buddy, an AI-powered money management chatbot that helps users optimize spending habits.
@@ -264,7 +285,7 @@
                 </section>
 
                 <!-- Projects Section --> 
-                <section class="mb-5">
+                <section class="resume-section mb-5">
                     <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span class="text-gradient d-inline">Projects</span></h2>
                     <div class="row gx-5 justify-content-center">
                         <!-- VictorIA -->
@@ -315,7 +336,7 @@
                 </section>
 
                 <!-- Skills Section -->
-                <section class="mb-5">
+                <section class="resume-section mb-5">
                     <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span class="text-gradient d-inline">Skills</span></h2>
                     <div class="card overflow-hidden shadow rounded-4 border-0">
                         <div class="card-body p-4">
@@ -323,7 +344,7 @@
                                 <!-- Technical Skills -->
                                 <div class="col-lg-6 mb-4 mb-lg-0">
                                     <div class="d-flex align-items-center mb-3">
-                                        <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 me-3"><i class="bi bi-code-slash"></i></div>
+                                        <div class="feature rounded-3 me-3"><i class="bi bi-code-slash"></i></div>
                                         <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">Technical Skills</span></h3>
                                     </div>
                                     <div class="mb-2">AI/ML (PyTorch, TensorFlow)</div>
@@ -336,7 +357,7 @@
                                 <!-- Languages -->
                                 <div class="col-lg-6">
                                     <div class="d-flex align-items-center mb-3">
-                                        <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 me-3"><i class="bi bi-globe"></i></div>
+                                        <div class="feature rounded-3 me-3"><i class="bi bi-globe"></i></div>
                                         <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">Languages</span></h3>
                                     </div>
                                     <div class="mb-2">Italian (Native)</div>
@@ -385,7 +406,8 @@
 
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
+        <script src="js/theme.js"></script>
         <script src="js/scripts.js"></script>
+        <script src="js/animations.js"></script>
     </body>
 </html>

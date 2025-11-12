@@ -1,0 +1,929 @@
+/* ============================================
+   F1 STYLE PROJECTS PAGE - Clean Minimal
+   ============================================ */
+
+:root {
+  --bg-dark: var(--color-bg);
+  --bg-dark-secondary: var(--color-bg-alt);
+  --text-light: var(--color-text);
+  --text-secondary: var(--color-text-secondary);
+  --border-dark: var(--color-border);
+  --brand-accent: var(--color-accent);
+  --success: #10b981;
+  --radius-md: var(--radius-lg);
+  --radius-lg: var(--radius-xl);
+  --transition-base: var(--transition-base);
+  --f1-section-space: var(--layout-section-space, clamp(1.75rem, 4vw, 2.5rem));
+  --f1-stack-space: var(--layout-stack-space, 1.5rem);
+  --f1-inline-space: clamp(1.5rem, 4vw, 2.25rem);
+  --f1-shell-padding: clamp(2rem, 5vw, 3.5rem);
+  --f1-leaderboard-width: clamp(260px, 32vw, 360px);
+}
+
+.f1-broadcast-container {
+  background: transparent;
+  padding: var(--f1-section-space) 0;
+  position: relative;
+}
+
+.f1-shell {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem !important;
+  padding: var(--f1-shell-padding) !important;
+  box-shadow: 0 35px 70px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+:root[data-theme="dark"] .f1-shell {
+  background: var(--color-bg-dark);
+  border-color: var(--color-border-dark);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.65);
+}
+
+.f1-header {
+  text-align: center;
+  margin-bottom: var(--f1-stack-space);
+  position: relative;
+  z-index: 1;
+}
+
+.f1-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.f1-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* Info Cube */
+.f1-info-cube {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-stack-tight, 1rem);
+  background: color-mix(in srgb, var(--color-bg-alt) 95%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem !important;
+  padding: clamp(0.85rem, 3vw, 1.25rem) clamp(1rem, 3vw, 1.5rem);
+  margin-bottom: var(--f1-stack-space);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(12px);
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 100%;
+}
+
+html[data-theme="dark"] .f1-info-cube {
+  background: color-mix(in srgb, var(--color-bg-dark-alt) 90%, transparent);
+  border-color: var(--color-border-dark);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+}
+
+.f1-info-cube-icon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.f1-info-cube-content {
+  flex: 1;
+}
+
+.f1-info-cube-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.f1-info-cube-text {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.f1-broadcast-layout {
+  display: grid;
+  grid-template-columns: var(--f1-leaderboard-width) 1fr;
+  gap: var(--f1-stack-space);
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* F1 Leaderboard */
+.f1-leaderboard {
+  background: color-mix(in srgb, var(--color-bg) 95%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem !important;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  box-shadow: 0 25px 55px rgba(15, 23, 42, 0.1);
+  height: fit-content;
+  position: sticky;
+  top: var(--f1-stack-space);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+html[data-theme="dark"] .f1-leaderboard {
+  background: color-mix(in srgb, var(--color-bg-dark) 90%, transparent);
+  border-color: var(--color-border-dark);
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.6);
+}
+
+.f1-leaderboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.f1-leaderboard-title {
+  color: var(--text-light);
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.f1-lap-info {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.f1-driver-entry {
+  --driver-accent: var(--brand-accent);
+  --driver-accent-rgb: 255 56 96;
+  display: grid;
+  grid-template-columns: 40px 1fr auto auto;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem !important;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid color-mix(in srgb, var(--driver-accent) 30%, transparent);
+  align-items: center;
+  position: relative;
+  background: color-mix(in srgb, var(--driver-accent) 10%, transparent);
+  overflow: hidden;
+}
+
+.f1-driver-entry::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.f1-driver-entry:hover::before {
+  transform: translateX(100%);
+}
+
+.f1-driver-entry::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: var(--driver-accent);
+  opacity: 0.85;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.f1-driver-entry:hover {
+  background: color-mix(in srgb, var(--driver-accent) 18%, transparent);
+  border-color: var(--driver-accent);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgb(var(--driver-accent-rgb) / 0.28);
+}
+
+.f1-driver-entry.p1,
+.f1-driver-entry.p2,
+.f1-driver-entry.p3 {
+  box-shadow: 0 12px 30px rgb(var(--driver-accent-rgb) / 0.32);
+}
+
+.f1-position {
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.f1-driver-name {
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.f1-driver-code {
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.f1-interval {
+  font-weight: 700;
+  color: var(--success);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+.f1-status {
+  font-size: 0.75rem;
+  color: var(--success);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 0.5rem !important;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.f1-status.is-finished {
+  color: var(--brand-accent);
+  border-color: color-mix(in srgb, var(--brand-accent) 60%, transparent);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* F1 Track Wrapper */
+.f1-track-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  gap: var(--f1-stack-space);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* F1 Track */
+.f1-track-container {
+  background: color-mix(in srgb, var(--color-bg-alt) 92%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem !important;
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: var(--track-aspect, 12 / 7);
+  min-height: clamp(320px, 55vw, 520px);
+  overflow: hidden !important;
+  box-sizing: border-box;
+  contain: layout paint;
+}
+
+@supports not (aspect-ratio: 1) {
+  .f1-track-container {
+    height: 0;
+    padding-top: 58%;
+  }
+
+  @media (max-width: 1024px) {
+    .f1-track-container {
+      padding-top: 65%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .f1-track-container {
+      padding-top: 75%;
+    }
+  }
+}
+
+.f1-track-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.f1-track-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 56, 96, 0.18), transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(14, 165, 233, 0.16), transparent 55%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.f1-track-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.2;
+  z-index: 1;
+}
+
+.f1-track-car-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.f1-track-car-layer > * {
+  pointer-events: auto;
+}
+
+/* Placeholder Styles */
+.f1-track-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(260px, 55vw, 420px);
+}
+
+.f1-placeholder-content {
+  text-align: center;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.f1-placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.f1-placeholder-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.f1-placeholder-text {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  opacity: 0.8;
+}
+
+html[data-theme="dark"] .f1-track-container {
+  background: color-mix(in srgb, var(--color-bg-dark-alt) 90%, transparent);
+  border-color: var(--color-border-dark);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.f1-track-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--brand-accent) 35%, transparent) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, color-mix(in srgb, var(--success) 35%, transparent) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.f1-track-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.f1-track-path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-text) 18%, transparent);
+  stroke-width: 60;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.f1-track-outline {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-text) 28%, transparent);
+  stroke-width: 70;
+  opacity: 0.6;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.f1-track-racing-line {
+  fill: none;
+  stroke: var(--brand-accent);
+  stroke-width: 4;
+  stroke-dasharray: 10, 5;
+  opacity: 0.6;
+  animation: dash 2s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -15;
+  }
+}
+
+/* DRS Zone Visualization */
+.f1-track-drs-zone {
+  fill: none;
+  stroke: #10b981;
+  stroke-width: 8;
+  opacity: 0.3;
+  animation: drs-pulse 3s ease-in-out infinite;
+}
+
+@keyframes drs-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    stroke-width: 8;
+  }
+  50% {
+    opacity: 0.5;
+    stroke-width: 10;
+  }
+}
+
+/* Start/Finish Line */
+.f1-start-line {
+  stroke: #ffffff;
+  stroke-width: 6;
+  stroke-linecap: round;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+}
+
+/* Track Info Display */
+.f1-track-info {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  z-index: 20;
+  background: color-mix(in srgb, var(--color-bg) 90%, transparent);
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+  color: var(--color-text);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+html[data-theme="dark"] .f1-track-info {
+  background: color-mix(in srgb, var(--color-bg-dark) 85%, transparent);
+  border-color: var(--color-border-dark);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.65);
+}
+
+.track-type {
+  color: var(--brand-accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.track-drs {
+  color: var(--success);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.track-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+  margin-bottom: 0.35rem;
+}
+
+.track-name {
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.track-meta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.track-weather {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Enhanced Car Styling */
+.f1-car {
+  position: absolute;
+  width: 50px;
+  height: 25px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  will-change: transform, left, top;
+  background: transparent;
+  border: none;
+  padding: 0;
+  pointer-events: auto;
+}
+
+.f1-car-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Filter is applied inline via JS to include color tinting */
+  transition: filter 0.3s ease, transform 0.2s ease;
+}
+
+.f1-car:hover .f1-car-image {
+  /* Preserve existing filter and enhance it on hover */
+  filter: brightness(1.2) saturate(120%);
+  transform: scale(1.05);
+}
+
+.f1-car:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--car-accent, var(--brand-accent)) 80%, transparent);
+  outline-offset: 3px;
+}
+
+.f1-car-number {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: color-mix(in srgb, var(--car-accent, var(--brand-accent)) 35%, var(--color-bg-dark));
+  color: var(--color-text-light);
+  padding: 4px 10px;
+  border-radius: 0.5rem !important;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border: 1px solid color-mix(in srgb, var(--car-accent, var(--brand-accent)) 60%, transparent);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.35);
+}
+
+.f1-car:hover .f1-car-number {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+/* Top 3 Podium */
+.f1-podium-section {
+  margin-top: var(--f1-section-space);
+  padding: var(--f1-stack-space) 0;
+  position: relative;
+  z-index: 1;
+  /* Align with the right column of the broadcast layout (where track is) */
+  margin-left: calc(var(--f1-leaderboard-width) + var(--f1-stack-space));
+  margin-right: 0;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Podium on main page (full width) */
+.bg-dark .f1-podium-section,
+.featured-projects-container .f1-podium-section {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+  margin-top: 0;
+  padding: 0;
+}
+
+.f1-podium-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.f1-podium-title h2 {
+  font-size: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+}
+
+.f1-podium {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--f1-stack-space);
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  align-items: flex-end;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Cleaner spacing on main page */
+.bg-dark .f1-podium,
+.featured-projects-container .f1-podium {
+  gap: 1.5rem;
+  padding: 0;
+}
+
+.f1-podium-item {
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.f1-podium-item:hover {
+  transform: translateY(-8px);
+}
+
+.f1-podium-item.p2 {
+  order: 1;
+}
+
+.f1-podium-item.p1 {
+  order: 2;
+}
+
+.f1-podium-item.p3 {
+  order: 3;
+}
+
+.f1-podium-stand {
+  background: color-mix(in srgb, var(--color-bg-alt) 92%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem !important;
+  padding: 2rem 1rem 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+html[data-theme="dark"] .f1-podium-stand {
+  background: color-mix(in srgb, var(--color-bg-dark-alt) 88%, transparent);
+  border-color: var(--color-border-dark);
+}
+
+/* Smoother borders for podium on main page */
+.bg-dark .f1-podium-stand,
+.featured-projects-container .f1-podium-stand {
+  border-radius: 1.25rem !important;
+  border-width: 1px;
+  border-color: var(--color-border-dark);
+}
+
+.f1-podium-stand.p1 {
+  height: 280px;
+  border-color: #ffd700;
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.15);
+}
+
+.f1-podium-stand.p2 {
+  height: 240px;
+  border-color: #c0c0c0;
+  box-shadow: 0 8px 24px rgba(192, 192, 192, 0.15);
+}
+
+.f1-podium-stand.p3 {
+  height: 200px;
+  border-color: #cd7f32;
+  box-shadow: 0 8px 24px rgba(205, 127, 50, 0.15);
+}
+
+/* Smoother hover effect */
+.f1-podium-item:hover .f1-podium-stand {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.bg-dark .f1-podium-item:hover .f1-podium-stand {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.featured-projects-container .f1-podium-item:hover .f1-podium-stand {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.f1-podium-medal {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.f1-podium-project-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.f1-podium-project-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.f1-position-badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #000;
+}
+
+.f1-position-badge.p1 {
+  background: #ffd700;
+}
+
+.f1-position-badge.p2 {
+  background: #c0c0c0;
+}
+
+.f1-position-badge.p3 {
+  background: #cd7f32;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .f1-broadcast-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .f1-leaderboard {
+    position: static;
+    margin-bottom: var(--f1-stack-space);
+  }
+  
+  .f1-track-container {
+    aspect-ratio: 4 / 3;
+    min-height: clamp(280px, 60vw, 420px);
+  }
+  
+  .f1-podium-section {
+    /* Reset margins on smaller screens to use full width */
+    margin-left: var(--f1-inline-space);
+    margin-right: var(--f1-inline-space);
+    max-width: none;
+  }
+  
+  /* Ensure podium in bg-dark sections uses full width on mobile */
+  .bg-dark .f1-podium-section {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .f1-podium {
+    grid-template-columns: 1fr;
+  }
+  
+  .f1-podium-item.p2,
+  .f1-podium-item.p1,
+  .f1-podium-item.p3 {
+    order: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .f1-title {
+    font-size: 1.8rem;
+  }
+  
+  .f1-broadcast-layout {
+    padding: 0 clamp(0.75rem, 3vw, 1.25rem);
+  }
+  
+  .f1-track-container {
+    aspect-ratio: 1 / 1;
+    min-height: clamp(240px, 70vw, 360px);
+  }
+  
+  .f1-podium-section {
+    margin-left: clamp(0.5rem, 3vw, 1rem);
+    margin-right: clamp(0.5rem, 3vw, 1rem);
+    padding: var(--f1-stack-space) 0;
+  }
+  
+  /* Ensure podium in bg-dark sections uses full width on mobile */
+  .bg-dark .f1-podium-section {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .f1-track-info {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem clamp(0.75rem, 3vw, 1rem);
+    font-size: 0.75rem;
+    margin-bottom: var(--layout-stack-tight, 0.75rem);
+  }
+  
+  .f1-driver-entry {
+    grid-template-columns: 30px 1fr auto;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .f1-status {
+    display: none;
+  }
+  
+  .f1-driver-code {
+    display: none;
+  }
+  
+  .f1-car {
+    width: 40px;
+    height: 20px;
+  }
+}
+
+/* Performance optimization */
+@media (prefers-reduced-motion: reduce) {
+  .f1-driver-entry,
+  .f1-car,
+  .f1-podium-item {
+    transition: none;
+  }
+  
+  .f1-track-racing-line,
+  .f1-track-drs-zone {
+    animation: none;
+  }
+}

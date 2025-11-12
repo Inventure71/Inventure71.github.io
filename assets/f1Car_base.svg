@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50" width="100" height="50">
+  <!-- Rear Wing -->
+  <rect x="2" y="16" width="8" height="18" rx="2" fill="#ffffff"/>
+  
+  <!-- Main Body -->
+  <path d="M 12 20 L 70 13 L 85 17 L 88 20 L 88 30 L 85 33 L 70 37 L 12 30 Z" fill="#ffffff"/>
+  
+  <!-- Cockpit -->
+  <ellipse cx="30" cy="25" rx="14" ry="9" fill="#e0e0e0"/>
+  <ellipse cx="30" cy="25" rx="10" ry="6" fill="#c0c0c0"/>
+  
+  <!-- Side Pods -->
+  <rect x="35" y="16" width="25" height="6" rx="2" fill="#f5f5f5"/>
+  <rect x="35" y="28" width="25" height="6" rx="2" fill="#f5f5f5"/>
+  
+  <!-- Engine Vents -->
+  <rect x="45" y="15" width="2" height="7" fill="#d0d0d0"/>
+  <rect x="50" y="15" width="2" height="7" fill="#d0d0d0"/>
+  <rect x="55" y="15" width="2" height="7" fill="#d0d0d0"/>
+  
+  <rect x="45" y="28" width="2" height="7" fill="#d0d0d0"/>
+  <rect x="50" y="28" width="2" height="7" fill="#d0d0d0"/>
+  <rect x="55" y="28" width="2" height="7" fill="#d0d0d0"/>
+  
+  <!-- Front Wing -->
+  <rect x="88" y="14" width="10" height="4" rx="1" fill="#ffffff"/>
+  <rect x="88" y="32" width="10" height="4" rx="1" fill="#ffffff"/>
+  <rect x="90" y="18" width="6" height="14" rx="1" fill="#f0f0f0"/>
+  
+  <!-- Front Nose -->
+  <path d="M 88 20 L 95 22 L 95 28 L 88 30 Z" fill="#ffffff"/>
+  
+  <!-- Details/Highlights -->
+  <path d="M 15 22 L 65 16 L 65 18 L 15 24 Z" fill="#f8f8f8" opacity="0.7"/>
+  <path d="M 15 26 L 65 32 L 65 34 L 15 28 Z" fill="#e8e8e8" opacity="0.5"/>
+  
+  <!-- Rear diffuser -->
+  <rect x="8" y="22" width="4" height="6" fill="#e8e8e8"/>
+</svg>
+

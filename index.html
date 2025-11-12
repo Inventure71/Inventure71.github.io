@@ -1,242 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>Matteo Giorgetti - Personal Portfolio</title>
         <meta name="description" content="Matteo Giorgetti's personal portfolio showcasing projects, resume, and contact information." />
         <meta name="author" content="Matteo Giorgetti" />
-        <title>Personal - Start Bootstrap Theme</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
         <!-- Custom Google font-->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+        <script>
+            (function () {
+                try {
+                    var storageKey = 'mg-color-theme';
+                    var storedTheme = localStorage.getItem(storageKey);
+                    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    var theme = storedTheme || (prefersDark ? 'dark' : 'light');
+                    document.documentElement.dataset.theme = theme;
+                    document.documentElement.style.colorScheme = theme;
+                } catch (error) {
+                    document.documentElement.dataset.theme = 'light';
+                }
+            })();
+        </script>
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="/css/styles.css" rel="stylesheet" />
+        <!-- Modern Design System -->
+        <link href="/css/modern.css" rel="stylesheet" />
+        <!-- F1 Style -->
+        <link href="/css/f1-style.css" rel="stylesheet" />
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <!-- Navigation-->
-            <nav class="navbar navbar-expand-lg navbar-dark py-3">
+            <nav class="navbar navbar-expand-lg py-3">
                 <div class="container px-5">
                     <a class="navbar-brand" href="/index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
-                            <li class="nav-item"><a class="nav-link text-light" href="/index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link text-light" href="/resume.html">Resume</a></li>
-                            <li class="nav-item"><a class="nav-link text-light" href="/projects.html">Projects</a></li>
-                            <li class="nav-item"><a class="nav-link text-light" href="/contact.html">Contact</a></li>
-                        </ul>                        
+                        <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
+                            <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
+                                <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/resume.html">Resume</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
+                            </ul>
+                            <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle aria-label="Toggle color scheme">
+                                <i class="bi bi-moon"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </nav>
-            <!-- Header-->
+            <!-- Hero Section -->
             <header class="py-5">
-                <div class="container px-5 pb-5">
-                    <div class="row gx-5 align-items-center">
-                        <div class="col-xxl-5">
-                            <!-- Header text content-->
-                            <div class="text-center text-xxl-start">
-                                <div class="badge bg-gradient-primary-to-secondary text-white mb-4"><div class="text-uppercase">Code &middot; AI &middot; Innovation</div></div>
-                                <!--<div class="fs-3 fw-light text-muted">I am a passionate gamer and programmer.</div>-->
-                                <h1 class="display-3 fw-bolder mb-5"><span class="text-gradient d-inline">Innovating with Code</span></h1>
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">
-                                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/resume.html">Resume</a>
-                                    <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="/projects.html">Projects</a>
+                <div class="container px-5">
+                    <div class="row gx-5 align-items-center min-vh-75">
+                        <div class="col-lg-6">
+                            <div class="text-center text-lg-start">
+                                <h1 class="display-2 fw-bolder mb-4 fade-in">Matteo Giorgetti</h1>
+                                <p class="lead mb-3 fade-in">Computer Science & AI Student</p>
+                                <p class="mb-5 text-secondary fade-in">Building innovative solutions with code, AI, and creativity.</p>
+                                <div class="d-flex gap-3 justify-content-center justify-content-lg-start fade-in">
+                                    <a class="btn btn-primary" href="/resume.html">Resume</a>
+                                    <a class="btn btn-outline-dark" href="/projects.html">Projects</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xxl-7">
-                            <!-- Header profile picture-->
-                            <div class="d-flex justify-content-center mt-5 mt-xxl-0">
-                                <div class="profile bg-gradient-primary-to-secondary">
-                                    <!-- TIP: For best results, use a photo with a transparent background like the demo example below-->
-                                    <!-- Watch a tutorial on how to do this on YouTube (link)-->
-                                    <img class="profile-img" src="/assets/profile.png" alt="..." />
-                                    <div class="dots-1">
-                                        <!-- SVG Dots-->
-                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 191.6 1215.4" style="enable-background: new 0 0 191.6 1215.4" xml:space="preserve">
-                                            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)">
-                                                <path d="M227.7,12788.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,12801.6,289.7,12808.6,227.7,12788.6z"></path>
-                                                <path d="M1507.7,12788.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,12801.6,1569.7,12808.6,1507.7,12788.6z"></path>
-                                                <path d="M227.7,11508.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,11521.6,289.7,11528.6,227.7,11508.6z"></path>
-                                                <path d="M1507.7,11508.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,11521.6,1569.7,11528.6,1507.7,11508.6z"></path>
-                                                <path d="M227.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,10241.6,289.7,10248.6,227.7,10228.6z"></path>
-                                                <path d="M1507.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,10241.6,1569.7,10248.6,1507.7,10228.6z"></path>
-                                                <path d="M227.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,8961.6,289.7,8968.6,227.7,8948.6z"></path>
-                                                <path d="M1507.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,8961.6,1569.7,8968.6,1507.7,8948.6z"></path>
-                                                <path d="M227.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,7681.6,289.7,7688.6,227.7,7668.6z"></path>
-                                                <path d="M1507.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,7681.6,1569.7,7688.6,1507.7,7668.6z"></path>
-                                                <path d="M227.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,6401.6,289.7,6408.6,227.7,6388.6z"></path>
-                                                <path d="M1507.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,6401.6,1569.7,6408.6,1507.7,6388.6z"></path>
-                                                <path d="M227.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,5121.6,289.7,5128.6,227.7,5108.6z"></path>
-                                                <path d="M1507.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,5121.6,1569.7,5128.6,1507.7,5108.6z"></path>
-                                                <path d="M227.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,3841.6,289.7,3848.6,227.7,3828.6z"></path>
-                                                <path d="M1507.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,3841.6,1569.7,3848.6,1507.7,3828.6z"></path>
-                                                <path d="M227.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,2561.6,289.7,2568.6,227.7,2548.6z"></path>
-                                                <path d="M1507.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,2561.6,1569.7,2568.6,1507.7,2548.6z"></path>
-                                                <path d="M227.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,1281.6,289.7,1288.6,227.7,1268.6z"></path>
-                                                <path d="M1507.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,1281.6,1569.7,1288.6,1507.7,1268.6z"></path>
-                                            </g>
-                                        </svg>
-                                        <!-- END of SVG dots-->
-                                    </div>
-                                    <div class="dots-2">
-                                        <!-- SVG Dots-->
-                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 191.6 1215.4" style="enable-background: new 0 0 191.6 1215.4" xml:space="preserve">
-                                            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)">
-                                                <path d="M227.7,12788.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,12801.6,289.7,12808.6,227.7,12788.6z"></path>
-                                                <path d="M1507.7,12788.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,12801.6,1569.7,12808.6,1507.7,12788.6z"></path>
-                                                <path d="M227.7,11508.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,11521.6,289.7,11528.6,227.7,11508.6z"></path>
-                                                <path d="M1507.7,11508.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,11521.6,1569.7,11528.6,1507.7,11508.6z"></path>
-                                                <path d="M227.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,10241.6,289.7,10248.6,227.7,10228.6z"></path>
-                                                <path d="M1507.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,10241.6,1569.7,10248.6,1507.7,10228.6z"></path>
-                                                <path d="M227.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,8961.6,289.7,8968.6,227.7,8948.6z"></path>
-                                                <path d="M1507.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,8961.6,1569.7,8968.6,1507.7,8948.6z"></path>
-                                                <path d="M227.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,7681.6,289.7,7688.6,227.7,7668.6z"></path>
-                                                <path d="M1507.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,7681.6,1569.7,7688.6,1507.7,7668.6z"></path>
-                                                <path d="M227.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,6401.6,289.7,6408.6,227.7,6388.6z"></path>
-                                                <path d="M1507.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,6401.6,1569.7,6408.6,1507.7,6388.6z"></path>
-                                                <path d="M227.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,5121.6,289.7,5128.6,227.7,5108.6z"></path>
-                                                <path d="M1507.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,5121.6,1569.7,5128.6,1507.7,5108.6z"></path>
-                                                <path d="M227.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,3841.6,289.7,3848.6,227.7,3828.6z"></path>
-                                                <path d="M1507.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,3841.6,1569.7,3848.6,1507.7,3828.6z"></path>
-                                                <path d="M227.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,2561.6,289.7,2568.6,227.7,2548.6z"></path>
-                                                <path d="M1507.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,2561.6,1569.7,2568.6,1507.7,2548.6z"></path>
-                                                <path d="M227.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,1281.6,289.7,1288.6,227.7,1268.6z"></path>
-                                                <path d="M1507.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,1281.6,1569.7,1288.6,1507.7,1268.6z"></path>
-                                            </g>
-                                        </svg>
-                                        <!-- END of SVG dots-->
-                                    </div>
-                                    <div class="dots-3">
-                                        <!-- SVG Dots-->
-                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 191.6 1215.4" style="enable-background: new 0 0 191.6 1215.4" xml:space="preserve">
-                                            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)">
-                                                <path d="M227.7,12788.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,12801.6,289.7,12808.6,227.7,12788.6z"></path>
-                                                <path d="M1507.7,12788.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,12801.6,1569.7,12808.6,1507.7,12788.6z"></path>
-                                                <path d="M227.7,11508.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,11521.6,289.7,11528.6,227.7,11508.6z"></path>
-                                                <path d="M1507.7,11508.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,11521.6,1569.7,11528.6,1507.7,11508.6z"></path>
-                                                <path d="M227.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,10241.6,289.7,10248.6,227.7,10228.6z"></path>
-                                                <path d="M1507.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,10241.6,1569.7,10248.6,1507.7,10228.6z"></path>
-                                                <path d="M227.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,8961.6,289.7,8968.6,227.7,8948.6z"></path>
-                                                <path d="M1507.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,8961.6,1569.7,8968.6,1507.7,8948.6z"></path>
-                                                <path d="M227.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,7681.6,289.7,7688.6,227.7,7668.6z"></path>
-                                                <path d="M1507.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,7681.6,1569.7,7688.6,1507.7,7668.6z"></path>
-                                                <path d="M227.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,6401.6,289.7,6408.6,227.7,6388.6z"></path>
-                                                <path d="M1507.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,6401.6,1569.7,6408.6,1507.7,6388.6z"></path>
-                                                <path d="M227.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,5121.6,289.7,5128.6,227.7,5108.6z"></path>
-                                                <path d="M1507.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,5121.6,1569.7,5128.6,1507.7,5108.6z"></path>
-                                                <path d="M227.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,3841.6,289.7,3848.6,227.7,3828.6z"></path>
-                                                <path d="M1507.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,3841.6,1569.7,3848.6,1507.7,3828.6z"></path>
-                                                <path d="M227.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,2561.6,289.7,2568.6,227.7,2548.6z"></path>
-                                                <path d="M1507.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,2561.6,1569.7,2568.6,1507.7,2548.6z"></path>
-                                                <path d="M227.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,1281.6,289.7,1288.6,227.7,1268.6z"></path>
-                                                <path d="M1507.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,1281.6,1569.7,1288.6,1507.7,1268.6z"></path>
-                                            </g>
-                                        </svg>
-                                        <!-- END of SVG dots-->
-                                    </div>
-                                    <div class="dots-4">
-                                        <!-- SVG Dots-->
-                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 191.6 1215.4" style="enable-background: new 0 0 191.6 1215.4" xml:space="preserve">
-                                            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)">
-                                                <path d="M227.7,12788.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,12801.6,289.7,12808.6,227.7,12788.6z"></path>
-                                                <path d="M1507.7,12788.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,12801.6,1569.7,12808.6,1507.7,12788.6z"></path>
-                                                <path d="M227.7,11508.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,11521.6,289.7,11528.6,227.7,11508.6z"></path>
-                                                <path d="M1507.7,11508.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,11521.6,1569.7,11528.6,1507.7,11508.6z"></path>
-                                                <path d="M227.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,10241.6,289.7,10248.6,227.7,10228.6z"></path>
-                                                <path d="M1507.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,10241.6,1569.7,10248.6,1507.7,10228.6z"></path>
-                                                <path d="M227.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,8961.6,289.7,8968.6,227.7,8948.6z"></path>
-                                                <path d="M1507.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,8961.6,1569.7,8968.6,1507.7,8948.6z"></path>
-                                                <path d="M227.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,7681.6,289.7,7688.6,227.7,7668.6z"></path>
-                                                <path d="M1507.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,7681.6,1569.7,7688.6,1507.7,7668.6z"></path>
-                                                <path d="M227.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,6401.6,289.7,6408.6,227.7,6388.6z"></path>
-                                                <path d="M1507.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,6401.6,1569.7,6408.6,1507.7,6388.6z"></path>
-                                                <path d="M227.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,5121.6,289.7,5128.6,227.7,5108.6z"></path>
-                                                <path d="M1507.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,5121.6,1569.7,5128.6,1507.7,5108.6z"></path>
-                                                <path d="M227.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,3841.6,289.7,3848.6,227.7,3828.6z"></path>
-                                                <path d="M1507.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,3841.6,1569.7,3848.6,1507.7,3828.6z"></path>
-                                                <path d="M227.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,2561.6,289.7,2568.6,227.7,2548.6z"></path>
-                                                <path d="M1507.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,2561.6,1569.7,2568.6,1507.7,2548.6z"></path>
-                                                <path d="M227.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,1281.6,289.7,1288.6,227.7,1268.6z"></path>
-                                                <path d="M1507.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,1281.6,1569.7,1288.6,1507.7,1268.6z"></path>
-                                            </g>
-                                        </svg>
-                                        <!-- END of SVG dots-->
-                                    </div>
+                        <div class="col-lg-6">
+                            <div class="d-flex justify-content-center mt-5 mt-lg-0">
+                                <div class="hero-portrait">
+                                    <img class="profile-img" src="/assets/profile.png" alt="Matteo Giorgetti" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </header>
-            <!-- About Section-->
-            <section class="py-5" style="background-color: var(--bs-tertiary); color: var(--bs-light)">
-                <div class="container px-5">
-                    <div class="row gx-5 justify-content-center">
-                        <div class="col-xxl-8">
-                            <div class="text-center my-5">
-                                <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">About Me</span></h2>
-                                <p class="lead fw-light mb-4">Passionate about AI, software development, and problem-solving.</p>
-                                <p class="text-muted" style="color: var(--bs-light)">
-                                    I am Matteo Giorgetti, a Computer Science and Artificial Intelligence student at IE University.
-                                    My expertise spans software development, machine learning, and game development using Unreal Engine.
-                                    I've worked on projects ranging from AI-powered chatbots to financial analysis tools and game mechanics.
-                                    My goal is to innovate using AI, automation, and interactive technologies to enhance user experiences and solve real-world problems.
-                                </p>
-                                <div class="d-flex justify-content-center fs-2 gap-4">
-                                    <a class="text-gradient" href="https://www.linkedin.com/in/matteo-giorgetti-026172247/"><i class="bi bi-linkedin"></i></a>
-                                    <a class="text-gradient" href="https://github.com/Inventure71"><i class="bi bi-github"></i></a>
+            
+            <!-- Featured Projects Section -->
+            <section class="py-5 fade-in">
+                <div class="container px-5 featured-projects-container">
+                    <div class="text-center mb-1">
+                        <h2 class="display-4 fw-bolder mb-1">Featured Projects</h2>
+                        <p class="text-muted mb-2">Championship podium winners</p>
+                    </div>
+                    
+                    <div class="featured-projects-content">
+                        <!-- Championship Podium -->
+                        <div class="f1-podium-section fade-in">
+                            <div class="f1-podium-title">
+                                <h2>CHAMPIONSHIP PODIUM</h2>
+                            </div>
+                            <div class="f1-podium">
+                                <div class="f1-podium-item p2" onclick="window.location.href='/project_details/project-neural-noir.html'">
+                                    <div class="f1-podium-stand p2">
+                                        <div class="f1-podium-medal">🥈</div>
+                                        <div class="f1-podium-project-name">Neural Noir</div>
+                                        <div class="f1-podium-project-desc">AI-Driven Interactive Story Game</div>
+                                    </div>
+                                </div>
+                                <div class="f1-podium-item p1" onclick="window.location.href='/project_details/project-budget-buddy.html'">
+                                    <div class="f1-podium-stand p1">
+                                        <div class="f1-podium-medal">🥇</div>
+                                        <div class="f1-podium-project-name">Budget Buddy</div>
+                                        <div class="f1-podium-project-desc">AI-Powered Financial Chatbot</div>
+                                    </div>
+                                </div>
+                                <div class="f1-podium-item p3" onclick="window.location.href='/project_details/project-holovinyl.html'">
+                                    <div class="f1-podium-stand p3">
+                                        <div class="f1-podium-medal">🥉</div>
+                                        <div class="f1-podium-project-name">HoloVinyl</div>
+                                        <div class="f1-podium-project-desc">Music and Memory Integration</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
-            <!-- Crystal Ball Bowl Section -->
-            <section class="bg-dark" style="padding-top: 0.5rem; padding-bottom: 2rem;">
-                <div class="container px-5">
-                    <div class="text-center" style="margin-bottom: 0.5rem;">
-                        <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">Discover My Projects</span></h2>
-                        <p class="lead fw-light text-light mb-0">Drag a crystal ball to the portal below to explore a project!</p>
-                    </div>
-                    <div id="crystal-ball-container" style="width: 100%; height: 450px; position: relative; margin: 0 auto;">
-                        <!-- Jar Background Layer -->
-                        <img src="/assets/Jar_background.png" alt="Jar Background" style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; height: auto; opacity: 0.7; pointer-events: none; z-index: 1;">
                         
-                        <div id="project-drop-zone" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 150px; height: 70px; border: 2px dashed var(--bs-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--bs-light); font-size: 0.9rem; z-index: 10; background-color: rgba(0,0,0,0.3); -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none;">
-                            Drop Ball Here<br/>to Open Project
+                        <div class="text-center mt-5">
+                            <a href="/projects.html" class="btn btn-outline-dark">View Live Race</a>
                         </div>
-                        <canvas id="crystal-ball-canvas" style="position: relative; z-index: 2;"></canvas>
-                        
-                        <!-- Jar Foreground Layer -->
-                        <img src="/assets/Jar_foreground.png" alt="Jar Foreground" style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; height: auto; opacity: 0.7; pointer-events: none; z-index: 3;">
                     </div>
                 </div>
             </section>
             <!-- Statistics Section -->
-            <section class="py-5" style="background-color: var(--bs-primary); color: var(--bs-light);">
+            <section class="py-5 fade-in">
                 <div class="container px-5">
                 <div class="row text-center">
                     <div class="col-md-4 mb-4 mb-md-0">
-                    <h2 class="fw-bold">10</h2>
+                            <h2 class="fw-bold stat-number counter" data-target="10">0</h2>
                     <p class="mb-0">Projects Completed</p>
                     </div>
                     <div class="col-md-4 mb-4 mb-md-0">
-                    <h2 class="fw-bold">100+</h2>
+                            <h2 class="fw-bold stat-number counter" data-target="100">0</h2>
                     <p class="mb-0">Redbull drank</p>
                     </div>
                     <div class="col-md-4">
-                    <h2 class="fw-bold">Too many</h2>
+                            <h2 class="fw-bold stat-number">∞</h2>
                     <p class="mb-0">Nights awake</p>
                     </div>
                 </div>
+                </div>
+            </section>
+            
+            <!-- About Section -->
+            <section class="py-5 fade-in">
+                <div class="container px-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 text-center">
+                            <h2 class="display-4 fw-bolder mb-4">About</h2>
+                            <p class="lead mb-4">
+                                Computer Science and Artificial Intelligence student at IE University. 
+                                Passionate about building innovative solutions with AI, automation, and interactive technologies.
+                            </p>
+                            <div class="d-flex justify-content-center gap-4">
+                                <a href="https://www.linkedin.com/in/matteo-giorgetti-026172247/" class="text-primary" style="font-size: 1.5rem;"><i class="bi bi-linkedin"></i></a>
+                                <a href="https://github.com/Inventure71" class="text-primary" style="font-size: 1.5rem;"><i class="bi bi-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
             <!-- Best Project Section 
@@ -263,7 +190,7 @@
   
         </main>
         <!-- Footer-->
-        <footer class="py-4 mt-auto" style="background-color: var(--bs-body-bg); color: var(--bs-light);">
+        <footer class="py-4 mt-auto">
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0">Copyright &copy; https://inventure71.github.io 2025</div></div>
@@ -279,276 +206,28 @@
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
+        <script src="/js/theme.js"></script>
         <script src="/js/scripts.js"></script>
-        <!-- Matter.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+        <script src="/js/animations.js"></script>
         <script>
-        // Profile image auto-switcher
         (function() {
-            const images = [
-                '/assets/profile.png',
-                '/assets/profile2.png'
-            ];
-            const N = 1500; // milliseconds
-            let idx = 0;
+            const images = ['/assets/profile.png', '/assets/profile2.png'];
+            const interval = 2000;
             const img = document.querySelector('.profile-img');
             if (!img) return;
+            let idx = 0;
+
+            img.addEventListener('load', () => {
+                img.classList.remove('is-switching');
+            });
+
             setInterval(() => {
-                idx = (idx + 1) % images.length;
-                img.src = images[idx];
-            }, N);
-        })();
-
-        // Crystal Ball Bowl Logic
-        (function() {
-            const container = document.getElementById('crystal-ball-container');
-            const canvas = document.getElementById('crystal-ball-canvas');
-            if (!container || !canvas) return;
-
-            const projectLinks = [
-                { name: "Budget Buddy", url: "/project_details/project-budget-buddy.html" },
-                { name: "Neural Noir", url: "/project_details/project-neural-noir.html" },
-                { name: "HoloVinyl", url: "/project_details/project-holovinyl.html" },
-                { name: "AI Pokémon Card Generator", url: "/project_details/project-pokemon-card-generator.html" },
-                { name: "VictorIA", url: "/project_details/project-victoria.html" },
-                { name: "ReminderZ", url: "/project_details/project-remainder-v0.html" }
-            ];
-
-            const Engine = Matter.Engine, Render = Matter.Render, Runner = Matter.Runner, Bodies = Matter.Bodies, Composite = Matter.Composite, MouseConstraint = Matter.MouseConstraint, Mouse = Matter.Mouse, World = Matter.World, Events = Matter.Events, Body = Matter.Body;
-
-            const engine = Engine.create({ gravity: { y: 0.4 } }); 
-            const world = engine.world;
-
-            const render = Render.create({
-                element: container,
-                canvas: canvas,
-                engine: engine,
-                options: {
-                    width: container.clientWidth,
-                    height: container.clientHeight,
-                    wireframes: false,
-                    background: 'transparent'
-                }
-            });
-            Render.run(render);
-            const runner = Runner.create();
-            Runner.run(runner, engine);
-
-            const canvasWidth = container.clientWidth;
-            const canvasHeight = container.clientHeight; // This height is for the canvas itself
-
-            // --- Create the Bowl --- 
-            const bowlSegments = [];
-            const bowlRadius = Math.min(canvasWidth, canvasHeight) * 0.4;
-            const bowlCenterX = canvasWidth / 2;
-            const bowlBottomY = canvasHeight * 0.85; 
-            const segmentAngleStep = Math.PI / 18; 
-            const bowlOpeningAngle = Math.PI / 2.5; 
-            const segmentLength = 25; 
-            const segmentThickness = 10; 
-            const bowlWallColor = 'rgba(100, 100, 100, 0.7)';
-
-            // Corrected angle loop for a proper bowl shape (open at the top)
-            // Angles are typically counter-clockwise from positive x-axis. Matter.js y is downwards.
-            // -PI/2 is top. PI/2 is bottom.
-            // We want walls from (top-left) around to (top-right)
-            const startAngle = -Math.PI / 2 + bowlOpeningAngle / 2; // e.g., -90deg + 36deg = -54deg (upper right opening edge)
-            const endAngle = (3 * Math.PI / 2) - bowlOpeningAngle / 2;   // e.g.,  270deg - 36deg = 234deg (upper left opening edge)
-
-            for (let angle = startAngle; angle <= endAngle; angle += segmentAngleStep) {
-                // Center of the circle forming the bowl's curve
-                const effectiveBowlCenterY = bowlBottomY - (bowlRadius * 0.7);
-                const x = bowlCenterX + bowlRadius * Math.cos(angle);
-                const y = effectiveBowlCenterY + bowlRadius * Math.sin(angle);
-                
-                const segment = Bodies.rectangle(x, y, segmentLength, segmentThickness, {
-                    isStatic: true,
-                    angle: angle + Math.PI / 2, 
-                    render: { visible: false } // Make original bowl segments invisible
-                });
-                bowlSegments.push(segment);
-            }
-            World.add(world, bowlSegments);
-
-            // --- Create Mixer Blade ---
-            const mixerBladeWidth = bowlRadius * 0.6;
-            const mixerBladeHeight = 10;
-            const mixerBlade = Bodies.rectangle(bowlCenterX, bowlBottomY - (segmentThickness/2) - 5, mixerBladeWidth, mixerBladeHeight, {
-                isStatic: false, // Will be moved kinematically
-                density: 0.1, // Give it some mass to push balls
-                friction: 0.1,
-                render: { fillStyle: 'rgba(150, 150, 150, 0.8)' } // Metallic gray
-            });
-            World.add(world, mixerBlade);
-
-            // Pin the mixer blade to the center of the bowl bottom using a constraint
-            const mixerPin = Matter.Constraint.create({
-                bodyA: mixerBlade,
-                pointB: { x: bowlCenterX, y: bowlBottomY - (segmentThickness/2) - 5 },
-                stiffness: 1,
-                length: 0,
-                render: { visible: false }
-            });
-            World.add(world, mixerPin);
-
-            Events.on(engine, 'beforeUpdate', function(event) {
-                Body.setAngularVelocity(mixerBlade, 0.05); 
-            });
-
-            const crystalColors = [
-                // Luminous Crystal Light Sources
-                { inner: 'rgba(255, 255, 255, 0.8)', outer: 'rgba(31, 70, 197, 0.35)' },  // Luminous Blue
-                { inner: 'rgba(255, 255, 255, 0.8)', outer: 'rgba(25, 135, 84, 0.35)' },  // Luminous Green
-                { inner: 'rgba(255, 255, 255, 0.8)', outer: 'rgba(13, 202, 240, 0.35)' },  // Luminous Cyan
-                { inner: 'rgba(255, 255, 255, 0.8)', outer: 'rgba(220, 220, 220, 0.30)' },// Luminous Light Gray/White
-                { inner: 'rgba(255, 255, 255, 0.8)', outer: 'rgba(111, 66, 193, 0.35)' } // Luminous Purple
-            ];
-
-            const balls = [];
-            const numBalls = 20; 
-            const ballRadius = 15; 
-
-            for (let i = 0; i < numBalls; i++) {
-                // Ensure balls start within the bowl, above the mixer
-                // Try to spawn them more towards the center and above the bottom part of the bowl arc
-                const spawnRadius = bowlRadius * 0.5; // Spawn within 50% of bowl radius
-                const randomAngle = Math.random() * Math.PI + Math.PI/2; // Spawn in bottom half of a circle
-                const initialX = bowlCenterX + spawnRadius * Math.cos(randomAngle);
-                // Y position: start from center of bowl arc and go slightly up or down, but above mixer
-                const effectiveBowlCenterY = bowlBottomY - (bowlRadius * 0.7);
-                const initialY = effectiveBowlCenterY + spawnRadius * Math.sin(randomAngle) - ballRadius;
-
-
-                const randomColorSet = crystalColors[Math.floor(Math.random() * crystalColors.length)];
-                const randomProject = projectLinks[Math.floor(Math.random() * projectLinks.length)];
-
-                const ball = Bodies.circle(initialX, initialY, ballRadius, { // Use adjusted initialX, initialY
-                    restitution: 0.5, 
-                    friction: 0.02,    
-                    density: 0.0015,   
-                    render: { strokeStyle: 'transparent', lineWidth: 0 }
-                });
-                ball.projectUrl = randomProject.url;
-                ball.projectName = randomProject.name;
-                ball.colorSet = randomColorSet; 
-                balls.push(ball);
-            }
-            World.add(world, balls);
-
-            Events.on(render, 'afterRender', function() {
-                const context = render.context;
-                balls.forEach(ball => {
-                    const gradient = context.createRadialGradient(ball.position.x, ball.position.y, 0, ball.position.x, ball.position.y, ballRadius);
-                    gradient.addColorStop(0, ball.colorSet.inner);
-                    gradient.addColorStop(1, ball.colorSet.outer);
-                    
-                    context.beginPath();
-                    context.arc(ball.position.x, ball.position.y, ballRadius, 0, 2 * Math.PI);
-                    context.fillStyle = gradient;
-                    context.fill();
-                });
-            });
-
-            const mouse = Mouse.create(render.canvas);
-            const mouseConstraint = MouseConstraint.create(engine, {
-                mouse: mouse,
-                constraint: {
-                    stiffness: 0.1, 
-                    render: { visible: false }
-                }
-            });
-            World.add(world, mouseConstraint);
-            render.mouse = mouse;
-
-            // Fix scrolling issue by removing wheel event listeners from MouseConstraint
-            mouse.element.removeEventListener('wheel', mouse.mousewheel);
-            mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
-            mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
-
-            // Variables to manage click vs. drag and drop zone
-            const dropZoneElement = document.getElementById('project-drop-zone');
-            let draggedBall = null;
-
-
-            Events.on(mouseConstraint, 'startdrag', function(event) {
-                if (balls.includes(event.body)) {
-                    draggedBall = event.body;
-                }
-            });
-
-            Events.on(mouseConstraint, 'enddrag', function(event) {
-                if (draggedBall && dropZoneElement) {
-                    const ballPosition = draggedBall.position;
-                    const dzRect = dropZoneElement.getBoundingClientRect();
-                    const canvasRect = canvas.getBoundingClientRect();
-
-                    const dzTop = dzRect.top - canvasRect.top;
-                    const dzLeft = dzRect.left - canvasRect.left;
-                    const dzRight = dzLeft + dzRect.width;
-                    const dzBottom = dzTop + dzRect.height;
-
-                    if (ballPosition.x >= dzLeft && ballPosition.x <= dzRight &&
-                        ballPosition.y >= dzTop && ballPosition.y <= dzBottom) {
-                        
-                        if (draggedBall.projectUrl) {
-                            console.log("Attempting to navigate to:", draggedBall.projectUrl);
-                            dropZoneElement.style.backgroundColor = 'rgba(var(--bs-success-rgb), 0.5)';
-                            dropZoneElement.textContent = 'Opening...';
-                            
-                            // Attempt navigation
-                            window.location.href = draggedBall.projectUrl;
-                        }
-                    }
-                }
-                draggedBall = null; 
-            });
-
-            // Optional: Highlight drop zone when a ball is dragged over it
-            Events.on(engine, 'beforeUpdate', function() {
-                if (draggedBall && dropZoneElement) {
-                    const ballPosition = draggedBall.position;
-                    const dzRect = dropZoneElement.getBoundingClientRect();
-                    const canvasRect = canvas.getBoundingClientRect();
-
-                    const dzTop = dzRect.top - canvasRect.top;
-                    const dzLeft = dzRect.left - canvasRect.left;
-                    const dzRight = dzLeft + dzRect.width;
-                    const dzBottom = dzTop + dzRect.height;
-
-                    if (ballPosition.x >= dzLeft && ballPosition.x <= dzRight &&
-                        ballPosition.y >= dzTop && ballPosition.y <= dzBottom) {
-                        dropZoneElement.style.borderColor = 'var(--bs-success)';
-                        dropZoneElement.style.boxShadow = '0 0 10px var(--bs-success)';
-                    } else {
-                        dropZoneElement.style.borderColor = 'var(--bs-primary)';
-                        dropZoneElement.style.boxShadow = 'none';
-                    }
-                } else if (dropZoneElement) { // Reset if no ball is being dragged
-                    dropZoneElement.style.borderColor = 'var(--bs-primary)';
-                    dropZoneElement.style.boxShadow = 'none';
-                }
-            });
-
-
-            Render.lookAt(render, { min: { x: 0, y: 0 }, max: { x: canvasWidth, y: canvasHeight } });
-            
-            // Basic resize handling (might need more robust solution for complex shapes)
-            // For this iteration, the bowl and mixer are not dynamically resized, 
-            // which might lead to visual issues if the container resizes significantly.
-            // A full solution would involve removing and re-creating these static/kinematic elements.
-            window.addEventListener('resize', function() {
-                const newWidth = container.clientWidth;
-                const newHeight = container.clientHeight;
-                render.options.width = newWidth;
-                render.options.height = newHeight;
-                render.canvas.width = newWidth;
-                render.canvas.height = newHeight;
-                // Note: Bowl segments and mixer are NOT resized/repositioned here.
-                // This would require recalculating their geometry and positions.
-                Render.lookAt(render, { min: { x: 0, y: 0 }, max: { x: newWidth, y: newHeight } });
-            });
-
+                img.classList.add('is-switching');
+                setTimeout(() => {
+                    idx = (idx + 1) % images.length;
+                    img.src = images[idx];
+                }, 200);
+            }, interval);
         })();
         </script>
     </body>

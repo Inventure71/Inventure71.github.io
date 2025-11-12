@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -12,94 +12,165 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+        <script>
+            (function () {
+                try {
+                    var storageKey = 'mg-color-theme';
+                    var storedTheme = localStorage.getItem(storageKey);
+                    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    var theme = storedTheme || (prefersDark ? 'dark' : 'light');
+                    document.documentElement.dataset.theme = theme;
+                    document.documentElement.style.colorScheme = theme;
+                } catch (error) {
+                    document.documentElement.dataset.theme = 'light';
+                }
+            })();
+        </script>
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <!-- Modern Design System -->
+        <link href="css/modern.css" rel="stylesheet" />
+        <!-- F1 Style -->
+        <link href="css/f1-style.css" rel="stylesheet" />
     </head>
-    <body class="d-flex flex-column h-100 bg-dark">
+    <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <!-- Navigation-->
-            <nav class="navbar navbar-expand-lg navbar-dark py-3">
+            <nav class="navbar navbar-expand-lg py-3">
                 <div class="container px-5">
                     <a class="navbar-brand" href="index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
-                            <li class="nav-item"><a class="nav-link text-light" href="index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link text-light" href="resume.html">Resume</a></li>
-                            <li class="nav-item"><a class="nav-link text-light" href="projects.html">Projects</a></li>
-                            <li class="nav-item"><a class="nav-link text-light" href="contact.html">Contact</a></li>
-                        </ul>                        
+                        <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
+                            <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
+                                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
+                                <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                            </ul>
+                            <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle aria-label="Toggle color scheme">
+                                <i class="bi bi-moon"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </nav>
-            <!-- Projects Section-->
-            <section class="py-5">
-                <div class="container px-5 mb-5">
-                    <div class="text-center mb-5">
-                        <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Projects</span></h1>
+            <!-- F1 Style Projects Broadcast -->
+            <section class="f1-broadcast-container">
+                <div class="container px-5 f1-shell">
+                    <div class="f1-header fade-in">
+                        <h1 class="f1-title">PROJECTS GRAND PRIX</h1>
+                        <p class="f1-subtitle">Live Race Tracker</p>
                     </div>
-                    <div class="row gx-5 justify-content-center">
-                        <div class="col-lg-11 col-xl-9 col-xxl-8">
-                            <!-- Project 1: Budget Buddy -->
-                            <div class="card overflow-hidden shadow rounded-4 border-0 mb-5 p-4">
-                                <h2 class="fw-bolder h4">Budget Buddy – AI-Powered Financial Chatbot</h2>
-                                <p class="mb-3">Budget Buddy is an AI-driven chatbot designed to assist users in managing their finances by providing actionable insights and personalized budgeting advice.</p>
-                                <a class="btn btn-primary px-3 py-2" href="project_details/project-budget-buddy.html">
-                                    View Project Details
-                                    <i class="bi bi-arrow-right-circle ms-2"></i>
-                                </a>
-                            </div>
 
-                            <!-- Project 2: Neural Noir -->
-                            <div class="card overflow-hidden shadow rounded-4 border-0 mb-5 p-4">
-                                <h2 class="fw-bolder h4">Neural Noir – AI-Driven Interactive Story Game</h2>
-                                <p class="mb-3">Neural Noir is an interactive game that generates unique murder-mystery narratives using AI, providing players with an immersive storytelling experience.</p>
-                                <a class="btn btn-primary px-3 py-2" href="project_details/project-neural-noir.html">
-                                    View Project Details
-                                    <i class="bi bi-arrow-right-circle ms-2"></i>
-                                </a>
-                            </div>
+                    <!-- Info Cube -->
+                    <div class="f1-info-cube fade-in">
+                        <div class="f1-info-cube-icon">📦</div>
+                        <div class="f1-info-cube-content">
+                            <div class="f1-info-cube-title">How to Open Projects</div>
+                            <div class="f1-info-cube-text">Click on any project card, car, or podium entry to view its details</div>
+                        </div>
+                    </div>
 
-                            <!-- Project 3: HoloVinyl -->
-                            <div class="card overflow-hidden shadow rounded-4 border-0 mb-5 p-4">
-                                <h2 class="fw-bolder h4">HoloVinyl – Music and Memory Integration Project</h2>
-                                <p class="mb-3">HoloVinyl is a creative project that links physical objects to digital music, allowing users to associate songs with tangible items, enhancing the emotional connection to both.</p>
-                                <a class="btn btn-primary px-3 py-2" href="project_details/project-holovinyl.html">
-                                    View Project Details
-                                    <i class="bi bi-arrow-right-circle ms-2"></i>
-                                </a>
+                    <div class="f1-broadcast-layout">
+                        <!-- F1 Leaderboard -->
+                        <div class="f1-leaderboard fade-in">
+                        <div class="f1-leaderboard-header">
+                            <div class="f1-leaderboard-title">RACE</div>
+                            <div class="f1-lap-info">LAP 1/10</div>
+                        </div>
+                        <div class="f1-driver-list">
+                            <div class="f1-driver-entry p1" data-project="0" onclick="window.location.href='project_details/project-budget-buddy.html'">
+                                <div class="f1-position">1</div>
+                                <div>
+                                    <div class="f1-driver-name">Budget Buddy</div>
+                                    <div class="f1-driver-code">BUD</div>
+                                </div>
+                                <div class="f1-interval">---</div>
+                                <div class="f1-status">ON TRACK</div>
                             </div>
-
-                            <!-- Project 4: AI-Powered Pokémon Card Generator -->
-                            <div class="card overflow-hidden shadow rounded-4 border-0 mb-5 p-4">
-                                <h2 class="fw-bolder h4">AI-Powered Pokémon Card Generator</h2>
-                                <p class="mb-3">This project generates custom Pokémon-style trading cards using AI, allowing users to create unique cards based on their inputs.</p>
-                                <a class="btn btn-primary px-3 py-2" href="project_details/project-pokemon-card-generator.html">
-                                    View Project Details
-                                    <i class="bi bi-arrow-right-circle ms-2"></i>
-                                </a>
+                            <div class="f1-driver-entry p2" data-project="1" onclick="window.location.href='project_details/project-neural-noir.html'">
+                                <div class="f1-position">2</div>
+                                <div>
+                                    <div class="f1-driver-name">Neural Noir</div>
+                                    <div class="f1-driver-code">NEU</div>
+                                </div>
+                                <div class="f1-interval">+0.12s</div>
+                                <div class="f1-status">ON TRACK</div>
                             </div>
-
-                            <!-- Project 5: VictorIA – AI-Powered Connect-4 Playing Robotic Arm -->
-                            <div class="card overflow-hidden shadow rounded-4 border-0 mb-5 p-4">
-                                <h2 class="fw-bolder h4">VictorIA – AI-Powered Connect-4 Playing Robotic Arm</h2>
-                                <p class="mb-3">VictorIA is a robotic arm designed to play Connect-4 against human opponents, utilizing AI to make strategic moves.</p>
-                                <a class="btn btn-primary px-3 py-2" href="project_details/project-victoria.html">
-                                    View Project Details
-                                    <i class="bi bi-arrow-right-circle ms-2"></i>
-                                </a>
+                            <div class="f1-driver-entry p3" data-project="2" onclick="window.location.href='project_details/project-holovinyl.html'">
+                                <div class="f1-position">3</div>
+                                <div>
+                                    <div class="f1-driver-name">HoloVinyl</div>
+                                    <div class="f1-driver-code">HOL</div>
+                                </div>
+                                <div class="f1-interval">+0.45s</div>
+                                <div class="f1-status">ON TRACK</div>
                             </div>
+                            <div class="f1-driver-entry" data-project="3" onclick="window.location.href='project_details/project-pokemon-card-generator.html'">
+                                <div class="f1-position">4</div>
+                                <div>
+                                    <div class="f1-driver-name">Pokémon Card Generator</div>
+                                    <div class="f1-driver-code">PKM</div>
+                                </div>
+                                <div class="f1-interval">+1.23s</div>
+                                <div class="f1-status">ON TRACK</div>
+                            </div>
+                            <div class="f1-driver-entry" data-project="4" onclick="window.location.href='project_details/project-victoria.html'">
+                                <div class="f1-position">5</div>
+                                <div>
+                                    <div class="f1-driver-name">VictorIA</div>
+                                    <div class="f1-driver-code">VIC</div>
+                                </div>
+                                <div class="f1-interval">+2.15s</div>
+                                <div class="f1-status">ON TRACK</div>
+                            </div>
+                            <div class="f1-driver-entry" data-project="5" onclick="window.location.href='project_details/project-remainder-v0.html'">
+                                <div class="f1-position">6</div>
+                                <div>
+                                    <div class="f1-driver-name">ReminderZ</div>
+                                    <div class="f1-driver-code">REM</div>
+                                </div>
+                                <div class="f1-interval">+3.42s</div>
+                                <div class="f1-status">ON TRACK</div>
+                            </div>
+                        </div>
+                    </div>
 
-                            <!-- Project 6: ReminderZ (formerly RemainderV0) -->
-                            <div class="card overflow-hidden shadow rounded-4 border-0 mb-5 p-4">
-                                <h2 class="fw-bolder h4">ReminderZ – Desktop Productivity App</h2>
-                                <p class="mb-3">ReminderZ is a desktop application for managing messages, notes, reminders, and projects with AI features. Python backend & pywebview frontend.</p>
-                                <a class="btn btn-primary px-3 py-2" href="project_details/project-remainder-v0.html">
-                                    View Project Details
-                                    <i class="bi bi-arrow-right-circle ms-2"></i>
-                                </a>
+                    <!-- F1 Track -->
+                    <div class="f1-track-container slide-in-right" id="f1-track-container">
+                        <!-- Circuit placeholder -->
+                    </div>
+                    </div>
+
+                    <!-- Top 3 Podium -->
+                    <div class="f1-podium-section fade-in">
+                        <div class="f1-podium-title">
+                            <h2>CHAMPIONSHIP PODIUM</h2>
+                        </div>
+                        <div class="f1-podium">
+                            <div class="f1-podium-item p2" onclick="window.location.href='project_details/project-neural-noir.html'">
+                                <div class="f1-podium-stand p2">
+                                    <div class="f1-podium-medal">🥈</div>
+                                    <div class="f1-podium-project-name">Neural Noir</div>
+                                    <div class="f1-podium-project-desc">AI-Driven Interactive Story Game</div>
+                                </div>
+                            </div>
+                            <div class="f1-podium-item p1" onclick="window.location.href='project_details/project-budget-buddy.html'">
+                                <div class="f1-podium-stand p1">
+                                    <div class="f1-podium-medal">🥇</div>
+                                    <div class="f1-podium-project-name">Budget Buddy</div>
+                                    <div class="f1-podium-project-desc">AI-Powered Financial Chatbot</div>
+                                </div>
+                            </div>
+                            <div class="f1-podium-item p3" onclick="window.location.href='project_details/project-holovinyl.html'">
+                                <div class="f1-podium-stand p3">
+                                    <div class="f1-podium-medal">🥉</div>
+                                    <div class="f1-podium-project-name">HoloVinyl</div>
+                                    <div class="f1-podium-project-desc">Gesture-driven vision interface</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -107,7 +178,7 @@
             </section>
         </main>
          <!-- Footer-->
-         <footer class="py-4 mt-auto" style="background-color: var(--bs-body-bg); color: var(--bs-light);">
+         <footer class="py-4 mt-auto">
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0">Copyright &copy; https://inventure71.github.io 2025</div></div>
@@ -121,9 +192,10 @@
                 </div>
             </div>
         </footer>
-        <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
+        <script src="js/theme.js"></script>
         <script src="js/scripts.js"></script>
+        <script src="js/animations.js"></script>
+        <script src="js/f1-racing.js"></script>
     </body>
 </html>
