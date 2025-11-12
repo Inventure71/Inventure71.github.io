@@ -184,10 +184,13 @@
 
         generateCircuitPoints() {
             const pointCount = randInt(7, 10);
-            const baseRadius = Math.min(VIEWBOX.width, VIEWBOX.height) * 0.32;
-            const spread = baseRadius * 0.35;
+            // Reduce radius to ensure more margin from edges
+            const baseRadius = Math.min(VIEWBOX.width, VIEWBOX.height) * 0.28;
+            const spread = baseRadius * 0.3;
             const center = { x: VIEWBOX.width / 2, y: VIEWBOX.height / 2 };
             const points = [];
+            // Increase margin to account for track width and car offsets
+            const margin = 120;
 
             for (let i = 0; i < pointCount; i++) {
                 const angle = (i / pointCount) * Math.PI * 2 + randBetween(-0.25, 0.25);
@@ -195,8 +198,8 @@
                 const x = center.x + Math.cos(angle) * radius;
                 const y = center.y + Math.sin(angle) * radius * randBetween(0.85, 1.15);
                 points.push({
-                    x: this.clamp(x, 80, VIEWBOX.width - 80),
-                    y: this.clamp(y, 80, VIEWBOX.height - 80),
+                    x: this.clamp(x, margin, VIEWBOX.width - margin),
+                    y: this.clamp(y, margin, VIEWBOX.height - margin),
                 });
             }
 
@@ -275,7 +278,7 @@
             const type = pick(TRACK_TYPES);
             const weather = pick(WEATHER);
             const info = document.createElement('div');
-            info.className = 'f1-track-info';
+            info.className = 'f1-track-info fade-in';
             info.innerHTML = `
                 <div>
                     <div class="track-label">Circuit</div>
@@ -291,12 +294,26 @@
                     <div class="track-meta">${this.totalLaps} laps · ${this.telemetryList ? this.telemetryList.children.length : 0} cars</div>
                 </div>
             `;
+            
+            // Set initial styles for fade-in animation
+            info.style.opacity = '0';
+            info.style.transform = 'translateY(20px)';
+            info.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            
             // Insert track info into the wrapper (before the track container)
             if (this.wrapper) {
                 this.wrapper.insertBefore(info, this.container);
             } else {
                 this.container.appendChild(info);
             }
+            
+            // Trigger fade-in animation
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    info.style.opacity = '1';
+                    info.style.transform = 'translateY(0)';
+                });
+            });
 
             if (this.lapInfoElement) {
                 this.lapInfoElement.textContent = `LAP 1/${this.totalLaps}`;
@@ -447,7 +464,7 @@
                     boostWindow: randBetween(4000, 7000),
                     finished: false,
                     currentLap: 1,
-                    trackOffset: (Math.random() - 0.5) * 25,
+                    trackOffset: (Math.random() - 0.5) * 15, // Reduced from 25 to 15 to keep cars closer to track
                     rotation: null,
                     lastPosition: null,
                 };
@@ -638,8 +655,12 @@
             const carX = currPoint.x + Math.cos(normal) * car.trackOffset;
             const carY = currPoint.y + Math.sin(normal) * car.trackOffset;
 
-            const left = offsetX + carX * scaleX - 25;
-            const top = offsetY + carY * scaleY - 12;
+            // Clamp car positions to ensure they stay within viewBox bounds
+            const clampedCarX = this.clamp(carX, 0, VIEWBOX.width);
+            const clampedCarY = this.clamp(carY, 0, VIEWBOX.height);
+
+            const left = offsetX + clampedCarX * scaleX - 25;
+            const top = offsetY + clampedCarY * scaleY - 12;
             
             car.element.style.transform = `translate3d(${left.toFixed(2)}px, ${top.toFixed(2)}px, 0) rotate(${car.rotation.toFixed(2)}deg)`;
             

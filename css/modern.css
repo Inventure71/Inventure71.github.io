@@ -31,6 +31,11 @@
   --space-8: 3rem;      /* 48px */
   --space-12: 4rem;     /* 64px */
   --space-16: 6rem;     /* 96px */
+  --layout-section-space: clamp(1.75rem, 4vw, 2.75rem);
+  --layout-stack-space: clamp(1rem, 3vw, 1.75rem);
+  --layout-stack-tight: clamp(0.75rem, 2.5vw, 1.25rem);
+  --layout-container-inline: clamp(1.25rem, 4vw, 2.25rem);
+  --layout-card-padding: clamp(1.25rem, 3vw, 2rem);
   
   /* Typography */
   --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -143,6 +148,14 @@
   --bs-navbar-toggler-icon-bg: var(--nav-toggle-icon);
 }
 
+@media (max-width: 576px) {
+  :root {
+    --layout-section-space: 1.35rem;
+    --layout-stack-space: 0.9rem;
+    --layout-container-inline: 1rem;
+  }
+}
+
 /* ============================================
    RESET & BASE
    ============================================ */
@@ -178,6 +191,16 @@ img,
 video,
 iframe {
   border-radius: var(--radius-lg);
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+iframe {
+  max-width: 100%;
 }
 
 body.bg-dark {
@@ -734,30 +757,50 @@ select,
    SECTIONS - Minimal Spacing
    ============================================ */
 
+main > * {
+  margin: 0;
+}
+
+main > * + * {
+  margin-top: var(--layout-stack-space);
+}
+
 section {
-  padding: var(--space-12) 0;
+  padding-block: var(--layout-section-space);
 }
 
 section:first-of-type {
-  padding-top: var(--space-8);
+  padding-top: calc(var(--layout-section-space) * 1.1);
 }
 
-.navbar,
-main > section > .container,
-header > .container,
-footer > .container {
-  border-radius: 0.5rem !important;
+header {
+  padding-block: var(--layout-section-space);
+}
+
+footer {
+  padding-block: calc(var(--layout-section-space) * 0.75);
+}
+
+.navbar {
+  border-radius: var(--radius-xl) !important;
 }
 
 main > section > .container,
+main > .container,
 header > .container,
 footer > .container {
-  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl) !important;
+}
+
+main > section > .container,
+main > .container,
+header > .container,
+footer > .container {
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
   background: var(--color-bg);
-  padding: clamp(2rem, 5vw, 3.5rem) !important;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.05);
-  margin-left: auto;
-  margin-right: auto;
+  padding: var(--layout-card-padding) var(--layout-container-inline) !important;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+  margin-inline: auto;
 }
 
 section.bg-dark > .container,
@@ -768,12 +811,9 @@ footer.bg-dark > .container,
   color: var(--color-text-light);
 }
 
-section + section {
-  margin-top: var(--space-6);
-}
-
+section + section,
 .bg-dark section + section {
-  margin-top: var(--space-5);
+  margin-top: 0;
 }
 
 /* Featured projects layout */
@@ -781,22 +821,70 @@ section + section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--layout-stack-space);
   text-align: center;
+  overflow: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .featured-projects-container .featured-projects-content {
   width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-5);
+  gap: var(--layout-stack-tight);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .featured-projects-container .text-muted {
   color: var(--color-text-muted);
 }
 
+
+/* Tight spacing overrides for Bootstrap helpers */
+.px-5,
+.px-lg-5,
+.container.px-5 {
+  padding-left: var(--layout-container-inline) !important;
+  padding-right: var(--layout-container-inline) !important;
+}
+
+.py-5,
+.py-lg-5,
+header.py-5,
+section.py-5 {
+  padding-top: var(--layout-section-space) !important;
+  padding-bottom: var(--layout-section-space) !important;
+}
+
+.pt-5,
+.pt-lg-5 {
+  padding-top: var(--layout-section-space) !important;
+}
+
+.pb-5,
+.pb-lg-5 {
+  padding-bottom: var(--layout-section-space) !important;
+}
+
+.mt-5,
+.mt-lg-5 {
+  margin-top: var(--layout-stack-space) !important;
+}
+
+.mb-5,
+.mb-lg-5 {
+  margin-bottom: var(--layout-stack-space) !important;
+}
+
+.my-5,
+.my-lg-5 {
+  margin-top: var(--layout-stack-space) !important;
+  margin-bottom: var(--layout-stack-space) !important;
+}
 section.bg-dark > .container .card,
 footer.bg-dark > .container .card {
   background: var(--color-bg-dark-alt);

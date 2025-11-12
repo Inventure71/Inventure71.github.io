@@ -21,6 +21,8 @@ body.project-page {
     --project-pill-border: var(--color-border);
     background: radial-gradient(circle at top, rgba(99, 102, 241, 0.12), transparent 55%), var(--page-bg);
     min-height: 100vh;
+    --project-section-gap: clamp(1.5rem, 3vw, 2.5rem);
+    --project-inline-gap: clamp(1.25rem, 3.5vw, 2.75rem);
 }
 
 :root[data-theme="dark"] body.project-page {
@@ -45,25 +47,23 @@ body.project-page {
 .project-shell {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--project-section-gap);
     max-width: 1100px;
     margin: 0 auto;
+    padding-inline: clamp(0.5rem, 4vw, 1.5rem);
 }
 
 /* Override container padding for project pages - ensure horizontal spacing */
 body.project-page main > section > .container {
-    padding-top: clamp(2rem, 5vw, 3.5rem) !important;
-    padding-bottom: clamp(2rem, 5vw, 3.5rem) !important;
-    padding-left: clamp(3rem, 6vw, 5rem) !important;
-    padding-right: clamp(3rem, 6vw, 5rem) !important;
+    padding: var(--project-section-gap) var(--project-inline-gap) !important;
 }
 
 .project-hero {
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: clamp(2.5rem, 6vw, 5rem);
-    padding: clamp(2.75rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem) !important;
+    gap: clamp(2rem, 4vw, 3.25rem);
+    padding: clamp(2rem, 4vw, 3rem) clamp(2rem, 4vw, 3rem) !important;
     background: var(--project-hero-surface);
     border: 1px solid var(--project-hero-border);
     border-radius: var(--radius-2xl);

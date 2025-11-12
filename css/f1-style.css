@@ -13,11 +13,16 @@
   --radius-md: var(--radius-lg);
   --radius-lg: var(--radius-xl);
   --transition-base: var(--transition-base);
+  --f1-section-space: var(--layout-section-space, clamp(1.75rem, 4vw, 2.5rem));
+  --f1-stack-space: var(--layout-stack-space, 1.5rem);
+  --f1-inline-space: clamp(1.5rem, 4vw, 2.25rem);
+  --f1-shell-padding: clamp(2rem, 5vw, 3.5rem);
+  --f1-leaderboard-width: clamp(260px, 32vw, 360px);
 }
 
 .f1-broadcast-container {
   background: transparent;
-  padding: clamp(3rem, 8vw, 5rem) 0;
+  padding: var(--f1-section-space) 0;
   position: relative;
 }
 
@@ -25,8 +30,11 @@
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: 0.5rem !important;
-  padding: clamp(2rem, 5vw, 3.5rem);
+  padding: var(--f1-shell-padding) !important;
   box-shadow: 0 35px 70px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 :root[data-theme="dark"] .f1-shell {
@@ -37,7 +45,7 @@
 
 .f1-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--f1-stack-space);
   position: relative;
   z-index: 1;
 }
@@ -62,14 +70,18 @@
 .f1-info-cube {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--layout-stack-tight, 1rem);
   background: color-mix(in srgb, var(--color-bg-alt) 95%, transparent);
   border: 1px solid var(--color-border);
   border-radius: 0.5rem !important;
-  padding: 1rem 1.5rem;
-  margin-bottom: 2rem;
+  padding: clamp(0.85rem, 3vw, 1.25rem) clamp(1rem, 3vw, 1.5rem);
+  margin-bottom: var(--f1-stack-space);
   box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
   backdrop-filter: blur(12px);
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 100%;
 }
 
 html[data-theme="dark"] .f1-info-cube {
@@ -105,13 +117,16 @@ html[data-theme="dark"] .f1-info-cube {
 
 .f1-broadcast-layout {
   display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 2rem;
-  max-width: 1400px;
+  grid-template-columns: var(--f1-leaderboard-width) 1fr;
+  gap: var(--f1-stack-space);
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0;
   position: relative;
   z-index: 1;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* F1 Leaderboard */
@@ -119,12 +134,15 @@ html[data-theme="dark"] .f1-info-cube {
   background: color-mix(in srgb, var(--color-bg) 95%, transparent);
   border: 1px solid var(--color-border);
   border-radius: 0.5rem !important;
-  padding: clamp(1.25rem, 3vw, 1.75rem);
+  padding: clamp(1rem, 3vw, 1.5rem);
   box-shadow: 0 25px 55px rgba(15, 23, 42, 0.1);
   height: fit-content;
   position: sticky;
-  top: 2rem;
+  top: var(--f1-stack-space);
   backdrop-filter: blur(12px);
+  overflow: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 html[data-theme="dark"] .f1-leaderboard {
@@ -273,7 +291,10 @@ html[data-theme="dark"] .f1-leaderboard {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 1.5rem;
+  max-width: 100%;
+  gap: var(--f1-stack-space);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* F1 Track */
@@ -284,9 +305,31 @@ html[data-theme="dark"] .f1-leaderboard {
   box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
   position: relative;
   width: 100%;
-  padding-top: 58%; /* 1200 / 700 aspect ratio */
-  height: 0;
-  overflow: hidden;
+  max-width: 100%;
+  aspect-ratio: var(--track-aspect, 12 / 7);
+  min-height: clamp(320px, 55vw, 520px);
+  overflow: hidden !important;
+  box-sizing: border-box;
+  contain: layout paint;
+}
+
+@supports not (aspect-ratio: 1) {
+  .f1-track-container {
+    height: 0;
+    padding-top: 58%;
+  }
+
+  @media (max-width: 1024px) {
+    .f1-track-container {
+      padding-top: 65%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .f1-track-container {
+      padding-top: 75%;
+    }
+  }
 }
 
 .f1-track-stage {
@@ -296,6 +339,7 @@ html[data-theme="dark"] .f1-leaderboard {
   width: 100%;
   height: 100%;
   z-index: 2;
+  overflow: hidden;
 }
 
 .f1-track-glow {
@@ -322,6 +366,12 @@ html[data-theme="dark"] .f1-leaderboard {
   position: absolute;
   inset: 0;
   z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.f1-track-car-layer > * {
+  pointer-events: auto;
 }
 
 /* Placeholder Styles */
@@ -331,12 +381,12 @@ html[data-theme="dark"] .f1-leaderboard {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 500px;
+  min-height: clamp(260px, 55vw, 420px);
 }
 
 .f1-placeholder-content {
   text-align: center;
-  padding: 3rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
 }
 
 .f1-placeholder-icon {
@@ -465,7 +515,9 @@ html[data-theme="dark"] .f1-track-container {
   box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
   color: var(--color-text);
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 html[data-theme="dark"] .f1-track-info {
@@ -576,14 +628,16 @@ html[data-theme="dark"] .f1-track-info {
 
 /* Top 3 Podium */
 .f1-podium-section {
-  margin-top: 4rem;
-  padding: 2rem 0;
+  margin-top: var(--f1-section-space);
+  padding: var(--f1-stack-space) 0;
   position: relative;
   z-index: 1;
   /* Align with the right column of the broadcast layout (where track is) */
-  margin-left: calc(380px + 2rem + 2rem); /* leaderboard width + gap + padding */
-  margin-right: 2rem;
-  max-width: calc(1400px - 380px - 4rem); /* max-width - leaderboard - gaps */
+  margin-left: calc(var(--f1-leaderboard-width) + var(--f1-stack-space));
+  margin-right: 0;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* Podium on main page (full width) */
@@ -592,8 +646,8 @@ html[data-theme="dark"] .f1-track-info {
   margin-left: 0;
   margin-right: 0;
   max-width: 100%;
-  margin-top: 2rem;
-  padding: 1.5rem 0;
+  margin-top: 0;
+  padding: 0;
 }
 
 .f1-podium-title {
@@ -612,24 +666,30 @@ html[data-theme="dark"] .f1-track-info {
 .f1-podium {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  max-width: 1200px;
+  gap: var(--f1-stack-space);
+  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0;
   align-items: flex-end;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* Cleaner spacing on main page */
 .bg-dark .f1-podium,
 .featured-projects-container .f1-podium {
   gap: 1.5rem;
-  padding: 0 1rem;
+  padding: 0;
 }
 
 .f1-podium-item {
   text-align: center;
   cursor: pointer;
   transition: transform 0.3s ease;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .f1-podium-item:hover {
@@ -661,6 +721,9 @@ html[data-theme="dark"] .f1-track-info {
   justify-content: flex-end;
   align-items: center;
   transition: all 0.3s ease;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 html[data-theme="dark"] .f1-podium-stand {
@@ -764,17 +827,18 @@ html[data-theme="dark"] .f1-podium-stand {
   
   .f1-leaderboard {
     position: static;
-    margin-bottom: 2rem;
+    margin-bottom: var(--f1-stack-space);
   }
   
   .f1-track-container {
-    padding-top: 65%; /* Adjust aspect ratio for tablets */
+    aspect-ratio: 4 / 3;
+    min-height: clamp(280px, 60vw, 420px);
   }
   
   .f1-podium-section {
     /* Reset margins on smaller screens to use full width */
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-left: var(--f1-inline-space);
+    margin-right: var(--f1-inline-space);
     max-width: none;
   }
   
@@ -801,17 +865,18 @@ html[data-theme="dark"] .f1-podium-stand {
   }
   
   .f1-broadcast-layout {
-    padding: 0 1rem;
+    padding: 0 clamp(0.75rem, 3vw, 1.25rem);
   }
   
   .f1-track-container {
-    padding-top: 75%; /* Adjust aspect ratio for mobile */
+    aspect-ratio: 1 / 1;
+    min-height: clamp(240px, 70vw, 360px);
   }
   
   .f1-podium-section {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    padding: 1.5rem 0;
+    margin-left: clamp(0.5rem, 3vw, 1rem);
+    margin-right: clamp(0.5rem, 3vw, 1rem);
+    padding: var(--f1-stack-space) 0;
   }
   
   /* Ensure podium in bg-dark sections uses full width on mobile */
@@ -823,9 +888,9 @@ html[data-theme="dark"] .f1-podium-stand {
   .f1-track-info {
     flex-direction: column;
     gap: 0.5rem;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem clamp(0.75rem, 3vw, 1rem);
     font-size: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: var(--layout-stack-tight, 0.75rem);
   }
   
   .f1-driver-entry {
