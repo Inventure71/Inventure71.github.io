@@ -62,31 +62,32 @@
                         <div class="col-lg-10 col-xl-8">
                             <div class="text-center mb-5 fade-in">
                                 <h1 class="display-5 fw-bolder mb-3">HoloVinyl</h1>
-                                <p class="lead text-muted">Music and Memory Integration Project</p>
+                                <p class="lead text-muted">Touchless computer vision interface that maps gestures and physical tokens to music playback.</p>
                             </div>
                             <article class="project-details">
                                 <div class="card mb-4 p-4 fade-in">
-                                    HoloVinyl is a creative project that links physical objects to digital music, allowing users to associate songs with tangible items, enhancing the emotional connection to both.
+                                    HoloVinyl is an experimental Python interface that fuses real-time hand tracking with lightweight object detection to turn physical gestures and tokens into dynamic music controls. Users can hover, pinch, or present tagged objects to trigger playlists and menus without touching traditional hardware.
                                 </div>
-                                <h3 class="fw-bolder mb-3" >Functionality:</h3>
+                                <h3 class="fw-bolder mb-3">Functionality:</h3>
                                 <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Object Recognition: Uses computer vision to identify specific physical objects.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Music Playback: Plays user-associated songs when the corresponding object is recognized.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>User Interface: Provides an intuitive interface for users to manage their object-song associations.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Gesture Input: Tracks hands in real time to interpret pinches, swipes, and hover zones as UI actions.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Object-Driven Triggers: Uses YOLO detections to link specific physical objects to songs, playlists, or contextual overlays.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Dynamic UI Overlays: Renders buttons, submenus, and status cues on top of the video stream for immediate feedback.</li>
                                 </ul>
 
-                                <h3 class="fw-bolder mb-3" >Technical Implementation:</h3>
+                                <h3 class="fw-bolder mb-3">Technical Implementation:</h3>
                                 <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Computer Vision: Implemented using OpenCV to detect and recognize objects.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Frontend Development: Developed a user-friendly interface, possibly using frameworks like React or Electron.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Backend Integration: Manages user data and song associations securely.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Vision Pipeline: Python + OpenCV capture webcam frames, dispatching them to dedicated perception modules.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Hand Tracking Module: `HandTracking.py` interprets landmark data to produce gesture-ready signals.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Object Detection: A lightweight `yolo11n.pt` checkpoint supplies contextual detections without sacrificing frame rate.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>UI Composition: `UI.py`, `addButtonUI.py`, and `submenu_UI.py` assemble responsive overlays and manage state transitions.</li>
                                 </ul>
 
-                                <h3 class="fw-bolder mb-3" >Skills Demonstrated:</h3>
+                                <h3 class="fw-bolder mb-3">Skills Demonstrated:</h3>
                                 <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Application of computer vision techniques.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Full-stack development capabilities.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Innovative thinking in combining physical and digital experiences.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Designing responsive computer vision pipelines for real-time interaction.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Mapping ML inferences to UX affordances and gesture-driven workflows.</li>
+                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Building modular Python components that are ready for model swaps and future extensions.</li>
                                 </ul>
                             </article>
                             <div class="text-center mt-5">
