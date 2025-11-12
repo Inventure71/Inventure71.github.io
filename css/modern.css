@@ -756,10 +756,32 @@ footer > .container {
 }
 
 section.bg-dark > .container,
-footer.bg-dark > .container {
+footer.bg-dark > .container,
+.featured-projects-container {
   background: var(--color-bg-dark);
   border-color: var(--color-border-dark);
   color: var(--color-text-light);
+}
+
+/* Featured projects layout */
+.featured-projects-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  text-align: center;
+}
+
+.featured-projects-container .featured-projects-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.featured-projects-container .text-muted {
+  color: var(--color-text-muted);
 }
 
 section.bg-dark > .container .card,

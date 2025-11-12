@@ -315,10 +315,18 @@
                 const onclick = entry.getAttribute('onclick');
                 const urlMatch = onclick?.match(/'([^']+)'/);
                 const href = urlMatch ? urlMatch[1] : entry.dataset.projectUrl || '#';
+                const normalizedUrl =
+                    typeof href === 'string' && href !== '#'
+                        ? href.startsWith('http')
+                            ? href
+                            : href.startsWith('/')
+                                ? href
+                                : `/${href}`
+                        : '#';
                 const carColor = COLOR_PALETTE[index % COLOR_PALETTE.length];
                 const rgb = this.hexToRgb(carColor);
 
-                entry.dataset.projectUrl = href;
+                entry.dataset.projectUrl = normalizedUrl;
                 entry.dataset.driverCode = code;
                 entry.dataset.driverColor = carColor;
                 entry.style.setProperty('--driver-accent', carColor);
@@ -328,10 +336,37 @@
                 if (href && href !== '#') {
                     entry.removeAttribute('onclick'); // Remove inline onclick
                     entry.style.cursor = 'pointer';
-                    entry.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        window.location.href = href;
-                    });
+                    entry.setAttribute('role', 'link');
+                    entry.setAttribute('tabindex', '0');
+
+                    if (!entry.dataset.boundNavigation) {
+                        const navigateToProject = () => {
+                            const target = entry.dataset.projectUrl;
+                            if (target && target !== '#') {
+                                window.location.assign(target);
+                            }
+                        };
+
+                        entry.addEventListener('pointerdown', (event) => {
+                            if (event.button !== 0) return;
+                            event.preventDefault();
+                            navigateToProject();
+                        });
+
+                        entry.addEventListener('click', (event) => {
+                            event.preventDefault();
+                            navigateToProject();
+                        });
+
+                        entry.addEventListener('keydown', (event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                                event.preventDefault();
+                                navigateToProject();
+                            }
+                        });
+
+                        entry.dataset.boundNavigation = 'true';
+                    }
                 }
 
                 return {
