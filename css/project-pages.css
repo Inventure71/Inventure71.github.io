@@ -27,29 +27,27 @@ body.project-page {
 
 .project-wip {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    inset: 0;
+    width: 100vw;
     z-index: 30;
     pointer-events: none;
-    height: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .project-wip__tape {
     pointer-events: auto;
     position: absolute;
-    top: clamp(-7rem, -12vw, -4rem);
-    left: clamp(-8rem, -10vw, -4rem);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-3);
+    top: clamp(-8rem, -6vw, -2.5rem);
+    left: clamp(-18vw, -12vw, -6vw);
+    margin: 0;
     padding: 0;
     border: none;
     background: none;
     cursor: pointer;
-    transform: rotate(14deg);
     transform-origin: top left;
+    transform: rotate(8deg);
 }
 
 .project-wip__tape:focus-visible {
@@ -60,12 +58,13 @@ body.project-page {
 .project-wip__tape::before {
     content: "";
     display: block;
-    width: clamp(32rem, 120vw, 84rem);
-    aspect-ratio: 16 / 2.3;
+    width: max(180vw, 1600px);
+    height: clamp(4.5rem, 13vw, 8rem);
     background-image: url("../assets/placeholders/wip-tape-placeholder.svg");
     background-size: cover;
     background-repeat: no-repeat;
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.2);
+    background-position: center;
+    box-shadow: 0 22px 55px rgba(15, 23, 42, 0.22);
     border-radius: clamp(0.75rem, 3vw, 1.5rem);
 }
 
@@ -277,10 +276,17 @@ body.project-page main > section > .container {
 }
 
 .project-media-stage iframe,
-.project-media-stage video,
-.project-media-stage img {
+.project-media-stage video {
     width: 100%;
     height: 100%;
+    display: block;
+    border: none;
+}
+
+.project-media-stage img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
     display: block;
     border: none;
     object-fit: contain;
@@ -558,6 +564,36 @@ body.project-page main > section > .container {
     display: grid;
     gap: var(--space-2);
     color: var(--color-text-secondary);
+}
+
+.project-keypoints {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-4);
+}
+
+.project-keypoints li {
+    border-radius: var(--radius-2xl);
+    border: 1px solid var(--project-border-soft);
+    background: var(--project-surface);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+    display: grid;
+    gap: var(--space-2);
+}
+
+.project-keypoints h4 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+}
+
+.project-keypoints p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
 }
 
 .project-spotlight {
