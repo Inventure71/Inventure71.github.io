@@ -3,15 +3,17 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Details for Budget Buddy project" />
-        <meta name="author" content="" />
-        <title>Project: Budget Buddy - Matteo Giorgetti</title>
+        <meta name="description" content="Budget Buddy - AI assisted financial wellness companion" />
+        <meta name="author" content="Matteo Giorgetti" />
+        <title>Budget Buddy - Matteo Giorgetti</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
         <!-- Custom Google font-->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet" />
         <script>
             (function () {
                 try {
@@ -32,14 +34,24 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <!-- Modern Design System -->
         <link href="../css/modern.css" rel="stylesheet" />
+        <!-- Project Pages Styles -->
+        <link href="../css/project-pages.css" rel="stylesheet" />
     </head>
-    <body class="d-flex flex-column h-100">
+    <body class="d-flex flex-column h-100 project-page project-page--budget">
+        <div class="project-wip" data-component="wip-tape">
+            <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
+                <span class="project-wip__label">Work in progress – click to dismiss</span>
+            </button>
+        </div>
         <main class="flex-shrink-0">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg py-3">
                 <div class="container px-5">
                     <a class="navbar-brand" href="../index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
                             <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
@@ -55,53 +67,191 @@
                     </div>
                 </div>
             </nav>
+
             <!-- Project Details Section-->
             <section class="py-5">
-                <div class="container px-5 mb-5">
-                    <div class="row gx-5 justify-content-center">
-                        <div class="col-lg-10 col-xl-8">
-                            <div class="text-center mb-5 fade-in">
-                                <h1 class="display-5 fw-bolder mb-3">Budget Buddy</h1>
-                                <p class="lead text-muted">AI-Powered Financial Chatbot</p>
-                            </div>
-                            <article class="project-details">
-                                <div class="card mb-4 p-4 fade-in">
-                                    Budget Buddy is an AI-driven chatbot designed to assist users in managing their finances by providing actionable insights and personalized budgeting advice.
+                <div class="container px-5">
+                    <div class="project-shell fade-in">
+                        <header class="project-hero">
+                            <div>
+                                <p class="project-eyebrow">Financial Wellness · AI Copilot</p>
+                                <h1>Budget Buddy</h1>
+                                <p class="lead">
+                                    A conversational budgeting partner that mixes large language models with bank-safe guardrails to keep
+                                    spending aligned with personal goals.
+                                </p>
+                                <div class="project-pills">
+                                    <span class="project-pill">Python</span>
+                                    <span class="project-pill">AI Agents</span>
+                                    <span class="project-pill">Financial Planning</span>
                                 </div>
-                                <h3 class="fw-bolder mb-3">Functionality:</h3>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Natural Language Processing: Utilizes AI models to understand and respond to user queries in natural language.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Financial Analysis: Analyzes user spending habits to offer tailored advice on budgeting and saving.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>User Engagement: Encourages users to make smarter financial decisions through interactive conversations.</li>
-                                </ul>
-
-                                <h3 class="fw-bolder mb-3">Technical Implementation:</h3>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>AI Integration: Integrated with AI platforms like Google's Gemini API to process and interpret user inputs.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Backend Development: Developed using Python, with potential use of frameworks like Flask or Django for handling backend operations.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Data Handling: Employs secure methods to handle and analyze user financial data, ensuring privacy and compliance.</li>
-                                </ul>
-
-                                <h3 class="fw-bolder mb-3">Skills Demonstrated:</h3>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Proficiency in Python and AI integration.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Understanding of financial principles and user-centric design.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Ability to develop interactive and responsive chatbot interfaces.</li>
-                                </ul>
-                            </article>
-                            <div class="text-center mt-5">
-                                <a class="btn btn-outline-primary btn-lg px-4" href="../projects.html">
-                                    <i class="bi bi-arrow-left-circle me-2"></i>
-                                    Back to Projects
-                                </a>
                             </div>
+                            <div class="hero-meta">
+                                <div class="hero-meta-card">
+                                    <span class="label">Role</span>
+                                    <span class="value">Product Engineer · Research Lead</span>
+                                </div>
+                                <div class="hero-meta-card">
+                                    <span class="label">Timeline</span>
+                                    <span class="value">2024 &ndash; ongoing</span>
+                                </div>
+                                <div class="hero-meta-card">
+                                    <span class="label">Stack</span>
+                                    <span class="value">FastAPI · Postgres · Gemini API</span>
+                                </div>
+                                <div class="hero-meta-card">
+                                    <span class="label">Status</span>
+                                    <span class="value">Closed Pilot</span>
+                                </div>
+                            </div>
+                        </header>
+
+                        <section class="project-media-panel">
+                            <div class="project-media-stage project-media-stage--image">
+                                <img src="../assets/placeholders/debug-placeholder.svg" alt="Placeholder visual for Budget Buddy conversation dashboard" loading="lazy" />
+                            </div>
+                            <aside class="project-sidecard">
+                                <h3>Project Snapshot</h3>
+                                <p>
+                                    Budget Buddy stitches transactional data and conversational AI to coach users through debt payoff, savings
+                                    discipline, and mindful spending without judgment.
+                                </p>
+                                <ul class="sidecard-highlight">
+                                    <li><i class="bi bi-pie-chart"></i><span>Contextual spending breakdowns that follow the conversation in real time.</span></li>
+                                    <li><i class="bi bi-shield-check"></i><span>Encryption-at-rest vault and policy engine to respect bank compliance rules.</span></li>
+                                </ul>
+                                <div class="sidecard-links">
+                                    <a href="https://github.com/Inventure71" target="_blank" rel="noreferrer">
+                                        <span>Creator Profile</span>
+                                        <i class="bi bi-arrow-up-right"></i>
+                                    </a>
+                                    <a href="#!" aria-disabled="true">
+                                        <span>Request Pilot Access</span>
+                                        <i class="bi bi-lock-fill"></i>
+                                    </a>
+                                </div>
+                            </aside>
+                        </section>
+
+                        <section class="project-section">
+                            <div class="project-section-header">
+                                <p class="project-section-eyebrow">Narrative</p>
+                                <h2>Why build a feelings-aware budget coach</h2>
+                            </div>
+                            <p class="project-copy">
+                                Traditional budgeting apps push dashboards and leave the emotional work to the user. Budget Buddy leans into
+                                conversation-first planning where the AI co-pilot negotiates trade-offs, remembers commitments, and nudges
+                                toward healthier habits. By combining natural-language queries with real ledger data, the system surfaces the
+                                next best action&mdash;from suggesting envelope adjustments to reminding you of a promised treat when the numbers
+                                say it is safe.
+                            </p>
+                            <ul class="project-stack-list">
+                                <li>Gemini &amp; OpenAI orchestration</li>
+                                <li>Double-entry ledger service</li>
+                                <li>Bank-grade encryption proxy</li>
+                                <li>Voice memo ingestion</li>
+                            </ul>
+                        </section>
+
+                        <section class="project-section">
+                            <div class="project-section-header">
+                                <p class="project-section-eyebrow">Systems</p>
+                                <h2>What keeps Budget Buddy trusted</h2>
+                            </div>
+                            <div class="project-module-grid">
+                                <article class="project-module">
+                                    <h4>Ledger Sync Core</h4>
+                                    <p>Ingests bank exports and Plaid feeds, normalizing transactions into a tagged ledger with audit trails.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Conversation Memory</h4>
+                                    <p>Vector-backed recall of promises, pain points, and milestones keeps coaching tailored over weeks.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Intent Classifier</h4>
+                                    <p>Determines whether the user needs advice, quick math, or habit reinforcement before hitting the models.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Envelope Simulator</h4>
+                                    <p>Projects cash flow under multiple what-if scenarios with clear trade-off explanations.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Compliance Wrapper</h4>
+                                    <p>Policy layer redacts PII, enforces retention rules, and logs AI prompts for audit readiness.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Empathy Prompter</h4>
+                                    <p>Structured prompt templates ensure tone stays encouraging while delivering firm guardrails.</p>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="project-section project-flow">
+                            <div class="project-section-header">
+                                <p class="project-section-eyebrow">Flow</p>
+                                <h2>How a user session unfolds</h2>
+                            </div>
+                            <div class="project-flow-steps">
+                                <div class="project-flow-step">
+                                    <span class="flow-index">01</span>
+                                    <div class="flow-body">
+                                        <h5>Check-in</h5>
+                                        <p>The user vents about spending guilt; sentiment analysis sets tone and escalates urgent flags.</p>
+                                    </div>
+                                </div>
+                                <div class="project-flow-step">
+                                    <span class="flow-index">02</span>
+                                    <div class="flow-body">
+                                        <h5>Insight</h5>
+                                        <p>Ledger service assembles visual summaries that match the conversation context.</p>
+                                    </div>
+                                </div>
+                                <div class="project-flow-step">
+                                    <span class="flow-index">03</span>
+                                    <div class="flow-body">
+                                        <h5>Recommendation</h5>
+                                        <p>Agent proposes budget tweaks, debt moves, or savings nudges with confidence metrics.</p>
+                                    </div>
+                                </div>
+                                <div class="project-flow-step">
+                                    <span class="flow-index">04</span>
+                                    <div class="flow-body">
+                                        <h5>Follow-up</h5>
+                                        <p>Commitments become reminders; transcripts and highlights sync to the weekly digest.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="project-section">
+                            <div class="project-section-header">
+                                <p class="project-section-eyebrow">Gallery</p>
+                                <h2>Debug placeholders</h2>
+                            </div>
+                            <div class="project-gallery">
+                                <figure class="gallery-card">
+                                    <img src="../assets/placeholders/debug-placeholder.svg" alt="Placeholder insight board for Budget Buddy" loading="lazy" />
+                                    <figcaption>Insight dashboard placeholder while final charts are under construction.</figcaption>
+                                </figure>
+                                <figure class="gallery-card">
+                                    <img src="../assets/placeholders/debug-placeholder.svg" alt="Placeholder chat screen for Budget Buddy" loading="lazy" />
+                                    <figcaption>Conversation mock stream showing progress markers for future UI.</figcaption>
+                                </figure>
+                            </div>
+                        </section>
+
+                        <div class="text-center">
+                            <a href="../projects.html" class="project-back-link">
+                                <i class="bi bi-arrow-left"></i>
+                                Back to all projects
+                            </a>
                         </div>
                     </div>
                 </div>
             </section>
         </main>
-         <!-- Footer-->
-         <footer class="py-4 mt-auto">
+        <!-- Footer-->
+        <footer class="py-4 mt-auto">
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0">Copyright &copy; https://inventure71.github.io 2025</div></div>
@@ -119,5 +269,6 @@
         <script src="../js/theme.js"></script>
         <script src="../js/scripts.js"></script>
         <script src="../js/animations.js"></script>
+        <script src="../js/project-pages.js"></script>
     </body>
-</html> 
+</html>

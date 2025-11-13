@@ -25,6 +25,62 @@ body.project-page {
     --project-inline-gap: clamp(1.25rem, 3.5vw, 2.75rem);
 }
 
+.project-wip {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 30;
+    pointer-events: none;
+}
+
+.project-wip__tape {
+    pointer-events: auto;
+    position: relative;
+    top: clamp(0.75rem, 3vw, 2rem);
+    left: clamp(-6rem, -5vw, -2.25rem);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transform: rotate(-9deg);
+    transform-origin: left center;
+}
+
+.project-wip__tape:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--project-accent, var(--color-accent)) 70%, #ffffff 30%);
+    outline-offset: 6px;
+}
+
+.project-wip__tape::before {
+    content: "";
+    display: block;
+    width: clamp(26rem, 110vw, 68rem);
+    aspect-ratio: 16 / 2.1;
+    background-image: url("../assets/placeholders/wip-tape-placeholder.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
+    border-radius: clamp(1rem, 4vw, 2rem);
+}
+
+.project-wip__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.project-wip.is-dismissed {
+    display: none;
+}
+
 :root[data-theme="dark"] body.project-page {
     --project-border-soft: rgba(255, 255, 255, 0.08);
     --project-border-strong: rgba(255, 255, 255, 0.16);
@@ -208,6 +264,14 @@ body.project-page main > section > .container {
     background: var(--project-surface);
 }
 
+.project-media-stage--image {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    aspect-ratio: 16 / 9;
+    background: color-mix(in srgb, var(--project-surface) 70%, rgba(15, 23, 42, 0.1));
+}
+
 .project-media-stage iframe,
 .project-media-stage video,
 .project-media-stage img {
@@ -215,6 +279,7 @@ body.project-page main > section > .container {
     height: 100%;
     display: block;
     border: none;
+    object-fit: cover;
 }
 
 .project-sidecard {
@@ -527,6 +592,7 @@ body.project-page main > section > .container {
 .gallery-item img {
     width: 100%;
     display: block;
+    object-fit: cover;
 }
 
 .image-modal-content {
@@ -534,6 +600,353 @@ body.project-page main > section > .container {
 }
 
 /* ===== Project specific nuance ===== */
+
+.project-page--clipclop {
+    --project-accent: #38bdf8;
+    --project-hero-surface: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(99, 102, 241, 0.08)), var(--color-bg);
+    --project-hero-border: rgba(56, 189, 248, 0.45);
+    --project-hero-card-bg: color-mix(in srgb, var(--color-bg) 70%, rgba(56, 189, 248, 0.15));
+    --project-hero-card-border: rgba(56, 189, 248, 0.35);
+    --project-hero-chip-bg: color-mix(in srgb, var(--color-bg) 60%, rgba(56, 189, 248, 0.25));
+    --project-hero-chip-border: rgba(56, 189, 248, 0.4);
+    background: radial-gradient(circle at 12% 8%, rgba(56, 189, 248, 0.22), transparent 45%),
+        radial-gradient(circle at 90% 88%, rgba(129, 140, 248, 0.18), transparent 55%), var(--page-bg);
+}
+
+.project-page--clipclop .project-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.22), transparent 60%);
+    opacity: 0.9;
+    z-index: 0;
+}
+
+.project-page--clipclop .project-pill {
+    background: color-mix(in srgb, rgba(56, 189, 248, 0.2), var(--color-bg) 70%);
+    border-color: rgba(56, 189, 248, 0.45);
+    color: var(--project-hero-text);
+}
+
+.project-page--clipclop .hero-meta-card {
+    background: color-mix(in srgb, rgba(15, 23, 42, 0.8), rgba(56, 189, 248, 0.22));
+    border-color: rgba(56, 189, 248, 0.4);
+    color: var(--color-surface-text, #e2e8f0);
+}
+
+.project-page--clipclop .project-media-stage {
+    background: linear-gradient(160deg, rgba(56, 189, 248, 0.12), rgba(99, 102, 241, 0.2));
+}
+
+.project-page--clipclop .project-section {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.78), rgba(56, 189, 248, 0.12));
+    border-color: rgba(56, 189, 248, 0.25);
+}
+
+.project-page--clipclop .project-module {
+    border-color: rgba(56, 189, 248, 0.25);
+    background: linear-gradient(160deg, rgba(56, 189, 248, 0.25), rgba(99, 102, 241, 0.1));
+}
+
+.project-page--clipclop .project-flow-step {
+    background: color-mix(in srgb, rgba(56, 189, 248, 0.16), var(--project-surface) 70%);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.project-page--clipclop .project-gallery .gallery-card {
+    border-color: rgba(56, 189, 248, 0.35);
+    background: linear-gradient(160deg, rgba(56, 189, 248, 0.18), rgba(15, 23, 42, 0.82));
+}
+
+.project-page--drsorriso {
+    --project-accent: #f97316;
+    --project-hero-surface: linear-gradient(135deg, rgba(251, 191, 36, 0.18), rgba(249, 115, 22, 0.12)), var(--color-bg);
+    --project-hero-border: rgba(249, 115, 22, 0.38);
+    --project-hero-card-bg: color-mix(in srgb, var(--color-bg) 72%, rgba(249, 115, 22, 0.22));
+    --project-hero-card-border: rgba(249, 115, 22, 0.3);
+    --project-hero-chip-bg: color-mix(in srgb, var(--color-bg) 60%, rgba(249, 115, 22, 0.25));
+    --project-hero-chip-border: rgba(249, 115, 22, 0.32);
+    background: radial-gradient(circle at 14% 12%, rgba(251, 191, 36, 0.32), transparent 48%),
+        radial-gradient(circle at 86% 88%, rgba(249, 115, 22, 0.18), transparent 58%), var(--page-bg);
+}
+
+.project-page--drsorriso .project-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at left center, rgba(251, 191, 36, 0.28), transparent 60%);
+    opacity: 0.85;
+    z-index: 0;
+}
+
+.project-page--drsorriso .project-pill {
+    background: color-mix(in srgb, rgba(249, 115, 22, 0.18), var(--color-bg) 70%);
+    border-color: rgba(249, 115, 22, 0.35);
+}
+
+.project-page--drsorriso .hero-meta-card {
+    background: color-mix(in srgb, rgba(255, 255, 255, 0.78), rgba(249, 115, 22, 0.22));
+    border-color: rgba(249, 115, 22, 0.3);
+}
+
+.project-page--drsorriso .project-media-stage {
+    background: linear-gradient(150deg, rgba(249, 115, 22, 0.32), rgba(251, 191, 36, 0.15));
+}
+
+.project-page--drsorriso .project-section {
+    background: linear-gradient(150deg, rgba(251, 191, 36, 0.16), rgba(249, 115, 22, 0.12));
+    border-color: rgba(249, 115, 22, 0.25);
+}
+
+.project-page--drsorriso .project-module {
+    border-color: rgba(249, 115, 22, 0.22);
+    background: linear-gradient(155deg, rgba(249, 115, 22, 0.2), rgba(15, 23, 42, 0.05));
+}
+
+.project-page--drsorriso .project-flow-step {
+    background: color-mix(in srgb, rgba(251, 191, 36, 0.18), var(--project-surface) 70%);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.project-page--drsorriso .project-gallery .gallery-card {
+    border-color: rgba(249, 115, 22, 0.32);
+    background: linear-gradient(150deg, rgba(249, 115, 22, 0.18), rgba(251, 191, 36, 0.12));
+}
+
+.project-page--evolve {
+    --project-accent: #a855f7;
+    --project-hero-surface: linear-gradient(140deg, rgba(168, 85, 247, 0.18), rgba(99, 102, 241, 0.12)), var(--color-bg);
+    --project-hero-border: rgba(168, 85, 247, 0.45);
+    --project-hero-card-bg: color-mix(in srgb, var(--color-bg) 68%, rgba(168, 85, 247, 0.28));
+    --project-hero-card-border: rgba(168, 85, 247, 0.32);
+    --project-hero-chip-bg: color-mix(in srgb, var(--color-bg) 55%, rgba(168, 85, 247, 0.3));
+    --project-hero-chip-border: rgba(168, 85, 247, 0.4);
+    background: radial-gradient(circle at 18% 20%, rgba(168, 85, 247, 0.25), transparent 52%),
+        radial-gradient(circle at 80% 82%, rgba(56, 189, 248, 0.18), transparent 55%), var(--page-bg);
+}
+
+.project-page--evolve .project-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at right top, rgba(168, 85, 247, 0.28), transparent 55%);
+    z-index: 0;
+}
+
+.project-page--evolve .project-pill {
+    background: color-mix(in srgb, rgba(168, 85, 247, 0.24), var(--color-bg) 65%);
+    border-color: rgba(168, 85, 247, 0.4);
+}
+
+.project-page--evolve .hero-meta-card {
+    background: color-mix(in srgb, rgba(15, 23, 42, 0.82), rgba(168, 85, 247, 0.28));
+    border-color: rgba(168, 85, 247, 0.35);
+    color: var(--color-surface-text, #f4f4f5);
+}
+
+.project-page--evolve .project-media-stage {
+    background: linear-gradient(160deg, rgba(168, 85, 247, 0.32), rgba(56, 189, 248, 0.18));
+}
+
+.project-page--evolve .project-section {
+    background: linear-gradient(160deg, rgba(168, 85, 247, 0.18), rgba(15, 23, 42, 0.75));
+    border-color: rgba(168, 85, 247, 0.28);
+}
+
+.project-page--evolve .project-module {
+    border-color: rgba(168, 85, 247, 0.25);
+    background: linear-gradient(165deg, rgba(168, 85, 247, 0.28), rgba(56, 189, 248, 0.18));
+}
+
+.project-page--evolve .project-gallery .gallery-card,
+.project-page--evolve .project-flow-step {
+    border-color: rgba(168, 85, 247, 0.3);
+    background: color-mix(in srgb, rgba(168, 85, 247, 0.22), var(--project-surface) 65%);
+}
+
+.project-page--holo {
+    --project-accent: #22d3ee;
+    --project-hero-surface: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(14, 165, 233, 0.15));
+    --project-hero-border: rgba(34, 211, 238, 0.4);
+    --project-hero-card-bg: color-mix(in srgb, var(--color-bg) 65%, rgba(34, 211, 238, 0.28));
+    --project-hero-card-border: rgba(34, 211, 238, 0.35);
+    --project-hero-chip-bg: color-mix(in srgb, var(--color-bg) 55%, rgba(34, 211, 238, 0.32));
+    --project-hero-chip-border: rgba(34, 211, 238, 0.4);
+    background: radial-gradient(circle at 18% 20%, rgba(34, 211, 238, 0.25), transparent 52%),
+        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.22), transparent 60%), var(--page-bg);
+}
+
+.project-page--holo .project-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 20%, rgba(34, 211, 238, 0.28), transparent 55%);
+    z-index: 0;
+}
+
+.project-page--holo .project-pill {
+    background: color-mix(in srgb, rgba(34, 211, 238, 0.24), var(--color-bg) 65%);
+    border-color: rgba(34, 211, 238, 0.45);
+}
+
+.project-page--holo .hero-meta-card {
+    background: color-mix(in srgb, rgba(15, 23, 42, 0.82), rgba(34, 211, 238, 0.28));
+    border-color: rgba(34, 211, 238, 0.32);
+}
+
+.project-page--holo .project-media-stage {
+    background: linear-gradient(155deg, rgba(34, 211, 238, 0.22), rgba(14, 165, 233, 0.18));
+}
+
+.project-page--holo .project-section,
+.project-page--holo .project-flow-step {
+    border-color: rgba(34, 211, 238, 0.28);
+    background: linear-gradient(150deg, rgba(34, 211, 238, 0.22), rgba(15, 23, 42, 0.78));
+}
+
+.project-page--holo .project-module,
+.project-page--holo .project-gallery .gallery-card {
+    border-color: rgba(34, 211, 238, 0.3);
+    background: linear-gradient(165deg, rgba(34, 211, 238, 0.3), rgba(59, 130, 246, 0.2));
+}
+
+.project-page--victoria {
+    --project-accent: #22c55e;
+    --project-hero-surface: linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(52, 211, 153, 0.12)), var(--color-bg);
+    --project-hero-border: rgba(34, 197, 94, 0.35);
+    --project-hero-card-bg: color-mix(in srgb, var(--color-bg) 68%, rgba(34, 197, 94, 0.28));
+    --project-hero-card-border: rgba(34, 197, 94, 0.32);
+    --project-hero-chip-bg: color-mix(in srgb, var(--color-bg) 60%, rgba(34, 197, 94, 0.28));
+    --project-hero-chip-border: rgba(34, 197, 94, 0.32);
+    background: radial-gradient(circle at 14% 18%, rgba(34, 197, 94, 0.25), transparent 50%),
+        radial-gradient(circle at 90% 82%, rgba(59, 130, 246, 0.18), transparent 58%), var(--page-bg);
+}
+
+.project-page--victoria .project-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at right center, rgba(34, 197, 94, 0.28), transparent 55%);
+    z-index: 0;
+}
+
+.project-page--victoria .project-pill {
+    background: color-mix(in srgb, rgba(34, 197, 94, 0.24), var(--color-bg) 65%);
+    border-color: rgba(34, 197, 94, 0.35);
+}
+
+.project-page--victoria .hero-meta-card {
+    background: color-mix(in srgb, rgba(15, 23, 42, 0.85), rgba(34, 197, 94, 0.32));
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.project-page--victoria .project-media-stage {
+    background: linear-gradient(150deg, rgba(34, 197, 94, 0.25), rgba(59, 130, 246, 0.2));
+}
+
+.project-page--victoria .project-section,
+.project-page--victoria .project-flow-step {
+    background: linear-gradient(155deg, rgba(34, 197, 94, 0.2), rgba(15, 23, 42, 0.8));
+    border-color: rgba(34, 197, 94, 0.28);
+}
+
+.project-page--victoria .project-module,
+.project-page--victoria .project-gallery .gallery-card {
+    border-color: rgba(34, 197, 94, 0.28);
+    background: linear-gradient(165deg, rgba(34, 197, 94, 0.3), rgba(56, 189, 248, 0.2));
+}
+
+.project-page--remainder {
+    --project-accent: #f472b6;
+    --project-hero-surface: linear-gradient(135deg, rgba(244, 114, 182, 0.18), rgba(165, 180, 252, 0.15)), var(--color-bg);
+    --project-hero-border: rgba(244, 114, 182, 0.35);
+    --project-hero-card-bg: color-mix(in srgb, var(--color-bg) 68%, rgba(244, 114, 182, 0.28));
+    --project-hero-card-border: rgba(244, 114, 182, 0.3);
+    --project-hero-chip-bg: color-mix(in srgb, var(--color-bg) 58%, rgba(244, 114, 182, 0.3));
+    --project-hero-chip-border: rgba(244, 114, 182, 0.35);
+    background: radial-gradient(circle at 18% 15%, rgba(244, 114, 182, 0.25), transparent 52%),
+        radial-gradient(circle at 82% 85%, rgba(165, 180, 252, 0.22), transparent 58%), var(--page-bg);
+}
+
+.project-page--remainder .project-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at left top, rgba(244, 114, 182, 0.3), transparent 55%);
+    z-index: 0;
+}
+
+.project-page--remainder .project-pill {
+    background: color-mix(in srgb, rgba(244, 114, 182, 0.24), var(--color-bg) 60%);
+    border-color: rgba(244, 114, 182, 0.35);
+}
+
+.project-page--remainder .hero-meta-card {
+    background: color-mix(in srgb, rgba(15, 23, 42, 0.82), rgba(244, 114, 182, 0.3));
+    border-color: rgba(244, 114, 182, 0.32);
+}
+
+.project-page--remainder .project-media-stage {
+    background: linear-gradient(160deg, rgba(244, 114, 182, 0.28), rgba(165, 180, 252, 0.2));
+}
+
+.project-page--remainder .project-section,
+.project-page--remainder .project-flow-step {
+    border-color: rgba(244, 114, 182, 0.28);
+    background: linear-gradient(160deg, rgba(244, 114, 182, 0.22), rgba(15, 23, 42, 0.78));
+}
+
+.project-page--remainder .project-module,
+.project-page--remainder .project-gallery .gallery-card {
+    border-color: rgba(244, 114, 182, 0.3);
+    background: linear-gradient(165deg, rgba(244, 114, 182, 0.3), rgba(165, 180, 252, 0.22));
+}
+
+.project-page--budget {
+    --project-accent: #22c55e;
+    --project-hero-surface: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(59, 130, 246, 0.08)), var(--color-bg);
+    --project-hero-border: rgba(34, 197, 94, 0.35);
+    --project-hero-card-bg: color-mix(in srgb, var(--color-bg) 72%, rgba(34, 197, 94, 0.24));
+    --project-hero-card-border: rgba(34, 197, 94, 0.3);
+    --project-hero-chip-bg: color-mix(in srgb, var(--color-bg) 60%, rgba(34, 197, 94, 0.28));
+    --project-hero-chip-border: rgba(34, 197, 94, 0.32);
+    background: radial-gradient(circle at 18% 12%, rgba(34, 197, 94, 0.28), transparent 52%),
+        radial-gradient(circle at 82% 86%, rgba(59, 130, 246, 0.15), transparent 60%), var(--page-bg);
+}
+
+.project-page--budget .project-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at left center, rgba(34, 197, 94, 0.25), transparent 55%);
+    z-index: 0;
+}
+
+.project-page--budget .project-pill {
+    background: color-mix(in srgb, rgba(34, 197, 94, 0.2), var(--color-bg) 65%);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.project-page--budget .hero-meta-card {
+    background: color-mix(in srgb, rgba(255, 255, 255, 0.82), rgba(34, 197, 94, 0.26));
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.project-page--budget .project-media-stage {
+    background: linear-gradient(150deg, rgba(34, 197, 94, 0.25), rgba(59, 130, 246, 0.12));
+}
+
+.project-page--budget .project-section,
+.project-page--budget .project-flow-step {
+    border-color: rgba(34, 197, 94, 0.28);
+    background: linear-gradient(155deg, rgba(34, 197, 94, 0.2), rgba(15, 23, 42, 0.04));
+}
+
+.project-page--budget .project-module,
+.project-page--budget .project-gallery .gallery-card {
+    border-color: rgba(34, 197, 94, 0.25);
+    background: linear-gradient(160deg, rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.12));
+}
 
 .project-page--noir {
     --noir-pill-bg: var(--color-bg-alt);

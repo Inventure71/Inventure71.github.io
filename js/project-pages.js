@@ -142,7 +142,7 @@
     const VideoLazyLoad = {
         init: function() {
             const videos = document.querySelectorAll('.video-container iframe[data-src]');
-            
+
             if ('IntersectionObserver' in window) {
                 const videoObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
@@ -167,6 +167,32 @@
     };
 
     /**
+     * Work In Progress tape dismissal
+     */
+    const WorkInProgress = {
+        init: function() {
+            const tape = document.querySelector('[data-component="wip-tape"]');
+            if (!tape) return;
+
+            const button = tape.querySelector('.project-wip__tape');
+            if (!button) return;
+
+            const dismiss = () => {
+                tape.classList.add('is-dismissed');
+                tape.setAttribute('aria-hidden', 'true');
+            };
+
+            button.addEventListener('click', dismiss);
+            button.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    dismiss();
+                }
+            });
+        }
+    };
+
+    /**
      * Initialize all modules when DOM is ready
      */
     function init() {
@@ -174,6 +200,7 @@
         SmoothScroll.init();
         ExternalLinks.init();
         VideoLazyLoad.init();
+        WorkInProgress.init();
     }
 
     // Initialize on DOM ready
@@ -188,7 +215,8 @@
         ImageGallery,
         SmoothScroll,
         ExternalLinks,
-        VideoLazyLoad
+        VideoLazyLoad,
+        WorkInProgress
     };
 
 })();
