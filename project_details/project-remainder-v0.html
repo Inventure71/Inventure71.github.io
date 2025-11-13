@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Details: ReminderZ</title>
-    <link href="../css/styles.css" rel="stylesheet" />
-        <!-- Modern Design System -->
-        <link href="../css/modern.css" rel="stylesheet" />
-    <!-- Bootstrap icons (already in main projects.html, but good for standalone viewing) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="AI-augmented reminder and context weaving platform spanning multiple repositories" />
+    <meta name="author" content="Matteo Giorgetti" />
+    <title>ReminderZ · Project Loom · AI Context Weaving - Matteo Giorgetti</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <!-- Custom Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
     <script>
         (function () {
             try {
@@ -23,80 +26,23 @@
             }
         })();
     </script>
-    <style>
-        .container.project-section {
-            max-width: 960px;
-        }
-        h2 {
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--color-accent);
-        }
-        h3 {
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-            color: var(--color-text);
-        }
-        ul, ol {
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        li {
-            margin-bottom: 0.5rem;
-            line-height: 1.6;
-            color: var(--color-text-secondary);
-        }
-        pre {
-            background-color: var(--color-bg-dark-alt);
-            padding: 1em;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-            color: var(--color-text-light);
-            overflow-x: auto;
-            font-family: 'SFMono-Regular', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 0.9em;
-        }
-        code {
-            color: var(--color-accent);
-            background-color: rgba(109, 99, 255, 0.12);
-            padding: 0.2em 0.4em;
-            border-radius: 0.3rem;
-        }
-        .lead {
-            font-size: 1.15rem;
-            font-weight: 300;
-        }
-        .project-section p {
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-        .btn-github {
-            background-color: var(--color-bg-dark);
-            color: var(--color-text-light);
-            border-color: var(--color-border-dark);
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-        }
-        .btn-github:hover,
-        .btn-github:focus {
-            background-color: var(--color-accent);
-            color: var(--color-text-light);
-            border-color: var(--color-accent);
-        }
-        .btn-github .bi-github {
-            margin-right: 8px;
-            vertical-align: text-bottom;
-        }
-        .dev-name {
-            font-size: 0.9rem;
-            color: var(--color-text-secondary);
-            display: block;
-            margin-top: -0.5rem;
-            margin-bottom: 1rem;
-        }
-    </style>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../css/styles.css" rel="stylesheet" />
+    <!-- Modern Design System -->
+    <link href="../css/modern.css" rel="stylesheet" />
+    <!-- Project Pages Styles -->
+    <link href="../css/project-pages.css" rel="stylesheet" />
 </head>
-<body class="d-flex flex-column h-100">
-    <!-- Navigation -->
+<body class="d-flex flex-column h-100 project-page project-page--remainder">
+    <div class="project-wip" data-component="wip-tape">
+        <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
+            <span class="project-wip__label">Work in progress – click to dismiss</span>
+        </button>
+    </div>
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
     <nav class="navbar navbar-expand-lg py-3">
         <div class="container px-5">
             <a class="navbar-brand" href="../index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
@@ -117,92 +63,311 @@
         </div>
     </nav>
 
-    <main class="flex-shrink-0">
-        <div class="container px-5 py-5 project-section">
-            <div class="text-center mb-4 fade-in">
-                <h1 class="display-4 fw-bolder mb-3">ReminderZ</h1>
-                <p class="lead text-muted mb-3">(Development name: RemainderV0)</p>
-                <a href="https://github.com/Inventure71/RemainderV0" class="btn btn-outline-primary btn-lg px-4 py-3 mb-4" target="_blank" rel="noopener noreferrer">
-                    <i class="bi bi-github me-2"></i>View on GitHub
+        <!-- Project Details Section-->
+        <section class="py-5">
+            <div class="container px-5">
+                <div class="project-shell fade-in">
+                    <header class="project-hero">
+                        <div>
+                            <p class="project-eyebrow">AI Context Weaving · Multi-Repo Journey</p>
+                            <h1>ReminderZ / Project Loom</h1>
+                            <p class="lead">An evolving stack of Python and web experiments that turn raw reminders into enriched, searchable, AI-assisted personal knowledge.</p>
+                            <div class="project-pills">
+                                <span class="project-pill">ReminderProject</span>
+                                <span class="project-pill">RemainderV0</span>
+                                <span class="project-pill">ProjectLoom</span>
+                                <span class="project-pill">remainder_app</span>
+                            </div>
+                        </div>
+                        <div class="hero-meta">
+                            <div class="hero-meta-card">
+                                <span class="label">Role</span>
+                                <span class="value">Product Engineer · Systems Architect</span>
+                            </div>
+                            <div class="hero-meta-card">
+                                <span class="label">Timeline</span>
+                                <span class="value">2023 – Present</span>
+                            </div>
+                            <div class="hero-meta-card">
+                                <span class="label">Stack</span>
+                                <span class="value">Python · FastAPI · Gemini AI · JS/CSS</span>
+                            </div>
+                            <div class="hero-meta-card">
+                                <span class="label">Status</span>
+                                <span class="value">Active Exploration</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <section class="project-media-panel project-media-panel--stacked">
+                        <div class="project-media-stage project-media-stage--image">
+                            <img src="../assets/placeholders/debug-placeholder.svg" alt="Placeholder collage of reminder platform architecture" loading="lazy" />
+                        </div>
+                        <aside class="project-sidecard">
+                            <h3>Repository Constellation</h3>
+                            <p>Four interconnected repositories tracing the evolution from monolith to decoupled architecture.</p>
+                            <ul class="sidecard-highlight">
+                                <li><i class="bi bi-rocket-takeoff"></i><span><strong>ReminderProject:</strong> Monolithic Python prototype validating AI enrichment + persistence.</span></li>
+                                <li><i class="bi bi-diagram-3"></i><span><strong>RemainderV0:</strong> Modularized backend with cleaning pipelines, UI assets, and web hybrid shell.</span></li>
+                                <li><i class="bi bi-window-sidebar"></i><span><strong>ProjectLoom:</strong> Decoupled JS/CSS front-end exploring UI without backend coupling.</span></li>
+                                <li><i class="bi bi-infinity"></i><span><strong>remainder_app (private):</strong> Progressive versions (V0–V4) iterating on performance and domain logic.</span></li>
+                            </ul>
+                            <div class="sidecard-links">
+                                <a href="https://github.com/Inventure71/ReminderProject" target="_blank" rel="noreferrer">
+                                    <span>ReminderProject</span>
+                                    <i class="bi bi-arrow-up-right"></i>
+                                </a>
+                                <a href="https://github.com/Inventure71/RemainderV0" target="_blank" rel="noreferrer">
+                                    <span>RemainderV0</span>
+                                    <i class="bi bi-arrow-up-right"></i>
+                                </a>
+                                <a href="https://github.com/Inventure71/ProjectLoom" target="_blank" rel="noreferrer">
+                                    <span>ProjectLoom</span>
+                                    <i class="bi bi-arrow-up-right"></i>
                 </a>
             </div>
+                            <p class="sidecard-footnote"><small>Internal <code>remainder_app</code> versions (V0–V4) remain private, acting as the research stream feeding public repos.</small></p>
+                        </aside>
+                    </section>
 
-            <p class="lead mb-4">ReminderZ (formerly RemainderV0) is a desktop application designed to help users manage messages, notes, reminders, and projects, with AI-powered features for organization and content generation. It utilizes a Python backend with a <code>pywebview</code> frontend (HTML, CSS, JavaScript) for a cross-platform user experience.</p>
+                    <section class="project-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">Context</p>
+                            <h2>Why weave reminders into knowledge</h2>
+                        </div>
+                        <p class="project-copy">
+                            The project started with a simple itch: raw reminders and notes lack structure, context, and longevity. Across multiple repositories I explored how Gemini-powered enrichment, normalization pipelines, and modular UI layers could turn snippets into a living personal knowledge graph. Each iteration pushed the architecture forward—from a single Python file handling everything to a stack where capture, enrichment, presentation, and analytics are split into collaborative services.
+                        </p>
+                        <ul class="project-keypoints">
+                            <li>
+                                <h4>Capture surfaces</h4>
+                                <p>Desktop, web, and clipboard tools share contracts so every snippet lands with consistent metadata.</p>
+                            </li>
+                            <li>
+                                <h4>Knowledge threads</h4>
+                                <p>Semantic clustering stitches reminders into storylines that resurface when projects reappear.</p>
+                            </li>
+                            <li>
+                                <h4>Human override</h4>
+                                <p>Curated editing panes let me correct AI enrichment or pin insights without breaking automation.</p>
+                            </li>
+                        </ul>
+                    </section>
 
-            <h2>Core Features</h2>
-            <ul>
-                <li><strong>Message Management:</strong> Efficiently store, organize, and retrieve messages, notes, and creative ideas. Assign items to user-defined projects and attach relevant images.</li>
-                <li><strong>Project Organization:</strong> Create, customize (name, description, color, emoji), and manage projects. View messages filtered by project for focused work.</li>
-                <li><strong>AI Integration (Gemini Model):</strong>
-                    <ul>
-                        <li>Engage in contextual AI chat.</li>
-                        <li>Automate message processing: assign to projects, identify potential reminders.</li>
-                        <li>Receive suggestions for new projects based on unassigned content.</li>
-                        <li>Generate textual descriptions for uploaded images.</li>
-                        <li>Select messages relevant to user queries via AI.</li>
-                    </ul>
-                </li>
-                <li><strong>Reminders:</strong> Set precise reminders with specific dates, times, and recurrence options (daily, weekly). Receive desktop notifications (macOS specific) for timely alerts.</li>
-                <li><strong>Clipboard Integration (macOS specific):</strong> Monitor the system clipboard and automatically save copied text to a dedicated "Saved Clips" project after a configurable number of copies.</li>
-                <li><strong>Telegram Integration:</strong> Fetch messages and attachments directly from a configured Telegram bot, storing them in the application's database and as JSON logs.</li>
-                <li><strong>WhatsApp Scraper Integration:</strong> Trigger a utility script to scrape messages from WhatsApp Web (current implementation prints to console).</li>
-                <li><strong>Image Handling:</strong> Upload and associate images with messages. View AI-generated descriptions for visual content.</li>
+                    <section class="project-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">Concept Pillars</p>
+                            <h2>Core ideas that persist across versions</h2>
+                        </div>
+                        <div class="project-insight-grid">
+                            <article class="project-insight-card">
+                                <h4>Reminder capture</h4>
+                                <p>Desktop, web, and clipboard entry points funnel into a common schema tagged with source, timestamp, and context.</p>
+                                <ul>
+                                    <li>Normalization layer deduplicates and preserves raw text for audits.</li>
+                                    <li>Capture endpoints share validation to avoid drift.</li>
+                                </ul>
+                            </article>
+                            <article class="project-insight-card">
+                                <h4>AI enrichment</h4>
+                                <p>Gemini templates clean text, infer tags, surface due dates, and recommend follow-up actions.</p>
+                                <ul>
+                                    <li>Fallback heuristics keep the pipeline flowing if AI confidence dips.</li>
+                                    <li>Structured JSON responses feed analytics and UI highlights.</li>
+                                </ul>
+                            </article>
+                            <article class="project-insight-card">
+                                <h4>Context weaving</h4>
+                                <p>Reminders link to projects, people, and timelines so knowledge feels navigable rather than linear.</p>
+                                <ul>
+                                    <li>Semantic clustering surfaces related work streams automatically.</li>
+                                    <li>Manual anchors let me curate narrative arcs across notes.</li>
+                                </ul>
+                            </article>
+                            <article class="project-insight-card">
+                                <h4>Iterative architecture</h4>
+                                <p>Each repository evolves the stack—from monolith to modular services—without losing data continuity.</p>
+                                <ul>
+                                    <li>Shared contracts keep capture and presentation layers interchangeable.</li>
+                                    <li>Versioning strategy documents migrations between repos.</li>
+                                </ul>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="project-section project-timeline-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">Timeline</p>
+                            <h2>Evolution across repositories</h2>
+                        </div>
+                        <div class="project-timeline">
+                            <div class="project-timeline-item">
+                                <div class="project-timeline-marker">
+                                    <div class="project-timeline-dot"></div>
+                                    <div class="project-timeline-line"></div>
+                                </div>
+                                <div class="project-timeline-content">
+                                    <h5>Prototype Core · ReminderProject</h5>
+                                    <p>Single-process Python app handles persistence, UI, and Gemini enrichment. Validated schema design and AI workflows.</p>
+                                </div>
+                            </div>
+                            <div class="project-timeline-item">
+                                <div class="project-timeline-marker">
+                                    <div class="project-timeline-dot"></div>
+                                    <div class="project-timeline-line"></div>
+                                </div>
+                                <div class="project-timeline-content">
+                                    <h5>Modular Expansion · RemainderV0</h5>
+                                    <p>Directory-based architecture introduces DatabaseUtils, UI, Utils, web assets, and text cleaning scripts for consistent context.</p>
+                                </div>
+                            </div>
+                            <div class="project-timeline-item">
+                                <div class="project-timeline-marker">
+                                    <div class="project-timeline-dot"></div>
+                                    <div class="project-timeline-line"></div>
+                                </div>
+                                <div class="project-timeline-content">
+                                    <h5>Front-End Decoupling · ProjectLoom</h5>
+                                    <p>JavaScript/CSS/HTML layer experiments with modern UX, consuming backend data via API thoughts rather than embedded Python UI.</p>
+                                </div>
+                            </div>
+                            <div class="project-timeline-item">
+                                <div class="project-timeline-marker">
+                                    <div class="project-timeline-dot"></div>
+                                </div>
+                                <div class="project-timeline-content">
+                                    <h5>Internal Refinement · remainder_app V0–V4</h5>
+                                    <p>Private repo tracks rapid iteration: performance tuning, API contracts, and new features before they reach public modules.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="project-section project-spotlight">
+                        <h3>Reminder DNA feeds every new surface</h3>
+                        <p>
+                            Experiments stay compatible because each repo honors the same capture schema. That lets analytics, enrichment,
+                            and UI layers remix history without migration headaches.
+                        </p>
+                    </section>
+
+                    <section class="project-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">Architecture</p>
+                            <h2>How the system hangs together</h2>
+                        </div>
+                        <div class="project-module-grid">
+                            <article class="project-module">
+                                <h4>Capture Layer</h4>
+                                <p>Desktop UI, web forms, or clipboard monitors push reminders into a normalized ingestion queue.</p>
+                            </article>
+                            <article class="project-module">
+                                <h4>Enrichment Service</h4>
+                                <p>Gemini prompt templates clean text, infer tags, compute metadata, and return structured JSON blobs.</p>
+                            </article>
+                            <article class="project-module">
+                                <h4>Persistence &amp; Ledger</h4>
+                                <p>SQLite/PostgreSQL stores raw, cleaned, enriched versions alongside audit trails and lineage references.</p>
+                            </article>
+                            <article class="project-module">
+                                <h4>Presentation</h4>
+                                <p>pywebview hybrid shell (RemainderV0) and decoupled JS front-end (ProjectLoom) render timelines, filters, and AI suggestions.</p>
+                            </article>
+                            <article class="project-module">
+                                <h4>Analytics &amp; Feedback</h4>
+                                <p>Pandas jobs produce retention metrics, enrichment acceptance rates, and tag distributions to steer future releases.</p>
+                            </article>
+                            <article class="project-module">
+                                <h4>Configuration &amp; Settings</h4>
+                                <p>JSON settings and environment overrides tune AI prompts, clipboard thresholds, and integration credentials.</p>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="project-section project-flow">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">Flow</p>
+                            <h2>How a reminder becomes knowledge</h2>
+                        </div>
+                        <div class="project-flow-steps">
+                            <div class="project-flow-step">
+                                <span class="flow-index">01</span>
+                                <div class="flow-body">
+                                    <h5>Capture</h5>
+                                    <p>User adds a reminder via desktop quick-add, clipboard trigger, or web form; payload lands in the ingestion queue.</p>
+                                </div>
+                            </div>
+                            <div class="project-flow-step">
+                                <span class="flow-index">02</span>
+                                <div class="flow-body">
+                                    <h5>Normalize</h5>
+                                    <p>Cleaning scripts strip noise, unify dates, and prepare a structured prompt for Gemini.</p>
+                                </div>
+                            </div>
+                            <div class="project-flow-step">
+                                <span class="flow-index">03</span>
+                                <div class="flow-body">
+                                    <h5>Enrich</h5>
+                                    <p>Gemini returns enriched text, suggested tags, timeline hints, and semantic labels; they are merged into the reminder record.</p>
+                                </div>
+                            </div>
+                            <div class="project-flow-step">
+                                <span class="flow-index">04</span>
+                                <div class="flow-body">
+                                    <h5>Weave</h5>
+                                    <p>UI layers display linked reminders, evolution history, and AI suggestions. Users confirm or adjust, feeding metrics back into the system.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="project-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">Gallery</p>
+                            <h2>Screens &amp; artifacts</h2>
+                        </div>
+                        <div class="project-gallery">
+                            <figure class="gallery-card">
+                                <img src="../assets/placeholders/debug-placeholder.svg" alt="Placeholder reminder capture interface" loading="lazy" />
+                                <figcaption>Early ReminderProject UI showing on-device capture and AI enrichment toggles.</figcaption>
+                            </figure>
+                            <figure class="gallery-card">
+                                <img src="../assets/placeholders/debug-placeholder.svg" alt="Placeholder ProjectLoom front-end concept" loading="lazy" />
+                                <figcaption>ProjectLoom prototype exploring decoupled web presentation with tag timelines.</figcaption>
+                            </figure>
+                        </div>
+                    </section>
+
+                    <section class="project-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">Roadmap</p>
+                            <h2>Where the loom threads next</h2>
+                        </div>
+                        <ul class="project-stack-list">
+                            <li>Publish unified FastAPI backend with OpenAPI contract for ProjectLoom.</li>
+                            <li>Merge remainder_app V4 optimizations into RemainderV0 public branch.</li>
+                            <li>Add pattern recognition: auto-schedule recurring reminders and surface streaks.</li>
+                            <li>Introduce observability layer (structured logs + enrichment acceptance analytics).</li>
+                            <li>Explore PWA/mobile capture experience and secure sync across devices.</li>
             </ul>
+                    </section>
 
-            <h2>Key Technologies</h2>
-            <ul>
-                <li><strong>Backend:</strong> Python</li>
-                <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
-                <li><strong>GUI Framework:</strong> <code>pywebview</code> (embedding web content in a native GUI window)</li>
-                <li><strong>AI Model:</strong> Google Gemini</li>
-                <li><strong>Database:</strong> SQLite (for local data storage)</li>
-                <li><strong>macOS specific features:</strong> <code>AppKit</code> (via PyObjC for clipboard and status bar), <code>osascript</code> (for desktop notifications)</li>
-                <li><strong>Web Scraping:</strong> Selenium (for WhatsApp automation)</li>
-            </ul>
-            
-            <h2>Project Structure Highlights</h2>
-            <p>The application is modularly structured:</p>
-            <ul>
-                <li><code>main.py</code>: Core backend logic and <code>pywebview</code> initialization.</li>
-                <li><code>web/</code>: Contains all frontend assets (HTML, CSS, JS), including pages and reusable components.</li>
-                <li><code>DatabaseUtils/</code>: Python modules for SQLite database interactions (messages, projects, clipboard).</li>
-                <li><code>Utils/</code>: Houses utility modules like the AI model handler (<code>model_handler.py</code>), clipboard monitor, reminder scheduler, and integration scripts (Telegram, WhatsApp).</li>
-                <li><code>API_keys/</code>: Stores API credentials (e.g., <code>gemini_api_key.json</code>).</li>
-                <li><code>settings.json</code>: Application settings.</li>
-            </ul>
-
-            <h2>Setup & Running</h2>
-            <p>To get ReminderZ running locally:</p>
-            <ol>
-                <li>Ensure Python 3.x is installed.</li>
-                <li>Obtain a Gemini API key and place it in <code>API_keys/gemini_api_key.json</code>.</li>
-                <li>For Telegram features, configure <code>BOT_TOKEN</code> in a <code>.env</code> file.</li>
-                <li>Clone the repository and install dependencies:
-                    <pre><code>pip install -r requirements.txt</code></pre>
-                    (Note: The original README mentioned a <code>requirements.txt</code> file needs to be generated. Likely dependencies include <code>pywebview</code>, <code>google-generativeai</code>, <code>requests</code>, <code>python-dotenv</code>, <code>AppKit</code>, <code>selenium</code>, <code>python-dateutil</code>.)
-                </li>
-                <li>Run the application:
-                    <pre><code>python main.py</code></pre>
-                </li>
-            </ol>
-            <p><em>Note: macOS specific features require running on macOS. WhatsApp scraping requires Google Chrome.</em></p>
-
-
-            <h2>Building</h2>
-            <p>The application can be packaged into a standalone executable using PyInstaller with the provided <code>RemainderApp.spec</code> file:</p>
-            <pre><code>pyinstaller RemainderApp.spec</code></pre>
-
-            <div class="text-center mt-5 mb-4">
-                <a href="../projects.html" class="btn btn-primary btn-lg px-4 py-3">Back to Projects</a>
+                    <div class="text-center">
+                        <a href="../projects.html" class="project-back-link">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to all projects
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer-->
     <footer class="py-4 mt-auto">
         <div class="container px-5">
             <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                <div class="col-auto"><div class="small m-0">Copyright &copy; Matteo Giorgetti 2025</div></div>
+                <div class="col-auto"><div class="small m-0">Copyright &copy; https://inventure71.github.io 2025</div></div>
                 <div class="col-auto">
                     <a class="small" href="#!">Privacy</a>
                     <span class="mx-1">&middot;</span>
@@ -213,10 +378,10 @@
             </div>
         </div>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme.js"></script>
     <script src="../js/scripts.js"></script>
     <script src="../js/animations.js"></script>
+    <script src="../js/project-pages.js"></script>
 </body>
 </html> 

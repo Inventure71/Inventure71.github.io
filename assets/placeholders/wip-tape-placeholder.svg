@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="220" viewBox="0 0 1600 220" role="img" aria-labelledby="title desc">
+  <title id="title">Work In Progress Tape Placeholder</title>
+  <desc id="desc">Diagonal caution stripes repeating the text Work In Progress for use as a temporary banner.</desc>
+  <defs>
+    <linearGradient id="tapeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <pattern id="stripePattern" patternUnits="userSpaceOnUse" width="120" height="120" patternTransform="skewX(-25)">
+      <rect width="120" height="120" fill="#0f172a" />
+      <rect x="0" y="0" width="60" height="120" fill="#facc15" opacity="0.95" />
+    </pattern>
+  </defs>
+  <rect width="1600" height="220" fill="url(#tapeGradient)" />
+  <rect width="1600" height="220" fill="url(#stripePattern)" opacity="0.65" />
+  <g fill="#f8fafc" font-family="'Plus Jakarta Sans', 'Segoe UI', sans-serif" font-weight="800" font-size="36" letter-spacing="6">
+    <text x="50%" y="40%" dominant-baseline="middle" text-anchor="middle">WORK IN PROGRESS — CLICK TO DISMISS</text>
+  </g>
+  <g fill="#f8fafc" font-family="'Plus Jakarta Sans', 'Segoe UI', Georgia" font-weight="800" font-size="36" letter-spacing="6">
+    <text x="50%" y="70%" dominant-baseline="middle" text-anchor="middle">The text of the page is ready but some images/videos needs to be added.</text>
+  </g>
+  <rect x="12" y="12" width="1576" height="196" rx="28" ry="28" stroke="#facc15" stroke-width="6" fill="none" opacity="0.75" stroke-dasharray="40 22" />
+</svg>

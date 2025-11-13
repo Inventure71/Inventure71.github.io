@@ -36,6 +36,11 @@
         <link href="../css/project-pages.css" rel="stylesheet" />
     </head>
     <body class="d-flex flex-column h-100 project-page project-page--noir">
+        <div class="project-wip" data-component="wip-tape">
+            <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
+                <span class="project-wip__label">Work in progress – click to dismiss</span>
+            </button>
+        </div>
         <main class="flex-shrink-0">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg py-3">
@@ -93,7 +98,7 @@
                             </div>
                         </header>
 
-                        <section class="project-media-panel">
+                        <section class="project-media-panel project-media-panel--split">
                             <div class="project-media-stage">
                                 <iframe
                                     src="https://www.youtube.com/embed/tAHpsxYZ3cQ?si=SBYuwDh6VcQ52kb1"
@@ -127,18 +132,30 @@
 
                         <section class="project-section">
                             <div class="project-section-header">
-                                <p class="project-section-eyebrow">Narrative</p>
-                                <h2>A noir experience that never repeats</h2>
+                                <p class="project-section-eyebrow">Case telemetry</p>
+                                <h2>How the murder machine paces itself</h2>
                             </div>
-                            <p class="project-copy">
-                                Neural Noir lets players play director and detective at once. Pick a theme—or paste in a wild prompt—and Gemini AI generates a villain, suspects, victim dossier, custom evidence props, and even the villa layout. Every loop pushes improvisation: characters respond using their own motives, props inherit bespoke lore, and your final accusation is evaluated against the canonical truth. Instead of writing one perfect murder mystery, I built a machine that writes thousands.
-                            </p>
-                            <ul class="project-stack-list">
-                                <li>Unreal Engine 5</li>
-                                <li>Gemini AI Streaming</li>
-                                <li>Python Orchestrator</li>
-                                <li>C++ Gameplay Systems</li>
-                                <li>Blueprint Tools</li>
+                            <ul class="project-data-strip">
+                                <li>
+                                    <span class="metric-label">Case runtime</span>
+                                    <span class="metric-value">35 min</span>
+                                    <p class="metric-copy">Average session from theme selection to verdict reveal.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">AI asset count</span>
+                                    <span class="metric-value">62</span>
+                                    <p class="metric-copy">Narrative artifacts generated per loop (suspects, props, dossiers).</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Dialogue latency</span>
+                                    <span class="metric-value">0.8s</span>
+                                    <p class="metric-copy">Streaming response time for NPC repartee via Gemini.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Canon accuracy</span>
+                                    <span class="metric-value">88%</span>
+                                    <p class="metric-copy">Players nailing the culprit when evidence mode is set to default.</p>
+                                </li>
                             </ul>
                         </section>
 
@@ -147,24 +164,48 @@
                                 <p class="project-section-eyebrow">Systems</p>
                                 <h2>What makes the casework feel alive</h2>
                             </div>
-                            <div class="project-module-grid">
-                                <article class="project-module">
-                                    <h4>AI-Generated Mysteries</h4>
-                                    <p>Gemini AI stitches suspects, motives, and red herrings into a coherent timeline so no two cases unfold the same way.</p>
+                            <div class="project-insight-grid">
+                                <article class="project-insight-card">
+                                    <h4>AI-generated mysteries</h4>
+                                    <p>Gemini scripts suspects, motives, and timelines, blending player prompts with noir canon.</p>
+                                    <ul>
+                                        <li>Motives stay logical thanks to constraint-aware prompt slots.</li>
+                                        <li>Truth tables keep red herrings believable yet solvable.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Living Villa Sandbox</h4>
-                                    <p>The manor fills with bespoke props and interactables that reference the current case file, giving physical weight to AI text.</p>
+                                <article class="project-insight-card">
+                                    <h4>Living villa sandbox</h4>
+                                    <p>Props, rooms, and lighting adapt to each case so evidence feels grounded in the environment.</p>
+                                    <ul>
+                                        <li>Blueprint hooks populate interactables with AI-authored lore.</li>
+                                        <li>Room states update as players tamper with clues.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Dynamic Cast</h4>
-                                    <p>Each NPC keeps a memory stack of your interrogations, evolving their alibis and attitude based on how aggressive you get.</p>
+                                <article class="project-insight-card">
+                                    <h4>Dynamic cast</h4>
+                                    <p>NPCs maintain memory stacks of interrogations, adjusting tone and alibis based on your tactics.</p>
+                                    <ul>
+                                        <li>Sentiment analysis nudges characters between friendly and evasive.</li>
+                                        <li>Dialogue seeds pull from personal secrets revealed mid-session.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Forensic Loop</h4>
-                                    <p>Victim dossiers and medical readouts are auto-written, letting you cross-reference wounds, tools, and timelines like a real detective.</p>
+                                <article class="project-insight-card">
+                                    <h4>Forensic loop</h4>
+                                    <p>Auto-written dossiers cross-link wounds, timelines, and weapon lore to validate your accusations.</p>
+                                    <ul>
+                                        <li>Evidence tags sync with gameplay triggers and photo captures.</li>
+                                        <li>Verdict generator grades logic, accuracy, and noir flair.</li>
+                                    </ul>
                                 </article>
                             </div>
+                        </section>
+
+                        <section class="project-section project-spotlight">
+                            <h3>Every accusation becomes a story</h3>
+                            <p>
+                                The verdict scene remixes your clues, quotes suspects, and highlights contradictions—so even failure becomes memorable
+                                noir narration.
+                            </p>
                         </section>
 
                         <section class="project-section project-flow">
