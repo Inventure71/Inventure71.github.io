@@ -285,3 +285,4 @@ Edit the CSS class in `project-pages.css` - changes apply to all pages.
 
 **Questions?** Check existing project pages for examples or refer to the template comments.
 
+

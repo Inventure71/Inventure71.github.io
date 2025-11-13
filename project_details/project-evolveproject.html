@@ -3,9 +3,9 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="VictorIA - A multi-domain AI sandbox spanning game strategy, vision annotation, and robotics" />
+        <meta name="description" content="EvolveProject - AI card generation backend for an infinite Unreal Engine card game" />
         <meta name="author" content="Matteo Giorgetti" />
-        <title>VictorIA - Matteo Giorgetti</title>
+        <title>EvolveProject - Matteo Giorgetti</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
         <!-- Custom Google font-->
@@ -35,7 +35,7 @@
         <!-- Project Pages Styles -->
         <link href="../css/project-pages.css" rel="stylesheet" />
     </head>
-    <body class="d-flex flex-column h-100 project-page project-page--victoria">
+    <body class="d-flex flex-column h-100 project-page project-page--evolve">
         <main class="flex-shrink-0">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg py-3">
@@ -64,48 +64,48 @@
                     <div class="project-shell fade-in">
                         <header class="project-hero">
                             <div>
-                                <p class="project-eyebrow">AI Sandbox · Multi-Domain Experimentation</p>
-                                <h1>VictorIA</h1>
-                                <p class="lead">A modular Python playground where game strategy, image annotation, and robotics co-exist inside one workflow.</p>
+                                <p class="project-eyebrow">Procedural Design · Unreal Engine Backend</p>
+                                <h1>EvolveProject</h1>
+                                <p class="lead">AI-driven card generator that feeds an Unreal Engine pack-opening game with endlessly fresh mechanics, lore, and rarity curves.</p>
                                 <div class="project-pills">
-                                    <span class="project-pill">Game AI</span>
-                                    <span class="project-pill">Computer Vision</span>
-                                    <span class="project-pill">Robotics</span>
+                                    <span class="project-pill">Python</span>
+                                    <span class="project-pill">Generative AI</span>
+                                    <span class="project-pill">Unreal Engine</span>
                                 </div>
                             </div>
                             <div class="hero-meta">
                                 <div class="hero-meta-card">
                                     <span class="label">Role</span>
-                                    <span class="value">Technical Lead · Systems Designer</span>
+                                    <span class="value">Backend Engineer · Prompt Architect</span>
                                 </div>
                                 <div class="hero-meta-card">
                                     <span class="label">Timeline</span>
-                                    <span class="value">2023 – 2024</span>
+                                    <span class="value">2024 – Present</span>
                                 </div>
                                 <div class="hero-meta-card">
                                     <span class="label">Stack</span>
-                                    <span class="value">Python · OpenCV · NumPy</span>
+                                    <span class="value">Python · Gemini API · REST / WebSocket</span>
                                 </div>
                                 <div class="hero-meta-card">
                                     <span class="label">Status</span>
-                                    <span class="value">Research Playground</span>
+                                    <span class="value">Prototype Service</span>
                                 </div>
                             </div>
                         </header>
 
                         <section class="project-media-panel">
                             <div class="project-media-stage project-media-stage--image">
-                                <img src="../assets/Jar_foreground.png" alt="VictorIA system montage" loading="lazy" />
+                                <img src="../assets/Jar_foreground.png" alt="EvolveProject generation pipeline mockup" loading="lazy" />
                             </div>
                             <aside class="project-sidecard">
                                 <h3>Project Snapshot</h3>
-                                <p>VictorIA aligns Connect 4 heuristics, microscopy-style imagery, and robotics scripts under a single orchestrator for rapid experimentation.</p>
+                                <p>EvolveProject replaces static card libraries with prompt-driven generation: every pack opening requests bespoke mechanics, flavor, and balance metadata.</p>
                                 <ul class="sidecard-highlight">
-                                    <li><i class="bi bi-diagram-3"></i><span>One <code>main.py</code> routes between gameplay, image labs, and robot loops.</span></li>
-                                    <li><i class="bi bi-cpu"></i><span>Reusable utils pipeline keeps data structures and logging consistent across domains.</span></li>
+                                    <li><i class="bi bi-infinity"></i><span>Procedurally generates infinite, lineage-aware cards without pre-authored sets.</span></li>
+                                    <li><i class="bi bi-shield-check"></i><span>Validation layer clamps power levels and filters exploit-prone combos before they reach players.</span></li>
                                 </ul>
                                 <div class="sidecard-links">
-                                    <a href="https://github.com/Inventure71/VictorIA" target="_blank" rel="noreferrer">
+                                    <a href="https://github.com/Inventure71/EvolveProject" target="_blank" rel="noreferrer">
                                         <span>View Repository</span>
                                         <i class="bi bi-arrow-up-right"></i>
                                     </a>
@@ -116,40 +116,48 @@
                         <section class="project-section">
                             <div class="project-section-header">
                                 <p class="project-section-eyebrow">Narrative</p>
-                                <h2>Why merge games, cells, and robots</h2>
+                                <h2>Why ship an infinite card factory</h2>
                             </div>
                             <p class="project-copy">
-                                I wanted one sandbox where perception, reasoning, and actuation could iterate together. VictorIA began as a Connect 4 agent, then expanded when I needed tooling for annotating cell imagery and prototyping robotic responses. Rather than scatter scripts across repositories, I invested in shared modules, data contracts, and orchestration so each experiment can borrow assets from the others—letting a vision experiment influence the next robotics trial or strategy sim.
+                                Collectible games usually launch with a finite set and then sprint to ship expansions. I wanted a backend that keeps pace with player curiosity instead. EvolveProject listens for card generation events from Unreal Engine, selects a structured prompt, fills in constraints, and calls Gemini via <code>gemini_handler.py</code>. The service returns normalized JSON describing stats, mechanics, rarity, and lore, which is then validated and sent back to the game client. Cards can evolve in response to telemetry, so the meta never settles while staying fair.
                             </p>
                             <ul class="project-stack-list">
-                                <li>Python 3.x</li>
-                                <li>OpenCV Visualization</li>
-                                <li>NumPy &amp; SciPy heuristics</li>
-                                <li>Serial / hardware adapters</li>
+                                <li>Prompt templating inside <code>Prompts/</code></li>
+                                <li>Gemini integration with retry and rate limiting</li>
+                                <li>Rule-based balancing heuristics in <code>tools/</code></li>
+                                <li>REST &amp; WebSocket delivery to Unreal</li>
                             </ul>
                         </section>
 
                         <section class="project-section">
                             <div class="project-section-header">
                                 <p class="project-section-eyebrow">Systems</p>
-                                <h2>What powers the sandbox</h2>
+                                <h2>How the generator stays fair and fresh</h2>
                             </div>
                             <div class="project-module-grid">
                                 <article class="project-module">
-                                    <h4>Connect 4 Brain</h4>
-                                    <p><code>connect4.py</code> models the board, simulates futures with minimax, and exposes a clean API for human or automated play.</p>
+                                    <h4>Template-Driven Prompts</h4>
+                                    <p>Card archetypes in <code>Prompts/</code> encode mechanics, rarity guidelines, and flavor goals so AI output stays coherent.</p>
                                 </article>
                                 <article class="project-module">
-                                    <h4>Vision Lab Tools</h4>
-                                    <p><code>ImagePointSelection.py</code> drives an annotation loop that writes selections into <code>Processed_Cells/</code> for downstream models.</p>
+                                    <h4>Gemini Orchestration</h4>
+                                    <p><code>gemini_handler.py</code> assembles prompts, calls Gemini, and repairs malformed JSON with deterministic fallbacks.</p>
                                 </article>
                                 <article class="project-module">
-                                    <h4>Robot Testbed</h4>
-                                    <p><code>RobotExperimental.py</code> converts game states or image-derived targets into device commands for physical or simulated arms.</p>
+                                    <h4>Balance Filters</h4>
+                                    <p>Utility scripts score stats, block banned effects, and enforce numeric caps before any card reaches the catalog.</p>
                                 </article>
                                 <article class="project-module">
-                                    <h4>Shared Utilities</h4>
-                                    <p>Support modules inside <code>utils/</code> keep logging, math helpers, and file I/O consistent, cutting duplication across experiments.</p>
+                                    <h4>Evolution Metrics</h4>
+                                    <p>Generated cards receive lineage IDs; Unreal telemetry feeds back usage stats to steer future prompt constraints.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Catalog Persistence</h4>
+                                    <p>Each card is stored with prompt, response, and hash so drops can be replayed, traded, or audited later.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Delivery Interface</h4>
+                                    <p>HTTP and WebSocket endpoints keep Unreal clients responsive whether pulling packs live or pre-generating pools.</p>
                                 </article>
                             </div>
                         </section>
@@ -157,35 +165,35 @@
                         <section class="project-section project-flow">
                             <div class="project-section-header">
                                 <p class="project-section-eyebrow">Flow</p>
-                                <h2>How the platform runs a scenario</h2>
+                                <h2>How a card comes to life</h2>
                             </div>
                             <div class="project-flow-steps">
                                 <div class="project-flow-step">
                                     <span class="flow-index">01</span>
                                     <div class="flow-body">
-                                        <h5>Mode Selection</h5>
-                                        <p>Launch <code>main.py</code> and pick a lane—game AI duel, image point lab, or robot exercise.</p>
+                                        <h5>Trigger</h5>
+                                        <p>Unreal Engine signals a pack opening or evolution event with desired rarity and archetype hints.</p>
                                     </div>
                                 </div>
                                 <div class="project-flow-step">
                                     <span class="flow-index">02</span>
                                     <div class="flow-body">
-                                        <h5>Data Capture</h5>
-                                        <p>Load boards, ingest imagery, or read hardware sensors; normalize everything through <code>utils/</code> adapters.</p>
+                                        <h5>Generate</h5>
+                                        <p>The backend fills a prompt template, calls Gemini, and receives structured card data + narrative flavor.</p>
                                     </div>
                                 </div>
                                 <div class="project-flow-step">
                                     <span class="flow-index">03</span>
                                     <div class="flow-body">
-                                        <h5>Analysis &amp; Decision</h5>
-                                        <p>Strategy modules, detectors, or heuristics transform the state into actionable commands or annotations.</p>
+                                        <h5>Validate</h5>
+                                        <p>Rule filters clamp power creep, assign rarity, and flag risky mechanics for re-roll if needed.</p>
                                     </div>
                                 </div>
                                 <div class="project-flow-step">
                                     <span class="flow-index">04</span>
                                     <div class="flow-body">
-                                        <h5>Actuation &amp; Export</h5>
-                                        <p>Robotics routines move pieces, processed images land in <code>Processed_Cells/</code>, and logs capture performance metrics.</p>
+                                        <h5>Deliver &amp; Evolve</h5>
+                                        <p>Card JSON streams back to Unreal; gameplay telemetry later tunes prompts for the next generation.</p>
                                     </div>
                                 </div>
                             </div>
@@ -194,16 +202,16 @@
                         <section class="project-section">
                             <div class="project-section-header">
                                 <p class="project-section-eyebrow">Gallery</p>
-                                <h2>Artifacts from experiments</h2>
+                                <h2>Artifacts</h2>
                             </div>
                             <div class="project-gallery">
                                 <figure class="gallery-card">
-                                    <img src="../assets/Jar_background.png" alt="Connect 4 simulation board" loading="lazy" />
-                                    <figcaption>Connect 4 board overlay used for testing heuristics and logging move trees.</figcaption>
+                                    <img src="../assets/profile_old.png" alt="Prompt template snippet" loading="lazy" />
+                                    <figcaption>Excerpt from a card prompt template defining balance guardrails and flavor tone.</figcaption>
                                 </figure>
                                 <figure class="gallery-card">
-                                    <img src="../assets/profile.png" alt="Annotation tool UI mock" loading="lazy" />
-                                    <figcaption>Point selection UI for marking cellular regions before exporting to <code>Processed_Cells/</code>.</figcaption>
+                                    <img src="../assets/profile.png" alt="Generated card schema" loading="lazy" />
+                                    <figcaption>Sample JSON output showing mechanics, rarity, lineage, and telemetry hooks.</figcaption>
                                 </figure>
                             </div>
                         </section>
