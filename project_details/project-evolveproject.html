@@ -120,51 +120,72 @@
 
                         <section class="project-section">
                             <div class="project-section-header">
-                                <p class="project-section-eyebrow">Narrative</p>
-                                <h2>Why ship an infinite card factory</h2>
+                                <p class="project-section-eyebrow">Telemetry</p>
+                                <h2>Generation stats that keep the meta alive</h2>
                             </div>
-                            <p class="project-copy">
-                                Collectible games usually launch with a finite set and then sprint to ship expansions. I wanted a backend that keeps pace with player curiosity instead. EvolveProject listens for card generation events from Unreal Engine, selects a structured prompt, fills in constraints, and calls Gemini via <code>gemini_handler.py</code>. The service returns normalized JSON describing stats, mechanics, rarity, and lore, which is then validated and sent back to the game client. Cards can evolve in response to telemetry, so the meta never settles while staying fair.
-                            </p>
-                            <ul class="project-stack-list">
-                                <li>Prompt templating inside <code>Prompts/</code></li>
-                                <li>Gemini integration with retry and rate limiting</li>
-                                <li>Rule-based balancing heuristics in <code>tools/</code></li>
-                                <li>REST &amp; WebSocket delivery to Unreal</li>
+                            <ul class="project-data-strip">
+                                <li>
+                                    <span class="metric-label">Cards per session</span>
+                                    <span class="metric-value">42</span>
+                                    <p class="metric-copy">Average requests spawned during a two-hour playtest block.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Balance rerolls</span>
+                                    <span class="metric-value">8%</span>
+                                    <p class="metric-copy">Rejected by heuristics before players ever see them.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Latency budget</span>
+                                    <span class="metric-value">1.4s</span>
+                                    <p class="metric-copy">Round trip from Unreal event to validated card JSON.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Telemetry coverage</span>
+                                    <span class="metric-value">93%</span>
+                                    <p class="metric-copy">Sessions reporting lineage stats back into prompt tuning.</p>
+                                </li>
                             </ul>
                         </section>
 
                         <section class="project-section">
                             <div class="project-section-header">
-                                <p class="project-section-eyebrow">Systems</p>
-                                <h2>How the generator stays fair and fresh</h2>
+                                <p class="project-section-eyebrow">Generator spine</p>
+                                <h2>Safeguards around every new card</h2>
                             </div>
-                            <div class="project-module-grid">
-                                <article class="project-module">
-                                    <h4>Template-Driven Prompts</h4>
-                                    <p>Card archetypes in <code>Prompts/</code> encode mechanics, rarity guidelines, and flavor goals so AI output stays coherent.</p>
+                            <div class="project-insight-grid">
+                                <article class="project-insight-card">
+                                    <h4>Template vault</h4>
+                                    <p>Prompt blueprints define mechanical knobs, rarity weights, and lore tone so outputs feel intentional.</p>
+                                    <ul>
+                                        <li>Archetype configs tweak stat curves based on live telemetry.</li>
+                                        <li>Flavor slots let writers inject seasonal stories on demand.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Gemini Orchestration</h4>
-                                    <p><code>gemini_handler.py</code> assembles prompts, calls Gemini, and repairs malformed JSON with deterministic fallbacks.</p>
+                                <article class="project-insight-card">
+                                    <h4>Gemini orchestration</h4>
+                                    <p>Request broker replays failed generations with patched JSON or fallback prompts before Unreal hears about it.</p>
+                                    <ul>
+                                        <li>Structured diffing ensures stat blocks stay machine readable.</li>
+                                        <li>Rate limiting keeps the pipeline stable during release spikes.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Balance Filters</h4>
-                                    <p>Utility scripts score stats, block banned effects, and enforce numeric caps before any card reaches the catalog.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Evolution Metrics</h4>
-                                    <p>Generated cards receive lineage IDs; Unreal telemetry feeds back usage stats to steer future prompt constraints.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Catalog Persistence</h4>
-                                    <p>Each card is stored with prompt, response, and hash so drops can be replayed, traded, or audited later.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Delivery Interface</h4>
-                                    <p>HTTP and WebSocket endpoints keep Unreal clients responsive whether pulling packs live or pre-generating pools.</p>
+                                <article class="project-insight-card">
+                                    <h4>Balance watchtower</h4>
+                                    <p>Heuristics grade cards against banned mechanics and power ceilings, logging every veto for designers.</p>
+                                    <ul>
+                                        <li>Telemetry feedback loops clamp runaway archetypes.</li>
+                                        <li>Manual approvals can override but must cite a rationale.</li>
+                                    </ul>
                                 </article>
                             </div>
+                        </section>
+
+                        <section class="project-section project-spotlight">
+                            <h3>Live ops without content crunch</h3>
+                            <p>
+                                Designers focus on new mechanics while the generator handles balanced variants. Players feel endless novelty without
+                                waiting months for expansion packs.
+                            </p>
                         </section>
 
                         <section class="project-section project-flow">

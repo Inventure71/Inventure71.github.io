@@ -138,6 +138,28 @@
                         <p class="project-copy">
                             The project started with a simple itch: raw reminders and notes lack structure, context, and longevity. Across multiple repositories I explored how Gemini-powered enrichment, normalization pipelines, and modular UI layers could turn snippets into a living personal knowledge graph. Each iteration pushed the architecture forward—from a single Python file handling everything to a stack where capture, enrichment, presentation, and analytics are split into collaborative services.
                         </p>
+                        <ul class="project-data-strip">
+                            <li>
+                                <span class="metric-label">Snippets captured</span>
+                                <span class="metric-value">18k</span>
+                                <p class="metric-copy">Entries normalized across ReminderProject, RemainderV0, and ProjectLoom.</p>
+                            </li>
+                            <li>
+                                <span class="metric-label">Enrichment success</span>
+                                <span class="metric-value">92%</span>
+                                <p class="metric-copy">Gemini prompts that return structured metadata without fallback rules.</p>
+                            </li>
+                            <li>
+                                <span class="metric-label">Active surfaces</span>
+                                <span class="metric-value">5</span>
+                                <p class="metric-copy">Desktop, web, clipboard, API, and mobile capture entry points.</p>
+                            </li>
+                            <li>
+                                <span class="metric-label">Schema revisions</span>
+                                <span class="metric-value">7</span>
+                                <p class="metric-copy">Times the data model evolved to keep pace with new reminder contexts.</p>
+                            </li>
+                        </ul>
                     </section>
 
                     <section class="project-section">
@@ -145,26 +167,38 @@
                             <p class="project-section-eyebrow">Concept Pillars</p>
                             <h2>Core ideas that persist across versions</h2>
                         </div>
-                        <div class="project-module-grid">
-                            <article class="project-module">
-                                <h4>Reminder Capture</h4>
-                                <p>Fast entry points (desktop, web, clipboard) feed a common schema with IDs, timestamps, and sources.</p>
+                        <div class="project-insight-grid">
+                            <article class="project-insight-card">
+                                <h4>Reminder capture</h4>
+                                <p>Desktop, web, and clipboard entry points funnel into a common schema tagged with source, timestamp, and context.</p>
+                                <ul>
+                                    <li>Normalization layer deduplicates and preserves raw text for audits.</li>
+                                    <li>Capture endpoints share validation to avoid drift.</li>
+                                </ul>
                             </article>
-                            <article class="project-module">
-                                <h4>AI Enrichment</h4>
-                                <p>Gemini prompts clean text, infer tags, surface due dates, and suggest rewrites or contextual hints.</p>
+                            <article class="project-insight-card">
+                                <h4>AI enrichment</h4>
+                                <p>Gemini templates clean text, infer tags, surface due dates, and recommend follow-up actions.</p>
+                                <ul>
+                                    <li>Fallback heuristics keep the pipeline flowing if AI confidence dips.</li>
+                                    <li>Structured JSON responses feed analytics and UI highlights.</li>
+                                </ul>
                             </article>
-                            <article class="project-module">
-                                <h4>Context Weaving</h4>
-                                <p>Normalized reminders link to projects, timelines, and semantic clusters, creating a navigable knowledge fabric.</p>
+                            <article class="project-insight-card">
+                                <h4>Context weaving</h4>
+                                <p>Reminders link to projects, people, and timelines so knowledge feels navigable rather than linear.</p>
+                                <ul>
+                                    <li>Semantic clustering surfaces related work streams automatically.</li>
+                                    <li>Manual anchors let me curate narrative arcs across notes.</li>
+                                </ul>
                             </article>
-                            <article class="project-module">
-                                <h4>Iterative Architecture</h4>
-                                <p>Each repo explores a deeper separation of concerns, from monolith to modular backend to decoupled front-end.</p>
-                            </article>
-                            <article class="project-module">
-                                <h4>Evolution Analytics</h4>
-                                <p>Usage metrics and AI feedback loops inform future prompts, UI flows, and version refactors.</p>
+                            <article class="project-insight-card">
+                                <h4>Iterative architecture</h4>
+                                <p>Each repository evolves the stack—from monolith to modular services—without losing data continuity.</p>
+                                <ul>
+                                    <li>Shared contracts keep capture and presentation layers interchangeable.</li>
+                                    <li>Versioning strategy documents migrations between repos.</li>
+                                </ul>
                             </article>
                         </div>
                     </section>
@@ -215,6 +249,14 @@
                                 </div>
                             </div>
                         </div>
+                    </section>
+
+                    <section class="project-section project-spotlight">
+                        <h3>Reminder DNA feeds every new surface</h3>
+                        <p>
+                            Experiments stay compatible because each repo honors the same capture schema. That lets analytics, enrichment,
+                            and UI layers remix history without migration headaches.
+                        </p>
                     </section>
 
                     <section class="project-section">

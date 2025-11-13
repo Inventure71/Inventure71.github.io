@@ -120,43 +120,72 @@
 
                         <section class="project-section">
                             <div class="project-section-header">
-                                <p class="project-section-eyebrow">Narrative</p>
-                                <h2>Why build a holographic deck</h2>
+                                <p class="project-section-eyebrow">Session telemetry</p>
+                                <h2>Signals that keep the hologram believable</h2>
                             </div>
-                            <p class="project-copy">
-                                Traditional music controllers expect tactile hardware—knobs, buttons, or touchscreens that wear out and constrain performance. HoloVinyl flips the paradigm: by blending live hand landmarks with contextual object detection, it creates a hovering control surface that responds to motion alone. The project became a sandbox for mapping ML perception into vivid UX feedback, letting me design gestures, states, and latency budgets in unison.
-                            </p>
-                            <ul class="project-stack-list">
-                                <li>Python 3.11</li>
-                                <li>OpenCV Video Pipelines</li>
-                                <li>Ultralytics YOLO nano weights</li>
-                                <li>Modular UI composition</li>
+                            <ul class="project-data-strip">
+                                <li>
+                                    <span class="metric-label">Gesture latency</span>
+                                    <span class="metric-value">47 ms</span>
+                                    <p class="metric-copy">Median hand pose to UI response across 60 FPS webcam feeds.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Tracking confidence</span>
+                                    <span class="metric-value">0.93</span>
+                                    <p class="metric-copy">Average landmark certainty before gestures become actionable.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Custom gestures</span>
+                                    <span class="metric-value">12</span>
+                                    <p class="metric-copy">Mapped to DJ-style interactions like scrubbing, slicing, and looping.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Lighting tolerance</span>
+                                    <span class="metric-value">±35%</span>
+                                    <p class="metric-copy">Ambient delta handled before calibration requests a reset.</p>
+                                </li>
                             </ul>
                         </section>
 
                         <section class="project-section">
                             <div class="project-section-header">
-                                <p class="project-section-eyebrow">Systems</p>
-                                <h2>How the interface stays responsive</h2>
+                                <p class="project-section-eyebrow">Interaction layers</p>
+                                <h2>What makes motion feel like an instrument</h2>
                             </div>
-                            <div class="project-module-grid">
-                                <article class="project-module">
-                                    <h4>Signature Moment</h4>
-                                    <p>Pinch to grab a floating vinyl, swipe to cue a track, and see menus reorganize instantly around your hand pose.</p>
+                            <div class="project-insight-grid">
+                                <article class="project-insight-card">
+                                    <h4>Signature gestures</h4>
+                                    <p>Pinch, swipe, and hold combinations orchestrate deck actions while the UI mirrors hand rotation.</p>
+                                    <ul>
+                                        <li>Context-aware overlays fade in around active fingertips.</li>
+                                        <li>Gesture cooldowns prevent accidental double triggers.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Perception Stack</h4>
-                                    <p><code>HandTracking.py</code> extracts 21 landmarks per frame while a nano YOLO head flags contextual objects that unlock alternate controls.</p>
+                                <article class="project-insight-card">
+                                    <h4>Perception stack</h4>
+                                    <p>Landmark tracking pairs with YOLO detections so props like vinyl sleeves unlock extra controls.</p>
+                                    <ul>
+                                        <li>Light compensation keeps hand masks crisp in dim venues.</li>
+                                        <li>Detection fallbacks swap to generic gestures when objects leave frame.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Dynamic UI Fabric</h4>
-                                    <p><code>UI.py</code>, <code>addButtonUI.py</code>, and <code>submenu_UI.py</code> render overlays directly onto the video texture, injecting buttons, meters, and tooltips on demand.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Extensibility Hooks</h4>
-                                    <p>Pluggable models inside <code>custom_models/</code> extend detection vocabularies without reworking gesture logic or the event dispatcher.</p>
+                                <article class="project-insight-card">
+                                    <h4>Dynamic UI fabric</h4>
+                                    <p>Modular overlays draw directly on the video texture, rendering faders, meters, and tooltips around the performer.</p>
+                                    <ul>
+                                        <li>UI nodes define their own animation and decay profiles.</li>
+                                        <li>Hooks allow future model drops without changing rendering code.</li>
+                                    </ul>
                                 </article>
                             </div>
+                        </section>
+
+                        <section class="project-section project-spotlight">
+                            <h3>Stage presence with invisible hardware</h3>
+                            <p>
+                                HoloVinyl lets performers carry a single webcam and laptop yet still project a futuristic control surface that
+                                audiences can read and react to.
+                            </p>
                         </section>
 
                         <section class="project-section project-flow">

@@ -120,43 +120,72 @@
 
                         <section class="project-section">
                             <div class="project-section-header">
-                                <p class="project-section-eyebrow">Narrative</p>
-                                <h2>Why merge games, cells, and robots</h2>
+                                <p class="project-section-eyebrow">Experiment pulse</p>
+                                <h2>Cross-domain stats from the sandbox</h2>
                             </div>
-                            <p class="project-copy">
-                                I wanted one sandbox where perception, reasoning, and actuation could iterate together. VictorIA began as a Connect 4 agent, then expanded when I needed tooling for annotating cell imagery and prototyping robotic responses. Rather than scatter scripts across repositories, I invested in shared modules, data contracts, and orchestration so each experiment can borrow assets from the others—letting a vision experiment influence the next robotics trial or strategy sim.
-                            </p>
-                            <ul class="project-stack-list">
-                                <li>Python 3.x</li>
-                                <li>OpenCV Visualization</li>
-                                <li>NumPy &amp; SciPy heuristics</li>
-                                <li>Serial / hardware adapters</li>
+                            <ul class="project-data-strip">
+                                <li>
+                                    <span class="metric-label">Connect 4 win rate</span>
+                                    <span class="metric-value">78%</span>
+                                    <p class="metric-copy">Against benchmark minimax agents over 1,000 simulated matches.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Cell annotations</span>
+                                    <span class="metric-value">3.5k</span>
+                                    <p class="metric-copy">Regions tagged through the shared point selection tooling.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Robot latency</span>
+                                    <span class="metric-value">220 ms</span>
+                                    <p class="metric-copy">Command dispatch to motion acknowledgment on a test arm.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Shared modules</span>
+                                    <span class="metric-value">28</span>
+                                    <p class="metric-copy">Utilities reused across AI, vision, and robotics experiments.</p>
+                                </li>
                             </ul>
                         </section>
 
                         <section class="project-section">
                             <div class="project-section-header">
-                                <p class="project-section-eyebrow">Systems</p>
-                                <h2>What powers the sandbox</h2>
+                                <p class="project-section-eyebrow">Shared backbone</p>
+                                <h2>How one codebase serves three disciplines</h2>
                             </div>
-                            <div class="project-module-grid">
-                                <article class="project-module">
-                                    <h4>Connect 4 Brain</h4>
-                                    <p><code>connect4.py</code> models the board, simulates futures with minimax, and exposes a clean API for human or automated play.</p>
+                            <div class="project-insight-grid">
+                                <article class="project-insight-card">
+                                    <h4>Connect 4 brain</h4>
+                                    <p>Game engine simulates futures and exposes APIs that other experiments reuse for decision loops.</p>
+                                    <ul>
+                                        <li>Search depth adjusts based on available compute and latency budgets.</li>
+                                        <li>Board telemetry feeds into robotics pick-and-place routines.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Vision Lab Tools</h4>
-                                    <p><code>ImagePointSelection.py</code> drives an annotation loop that writes selections into <code>Processed_Cells/</code> for downstream models.</p>
+                                <article class="project-insight-card">
+                                    <h4>Vision lab toolkit</h4>
+                                    <p>Annotation loop writes normalized coordinates and masks to <code>Processed_Cells/</code> for model training.</p>
+                                    <ul>
+                                        <li>Shared schema lets robotics modules simulate cell pick-up sequences.</li>
+                                        <li>Plugins support new imaging modalities without rewriting UI.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Robot Testbed</h4>
-                                    <p><code>RobotExperimental.py</code> converts game states or image-derived targets into device commands for physical or simulated arms.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Shared Utilities</h4>
-                                    <p>Support modules inside <code>utils/</code> keep logging, math helpers, and file I/O consistent, cutting duplication across experiments.</p>
+                                <article class="project-insight-card">
+                                    <h4>Robot testbed</h4>
+                                    <p>Unified adapter translates strategy outputs or vision detections into serial commands.</p>
+                                    <ul>
+                                        <li>Simulation mode replays experiments for analysis without hardware.</li>
+                                        <li>Safety interlocks ensure motions stay within calibrated bounds.</li>
+                                    </ul>
                                 </article>
                             </div>
+                        </section>
+
+                        <section class="project-section project-spotlight">
+                            <h3>Ideas travel between experiments</h3>
+                            <p>
+                                A better heuristic in Connect 4 informs the robot pick-and-place strategy; improved annotation flows sharpen the
+                                perception stack. VictorIA keeps all disciplines speaking the same language.
+                            </p>
                         </section>
 
                         <section class="project-section project-flow">

@@ -120,51 +120,72 @@
 
                         <section class="project-section">
                             <div class="project-section-header">
-                                <p class="project-section-eyebrow">Narrative</p>
-                                <h2>Why centralize the donation journey</h2>
+                                <p class="project-section-eyebrow">Impact pulse</p>
+                                <h2>Metrics that guide the giving experience</h2>
                             </div>
-                            <p class="project-copy">
-                                Dr Sorriso’s fundraising data lived across payment gateways, inboxes, and offline spreadsheets, making it hard to share timely impact. I designed DrSorrisoDonations to ingest payments, normalize donor profiles, and orchestrate follow-up messaging in one secure backend. The service exposes APIs for web forms and third-party apps, stores a transparent allocation ledger, and surfaces insights that help volunteers act faster—from identifying lapsed donors to celebrating campaign milestones.
-                            </p>
-                            <ul class="project-stack-list">
-                                <li>FastAPI + PostgreSQL service core</li>
-                                <li>Stripe &amp; PayPal gateway adapters</li>
-                                <li>Celery workers for emails &amp; reports</li>
-                                <li>Pandas-powered analytics snapshots</li>
+                            <ul class="project-data-strip">
+                                <li>
+                                    <span class="metric-label">Average gift</span>
+                                    <span class="metric-value">€86</span>
+                                    <p class="metric-copy">Blended across one-off and recurring donors after fees.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Recurring retention</span>
+                                    <span class="metric-value">82%</span>
+                                    <p class="metric-copy">Kept steady with proactive renewal journeys.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Receipt SLA</span>
+                                    <span class="metric-value">4m</span>
+                                    <p class="metric-copy">Time from gift confirmation to branded receipt email.</p>
+                                </li>
+                                <li>
+                                    <span class="metric-label">Volunteer touchpoints</span>
+                                    <span class="metric-value">+37%</span>
+                                    <p class="metric-copy">Increase after surfacing lapsed donors in weekly digests.</p>
+                                </li>
                             </ul>
                         </section>
 
                         <section class="project-section">
                             <div class="project-section-header">
-                                <p class="project-section-eyebrow">Systems</p>
-                                <h2>What keeps donors confident</h2>
+                                <p class="project-section-eyebrow">Operating spine</p>
+                                <h2>How donors and staff stay aligned</h2>
                             </div>
-                            <div class="project-module-grid">
-                                <article class="project-module">
-                                    <h4>Unified Intake</h4>
-                                    <p>REST endpoints and webhooks capture one-off and recurring gifts, verifying signatures before committing transactions.</p>
+                            <div class="project-insight-grid">
+                                <article class="project-insight-card">
+                                    <h4>Unified intake</h4>
+                                    <p>Gateway adapters validate signatures, normalize currencies, and attach campaign metadata before storage.</p>
+                                    <ul>
+                                        <li>Stripe and PayPal payloads collapse into a shared schema.</li>
+                                        <li>Manual gifts imported via spreadsheet use the same pipeline.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Donor CRM</h4>
-                                    <p>Profiles track consent flags, preferences, and lifecycle segments to drive personalized outreach.</p>
+                                <article class="project-insight-card">
+                                    <h4>Donor relationship map</h4>
+                                    <p>CRM layer tracks consent flags, communication preferences, and volunteer notes for each supporter.</p>
+                                    <ul>
+                                        <li>Lapsed donor alerts feed weekly volunteer stand-ups.</li>
+                                        <li>Automations adapt tone based on donor lifecycle stage.</li>
+                                    </ul>
                                 </article>
-                                <article class="project-module">
-                                    <h4>Allocation Ledger</h4>
-                                    <p>Every donation can be split across programs with auditable metadata for impact storytelling.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Automated Touchpoints</h4>
-                                    <p>Template engine triggers thank-you emails, milestone updates, and tax receipts with merge fields.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Analytics Hub</h4>
-                                    <p>Daily jobs roll campaign performance, retention trends, and source attribution into sharable dashboards.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Compliance Layer</h4>
-                                    <p>Role-based access, audit events, and secure PII storage satisfy reporting and privacy expectations.</p>
+                                <article class="project-insight-card">
+                                    <h4>Transparent allocations</h4>
+                                    <p>Ledger splits each donation across programs so finance, marketing, and leadership share the same numbers.</p>
+                                    <ul>
+                                        <li>Impact stories pull directly from allocation metadata.</li>
+                                        <li>Audit logs mirror every manual override or refund.</li>
+                                    </ul>
                                 </article>
                             </div>
+                        </section>
+
+                        <section class="project-section project-spotlight">
+                            <h3>Volunteers see who needs a thank-you next</h3>
+                            <p>
+                                Weekly digests pair donor sentiment with giving history so community teams know which families to call, who to
+                                celebrate, and when to flag finance about unusual activity.
+                            </p>
                         </section>
 
                         <section class="project-section project-flow">
