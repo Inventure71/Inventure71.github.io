@@ -3,9 +3,9 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Details for VictorIA project" />
-        <meta name="author" content="" />
-        <title>Project: VictorIA - Matteo Giorgetti</title>
+        <meta name="description" content="VictorIA - A multi-domain Python AI sandbox blending game strategy, interactive image analysis, and experimental robotics control" />
+        <meta name="author" content="Matteo Giorgetti" />
+        <title>VictorIA - Matteo Giorgetti</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
         <!-- Custom Google font-->
@@ -32,8 +32,10 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <!-- Modern Design System -->
         <link href="../css/modern.css" rel="stylesheet" />
+        <!-- Project Pages Styles -->
+        <link href="../css/project-pages.css" rel="stylesheet" />
     </head>
-    <body class="d-flex flex-column h-100">
+    <body class="d-flex flex-column h-100 project-page">
         <main class="flex-shrink-0">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg py-3">
@@ -55,66 +57,181 @@
                     </div>
                 </div>
             </nav>
+
             <!-- Project Details Section-->
             <section class="py-5">
-                <div class="container px-5 mb-5">
-                    <div class="row gx-5 justify-content-center">
-                        <div class="col-lg-10 col-xl-8">
-                            <div class="text-center mb-5 fade-in">
-                                <h1 class="display-5 fw-bolder mb-3">VictorIA</h1>
-                                <p class="lead text-muted">AI-Powered Connect-4 Playing Robotic Arm</p>
-                            </div>
-                            <article class="project-details">
-                                <div class="card mb-4 p-4 fade-in">
-                                    VictorIA is a robotic arm designed to play Connect-4 against human opponents, utilizing AI to make strategic moves.
+                <div class="container px-5">
+                    <div class="project-shell fade-in">
+                        <!-- Module: Hero Meta -->
+                        <header class="project-hero">
+                            <div>
+                                <p class="project-eyebrow">Experimental Platform · Multi-Domain AI</p>
+                                <h1>VictorIA</h1>
+                                <p class="lead">A Python AI sandbox integrating game strategy, computer vision for cellular analysis, and experimental robotics—bridging perception, reasoning, and actuation.</p>
+                                <div class="project-pills">
+                                    <span class="project-pill">AI-Powered</span>
+                                    <span class="project-pill">Computer Vision</span>
+                                    <span class="project-pill">Robotics</span>
+                                    <span class="project-pill">Game AI</span>
                                 </div>
-                                <h3 class="fw-bolder mb-3" >Functionality:</h3>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Game Strategy: Employs AI algorithms to determine optimal moves in the game.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Robotic Control: Physically moves pieces on the board using the robotic arm.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Computer Vision: Detects the current state of the game board to inform decision-making.</li>
-                                </ul>
-
-                                <h3 class="fw-bolder mb-3" >Technical Implementation:</h3>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>AI Algorithms: Implements strategies like minimax for game decision-making.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Robotics: Uses hardware like the Dobot Magician for physical interactions.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Computer Vision: Applies OpenCV to analyze the game board and piece positions.</li>
-                                </ul>
-
-                                <h3 class="fw-bolder mb-3" >Skills Demonstrated:</h3>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Integration of AI with robotics.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Application of computer vision in real-time scenarios.</li>
-                                    <li class="mb-2"><span style="display:inline-block;width:1.1em;height:1.1em;background:var(--brand-accent);border-radius:50%;margin-right:0.7em;vertical-align:middle;"></span>Collaborative development in a multidisciplinary team.</li>
-                                </ul>
-                            </article>
-                            <div class="text-center mt-5">
-                                <a class="btn btn-outline-primary btn-lg px-4" href="../projects.html">
-                                    <i class="bi bi-arrow-left-circle me-2"></i>
-                                    Back to Projects
-                                </a>
                             </div>
+                            <div class="hero-meta">
+                                <div class="hero-meta-card">
+                                    <span class="label">Role</span>
+                                    <span class="value">Creator · AI Engineer</span>
+                                </div>
+                                <div class="hero-meta-card">
+                                    <span class="label">Timeline</span>
+                                    <span class="value">Ongoing Exploration</span>
+                                </div>
+                                <div class="hero-meta-card">
+                                    <span class="label">Stack</span>
+                                    <span class="value">Python · OpenCV · NumPy</span>
+                                </div>
+                                <div class="hero-meta-card">
+                                    <span class="label">Status</span>
+                                    <span class="value">Experimental Testbed</span>
+                                </div>
+                            </div>
+                        </header>
+
+                        <!-- Module: Media + Snapshot -->
+                        <section class="project-media-panel">
+                            <div class="project-media-stage">
+                                <div style="aspect-ratio: 16/9; background: linear-gradient(135deg, var(--color-bg-alt) 0%, var(--color-border) 100%); border-radius: var(--radius-2xl); display: flex; align-items: center; justify-content: center; color: var(--color-text-secondary);">
+                                    <div style="text-align: center;">
+                                        <i class="bi bi-robot" style="font-size: 4rem; margin-bottom: 1rem; display: block;"></i>
+                                        <p>Multi-Domain AI Experimentation Platform</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <aside class="project-sidecard">
+                                <h3>Project Snapshot</h3>
+                                <p>An exploratory platform unifying game AI, vision-guided image workflows, and robotics experimentation into a cohesive multi-modal system.</p>
+                                <ul class="sidecard-highlight">
+                                    <li><i class="bi bi-trophy"></i><span>Strategic Connect 4 AI using minimax algorithms</span></li>
+                                    <li><i class="bi bi-eye"></i><span>Interactive point selection for microscopy data analysis</span></li>
+                                    <li><i class="bi bi-cpu"></i><span>Experimental robotics control translating analysis to action</span></li>
+                                </ul>
+                                <div class="sidecard-links">
+                                    <a href="https://github.com/Inventure71/VictorIA" target="_blank" rel="noreferrer">
+                                        <span>View Repository</span>
+                                        <i class="bi bi-arrow-up-right"></i>
+                                    </a>
+                                </div>
+                            </aside>
+                        </section>
+
+                        <!-- Module: Narrative -->
+                        <section class="project-section">
+                            <div class="project-section-header">
+                                <p class="project-section-eyebrow">Narrative</p>
+                                <h2>Why this project exists</h2>
+                            </div>
+                            <p class="project-copy">
+                                VictorIA emerged from exploring how AI techniques can unify strategic decision-making, vision-guided annotation, and physical actuation. The name blends "Victory" (game strategy) with "AI," reflecting a focus on intelligent systems that lead to successful outcomes across multiple domains—from winning games to processing cellular imagery to experimental robotic tasks. Rather than building one perfect solution, VictorIA serves as a testbed where perception and decision pipelines converge in applied AI scenarios.
+                            </p>
+                            <ul class="project-stack-list">
+                                <li>Python 100%</li>
+                                <li>OpenCV</li>
+                                <li>NumPy / SciPy</li>
+                                <li>Pillow / scikit-image</li>
+                                <li>Experimental Robotics I/O</li>
+                            </ul>
+                        </section>
+
+                        <!-- Module: Systems Grid -->
+                        <section class="project-section">
+                            <div class="project-section-header">
+                                <p class="project-section-eyebrow">Systems</p>
+                                <h2>What makes it different</h2>
+                            </div>
+                            <div class="project-module-grid">
+                                <article class="project-module">
+                                    <h4>Game AI Strategy</h4>
+                                    <p>Connect 4 implementation with board representation, move validation, win detection, and AI agents using minimax or alpha-beta pruning for optimal strategic decisions.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Computer Vision Pipeline</h4>
+                                    <p>Interactive point selection on images with GUI callbacks, ROI extraction, and processing of cell imagery from raw datasets to analyzed outputs.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Robotics Integration</h4>
+                                    <p>Experimental robotic control that interfaces with devices (serial, USB, Bluetooth) or simulates movement, translating game states or image data to motion commands.</p>
+                                </article>
+                            </div>
+                        </section>
+
+                        <!-- Module: Flow Timeline -->
+                        <section class="project-section project-flow">
+                            <div class="project-section-header">
+                                <p class="project-section-eyebrow">Flow</p>
+                                <h2>How the system operates</h2>
+                            </div>
+                            <div class="project-flow-steps">
+                                <div class="project-flow-step">
+                                    <span class="flow-index">01</span>
+                                    <div class="flow-body">
+                                        <h5>Data Acquisition</h5>
+                                        <p>Load raw images from the Images/ or cells/ directories, or initialize a game board state for AI decision-making.</p>
+                                    </div>
+                                </div>
+                                <div class="project-flow-step">
+                                    <span class="flow-index">02</span>
+                                    <div class="flow-body">
+                                        <h5>Processing & Analysis</h5>
+                                        <p>Apply computer vision techniques for point selection and cell segmentation, or run game AI algorithms to evaluate optimal moves.</p>
+                                    </div>
+                                </div>
+                                <div class="project-flow-step">
+                                    <span class="flow-index">03</span>
+                                    <div class="flow-body">
+                                        <h5>Action & Output</h5>
+                                        <p>Store processed results in Processed_Cells/, display game decisions, or translate analytical outputs to experimental robotic commands.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Module: Features -->
+                        <section class="project-section">
+                            <div class="project-section-header">
+                                <p class="project-section-eyebrow">Features</p>
+                                <h2>Key capabilities</h2>
+                            </div>
+                            <div class="project-module-grid">
+                                <article class="project-module">
+                                    <h4>Modular Architecture</h4>
+                                    <p>Central orchestrator (main.py) coordinates mode selection between game, image processing, and robotics experiments with clear separation of concerns.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Interactive Vision Tools</h4>
+                                    <p>ImagePointSelection.py provides GUI-based coordinate selection on images for manual annotation and ROI identification in cellular datasets.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Model Management</h4>
+                                    <p>Models/ directory supports storage of trained ML models for classification, segmentation, or policy networks that enhance decision-making.</p>
+                                </article>
+                                <article class="project-module">
+                                    <h4>Utility Layer</h4>
+                                    <p>Reusable helpers under utils/ prevent code duplication across game logic, image processing, and robotics modules.</p>
+                                </article>
+                            </div>
+                        </section>
+
+                        <!-- Module: Back Link -->
+                        <div class="text-center">
+                            <a href="../projects.html" class="project-back-link">
+                                <i class="bi bi-arrow-left"></i>
+                                Back to all projects
+                            </a>
                         </div>
                     </div>
                 </div>
             </section>
         </main>
-         <!-- Footer-->
-         <footer class="py-4 mt-auto" style="background-color: var(--bs-body-bg); color: var(--bs-light);">
-            <div class="container px-5">
-                <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                    <div class="col-auto"><div class="small m-0">Copyright &copy; https://inventure71.github.io 2025</div></div>
-                    <div class="col-auto">
-                        <a class="small" href="#!">Privacy</a>
-                        <span class="mx-1">&middot;</span>
-                        <a class="small" href="#!">Terms</a>
-                        <span class="mx-1">&middot;</span>
-                        <a class="small" href="#!">Contact</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+
+        <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../js/theme.js"></script>
         <script src="../js/scripts.js"></script>
