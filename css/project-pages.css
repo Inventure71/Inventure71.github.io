@@ -27,27 +27,22 @@ body.project-page {
 
 .project-wip {
     position: fixed;
-    inset: 0;
-    width: 100vw;
-    z-index: 30;
+    top: 0;
+    right: 0;
+    z-index: 999;
     pointer-events: none;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
 }
 
 .project-wip__tape {
     pointer-events: auto;
     position: absolute;
-    top: clamp(-8rem, -6vw, -2.5rem);
-    left: clamp(-18vw, -12vw, -6vw);
-    margin: 0;
-    padding: 0;
+    top: 0;
+    right: 0;
     border: none;
     background: none;
     cursor: pointer;
-    transform-origin: top left;
-    transform: rotate(8deg);
+    transform-origin: top right;
+    transform: rotate(45deg) translateY(300%) translateX(50%);
 }
 
 .project-wip__tape:focus-visible {
@@ -58,14 +53,24 @@ body.project-page {
 .project-wip__tape::before {
     content: "";
     display: block;
-    width: max(180vw, 1600px);
-    height: clamp(4.5rem, 13vw, 8rem);
+    width: clamp(260px, 34vw, 520px);
+    aspect-ratio: 1600 / 220;
     background-image: url("../assets/placeholders/wip-tape-placeholder.svg");
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     box-shadow: 0 22px 55px rgba(15, 23, 42, 0.22);
-    border-radius: clamp(0.75rem, 3vw, 1.5rem);
+    border-radius: clamp(0.75rem, 2.5vw, 1.25rem);
+}
+
+@media (max-width: 640px) {
+    .project-wip__tape {
+        transform: rotate(-38deg) translateY(18%);
+    }
+
+    .project-wip__tape::before {
+        width: clamp(220px, 72vw, 360px);
+    }
 }
 
 .project-wip__label {
@@ -267,12 +272,9 @@ body.project-page main > section > .container {
 }
 
 .project-media-stage--image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    aspect-ratio: 16 / 9;
+    display: block;
+    padding: 0;
     background: var(--project-surface);
-    padding: clamp(0.75rem, 2vw, 1.5rem);
 }
 
 .project-media-stage iframe,
@@ -286,7 +288,7 @@ body.project-page main > section > .container {
 .project-media-stage img {
     width: 100%;
     height: auto;
-    max-height: 100%;
+    max-width: 100%;
     display: block;
     border: none;
     object-fit: contain;
@@ -485,7 +487,10 @@ body.project-page main > section > .container {
 
 .gallery-card img {
     width: 100%;
+    height: auto;
+    max-height: 400px;
     display: block;
+    object-fit: contain;
 }
 
 .gallery-card figcaption {
