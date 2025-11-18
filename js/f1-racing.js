@@ -190,7 +190,7 @@
             const center = { x: VIEWBOX.width / 2, y: VIEWBOX.height / 2 };
             const points = [];
             // Increase margin to account for track width and car offsets
-            const margin = 120;
+            const margin = 60;
 
             for (let i = 0; i < pointCount; i++) {
                 const angle = (i / pointCount) * Math.PI * 2 + randBetween(-0.25, 0.25);

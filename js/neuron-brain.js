@@ -178,7 +178,7 @@
 
     // --- Physics Engine ---
     function updatePhysics() {
-        // Repulsion
+        // 1. Repulsion (Coulomb's Law)
         for (let i = 0; i < nodes.length; i++) {
             for (let j = i + 1; j < nodes.length; j++) {
                 const a = nodes[i];
@@ -186,70 +186,118 @@
                 const dx = b.x - a.x;
                 const dy = b.y - a.y;
                 const dist = Math.hypot(dx, dy) || 1;
-                const force = (1000 * 1000) / (dist * dist); // Inverse square law
                 
-                const fx = (dx / dist) * force * 0.0005;
-                const fy = (dy / dist) * force * 0.0005;
+                // Stronger repulsion at close range
+                const force = (2000 * 2000) / (dist * dist); 
+                
+                const fx = (dx / dist) * force * 0.0002;
+                const fy = (dy / dist) * force * 0.0002;
 
-                a.vx -= fx;
-                a.vy -= fy;
-                b.vx += fx;
-                b.vy += fy;
+                if (a !== hoveredNode) {
+                    a.vx -= fx;
+                    a.vy -= fy;
+                }
+                if (b !== hoveredNode) {
+                    b.vx += fx;
+                    b.vy += fy;
+                }
             }
         }
 
-        // Spring (Edges)
+        // 2. Spring (Edges)
         edges.forEach(edge => {
             const a = edge.source;
             const b = edge.target;
             const dx = b.x - a.x;
             const dy = b.y - a.y;
             const dist = Math.hypot(dx, dy) || 1;
-            const targetDist = 150; // Optimal distance
+            const targetDist = 180; // Increased spacing
             
-            const force = (dist - targetDist) * 0.005;
+            const force = (dist - targetDist) * 0.003;
             const fx = (dx / dist) * force;
             const fy = (dy / dist) * force;
 
-            a.vx += fx;
-            a.vy += fy;
-            b.vx -= fx;
-            b.vy -= fy;
+            if (a !== hoveredNode) {
+                a.vx += fx;
+                a.vy += fy;
+            }
+            if (b !== hoveredNode) {
+                b.vx -= fx;
+                b.vy -= fy;
+            }
         });
 
-        // Center Gravity
+        // 3. Center Gravity
         nodes.forEach(node => {
+            if (node === hoveredNode) return; // Skip physics for hovered node
+
             const dx = (width / 2) - node.x;
             const dy = (height / 2) - node.y;
-            node.vx += dx * 0.0008;
-            node.vy += dy * 0.0008;
+            node.vx += dx * 0.0005;
+            node.vy += dy * 0.0005;
 
             // Mouse Interaction (Repel/Attract)
             const mdx = mouse.x - node.x;
             const mdy = mouse.y - node.y;
             const mDist = Math.hypot(mdx, mdy);
             
-            if (mDist < 200) {
-                const mForce = (200 - mDist) * 0.002;
+            if (mDist < 250) {
+                const mForce = (250 - mDist) * 0.001;
                 node.vx -= (mdx / mDist) * mForce;
                 node.vy -= (mdy / mDist) * mForce;
             }
 
             // Velocity Damping
-            node.vx *= 0.92;
-            node.vy *= 0.92;
+            node.vx *= 0.90;
+            node.vy *= 0.90;
 
             // Update Position
             node.x += node.vx;
             node.y += node.vy;
 
             // Boundary Check
-            const margin = node.radius;
-            if (node.x < margin) node.x = margin;
-            if (node.x > width - margin) node.x = width - margin;
-            if (node.y < margin) node.y = margin;
-            if (node.y > height - margin) node.y = height - margin;
+            const margin = node.radius + 20;
+            if (node.x < margin) { node.x = margin; node.vx *= -1; }
+            if (node.x > width - margin) { node.x = width - margin; node.vx *= -1; }
+            if (node.y < margin) { node.y = margin; node.vy *= -1; }
+            if (node.y > height - margin) { node.y = height - margin; node.vy *= -1; }
         });
+
+        // 4. Hard Collision Resolution (Prevent Overlap)
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const a = nodes[i];
+                const b = nodes[j];
+                const dx = b.x - a.x;
+                const dy = b.y - a.y;
+                const dist = Math.hypot(dx, dy);
+                const minDist = a.radius + b.radius + 10; // Add buffer
+
+                if (dist < minDist) {
+                    const overlap = minDist - dist;
+                    const nx = dx / dist;
+                    const ny = dy / dist;
+                    
+                    // Move apart proportional to inverse mass (assume equal mass for now)
+                    const moveX = nx * overlap * 0.5;
+                    const moveY = ny * overlap * 0.5;
+
+                    if (a !== hoveredNode) {
+                        a.x -= moveX;
+                        a.y -= moveY;
+                        // Kill velocity in collision direction
+                        a.vx *= 0.5;
+                        a.vy *= 0.5;
+                    }
+                    if (b !== hoveredNode) {
+                        b.x += moveX;
+                        b.y += moveY;
+                        b.vx *= 0.5;
+                        b.vy *= 0.5;
+                    }
+                }
+            }
+        }
     }
 
     // --- Rendering ---
@@ -257,43 +305,62 @@
         ctx.clearRect(0, 0, width, height);
 
         // Draw Edges
-        ctx.lineWidth = 1;
         edges.forEach(edge => {
+            const isConnectedToHover = hoveredNode && (edge.source === hoveredNode || edge.target === hoveredNode);
+            const isConnectedToSelected = selectedNode && (edge.source === selectedNode || edge.target === selectedNode);
+            
             ctx.beginPath();
             ctx.moveTo(edge.source.x, edge.source.y);
             ctx.lineTo(edge.target.x, edge.target.y);
             
-            const isConnectedToHover = hoveredNode && (edge.source === hoveredNode || edge.target === hoveredNode);
-            const isConnectedToSelected = selectedNode && (edge.source === selectedNode || edge.target === selectedNode);
-            
             if (isConnectedToHover || isConnectedToSelected) {
-                ctx.strokeStyle = 'rgba(59, 130, 246, 0.6)';
-                ctx.lineWidth = 2;
-            } else {
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.strokeStyle = 'rgba(59, 130, 246, 0.8)';
+                ctx.lineWidth = 2.5;
+                ctx.globalAlpha = 1;
+            } else if (hoveredNode) {
+                // Dim unrelated edges when hovering
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
                 ctx.lineWidth = 1;
+                ctx.globalAlpha = 0.2;
+            } else {
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.globalAlpha = 1;
             }
             ctx.stroke();
         });
+        ctx.globalAlpha = 1; // Reset alpha
 
         // Draw Nodes
         nodes.forEach(node => {
             const isHovered = node === hoveredNode;
             const isSelected = node === selectedNode;
+            const isConnected = hoveredNode && edges.some(e => 
+                (e.source === node && e.target === hoveredNode) || 
+                (e.target === node && e.source === hoveredNode)
+            );
 
             ctx.beginPath();
             ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
             
             if (isSelected) {
                 ctx.fillStyle = '#3b82f6'; // Brand accent
-                ctx.shadowBlur = 20;
+                ctx.shadowBlur = 25;
                 ctx.shadowColor = '#3b82f6';
             } else if (isHovered) {
                 ctx.fillStyle = '#60a5fa';
-                ctx.shadowBlur = 15;
+                ctx.shadowBlur = 20;
                 ctx.shadowColor = '#60a5fa';
+            } else if (isConnected) {
+                ctx.fillStyle = '#93c5fd'; // Lighter blue for connected nodes
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#93c5fd';
+            } else if (hoveredNode) {
+                // Dim unrelated nodes
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.shadowBlur = 0;
             } else {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
                 ctx.shadowBlur = 0;
             }
             
@@ -301,12 +368,16 @@
             ctx.shadowBlur = 0; // Reset
 
             // Draw Label
-            if (isHovered || isSelected || node.radius > 20) {
+            if (isHovered || isSelected || isConnected || (!hoveredNode && node.radius > 20)) {
                 ctx.fillStyle = '#fff';
-                ctx.font = isSelected ? 'bold 14px "Plus Jakarta Sans"' : '12px "Plus Jakarta Sans"';
+                ctx.font = (isHovered || isSelected) ? 'bold 15px "Plus Jakarta Sans"' : '13px "Plus Jakarta Sans"';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(node.id, node.x, node.y + node.radius + 15);
+                // Add text shadow for better readability
+                ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                ctx.shadowBlur = 4;
+                ctx.fillText(node.id, node.x, node.y + node.radius + 18);
+                ctx.shadowBlur = 0;
             }
         });
     }

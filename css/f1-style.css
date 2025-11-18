@@ -178,7 +178,10 @@ html[data-theme="dark"] .f1-leaderboard {
   --driver-accent: var(--brand-accent);
   --driver-accent-rgb: 255 56 96;
   display: grid;
-  grid-template-columns: 40px 1fr auto auto;
+  --driver-accent-rgb: 255 56 96;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto auto;
+  gap: 1rem;
   gap: 1rem;
   padding: 0.75rem 1rem;
   margin-bottom: 0.5rem;
@@ -249,6 +252,10 @@ html[data-theme="dark"] .f1-leaderboard {
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .f1-driver-code {
@@ -673,8 +680,9 @@ html[data-theme="dark"] .f1-track-info {
   width: 100%;
   margin: 0 auto;
   padding: 0;
+  margin: 0 auto;
+  padding: 0;
   align-items: flex-end;
-  overflow: hidden;
   box-sizing: border-box;
 }
 
