@@ -487,9 +487,11 @@
         }
 
         computeSpeed(index) {
-            const baseLapMs = randBetween(11000, 17000);
+            // Balanced speed: faster than original but realistic
+            const baseLapMs = randBetween(9500, 14000);
             const baseSpeed = this.trackLength / baseLapMs;
-            const variance = 0.9 + Math.random() * 0.25 + index * 0.005;
+            // Slight variance for overtaking opportunities
+            const variance = 0.95 + Math.random() * 0.15 + index * 0.002;
             return baseSpeed * variance;
         }
 
@@ -520,9 +522,12 @@
 
             this.cars.forEach((car) => {
                 if (car.finished) return;
-                const fatigue = 1 - (car.totalDistance / this.raceDistance) * 0.15;
-                const oscillation = Math.sin((timestamp + car.jitterOffset) / (car.boostWindow)) * 0.05;
-                const randomness = (Math.random() - 0.5) * 0.015;
+                
+                // Realistic physics: slight fatigue and natural speed oscillation
+                const fatigue = 1 - (car.totalDistance / this.raceDistance) * 0.05;
+                const oscillation = Math.sin((timestamp + car.jitterOffset) / (car.boostWindow)) * 0.02;
+                const randomness = (Math.random() - 0.5) * 0.01;
+                
                 const gain = car.speed * delta * (1 + (oscillation + randomness) * motionScale) * fatigue;
 
                 car.totalDistance += gain;
@@ -653,6 +658,7 @@
             // Get the current point for positioning
             const currPoint = this.trackPath.getPointAtLength(position);
             const normal = angle + Math.PI / 2;
+            
             const carX = currPoint.x + Math.cos(normal) * car.trackOffset;
             const carY = currPoint.y + Math.sin(normal) * car.trackOffset;
 
