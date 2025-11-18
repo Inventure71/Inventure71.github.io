@@ -640,6 +640,7 @@
             }
 
             let diff = degrees - car.rotation;
+            diff = diff % 360;
             if (diff > 180) {
                 diff -= 360;
             } else if (diff < -180) {
@@ -682,11 +683,33 @@
             if (!this.svg || !this.stage) return;
             const svgRect = this.svg.getBoundingClientRect();
             const stageRect = this.stage.getBoundingClientRect();
+            
+            // Calculate the actual scale and offset of the SVG content
+            // The SVG uses preserveAspectRatio="xMidYMid meet", which is equivalent to object-fit: contain
+            const containerAspect = stageRect.width / stageRect.height;
+            const viewBoxAspect = VIEWBOX.width / VIEWBOX.height;
+            
+            let renderWidth, renderHeight, offsetX, offsetY;
+            
+            if (containerAspect > viewBoxAspect) {
+                // Container is wider than ViewBox (pillarboxing)
+                renderHeight = stageRect.height;
+                renderWidth = renderHeight * viewBoxAspect;
+                offsetX = (stageRect.width - renderWidth) / 2;
+                offsetY = 0;
+            } else {
+                // Container is taller than ViewBox (letterboxing)
+                renderWidth = stageRect.width;
+                renderHeight = renderWidth / viewBoxAspect;
+                offsetX = 0;
+                offsetY = (stageRect.height - renderHeight) / 2;
+            }
+
             this.viewportMetrics = {
-                offsetX: svgRect.left - stageRect.left,
-                offsetY: svgRect.top - stageRect.top,
-                scaleX: svgRect.width / VIEWBOX.width,
-                scaleY: svgRect.height / VIEWBOX.height,
+                offsetX: (svgRect.left - stageRect.left) + offsetX,
+                offsetY: (svgRect.top - stageRect.top) + offsetY,
+                scaleX: renderWidth / VIEWBOX.width,
+                scaleY: renderHeight / VIEWBOX.height,
             };
         }
 
