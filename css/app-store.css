@@ -3,10 +3,10 @@
 /* Hero Section */
 .app-store-hero {
     text-align: center;
-    padding: var(--space-12) 0 var(--space-4);
+    padding: var(--space-12) 0 0;
     background: linear-gradient(180deg, rgba(37, 99, 235, 0.05) 0%, rgba(37, 99, 235, 0) 100%);
     border-radius: var(--radius-2xl);
-    margin-bottom: var(--space-2);
+    margin-bottom: 0;
 }
 
 .app-store-title {
@@ -32,7 +32,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: var(--space-6);
-    padding: var(--space-4) 0;
+    padding: 0 0 var(--space-4);
 }
 
 /* App Card */
