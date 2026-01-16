@@ -1108,6 +1108,18 @@ footer a:hover {
   margin-inline: 0;
 }
 
+/* ============================================
+   SOCIAL LINKS - Theme Support
+   ============================================ */
+
+.social-link-title {
+  color: var(--color-text) !important;
+}
+
+.social-link-arrow {
+  color: var(--color-accent) !important;
+}
+
 .resume-page .badge {
   border-radius: 0.5rem !important;
   background: var(--color-bg);
