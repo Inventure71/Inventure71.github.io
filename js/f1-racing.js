@@ -293,6 +293,10 @@
                     <div class="track-label">Telemetry</div>
                     <div class="track-meta">${this.totalLaps} laps · ${this.telemetryList ? this.telemetryList.children.length : 0} cars</div>
                 </div>
+                <div class="track-tip">
+                    <div class="track-label">How to View</div>
+                    <div class="track-meta">Click any project, car or podium</div>
+                </div>
             `;
             
             // Set initial styles for fade-in animation
@@ -394,7 +398,6 @@
                     entryElement: entry,
                     positionElement: entry.querySelector('.f1-position'),
                     intervalElement: entry.querySelector('.f1-interval'),
-                    statusElement: entry.querySelector('.f1-status'),
                     gridIndex: index,
                     carColor,
                 };
@@ -577,18 +580,24 @@
 
                 if (car.intervalElement) {
                     if (index === 0) {
-                        car.intervalElement.textContent = '---';
+                        car.intervalElement.textContent = 'LEADER';
                     } else {
-                        const gap = Math.max(0, leaderDistance - car.totalDistance);
-                        const seconds = gap / (this.unitsPerSecond || 1);
-                        car.intervalElement.textContent = `+${seconds.toFixed(2)}s`;
+                        const leaderLap = leader?.currentLap || 1;
+                        const lapDiff = leaderLap - (car.currentLap || 1);
+                        if (lapDiff >= 1) {
+                            // Show lap difference
+                            car.intervalElement.textContent = `+${lapDiff} ${lapDiff === 1 ? 'LAP' : 'LAPS'}`;
+                        } else {
+                            // Show time difference
+                            const leaderDistance = leader?.totalDistance || 0;
+                            const gap = Math.max(0, leaderDistance - car.totalDistance);
+                            const seconds = gap / (this.unitsPerSecond || 1);
+                            car.intervalElement.textContent = `+${seconds.toFixed(2)}s`;
+                        }
                     }
                 }
 
-                if (car.statusElement) {
-                    car.statusElement.textContent = car.finished ? 'FINISHED' : `LAP ${car.currentLap}`;
-                    car.statusElement.classList.toggle('is-finished', Boolean(car.finished));
-                }
+
 
                 fragment.appendChild(entry);
             });

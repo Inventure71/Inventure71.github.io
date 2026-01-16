@@ -22,7 +22,7 @@
 
 .f1-broadcast-container {
   background: transparent;
-  padding: var(--f1-section-space) 0;
+  padding: var(--layout-first-section-pt, 0.75rem) 0 var(--f1-section-space);
   position: relative;
 }
 
@@ -30,7 +30,7 @@
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: 0.5rem !important;
-  padding: var(--f1-shell-padding) !important;
+  padding: 1rem 3rem var(--f1-shell-padding, 3rem) !important;
   box-shadow: 0 35px 70px rgba(15, 23, 42, 0.08);
   overflow: hidden;
   max-width: 100%;
@@ -178,21 +178,21 @@ html[data-theme="dark"] .f1-leaderboard {
   --driver-accent: var(--brand-accent);
   --driver-accent-rgb: 255 56 96;
   display: grid;
-  --driver-accent-rgb: 255 56 96;
-  display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) auto auto;
-  gap: 1rem;
-  gap: 1rem;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 0.75rem;
   padding: 0.75rem 1rem;
   margin-bottom: 0.5rem;
   border-radius: 0.5rem !important;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid color-mix(in srgb, var(--driver-accent) 30%, transparent);
-  align-items: center;
+  align-items: start;
   position: relative;
   background: color-mix(in srgb, var(--driver-accent) 10%, transparent);
   overflow: hidden;
+  /* Back to hidden, we'll expand the parent height */
+  min-height: 60px;
+  /* Base height */
 }
 
 .f1-driver-entry::before {
@@ -229,8 +229,9 @@ html[data-theme="dark"] .f1-leaderboard {
 .f1-driver-entry:hover {
   background: color-mix(in srgb, var(--driver-accent) 18%, transparent);
   border-color: var(--driver-accent);
-  transform: translateY(-3px);
   box-shadow: 0 15px 30px rgb(var(--driver-accent-rgb) / 0.28);
+  z-index: 10;
+  /* Stack above siblings when expanded */
 }
 
 .f1-driver-entry.p1,
@@ -249,13 +250,27 @@ html[data-theme="dark"] .f1-leaderboard {
 .f1-driver-name {
   font-weight: 600;
   color: var(--text-light);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  white-space: nowrap;
+  margin-top: 2px;
+
+  /* Truncation setup */
+  display: block;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
-  min-width: 0;
+  max-height: 1.25em;
+  /* Exactly one line */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.f1-driver-entry:hover .f1-driver-name {
+  white-space: normal;
+  word-break: break-word;
+  max-height: 300px;
+  /* Expand to full height */
+  text-overflow: clip;
 }
 
 .f1-driver-code {
@@ -275,23 +290,7 @@ html[data-theme="dark"] .f1-leaderboard {
   text-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
 }
 
-.f1-status {
-  font-size: 0.75rem;
-  color: var(--success);
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 2px 6px;
-  background: rgba(16, 185, 129, 0.1);
-  border-radius: 0.5rem !important;
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.f1-status.is-finished {
-  color: var(--brand-accent);
-  border-color: color-mix(in srgb, var(--brand-accent) 60%, transparent);
-  background: rgba(255, 255, 255, 0.05);
-}
+/* removed status styles */
 
 /* F1 Track Wrapper */
 .f1-track-wrapper {
@@ -514,7 +513,8 @@ html[data-theme="dark"] .f1-track-container {
 .f1-track-info {
   position: relative;
   display: flex;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 1.5rem;
   margin-bottom: 1.5rem;
   z-index: 20;
   background: color-mix(in srgb, var(--color-bg) 90%, transparent);
@@ -577,6 +577,31 @@ html[data-theme="dark"] .f1-track-info {
   color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.track-tip {
+  margin-left: auto;
+  padding-left: 1.5rem;
+  padding-right: 0.5rem;
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 200px;
+}
+
+.track-tip .track-label {
+  color: #e10600;
+  /* Official F1 Red */
+  opacity: 1;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.track-tip .track-meta {
+  color: var(--text-light);
+  font-size: 0.8rem;
+  line-height: 1.3;
 }
 
 /* Enhanced Car Styling */
@@ -897,10 +922,19 @@ html[data-theme="dark"] .f1-podium-stand {
 
   .f1-track-info {
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.75rem clamp(0.75rem, 3vw, 1rem);
+    gap: 0.85rem;
+    padding: 1rem;
     font-size: 0.75rem;
     margin-bottom: var(--layout-stack-tight, 0.75rem);
+  }
+
+  .track-tip {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.75rem;
+    min-width: 0;
   }
 
   .f1-driver-entry {
@@ -910,9 +944,7 @@ html[data-theme="dark"] .f1-podium-stand {
     padding: 0.6rem 0.8rem;
   }
 
-  .f1-status {
-    display: none;
-  }
+
 
   .f1-driver-code {
     display: none;

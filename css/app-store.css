@@ -3,7 +3,7 @@
 /* Hero Section */
 .app-store-hero {
     text-align: center;
-    padding: var(--space-12) 0 var(--space-3);
+    padding: 0 3rem var(--space-3) !important;
     background: linear-gradient(180deg, rgba(37, 99, 235, 0.05) 0%, rgba(37, 99, 235, 0) 100%);
     border-radius: var(--radius-2xl);
     margin-bottom: var(--space-3);
@@ -180,7 +180,7 @@
 
 @media (max-width: 768px) {
     .app-store-hero {
-        padding: var(--space-8) 0;
+        padding: var(--space-2) 0;
     }
 
     .app-store-title {

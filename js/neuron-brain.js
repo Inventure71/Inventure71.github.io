@@ -57,6 +57,13 @@
             desc: 'AI Card Generation Backend',
             url: 'project_details/project-evolveproject.html',
             tags: ['Python', 'Generative AI', 'Unreal Engine']
+        },
+        {
+            id: 'algorithms-project',
+            title: 'Clash Royale In Python',
+            desc: 'Algorithmic Strategy Game Engine',
+            url: 'project_details/project-algorithms-project.html',
+            tags: ['Python', 'Game Development', 'Pygame', 'BFS Pathfinding', 'Algorithms', 'Complexity Analysis']
         }
     ];
 
