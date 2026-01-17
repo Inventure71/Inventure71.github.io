@@ -599,7 +599,7 @@ html[data-theme="dark"] .f1-track-info {
 }
 
 .track-tip .track-meta {
-  color: var(--text-light);
+  color: var(--color-text-secondary);
   font-size: 0.8rem;
   line-height: 1.3;
 }
@@ -1064,4 +1064,301 @@ html[data-theme="dark"] .f1-controls-bar {
 
 .f1-brain-link i {
   font-size: 1.1rem;
+}
+
+/* ============================================
+   TELEMETRY HUD & BROADCAST TICKER
+   ============================================ */
+
+/* Constructor Branding Colors */
+:root {
+  --team-ai-color: #06b6d4;
+  /* Cyan/Blue */
+  --team-systems-color: #f97316;
+  /* Orange/Red */
+}
+
+/* Telemetry HUD (Pit Wall) */
+.f1-telemetry-hud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 280px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.f1-telemetry-hud.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.f1-telemetry-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.f1-telemetry-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--brand-accent);
+}
+
+.f1-telemetry-status {
+  font-size: 0.7rem;
+  color: var(--success);
+  font-family: monospace;
+  animation: blink 2s infinite;
+}
+
+.f1-telemetry-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.f1-telemetry-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.f1-telemetry-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.f1-telemetry-value {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+   F1 BROADCAST AESTHETICS (ITERATION 3)
+   ============================================ */
+
+/* High Contrast Team Colors */
+:root {
+  --team-ai-color: #0ea5e9;
+  /* Electric Blue */
+  --team-systems-color: #ef4444;
+  /* Racing Red */
+  --f1-skew: -12deg;
+}
+
+/* --- Global F1 Graphic Utility --- */
+.f1-graphic {
+  transform: skewX(var(--f1-skew));
+  border-radius: 4px;
+}
+
+.f1-graphic-content {
+  transform: skewX(calc(var(--f1-skew) * -1));
+}
+
+/* --- Telemetry HUD (Project Intel) --- */
+.f1-telemetry-hud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Removed scale logic to avoid conflicts */
+  width: 340px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 4px solid #fff;
+  /* Dynamically colored by JS */
+  /* Tech accent */
+  border-radius: 0;
+  /* Sharp corners */
+  padding: 0;
+  /* Reset padding for grid layout */
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow: hidden;
+  clip-path: polygon(0 0,
+      100% 0,
+      100% calc(100% - 20px),
+      calc(100% - 20px) 100%,
+      0 100%);
+  /* Cut corner effect */
+}
+
+.f1-telemetry-hud.visible {
+  opacity: 1;
+  pointer-events: none;
+  /* Prevent HUD from stealing hover from car */
+}
+
+.f1-telemetry-header {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.f1-telemetry-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 0.05em;
+  font-style: italic;
+  /* Speed look */
+}
+
+.f1-telemetry-status {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: var(--success);
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 2px;
+}
+
+.f1-telemetry-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  /* Stacked */
+  gap: 1px;
+  /* Gap creates borders */
+  background: rgba(255, 255, 255, 0.1);
+  /* Border color */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.f1-telemetry-item {
+  background: rgba(15, 23, 42, 1);
+  /* Item bg */
+  padding: 0.8rem 1.5rem;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: center;
+}
+
+.f1-telemetry-label {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+.f1-telemetry-value {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  /* Dynamically colored by JS */
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Broadcast Ticker (Skewed Card) --- */
+.f1-broadcast-ticker {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: auto;
+  min-width: 320px;
+  max-width: 400px;
+  background: #000;
+  border: none;
+  border-left: 6px solid #fff;
+  /* Dynamically colored by JS */
+  border-radius: 4px;
+  /* Slight rounding on skew looks nice */
+
+  /* The Magic Skew */
+  transform: skewX(var(--f1-skew)) translateX(150%);
+
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.3);
+  /* Hard shadow */
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: 200;
+}
+
+.f1-track-ready:hover .f1-broadcast-ticker,
+.f1-broadcast-ticker.active {
+  transform: skewX(var(--f1-skew)) translateX(0);
+}
+
+/* Un-skew content for readability */
+.f1-ticker-label,
+.f1-ticker-content {
+  transform: skewX(calc(var(--f1-skew) * -1));
+}
+
+.f1-ticker-label {
+  align-self: flex-start;
+  background: #fff;
+  color: #000;
+  font-weight: 900;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+}
+
+.f1-ticker-content {
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  /* Switch to Sans for modern broadcast look */
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  margin-left: 2px;
+  /* Visual balance */
+  min-height: auto;
+  display: block;
+}
+
+.f1-ticker-message {
+  display: block;
+  animation: fade-slide-up 0.3s ease-out;
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
