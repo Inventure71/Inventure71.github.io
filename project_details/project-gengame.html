@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description"
+        content="GenGame (Core Conflict) - A self-evolving multiplayer game framework driven by AI code patches." />
+    <meta name="author" content="Matteo Giorgetti" />
+    <title>GenGame - M.G.</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <!-- Custom Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        (function () {
+            try {
+                var storageKey = 'mg-color-theme';
+                var storedTheme = localStorage.getItem(storageKey);
+                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var theme = storedTheme || (prefersDark ? 'dark' : 'light');
+                document.documentElement.dataset.theme = theme;
+                document.documentElement.style.colorScheme = theme;
+            } catch (error) {
+                document.documentElement.dataset.theme = 'light';
+            }
+        })();
+    </script>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../css/styles.css" rel="stylesheet" />
+    <!-- Modern Design System -->
+    <link href="../css/modern.css" rel="stylesheet" />
+    <!-- Project Pages Styles -->
+    <link href="../css/project-pages.css" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100 project-page project-page--gengame">
+    <div class="project-wip" data-component="wip-tape">
+        <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
+            <span class="project-wip__label">Work in progress – click to dismiss</span>
+        </button>
+    </div>
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg py-3">
+            <div class="container px-5">
+                <a class="navbar-brand" href="../index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation"><span
+                        class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
+                        <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
+                            <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../resume.html">Resume</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../projects.html">Projects</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../apps.html">Apps</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../contact.html">Contact</a></li>
+                        </ul>
+                        <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle
+                            aria-label="Toggle color scheme">
+                            <i class="bi bi-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Project Details Section-->
+        <section class="py-5">
+            <div class="container px-5">
+                <div class="project-shell fade-in">
+                    <header class="project-hero">
+                        <div>
+                            <p class="project-eyebrow">Generative AI · Modular Framework</p>
+                            <h1>GenGame (Core Conflict)</h1>
+                            <p class="lead">A self-evolving multiplayer game engine where AI agents diagnose issues,
+                                suggest mechanics, and write real-time code patches.</p>
+                            <div class="project-pills">
+                                <span class="project-pill">Python</span>
+                                <span class="project-pill">GenAI</span>
+                                <span class="project-pill">Multiplayer</span>
+                                <span class="project-pill">Networking</span>
+                            </div>
+                        </div>
+                        <div class="hero-meta">
+                            <div class="hero-meta-card">
+                                <span class="label">Role</span>
+                                <span class="value">Lead Developer · Architect</span>
+                            </div>
+                            <div class="hero-meta-card">
+                                <span class="label">Timeline</span>
+                                <span class="value">2024 – Present</span>
+                            </div>
+                            <div class="hero-meta-card">
+                                <span class="label">Stack</span>
+                                <span class="value">Python · FastAPI · WebSockets</span>
+                            </div>
+                            <div class="hero-meta-card">
+                                <span class="label">LLMs</span>
+                                <span class="value">Google Gemini · OpenAI</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <section class="project-media-panel project-media-panel--split">
+                        <div class="project-media-stage project-media-stage--image">
+                            <!-- In a production scenario, we'd use a real screenshot. Using placeholder for now. -->
+                            <img src="../assets/placeholders/debug-placeholder.svg"
+                                alt="Visualization of GenGame evolution engine" loading="lazy" />
+                        </div>
+                        <aside class="project-sidecard">
+                            <h3>Project Snapshot</h3>
+                            <p>GenGame explores "Programmatic Evolution"—the concept of software that rewrites itself
+                                during runtime to adapt to player behavior or fix bugs autonomously.</p>
+                            <ul class="sidecard-highlight">
+                                <li><i class="bi bi-patch-check"></i><span>Autonomous code patching using LLMs and
+                                        <code>Merge3</code>.</span></li>
+                                <li><i class="bi bi-broadcast"></i><span>Real-time state and code synchronization via
+                                        WebSockets.</span></li>
+                            </ul>
+                            <div class="sidecard-links">
+                                <a href="https://github.com/Inventure71/GenGame" target="_blank" rel="noreferrer">
+                                    <span>View Repository</span>
+                                    <i class="bi bi-arrow-up-right"></i>
+                                </a>
+                            </div>
+                        </aside>
+                    </section>
+
+                    <section class="project-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">Core Pillars</p>
+                            <h2>The Engine of Evolution</h2>
+                        </div>
+                        <ul class="project-keypoints">
+                            <li>
+                                <h4>Programmatic Evolution</h4>
+                                <p>GenAI agents monitor game logs and performance, generating and applying code patches
+                                    to the live environment without restarts.</p>
+                            </li>
+                            <li>
+                                <h4>Modular Architecture</h4>
+                                <p>Every game mechanic, character ability, and UI element is a decoupled module,
+                                    allowing the AI to surgical modify specific components.</p>
+                            </li>
+                            <li>
+                                <h4>Decentralized Sync</h4>
+                                <p>Integrated <code>Merge3</code> logic ensures that code patches generated on the
+                                    server are merged and executed identically across all clients.</p>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="project-section project-spotlight">
+                        <h3>Beyond Fixed Mechanics</h3>
+                        <p>
+                            Traditionally, game rules are set in stone at launch. GenGame turns the "developer loop"
+                            into a "runtime loop," where the game itself acts as the developer, tester, and deployer.
+                        </p>
+                    </section>
+
+                    <section class="project-section project-flow">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">The Evolution Cycle</p>
+                            <h2>How a Patch is Born</h2>
+                        </div>
+                        <div class="project-flow-steps">
+                            <div class="project-flow-step">
+                                <span class="flow-index">01</span>
+                                <div class="flow-body">
+                                    <h5>Diagnosis</h5>
+                                    <p>The monitoring agent detects an imbalance or a bug in a specific character
+                                        ability module.</p>
+                                </div>
+                            </div>
+                            <div class="project-flow-step">
+                                <span class="flow-index">02</span>
+                                <div class="flow-body">
+                                    <h5>Generation</h5>
+                                    <p>An LLM agent writes a Python patch, tested against a simulated sandbox
+                                        environment.</p>
+                                </div>
+                            </div>
+                            <div class="project-flow-step">
+                                <span class="flow-index">03</span>
+                                <div class="flow-body">
+                                    <h5>Synchronization</h5>
+                                    <p>The patch is broadcast to all clients; <code>Merge3</code> applies the changes to
+                                        their local bytecode.</p>
+                                </div>
+                            </div>
+                            <div class="project-flow-step">
+                                <span class="flow-index">04</span>
+                                <div class="flow-body">
+                                    <h5>Hot-Reload</h5>
+                                    <p>The game engine re-imports the modified module, updating mechanics for all
+                                        players mid-session.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="text-center">
+                        <a href="../projects.html" class="project-back-link">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to all projects
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer-->
+    <footer class="py-4 mt-auto">
+        <div class="container px-5">
+            <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                <div class="col-auto">
+                    <div class="small m-0">Copyright &copy; https://inventure71.github.io 2026</div>
+                </div>
+                <div class="col-auto">
+                    <a class="small" href="#!">Privacy</a>
+                    <span class="mx-1">&middot;</span>
+                    <a class="small" href="#!">Terms</a>
+                    <span class="mx-1">&middot;</span>
+                    <a class="small" href="#!">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/scripts.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/project-pages.js"></script>
+</body>
+
+</html>
