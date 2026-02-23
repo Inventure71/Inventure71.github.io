@@ -52,9 +52,9 @@
             "Clash Royale In Python: Optimized BFS pathfinding enables multi-unit arena navigation.",
             "Clash Royale In Python: Almost like the original."
         ],
-        'GenGame': [
-            "GenGame: LLM agents are diagnosing and patching the bytecode in real-time.",
-            "GenGame: Decentralized synchronization ensures all clients evolve at once."
+        'Core Conflict': [
+            "Core Conflict: LLM agents are diagnosing and patching the bytecode in real-time.",
+            "Core Conflict: Decentralized synchronization ensures all clients evolve at once."
         ]
     };
 
