@@ -1100,6 +1100,11 @@ footer a:hover {
   padding: 1.5rem 0;
 }
 
+.resume-page .resume-section .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .resume-page .resume-section .card {
   background: var(--color-bg-alt);
   border: 1px solid var(--color-border);
@@ -1125,6 +1130,23 @@ footer a:hover {
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   color: var(--color-text-secondary);
+}
+
+@media (max-width: 575.98px) {
+  .resume-page .container.px-5 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .resume-page .resume-section .row>* {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .resume-page .resume-section .card-body,
+  .resume-page main>.container>.card .card-body {
+    padding: 1.25rem !important;
+  }
 }
 
 /* ============================================
