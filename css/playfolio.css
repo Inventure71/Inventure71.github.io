@@ -172,11 +172,11 @@ body.playfolio-page {
   padding: clamp(3.5rem, 8vw, 7rem) 0 clamp(3rem, 8vw, 6rem);
 }
 
-.pf-hero {
+.playfolio-page .pf-hero {
   min-height: auto;
   display: grid;
   align-items: center;
-  padding-block: clamp(1.25rem, 4vw, 3.5rem) clamp(2rem, 5vw, 4rem);
+  padding-block: 1rem clamp(1rem, 2vw, 2rem) !important;
 }
 
 .pf-hero-grid {
@@ -213,7 +213,7 @@ body.playfolio-page {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
-  margin-top: clamp(2rem, 5vw, 4rem);
+  margin-top: clamp(1.15rem, 3vw, 2.25rem);
   border: 1px solid var(--pf-line);
   background: var(--pf-line);
   border-radius: var(--pf-radius);
@@ -221,9 +221,12 @@ body.playfolio-page {
 }
 
 .pf-meta-item {
-  min-height: 5.2rem;
-  padding: 0.85rem;
+  min-height: 4.3rem;
+  padding: 0.9rem;
   background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface));
+  display: grid;
+  align-content: start;
+  gap: 0.38rem;
 }
 
 .pf-meta-k {
@@ -234,7 +237,6 @@ body.playfolio-page {
 
 .pf-meta-v {
   display: block;
-  margin-top: 0.65rem;
   color: var(--pf-ink);
   font-size: clamp(1rem, 2vw, 1.35rem);
   font-weight: 800;
@@ -294,6 +296,10 @@ body.playfolio-page {
 
 .pf-section + .pf-section {
   padding-top: clamp(1.25rem, 3vw, 2rem);
+}
+
+.playfolio-page .pf-hero + .pf-section {
+  padding-top: clamp(0.75rem, 2vw, 1.25rem) !important;
 }
 
 .pf-section-head {
