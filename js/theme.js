@@ -42,15 +42,20 @@
     applyTheme(initialTheme, Boolean(stored));
   };
 
+  window.MGTheme = {
+    apply: applyTheme,
+    sync: () => updateToggleButtons(root.dataset.theme || 'light'),
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+  });
 
-    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        applyTheme(nextTheme, true);
-      });
-    });
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-theme-toggle]');
+    if (!button) return;
+    const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(nextTheme, true);
   });
 
   const handlePreferenceChange = (event) => {

@@ -38,9 +38,10 @@
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
     <link href="../css/project-pages.css" rel="stylesheet" />
+    <link href="../css/playfolio.css" rel="stylesheet" />
 </head>
 
-<body class="d-flex flex-column h-100 project-page project-page--victoria">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--victoria">
     <div class="project-wip" data-component="wip-tape">
         <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
             <span class="project-wip__label">Work in progress – click to dismiss</span>
@@ -50,7 +51,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg py-3">
             <div class="container px-5">
-                <a class="navbar-brand" href="../index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
+                <a class="navbar-brand" href="../index.html">MG</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation"><span
@@ -59,9 +60,9 @@
                     <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
                         <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
                             <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="../resume.html">Resume</a></li>
                             <li class="nav-item"><a class="nav-link" href="../projects.html">Projects</a></li>
                             <li class="nav-item"><a class="nav-link" href="../apps.html">Apps</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../resume.html">Resume</a></li>
                             <li class="nav-item"><a class="nav-link" href="../contact.html">Contact</a></li>
                         </ul>
                         <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle
@@ -79,7 +80,6 @@
                 <div class="project-shell fade-in">
                     <header class="project-hero">
                         <div>
-                            <p class="project-eyebrow">AI Sandbox · Multi-Domain Experimentation</p>
                             <h1>VictorIA</h1>
                             <p class="lead">A modular Python playground where game strategy, image annotation, and
                                 robotics co-exist inside one workflow.</p>
@@ -111,8 +111,8 @@
 
                     <section class="project-media-panel project-media-panel--split">
                         <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/placeholders/debug-placeholder.svg"
-                                alt="Placeholder montage of VictorIA systems" loading="lazy" />
+                            <img src="../assets/project-media/victoria/robot-board-hero.jpg"
+                                alt="VictorIA robot arm positioned beside a physical Connect 4 board" loading="lazy" />
                         </div>
                         <aside class="project-sidecard">
                             <h3>Project Snapshot</h3>
@@ -250,16 +250,16 @@
                         </div>
                         <div class="project-gallery">
                             <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg"
-                                    alt="Placeholder for Connect 4 simulation board" loading="lazy" />
-                                <figcaption>Connect 4 board overlay used for testing heuristics and logging move trees.
+                                <img src="../assets/project-media/victoria/robot-player-move.jpg"
+                                    alt="VictorIA hardware rig during a player move" loading="lazy" />
+                                <figcaption>Physical Connect 4 test rig used to connect strategy outputs to robot motion.
                                 </figcaption>
                             </figure>
                             <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg"
-                                    alt="Placeholder for annotation tool UI mock" loading="lazy" />
-                                <figcaption>Point selection UI for marking cellular regions before exporting to
-                                    <code>Processed_Cells/</code>.</figcaption>
+                                <img src="../assets/project-media/victoria/robot-arm-board.jpg"
+                                    alt="VictorIA robot arm hovering over the Connect 4 board" loading="lazy" />
+                                <figcaption>Robot arm calibration pass over the board before replaying computed moves.
+                                </figcaption>
                             </figure>
                         </div>
                     </section>
@@ -276,7 +276,7 @@
     </main>
 
     <!-- Footer-->
-    <footer class="py-4 mt-auto">
+    <footer class="pf-footer py-4 mt-auto">
         <div class="container px-5">
             <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                 <div class="col-auto">
@@ -295,7 +295,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme.js"></script>
     <script src="../js/scripts.js"></script>
-    <script src="../js/animations.js"></script>
+    <script src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js"></script>
 </body>
 
