@@ -748,7 +748,40 @@ body.project-page main > section > .container {
     object-fit: cover;
 }
 
+.image-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: grid;
+    place-items: center;
+    padding: clamp(1rem, 4vw, 3rem);
+    background: rgba(0, 0, 0, 0.78);
+}
+
+.image-modal[hidden] {
+    display: none;
+}
+
+.image-modal-close {
+    position: fixed;
+    top: clamp(0.75rem, 2vw, 1.5rem);
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.42);
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+}
+
 .image-modal-content {
+    max-width: min(100%, 1100px);
+    max-height: min(86vh, 760px);
+    object-fit: contain;
     border-radius: var(--radius-2xl);
 }
 

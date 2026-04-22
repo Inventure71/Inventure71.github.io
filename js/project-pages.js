@@ -1,224 +1,172 @@
-/**
- * PROJECT PAGES - MODULAR JAVASCRIPT
- * Reusable functionality for all project detail pages
- */
+(function () {
+  'use strict';
 
-(function() {
-    'use strict';
+  const selectors = {
+    galleryItem: '.gallery-item, .gallery-card',
+    modal: '#imageModal',
+    modalImage: '#modalImage',
+    modalClose: '.image-modal-close',
+    lazyVideo: '.video-container iframe[data-src]',
+    wipTape: '[data-component="wip-tape"]',
+    wipButton: '.project-wip__tape',
+  };
 
-    /**
-     * Image Gallery Modal
-     * Handles click-to-zoom functionality for images
-     */
-    const ImageGallery = {
-        modal: null,
-        modalImage: null,
+  let modal;
+  let modalImage;
+  let previousBodyOverflow = '';
 
-        init: function() {
-            // Create modal if it doesn't exist
-            if (!document.getElementById('imageModal')) {
-                this.createModal();
-            }
+  function createImageModal() {
+    const element = document.createElement('div');
+    element.id = 'imageModal';
+    element.className = 'image-modal';
+    element.hidden = true;
+    element.setAttribute('role', 'dialog');
+    element.setAttribute('aria-modal', 'true');
+    element.setAttribute('aria-label', 'Image preview');
+    element.innerHTML = `
+      <button class="image-modal-close" type="button" aria-label="Close image preview">&times;</button>
+      <img class="image-modal-content" id="modalImage" alt="">
+    `;
+    document.body.appendChild(element);
+    return element;
+  }
 
-            this.modal = document.getElementById('imageModal');
-            this.modalImage = document.getElementById('modalImage');
+  function getImageModal() {
+    modal = modal || document.querySelector(selectors.modal) || createImageModal();
+    modalImage = modalImage || modal.querySelector(selectors.modalImage);
+    return modal;
+  }
 
-            // Attach event listeners
-            this.attachListeners();
-        },
+  function openImageModal(src, alt = '') {
+    if (!src) return;
 
-        createModal: function() {
-            const modal = document.createElement('div');
-            modal.id = 'imageModal';
-            modal.className = 'image-modal';
-            modal.innerHTML = `
-                <span class="image-modal-close">&times;</span>
-                <img class="image-modal-content" id="modalImage" alt="Enlarged view">
-            `;
-            document.body.appendChild(modal);
-        },
+    const element = getImageModal();
+    if (!modalImage) return;
 
-        attachListeners: function() {
-            const self = this;
+    modalImage.src = src;
+    modalImage.alt = alt;
+    previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    element.hidden = false;
+  }
 
-            // Gallery items click
-            document.querySelectorAll('.gallery-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const img = this.querySelector('img');
-                    if (img) {
-                        self.open(img.src, img.alt);
-                    }
-                });
-            });
+  function closeImageModal() {
+    const element = getImageModal();
+    element.hidden = true;
+    document.body.style.overflow = previousBodyOverflow;
+  }
 
-            // Close button click
-            if (this.modal) {
-                const closeBtn = this.modal.querySelector('.image-modal-close');
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', () => this.close());
-                }
+  function initImageGallery() {
+    if (!document.querySelector(selectors.galleryItem)) return;
 
-                // Click outside image to close
-                this.modal.addEventListener('click', (e) => {
-                    if (e.target === this.modal) {
-                        this.close();
-                    }
-                });
-            }
+    document.addEventListener('click', (event) => {
+      const closeButton = event.target.closest(selectors.modalClose);
+      if (closeButton) {
+        closeImageModal();
+        return;
+      }
 
-            // Escape key to close
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && this.modal && this.modal.style.display === 'block') {
-                    this.close();
-                }
-            });
-        },
+      const element = getImageModal();
+      if (event.target === element) {
+        closeImageModal();
+        return;
+      }
 
-        open: function(src, alt = '') {
-            if (this.modal && this.modalImage) {
-                this.modal.style.display = 'block';
-                this.modalImage.src = src;
-                this.modalImage.alt = alt;
-                document.body.style.overflow = 'hidden';
-            }
-        },
+      const galleryItem = event.target.closest(selectors.galleryItem);
+      if (!galleryItem) return;
 
-        close: function() {
-            if (this.modal) {
-                this.modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-    };
+      const image = galleryItem.querySelector('img');
+      if (image) openImageModal(image.currentSrc || image.src, image.alt);
+    });
 
-    /**
-     * Smooth scroll for anchor links
-     */
-    const SmoothScroll = {
-        init: function() {
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href === '#' || href === '#!') return;
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal && !modal.hidden) {
+        closeImageModal();
+      }
+    });
+  }
 
-                    const target = document.querySelector(href);
-                    if (target) {
-                        e.preventDefault();
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-        }
-    };
+  function initSmoothScroll() {
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href^="#"]');
+      if (!link) return;
 
-    /**
-     * External link handling
-     * Add security attributes to external links
-     */
-    const ExternalLinks = {
-        init: function() {
-            document.querySelectorAll('a[href^="http"]').forEach(link => {
-                // Skip if it's an internal link
-                if (link.hostname === window.location.hostname) return;
+      const href = link.getAttribute('href');
+      if (!href || href === '#' || href === '#!') return;
 
-                // Add security attributes
-                if (!link.hasAttribute('rel')) {
-                    link.setAttribute('rel', 'noopener noreferrer');
-                }
-                if (!link.hasAttribute('target')) {
-                    link.setAttribute('target', '_blank');
-                }
-            });
-        }
-    };
+      try {
+        const target = document.querySelector(href);
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (error) {
+        // Invalid fragment selectors should keep normal browser navigation.
+      }
+    });
+  }
 
-    /**
-     * Video embed lazy loading
-     * Improves page load performance
-     */
-    const VideoLazyLoad = {
-        init: function() {
-            const videos = document.querySelectorAll('.video-container iframe[data-src]');
+  function secureExternalLinks() {
+    document.querySelectorAll('a[href^="http"]').forEach((link) => {
+      if (link.hostname === window.location.hostname) return;
+      if (!link.hasAttribute('rel')) link.setAttribute('rel', 'noopener noreferrer');
+      if (!link.hasAttribute('target')) link.setAttribute('target', '_blank');
+    });
+  }
 
-            if ('IntersectionObserver' in window) {
-                const videoObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const iframe = entry.target;
-                            iframe.src = iframe.dataset.src;
-                            iframe.removeAttribute('data-src');
-                            videoObserver.unobserve(iframe);
-                        }
-                    });
-                });
+  function loadVideo(iframe) {
+    iframe.src = iframe.dataset.src;
+    iframe.removeAttribute('data-src');
+  }
 
-                videos.forEach(video => videoObserver.observe(video));
-            } else {
-                // Fallback for browsers without IntersectionObserver
-                videos.forEach(video => {
-                    video.src = video.dataset.src;
-                    video.removeAttribute('data-src');
-                });
-            }
-        }
-    };
+  function initLazyVideoEmbeds() {
+    const videos = Array.from(document.querySelectorAll(selectors.lazyVideo));
+    if (!videos.length) return;
 
-    /**
-     * Work In Progress tape dismissal
-     */
-    const WorkInProgress = {
-        init: function() {
-            const tape = document.querySelector('[data-component="wip-tape"]');
-            if (!tape) return;
-
-            const button = tape.querySelector('.project-wip__tape');
-            if (!button) return;
-
-            const dismiss = () => {
-                tape.classList.add('is-dismissed');
-                tape.setAttribute('aria-hidden', 'true');
-            };
-
-            button.addEventListener('click', dismiss);
-            button.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    dismiss();
-                }
-            });
-        }
-    };
-
-    /**
-     * Initialize all modules when DOM is ready
-     */
-    function init() {
-        ImageGallery.init();
-        SmoothScroll.init();
-        ExternalLinks.init();
-        VideoLazyLoad.init();
-        WorkInProgress.init();
+    if (!('IntersectionObserver' in window)) {
+      videos.forEach(loadVideo);
+      return;
     }
 
-    // Initialize on DOM ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        loadVideo(entry.target);
+        observer.unobserve(entry.target);
+      });
+    });
 
-    // Expose to global scope if needed
-    window.ProjectPages = {
-        ImageGallery,
-        SmoothScroll,
-        ExternalLinks,
-        VideoLazyLoad,
-        WorkInProgress
-    };
+    videos.forEach((video) => observer.observe(video));
+  }
 
+  function initWorkInProgressTape() {
+    const tape = document.querySelector(selectors.wipTape);
+    const button = tape?.querySelector(selectors.wipButton);
+    if (!tape || !button) return;
+
+    button.addEventListener('click', () => {
+      tape.classList.add('is-dismissed');
+      tape.setAttribute('aria-hidden', 'true');
+    });
+  }
+
+  function init() {
+    initImageGallery();
+    initSmoothScroll();
+    secureExternalLinks();
+    initLazyVideoEmbeds();
+    initWorkInProgressTape();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  window.ProjectPages = {
+    init,
+    openImageModal,
+    closeImageModal,
+    secureExternalLinks,
+  };
 })();
-
-

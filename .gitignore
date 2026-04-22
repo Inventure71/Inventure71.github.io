@@ -3,3 +3,4 @@ resume.txt
 .DS_Store
 *.DS_Store
 prepared_video_uploads/
+.playwright-cli/
