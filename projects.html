@@ -4,12 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Projects - M.G.</title>
-    <!-- Favicon-->
+    <meta name="description" content="Interactive project circuit for Matteo Giorgetti's software and AI work." />
+    <meta name="author" content="Matteo Giorgetti" />
+    <title>Projects - Matteo Giorgetti</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,76 +27,81 @@
             }
         })();
     </script>
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
-    <!-- Modern Design System -->
     <link href="css/modern.css" rel="stylesheet" />
-    <!-- F1 Style -->
     <link href="css/f1-style.css" rel="stylesheet" />
+    <link href="css/playfolio.css?v=2" rel="stylesheet" />
 </head>
 
-<body class="d-flex flex-column h-100">
+<body class="playfolio-page project-race-page d-flex flex-column h-100">
     <main class="flex-shrink-0">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg py-3">
-            <div class="container px-5">
-                <a class="navbar-brand" href="index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">MG</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation"><span
                         class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
-                        <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
+                    <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
+                        <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start">
                             <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
-                            <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="projects.html">Projects</a></li>
                             <li class="nav-item"><a class="nav-link" href="apps.html">Apps</a></li>
+                            <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                         </ul>
-                        <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle
-                            aria-label="Toggle color scheme">
-                            <i class="bi bi-moon"></i>
-                        </button>
+                        <div class="d-flex gap-2">
+                            <button class="pf-icon-button" type="button" data-command-open aria-label="Open command menu">
+                                <i class="bi bi-command"></i>
+                            </button>
+                            <button class="theme-toggle-btn" type="button" data-theme-toggle
+                                aria-label="Toggle color scheme">
+                                <i class="bi bi-moon"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </nav>
-        <!-- F1 Style Projects Broadcast -->
-        <section class="f1-broadcast-container">
-            <div class="container px-5 f1-shell">
-                <div class="f1-header fade-in">
-                    <h1 class="f1-title">PROJECTS GRAND PRIX</h1>
-                    <p class="f1-subtitle">Live Race Tracker</p>
-                </div>
 
-
-
-                <!-- Filter Bar -->
-                <div class="f1-controls-bar fade-in">
-                    <div class="f1-filter-scroll">
-                        <button class="f1-filter-pill active" data-filter="all">All Systems</button>
-                        <!-- Tags will be injected here by JS -->
+        <section class="pf-page pf-race-page">
+            <div class="pf-shell">
+                <header class="pf-section-head pf-reveal">
+                    <div>
+                        <h1 class="pf-section-title">Project race</h1>
                     </div>
-                    <a href="tags.html" class="f1-brain-link" title="View Tag Neural Network">
+                    <p class="pf-section-copy">
+                        Cars are projects. Hover a car for details, use the leaderboard for direct navigation, or open
+                        the tag map for another view.
+                    </p>
+                </header>
+
+                <div class="f1-controls-bar pf-race-controls pf-reveal">
+                    <div class="f1-filter-scroll" aria-label="Project focus shortcuts">
+                        <button class="f1-filter-pill active" type="button" data-race-focus="all">All projects</button>
+                        <button class="f1-filter-pill" type="button" data-race-focus="AI">AI</button>
+                        <button class="f1-filter-pill" type="button" data-race-focus="Game">Games</button>
+                        <button class="f1-filter-pill" type="button" data-race-focus="Tool">Tools</button>
+                        <button class="f1-filter-pill" type="button" data-race-focus="Vision">Vision</button>
+                    </div>
+                    <a href="tags.html" class="f1-brain-link">
                         <i class="bi bi-diagram-3-fill"></i>
-                        <span>Neural View</span>
+                        <span>Tag map</span>
                     </a>
                 </div>
 
-                <div class="f1-broadcast-layout">
-                    <!-- F1 Leaderboard -->
-                    <div class="f1-leaderboard fade-in">
+                <div class="f1-broadcast-layout pf-race-layout pf-reveal">
+                    <aside class="f1-leaderboard">
                         <div class="f1-leaderboard-header">
-                            <div class="f1-leaderboard-title">RACE</div>
+                            <div class="f1-leaderboard-title">Grid</div>
                             <div class="f1-lap-info">LAP 1/10</div>
                         </div>
                         <div class="f1-driver-list">
                             <div class="f1-driver-entry p1" data-project="0"
-                                data-tags="Python,AI Agents,Financial Planning"
-                                onclick="window.location.href='project_details/project-budget-buddy.html'">
+                                data-tags="AI,Tool,Systems,Python,Financial Planning"
+                                data-project-url="project_details/project-budget-buddy.html">
                                 <div class="f1-position">1</div>
                                 <div>
                                     <div class="f1-driver-code">BUD</div>
@@ -107,18 +110,18 @@
                                 <div class="f1-interval">LEADER</div>
                             </div>
                             <div class="f1-driver-entry p2" data-project="1"
-                                data-tags="AI-Powered,Procedural Storytelling,Unreal Engine 5"
-                                onclick="window.location.href='project_details/project-neural-noir.html'">
+                                data-tags="AI,Game,Systems,Procedural Storytelling,Unreal Engine"
+                                data-project-url="project_details/project-neural-noir.html">
                                 <div class="f1-position">2</div>
                                 <div>
-                                    <div class="f1-driver-code">NEU</div>
+                                    <div class="f1-driver-code">NOI</div>
                                     <div class="f1-driver-name">Neural Noir</div>
                                 </div>
                                 <div class="f1-interval">+0.12s</div>
                             </div>
                             <div class="f1-driver-entry p3" data-project="2"
-                                data-tags="Computer Vision,Gesture UI,Python"
-                                onclick="window.location.href='project_details/project-holovinyl.html'">
+                                data-tags="Vision,Tool,Systems,Computer Vision,Python"
+                                data-project-url="project_details/project-holovinyl.html">
                                 <div class="f1-position">3</div>
                                 <div>
                                     <div class="f1-driver-code">HOL</div>
@@ -126,8 +129,8 @@
                                 </div>
                                 <div class="f1-interval">+0.45s</div>
                             </div>
-                            <div class="f1-driver-entry" data-project="3" data-tags="Python,Donor CRM,Analytics"
-                                onclick="window.location.href='project_details/project-drsorrisodonations.html'">
+                            <div class="f1-driver-entry" data-project="3" data-tags="Tool,Systems,Python,Donor CRM"
+                                data-project-url="project_details/project-drsorrisodonations.html">
                                 <div class="f1-position">4</div>
                                 <div>
                                     <div class="f1-driver-code">DRS</div>
@@ -135,8 +138,9 @@
                                 </div>
                                 <div class="f1-interval">+1 LAP</div>
                             </div>
-                            <div class="f1-driver-entry" data-project="4" data-tags="Game AI,Computer Vision,Robotics"
-                                onclick="window.location.href='project_details/project-victoria.html'">
+                            <div class="f1-driver-entry" data-project="4"
+                                data-tags="AI,Game,Vision,Systems,Robotics"
+                                data-project-url="project_details/project-victoria.html">
                                 <div class="f1-position">5</div>
                                 <div>
                                     <div class="f1-driver-code">VIC</div>
@@ -144,9 +148,8 @@
                                 </div>
                                 <div class="f1-interval">+2 LAPS</div>
                             </div>
-                            <div class="f1-driver-entry" data-project="5"
-                                data-tags="ReminderProject,RemainderV0,ProjectLoom,remainder_app"
-                                onclick="window.location.href='project_details/project-remainder-v0.html'">
+                            <div class="f1-driver-entry" data-project="5" data-tags="Tool,Systems,Knowledge Workflow"
+                                data-project-url="project_details/project-remainder-v0.html">
                                 <div class="f1-position">6</div>
                                 <div>
                                     <div class="f1-driver-code">REM</div>
@@ -154,8 +157,9 @@
                                 </div>
                                 <div class="f1-interval">+3 LAPS</div>
                             </div>
-                            <div class="f1-driver-entry" data-project="6" data-tags="Python,Android,Productivity"
-                                onclick="window.location.href='project_details/project-clipclop.html'">
+                            <div class="f1-driver-entry" data-project="6"
+                                data-tags="Tool,Systems,Android,Productivity"
+                                data-project-url="project_details/project-clipclop.html">
                                 <div class="f1-position">7</div>
                                 <div>
                                     <div class="f1-driver-code">CLP</div>
@@ -163,8 +167,8 @@
                                 </div>
                                 <div class="f1-interval">+4 LAPS</div>
                             </div>
-                            <div class="f1-driver-entry" data-project="7" data-tags="Python,Generative AI,Unreal Engine"
-                                onclick="window.location.href='project_details/project-evolveproject.html'">
+                            <div class="f1-driver-entry" data-project="7" data-tags="AI,Game,Generative AI,Unreal Engine"
+                                data-project-url="project_details/project-evolveproject.html">
                                 <div class="f1-position">8</div>
                                 <div>
                                     <div class="f1-driver-code">EVL</div>
@@ -172,9 +176,8 @@
                                 </div>
                                 <div class="f1-interval">+5 LAPS</div>
                             </div>
-                            <div class="f1-driver-entry" data-project="8"
-                                data-tags="Python,Game Development,Pygame,BFS Pathfinding,Algorithms,Complexity Analysis"
-                                onclick="window.location.href='project_details/project-algorithms-project.html'">
+                            <div class="f1-driver-entry" data-project="8" data-tags="Game,Systems,Python,Pygame,Algorithms"
+                                data-project-url="project_details/project-algorithms-project.html">
                                 <div class="f1-position">9</div>
                                 <div>
                                     <div class="f1-driver-code">CRP</div>
@@ -183,8 +186,8 @@
                                 <div class="f1-interval">+6 LAPS</div>
                             </div>
                             <div class="f1-driver-entry" data-project="9"
-                                data-tags="Python,GenAI,Multiplayer,Networking,Self-Modifying"
-                                onclick="window.location.href='project_details/project-gengame.html'">
+                                data-tags="AI,Game,Systems,Multiplayer,Networking"
+                                data-project-url="project_details/project-gengame.html">
                                 <div class="f1-position">10</div>
                                 <div>
                                     <div class="f1-driver-code">COR</div>
@@ -193,17 +196,13 @@
                                 <div class="f1-interval">+7 LAPS</div>
                             </div>
                         </div>
-                    </div>
+                    </aside>
 
-                    <!-- F1 Track -->
-                    <div class="f1-track-container slide-in-right" id="f1-track-container">
-                        <!-- Circuit placeholder -->
-
-                        <!-- F1 Project Intel HUD (Pit Wall) -->
+                    <div class="f1-track-container pf-race-track" id="f1-track-container">
                         <div class="f1-telemetry-hud" id="f1-telemetry-hud">
                             <div class="f1-telemetry-header">
-                                <div class="f1-telemetry-title" id="hud-project-name">PROJECT NAME</div>
-                                <div class="f1-telemetry-status">LIVE FEED</div>
+                                <div class="f1-telemetry-title" id="hud-project-name">PROJECT</div>
+                                <div class="f1-telemetry-status">DETAILS</div>
                             </div>
                             <div class="f1-telemetry-grid">
                                 <div class="f1-telemetry-item">
@@ -221,74 +220,31 @@
                             </div>
                         </div>
 
-                        <!-- F1 Broadcast Ticker -->
                         <div class="f1-broadcast-ticker">
-                            <div class="f1-ticker-label">RACE CONTROL</div>
-                            <div class="f1-ticker-content" id="f1-ticker-content">
-                                <!-- Radio messages injected here by JS -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Top 3 Podium -->
-                <div class="f1-podium-section fade-in">
-                    <div class="f1-podium-title">
-                        <h2>CHAMPIONSHIP PODIUM</h2>
-                    </div>
-                    <div class="f1-podium">
-                        <div class="f1-podium-item p2"
-                            onclick="window.location.href='project_details/project-neural-noir.html'">
-                            <div class="f1-podium-stand p2">
-                                <div class="f1-podium-medal">🥈</div>
-                                <div class="f1-podium-project-name">Neural Noir</div>
-                                <div class="f1-podium-project-desc">AI-Driven Interactive Story Game</div>
-                            </div>
-                        </div>
-                        <div class="f1-podium-item p1"
-                            onclick="window.location.href='project_details/project-budget-buddy.html'">
-                            <div class="f1-podium-stand p1">
-                                <div class="f1-podium-medal">🥇</div>
-                                <div class="f1-podium-project-name">Budget Buddy</div>
-                                <div class="f1-podium-project-desc">AI-Powered Financial Chatbot</div>
-                            </div>
-                        </div>
-                        <div class="f1-podium-item p3"
-                            onclick="window.location.href='project_details/project-holovinyl.html'">
-                            <div class="f1-podium-stand p3">
-                                <div class="f1-podium-medal">🥉</div>
-                                <div class="f1-podium-project-name">HoloVinyl</div>
-                                <div class="f1-podium-project-desc">Touchless Vision Control Deck</div>
-                            </div>
+                            <div class="f1-ticker-label">PROJECT NOTES</div>
+                            <div class="f1-ticker-content" id="f1-ticker-content"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
-    <!-- Footer-->
-    <footer class="py-4 mt-auto">
-        <div class="container px-5">
-            <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                <div class="col-auto">
-                    <div class="small m-0">Copyright &copy; https://inventure71.github.io 2026</div>
-                </div>
-                <div class="col-auto">
-                    <a class="small" href="#!">Privacy</a>
-                    <span class="mx-1">&middot;</span>
-                    <a class="small" href="#!">Terms</a>
-                    <span class="mx-1">&middot;</span>
-                    <a class="small" href="#!">Contact</a>
-                </div>
+
+    <footer class="pf-footer py-4 mt-auto">
+        <div class="pf-shell d-flex flex-column flex-sm-row justify-content-between gap-2">
+            <div class="small">Copyright &copy; inventure71.github.io 2026</div>
+            <div class="small d-flex gap-3">
+                <a href="https://github.com/Inventure71">GitHub</a>
+                <a href="https://www.linkedin.com/in/matteo-giorgetti-026172247/">LinkedIn</a>
+                <a href="assets/docs/matteo-giorgetti-resume-current.pdf">Resume PDF</a>
             </div>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/theme.js"></script>
-    <script src="js/scripts.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/f1-racing.js"></script>
-    <script src="js/project-filtering.js"></script>
+    <script src="js/f1-racing.js?v=2"></script>
+    <script src="js/playfolio.js?v=2"></script>
 </body>
 
 </html>

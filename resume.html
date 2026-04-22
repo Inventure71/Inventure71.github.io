@@ -36,13 +36,14 @@
     <link href="css/styles.css" rel="stylesheet" />
     <!-- Modern Design System -->
     <link href="css/modern.css" rel="stylesheet" />
+    <link href="css/playfolio.css" rel="stylesheet" />
 </head>
 
-<body class="d-flex flex-column h-100 resume-page">
+<body class="playfolio-page d-flex flex-column h-100 resume-page">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg py-3">
         <div class="container px-5">
-            <a class="navbar-brand" href="index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
+            <a class="navbar-brand" href="index.html">MG</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -50,9 +51,9 @@
                 <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
                     <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
                         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
                         <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
                         <li class="nav-item"><a class="nav-link" href="apps.html">Apps</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="resume.html">Resume</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                     </ul>
                     <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle
@@ -64,479 +65,220 @@
         </div>
     </nav>
 
-    <!-- Page Content -->
     <main class="flex-shrink-0">
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="text-center mb-5 fade-in">
-                    <h1 class="display-4 fw-bolder mb-0 slide-in-up"><span class="text-gradient d-inline">Resume</span>
-                    </h1>
-                </div>
-                <!-- Contact Information -->
-                <div class="card overflow-hidden shadow rounded-5 border-0 mb-4 fade-in">
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <h2 class="text-primary fw-bolder mb-3 fs-2">Hi I am Matteo Giorgetti</h2>
-                            <p>
-                                Addicted to technology and innovation, I design and build AI, robotics, game
-                                development, and mobile app projects that bridge creativity with engineering.
-                                Experienced in Python, Unreal Engine, and Android development.
-                            </p>
-                            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-4">
-                                <a class="btn btn-primary px-4" href="assets/docs/matteo-giorgetti-resume-current.pdf"
-                                    target="_blank" rel="noopener">View current resume</a>
-                                <a class="btn btn-outline-primary px-4"
-                                    href="assets/docs/matteo-giorgetti-resume-current.pdf" download>Download PDF</a>
-                            </div>
-                        </div>
+        <section class="pf-page pf-resume-page">
+            <div class="pf-shell">
+                <header class="pf-resume-top pf-reveal">
+                    <div>
+                        <h1>Matteo Giorgetti</h1>
+                        <p>Computer Science and Artificial Intelligence student building AI tools, robotics systems,
+                            interactive games, and practical software prototypes.</p>
                     </div>
-                </div>
-
-
-                <!-- Education Section -->
-                <section class="resume-section mb-5">
-                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center slide-in-up"><span
-                            class="text-gradient d-inline">Education</span></h2>
-                    <div class="row gx-5 justify-content-center stagger-children">
-                        <!-- IE University -->
-                        <div class="col-lg-6 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100 fade-in">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">2024 - Present</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">IE University</div>
-                                        <div>Madrid, Spain</div>
-                                    </div>
-                                    <div class="fst-italic">
-                                        Bachelor in Computer Science and Artificial Intelligence
-                                        <span class="badge ms-2">GPA: 9.2</span>
-                                    </div>
-                                    <p class="mt-2">
-                                        Four-year program, expected graduation: May 2028.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- H-FARM School -->
-                        <div class="col-lg-6 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100 fade-in">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">2021 - 2024</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">H-FARM International School</div>
-                                        <div>Roncade, Italy</div>
-                                    </div>
-                                    <div class="fst-italic">
-                                        IB Diploma: <span class="badge ms-2">40/45</span>
-                                    </div>
-                                    <p class="mt-2">
-                                        Subjects included Math AA HL, Computer Science HL, Business HL, Physics SL,
-                                        Italian A Literature SL, and English B SL. Math IA and Extended Essay explored
-                                        neural network mathematics and optimal network size.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="pf-resume-actions">
+                        <a class="pf-button" href="assets/docs/matteo-giorgetti-resume-current.pdf" target="_blank"
+                            rel="noopener">View PDF <i class="bi bi-file-earmark-text"></i></a>
+                        <a class="pf-button is-quiet" href="assets/docs/matteo-giorgetti-resume-current.pdf" download>Download <i class="bi bi-download"></i></a>
                     </div>
-                </section>
+                </header>
 
-                <!-- Work Experience Section -->
-                <section class="resume-section mb-5">
-                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span
-                            class="text-gradient d-inline">Work Experience</span></h2>
-                    <div class="row gx-5 justify-content-center">
-                        <!-- Research Assistant -->
-                        <div class="col-lg-6 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">2024 - Present</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Research Assistant</div>
-                                        <div>IE University AI &amp; Robotics Lab, Madrid, Spain</div>
-                                    </div>
-                                    <p>
-                                        Initially volunteered while developing VictorIA, then became an official intern.
-                                        Led the MOSAIC project, designing a low-cost, multi-projector visualization
-                                        system for robotics research. Collaborated with researchers on implementation
-                                        and troubleshooting for AI and robotics projects.
-                                    </p>
+                <div class="pf-resume-layout">
+                    <aside class="pf-resume-panel pf-reveal" aria-label="Resume quick details">
+                        <div class="pf-resume-id">
+                            <span>Focus</span>
+                            <strong>AI systems, robotics, games, tools</strong>
+                        </div>
+                        <div class="pf-resume-id">
+                            <span>Based</span>
+                            <strong>Madrid / Milan</strong>
+                        </div>
+                        <div class="pf-resume-id">
+                            <span>Contact</span>
+                            <a href="mailto:matteo.giorgetti.05@gmail.com">matteo.giorgetti.05@gmail.com</a>
+                            <a href="https://github.com/Inventure71" target="_blank" rel="noopener">github.com/Inventure71</a>
+                        </div>
+                        <nav class="pf-resume-nav" aria-label="Resume sections">
+                            <a href="#experience">Experience</a>
+                            <a href="#projects">Projects</a>
+                            <a href="#education">Education</a>
+                            <a href="#skills">Skills</a>
+                        </nav>
+                        <div class="pf-resume-tags" aria-label="Core skills">
+                            <span>Python</span>
+                            <span>AI/ML</span>
+                            <span>OpenCV</span>
+                            <span>ROS 2</span>
+                            <span>Unreal Engine</span>
+                            <span>Android</span>
+                        </div>
+                    </aside>
+
+                    <div class="pf-resume-doc">
+                        <section class="pf-resume-block pf-reveal" id="experience">
+                            <header>
+                                <span>01</span>
+                                <h2>Experience</h2>
+                            </header>
+                            <article class="pf-resume-line">
+                                <time>2024 - Present</time>
+                                <div>
+                                    <h3>Research Assistant</h3>
+                                    <p class="pf-resume-place">IE University AI &amp; Robotics Lab, Madrid</p>
+                                    <p>Led MOSAIC, a low-cost multi-projector visualization system for robotics research,
+                                        and collaborated on implementation and troubleshooting for AI and robotics projects.</p>
+                                </div>
+                            </article>
+                            <article class="pf-resume-line">
+                                <time>Mar 2023 - Feb 2025</time>
+                                <div>
+                                    <h3>Donation Classification Automation</h3>
+                                    <p class="pf-resume-place">Dottor Sorriso, Milan</p>
+                                    <p>Built a Python automation using the OpenAI API to extract donor names from 1,000+
+                                        inconsistent donation records, reducing manual data entry by 90%.</p>
+                                </div>
+                            </article>
+                        </section>
+
+                        <section class="pf-resume-block pf-reveal" id="projects">
+                            <header>
+                                <span>02</span>
+                                <h2>Selected Projects</h2>
+                            </header>
+                            <div class="pf-resume-projects">
+                                <article>
+                                    <span>2025 - Present</span>
+                                    <h3>MOSAIC</h3>
+                                    <p>Low-cost multi-projector system for synchronized visual output across lab surfaces.</p>
+                                    <small>ROS 2 / OptiTrack / TouchDesigner</small>
+                                </article>
+                                <article>
+                                    <span>2024</span>
+                                    <h3>Neural Noir</h3>
+                                    <p>AI-driven narrative game where LLM outputs update UE5 game state in real time.</p>
+                                    <small>Unreal Engine 5 / Python / Gemini</small>
+                                </article>
+                                <article>
+                                    <span>2025 - Present</span>
+                                    <h3>VictorIA</h3>
+                                    <p>Connect-4 robotic arm project closing the perception to decision to action loop.</p>
+                                    <small>OpenCV / Python / Robotics</small>
+                                </article>
+                                <article>
+                                    <span>2025 - Present</span>
+                                    <h3>HoloVinyl</h3>
+                                    <p>Computer vision and gesture control system that links music to physical objects.</p>
+                                    <small>OpenCV / Hand tracking / YOLO</small>
+                                </article>
+                                <article>
+                                    <span>2023</span>
+                                    <h3>Mucca Simulator 2</h3>
+                                    <p>Python-based online multiplayer game built to explore networking and game systems.</p>
+                                    <small>Python / Networking</small>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="pf-resume-block pf-reveal" id="education">
+                            <header>
+                                <span>03</span>
+                                <h2>Education</h2>
+                            </header>
+                            <article class="pf-resume-line">
+                                <time>2024 - Present</time>
+                                <div>
+                                    <h3>IE University</h3>
+                                    <p class="pf-resume-place">Madrid, Spain</p>
+                                    <p>Bachelor in Computer Science and Artificial Intelligence. Four-year program,
+                                        expected graduation: May 2028.</p>
+                                </div>
+                                <span class="pf-resume-badge">GPA 9.2</span>
+                            </article>
+                            <article class="pf-resume-line">
+                                <time>2021 - 2024</time>
+                                <div>
+                                    <h3>H-FARM International School</h3>
+                                    <p class="pf-resume-place">Roncade, Italy</p>
+                                    <p>IB Diploma with Math AA HL, Computer Science HL, Business HL, Physics SL,
+                                        Italian A Literature SL, and English B SL.</p>
+                                </div>
+                                <span class="pf-resume-badge">40/45</span>
+                            </article>
+                        </section>
+
+                        <section class="pf-resume-block pf-reveal">
+                            <header>
+                                <span>04</span>
+                                <h2>Activities</h2>
+                            </header>
+                            <article class="pf-resume-line">
+                                <time>2024 - Present</time>
+                                <div>
+                                    <h3>Google Developer Students Club</h3>
+                                    <p class="pf-resume-place">IE University, Madrid</p>
+                                    <p>Started as a Tech Guru, contributed to workshops and projects, then became club lead.</p>
+                                </div>
+                            </article>
+                            <article class="pf-resume-line">
+                                <time>Jan 2023 - Mar 2023</time>
+                                <div>
+                                    <h3>Technology Teaching Volunteer</h3>
+                                    <p class="pf-resume-place">Roncade, Italy</p>
+                                    <p>Taught 30+ elderly participants how to use mobile phones and navigate complex Italian websites.</p>
+                                </div>
+                            </article>
+                            <article class="pf-resume-line">
+                                <time>2022 - 2023</time>
+                                <div>
+                                    <h3>Math Club Co-organizer &amp; Tutor</h3>
+                                    <p class="pf-resume-place">Roncade, Italy</p>
+                                    <p>Co-founded a peer-led Math Club and created support material for tutoring sessions.</p>
+                                </div>
+                            </article>
+                        </section>
+
+                        <section class="pf-resume-block pf-reveal">
+                            <header>
+                                <span>05</span>
+                                <h2>Competitions</h2>
+                            </header>
+                            <div class="pf-resume-projects pf-resume-projects--compact">
+                                <article>
+                                    <span>Oct 2024</span>
+                                    <h3>Tech Venture Bootcamp</h3>
+                                    <p>Developed Budget Buddy, an AI-powered money management chatbot.</p>
+                                    <small>People's Choice Award</small>
+                                </article>
+                                <article>
+                                    <span>May - Aug 2024</span>
+                                    <h3>Gemini Competition</h3>
+                                    <p>Created Neural Noir, a Gemini-powered game for generated mystery stories.</p>
+                                    <small>Online</small>
+                                </article>
+                                <article>
+                                    <span>2019 - 2021</span>
+                                    <h3>Unreal Engine Game Jams</h3>
+                                    <p>Participated in official Epic Games jams focused on rapid game development.</p>
+                                    <small>Online</small>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="pf-resume-block pf-reveal" id="skills">
+                            <header>
+                                <span>06</span>
+                                <h2>Skills</h2>
+                            </header>
+                            <div class="pf-resume-skills">
+                                <div>
+                                    <h3>Technical</h3>
+                                    <p>Python, Java, C++, AI/ML model training, neural networks, PyTorch, TensorFlow,
+                                        computer vision, OpenCV, robotics APIs, ROS 2, Android, Unreal Engine 4 &amp; 5.</p>
+                                </div>
+                                <div>
+                                    <h3>Languages</h3>
+                                    <p>Italian native, English native, Spanish intermediate, French basic.</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Dottor Sorriso -->
-                        <div class="col-lg-6 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">March 2023 - February 2025</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Donation Classification Automation</div>
-                                        <div>Dottor Sorriso, Milan, Italy</div>
-                                    </div>
-                                    <p>
-                                        Developed a Python automation system using the OpenAI API to extract donor names
-                                        from more than 1,000 inconsistent donation records and update the organization's
-                                        database. Reduced manual data entry by 90%, saving an estimated 40 hours of
-                                        administrative work per month.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- CO-CURRICULAR AND EXTRACURRICULAR ACTIVITIES Section -->
-                <section class="resume-section mb-5">
-                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span
-                            class="text-gradient d-inline">Co-Curricular And Extracurricular Activities</span></h2>
-                    <div class="row gx-5 justify-content-center">
-                        <!-- Google Developer Students Club -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-primary fw-bolder mb-2">2024 - Present</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Google Developer Students Club</div>
-                                        <div>IE University, Madrid, Spain</div>
-                                    </div>
-                                    <p>
-                                        Started as a Tech Guru, actively contributing to tech workshops and projects,
-                                        and later became club lead.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Teaching the elderly how to use technology -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-primary fw-bolder mb-2">January 2023 - March 2023</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Teaching the elderly how to use technology</div>
-                                        <div>Roncade, Italy</div>
-                                    </div>
-                                    <p>
-                                        Volunteered to educate 30+ elderly individuals on utilizing technology,
-                                        specifically
-                                        mobile phones and navigating complex Italian websites. Enhanced explanation
-                                        skills
-                                        and teamwork in managing volunteers for effective learning sessions.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Math club Co-organizer & Tutor -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-primary fw-bolder mb-2">2022 - 2023</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Math club Co-organizer & Tutor</div>
-                                        <div>Roncade, Italy</div>
-                                    </div>
-                                    <p>
-                                        Co-founded a Math Club to provide free, peer-led academic support in mathematics
-                                        during school free periods. Played a key role in organizing, creating
-                                        instructional
-                                        materials, and tutoring.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Volunteering Activities Section -->
-                <section class="resume-section mb-5">
-                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span
-                            class="text-gradient d-inline">Volunteering Activities</span></h2>
-                    <div class="row gx-5 justify-content-center">
-                        <!--  Automation of donation classification -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">March 2023 - February 2025</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold"> Automation of donation classification for non-profit
-                                            Dottor
-                                            Sorriso </div>
-                                        <div>Milan, Italy</div>
-                                    </div>
-                                    <p>
-                                        Built the original Python automation that later expanded into a longer-running
-                                        database update workflow for the organization.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Teaching the elderly how to use technology (Repeated, consider if this is distinct or merge) -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">January 2023 - March 2023</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Teaching the elderly how to use technology</div>
-                                        <div>Roncade, Italy</div>
-                                    </div>
-                                    <p>
-                                        Volunteered to educate 30+ elderly individuals on utilizing technology,
-                                        specifically
-                                        mobile phones and navigating complex Italian websites. Enhanced explanation
-                                        skills
-                                        and teamwork in managing volunteers for effective learning sessions.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- IE Day Volunteering  -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">Ongoing</div>
-                                    <!-- Assuming ongoing or add specific date -->
-                                    <div class="mb-2">
-                                        <div class="fw-bold">IE Day Volunteering</div>
-                                        <div>Madrid, Spain</div>
-                                    </div>
-                                    <p>
-                                        Assisted in organizing and supporting university events.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Competitions Section -->
-                <section class="resume-section mb-5">
-                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span
-                            class="text-gradient d-inline">Competitions</span></h2>
-                    <div class="row gx-5 justify-content-center">
-                        <!-- Tech Venture Bootcamp  -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-primary fw-bolder mb-2"> October 2024</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold"> Tech Venture Bootcamp</div>
-                                        <div>Madrid, Spain</div>
-                                        <span class="badge mt-1">People's Choice Award</span>
-                                    </div>
-                                    <p class="mt-2">
-                                        Developed Budget Buddy, an AI-powered money management chatbot that helps users
-                                        optimize spending habits.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Gemini Competition -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-primary fw-bolder mb-2">May 2024 - August 2024</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Gemini Competition</div>
-                                        <div>Online</div>
-                                    </div>
-                                    <p class="mt-2">
-                                        Created Neural Noir, a game integrating Unreal Engine and Python that uses
-                                        Gemini AI
-                                        to generate infinite murder mystery stories with custom characters and items.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Unreal Engine game jams  -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-primary fw-bolder mb-2">2019 - 2021</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Unreal Engine game jams</div>
-                                        <div>Online</div>
-                                    </div>
-                                    <p class="mt-2">
-                                        Participated in official Unreal Engine game jams hosted by Epic Games, enhancing
-                                        skills in game development and collaboration in competitive programming
-                                        environments.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Projects Section -->
-                <section class="resume-section mb-5">
-                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span
-                            class="text-gradient d-inline">Projects</span></h2>
-                    <div class="row gx-5 justify-content-center">
-                        <!-- MOSAIC -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">2025 - Present</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">MOSAIC</div>
-                                        <div>ROS 2, OptiTrack, System Design, TouchDesigner</div>
-                                    </div>
-                                    <p>
-                                        Modular, low-cost multi-projector system for synchronized visual output across
-                                        large lab surfaces. Built with TouchDesigner and NDI using four projectors, and
-                                        being extended into a swarm display for live robot data visualization.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Neural Noir -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">2024</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Neural Noir</div>
-                                        <div>Unreal Engine 5, Python, Google Gemini</div>
-                                    </div>
-                                    <p>
-                                        AI-driven narrative game where LLM outputs generate characters, items, and plot
-                                        in real time. AI content is routed into UE5 game state to enable branching and
-                                        replayable murder mystery stories.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- VictorIA -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">2025 - Present</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold"> VictorIA</div>
-                                        <div>OpenCV, Python, robotics</div>
-                                    </div>
-                                    <p>
-                                        Connect-4 robotic arm project. Computer vision reads board state, a strategy
-                                        engine selects moves, and an end effector places tokens, closing the perception
-                                        to decision to action loop with live feedback.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- HoloVinyl  -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">2025 - Present</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">HoloVinyl </div>
-                                        <div>OpenCV, hand tracking, Python, Machine Learning, YOLO</div>
-                                    </div>
-                                    <p>
-                                        Connects music with personal memories by linking songs to physical objects.
-                                        Computer vision recognizes custom items, while gesture control enables a more
-                                        personal way to trigger and explore music.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mucca Simulator 2 -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card overflow-hidden shadow rounded-4 border-0 h-100">
-                                <div class="card-body p-4">
-                                    <div class="text-secondary fw-bolder mb-2">2023</div>
-                                    <div class="mb-2">
-                                        <div class="fw-bold">Mucca Simulator 2</div>
-                                        <div>Python, networking</div>
-                                    </div>
-                                    <p>
-                                        A fully Python-based online multiplayer game for mac, created to deepen my
-                                        knowledge
-                                        of Python and networking.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Skills Section -->
-                <section class="resume-section mb-5">
-                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span
-                            class="text-gradient d-inline">Skills</span></h2>
-                    <div class="card overflow-hidden shadow rounded-4 border-0">
-                        <div class="card-body p-4">
-                            <div class="row gx-5">
-                                <!-- Technical Skills -->
-                                <div class="col-lg-6 mb-4 mb-lg-0">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="feature rounded-3 me-3"><i class="bi bi-code-slash"></i></div>
-                                        <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">Technical
-                                                Skills</span></h3>
-                                    </div>
-                                    <div class="mb-2">Software development and system building</div>
-                                    <div class="mb-2">Python (advanced), Java (intermediate), C++</div>
-                                    <div class="mb-2">AI/ML model training, neural networks, PyTorch, TensorFlow</div>
-                                    <div class="mb-2">Computer vision, OpenCV, robotics APIs, ROS 2</div>
-                                    <div class="mb-2">Android development</div>
-                                    <div>Game development with Unreal Engine 4 & 5</div>
-                                </div>
-
-                                <!-- Languages -->
-                                <div class="col-lg-6">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="feature rounded-3 me-3"><i class="bi bi-globe"></i></div>
-                                        <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">Languages</span>
-                                        </h3>
-                                    </div>
-                                    <div class="mb-2">Italian (Native)</div>
-                                    <div class="mb-2">English (Native)</div>
-                                    <div class="mb-2">Spanish (Intermediate)</div>
-                                    <div>French (Basic)</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Additional Information Section -->
-                <section class="resume-section mb-5">
-                    <h2 class="text-primary fw-bolder mb-4 fs-3 mt-4 text-center"><span
-                            class="text-gradient d-inline">Additional Information</span></h2>
-                    <div class="card overflow-hidden shadow rounded-4 border-0">
-                        <div class="card-body p-4">
-                            <p class="mb-0">
-                                Passionate about gaming and advanced mathematics. Participated in sailing and
-                                competitive skiing, achieving significant milestones in both sports.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Contact Information Footer Card -->
-                <div class="card overflow-hidden shadow rounded-4 border-0 mt-5">
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <div class="text-muted mb-0"> <!-- mb-0 to remove extra space if footer is close -->
-                                Madrid, Spain / Milan, Italy<br />
-                                (+39) 3883637191 |
-                                <a href="mailto:matteo.giorgetti.05@gmail.com"
-                                    class="text-gradient">matteo.giorgetti.05@gmail.com</a> |
-                                <a href="https://mgiorgetti.com" class="text-gradient">mgiorgetti.com</a> |
-                                <a href="https://github.com/Inventure71"
-                                    class="text-gradient">github.com/Inventure71</a>
-                            </div>
-                        </div>
+                        </section>
                     </div>
                 </div>
             </div>
@@ -544,7 +286,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-4 mt-auto">
+    <footer class="pf-footer py-4 mt-auto">
         <div class="container px-5">
             <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                 <div class="col-auto">
@@ -564,8 +306,7 @@
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/theme.js"></script>
-    <script src="js/scripts.js"></script>
-    <script src="js/animations.js"></script>
+    <script src="js/playfolio.js"></script>
 </body>
 
 </html>

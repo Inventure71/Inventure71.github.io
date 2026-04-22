@@ -70,21 +70,48 @@
     // --- Graph State ---
     const canvas = document.getElementById('neuron-canvas');
     const ctx = canvas.getContext('2d');
+    const container = canvas.closest('.neuron-container');
     const overlay = document.getElementById('neuron-overlay');
     const overlayTitle = document.getElementById('overlay-title');
     const overlayCount = document.getElementById('overlay-count');
     const overlayList = document.getElementById('overlay-list');
     const closeBtn = document.querySelector('.neuron-overlay-close');
 
-    let width, height;
+    let width, height, dpr;
     let nodes = [];
     let edges = [];
     let animationId;
     let hoveredNode = null;
     let selectedNode = null;
+    let draggedNode = null;
     
     // Mouse interaction
     const mouse = { x: 0, y: 0, isDown: false };
+
+    function hashString(value) {
+        return Array.from(value).reduce((hash, char) => {
+            return ((hash << 5) - hash) + char.charCodeAt(0);
+        }, 0);
+    }
+
+    function nodePalette(node) {
+        const label = node.id.toLowerCase();
+        if (label.includes('ai') || label.includes('generative') || label.includes('vision')) return '#40b898';
+        if (label.includes('game') || label.includes('unreal') || label.includes('story')) return '#ff7048';
+        if (label.includes('python') || label.includes('algorithm') || label.includes('complexity')) return '#f4f1e8';
+        if (label.includes('android') || label.includes('productivity') || label.includes('reminder')) return '#79a0ff';
+        return '#d8ded8';
+    }
+
+    function placeNode(node, index, count) {
+        const angle = (-Math.PI / 2) + (Math.PI * 2 * index / count);
+        const ring = Math.min(width, height) * (0.3 + ((index % 3) * 0.09));
+        const horizontalBias = width < 760 ? 0 : width * 0.14;
+        node.homeX = (width / 2) + horizontalBias + Math.cos(angle) * ring;
+        node.homeY = (height / 2) + Math.sin(angle) * ring * 0.7;
+        node.x = node.homeX + ((hashString(node.id) % 41) - 20);
+        node.y = node.homeY + ((hashString(`${node.id}:y`) % 41) - 20);
+    }
 
     // --- Initialization ---
     function init() {
@@ -112,16 +139,21 @@
             });
         });
 
-        nodes = Array.from(tagMap.values());
+        nodes = Array.from(tagMap.values())
+            .sort((a, b) => b.projects.length - a.projects.length || a.id.localeCompare(b.id));
 
         // Adjust radius based on project count
-        nodes.forEach(node => {
-            node.radius = 15 + (node.projects.length * 8);
+        nodes.forEach((node, index) => {
+            node.radius = 18 + Math.min(node.projects.length, 4) * 5;
+            node.color = nodePalette(node);
+            node.labelRank = index;
+            node.labelSide = index % 2 === 0 ? 1 : -1;
+            placeNode(node, index, nodes.length);
         });
 
         // Create Edges (Co-occurrence)
         // Connect tags that appear in the same project
-        const edgeSet = new Set();
+        const edgeMap = new Map();
         projects.forEach(p => {
             const pTags = p.tags;
             for (let i = 0; i < pTags.length; i++) {
@@ -129,47 +161,26 @@
                     const t1 = pTags[i];
                     const t2 = pTags[j];
                     const id = [t1, t2].sort().join('-');
-                    if (!edgeSet.has(id)) {
-                        edgeSet.add(id);
-                        edges.push({
+                    if (!edgeMap.has(id)) {
+                        edgeMap.set(id, {
                             source: nodes.find(n => n.id === t1),
                             target: nodes.find(n => n.id === t2),
-                            strength: 0.5
+                            strength: 1
                         });
+                    } else {
+                        edgeMap.get(id).strength += 1;
                     }
                 }
             }
         });
 
-        // Add random weak connections to make it look more like a brain/network
-        // if the graph is disconnected
-        for (let i = 0; i < nodes.length; i++) {
-            const closest = nodes
-                .filter(n => n !== nodes[i])
-                .sort((a, b) => {
-                    const distA = Math.hypot(a.x - nodes[i].x, a.y - nodes[i].y);
-                    const distB = Math.hypot(b.x - nodes[i].x, b.y - nodes[i].y);
-                    return distA - distB;
-                })
-                .slice(0, 2); // Connect to 2 closest neighbors
-            
-            closest.forEach(neighbor => {
-                const id = [nodes[i].id, neighbor.id].sort().join('-');
-                if (!edgeSet.has(id)) {
-                    edgeSet.add(id);
-                    edges.push({
-                        source: nodes[i],
-                        target: neighbor,
-                        strength: 0.1 // Weaker visual connection
-                    });
-                }
-            });
-        }
+        edges = Array.from(edgeMap.values());
 
         // Event Listeners
         canvas.addEventListener('mousemove', onMouseMove);
         canvas.addEventListener('mousedown', onMouseDown);
         canvas.addEventListener('mouseup', onMouseUp);
+        canvas.addEventListener('mouseleave', onMouseUp);
         canvas.addEventListener('click', onClick);
         closeBtn.addEventListener('click', closeOverlay);
 
@@ -177,10 +188,19 @@
     }
 
     function resize() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
+        const rect = container.getBoundingClientRect();
+        width = rect.width;
+        height = rect.height;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        if (nodes.length) {
+            nodes.forEach((node, index) => placeNode(node, index, nodes.length));
+        }
     }
 
     // --- Physics Engine ---
@@ -195,16 +215,16 @@
                 const dist = Math.hypot(dx, dy) || 1;
                 
                 // Stronger repulsion at close range
-                const force = (2000 * 2000) / (dist * dist); 
+                const force = (1200 * 1200) / (dist * dist);
                 
                 const fx = (dx / dist) * force * 0.0002;
                 const fy = (dy / dist) * force * 0.0002;
 
-                if (a !== hoveredNode) {
+                if (a !== draggedNode) {
                     a.vx -= fx;
                     a.vy -= fy;
                 }
-                if (b !== hoveredNode) {
+                if (b !== draggedNode) {
                     b.vx += fx;
                     b.vy += fy;
                 }
@@ -218,38 +238,42 @@
             const dx = b.x - a.x;
             const dy = b.y - a.y;
             const dist = Math.hypot(dx, dy) || 1;
-            const targetDist = 180; // Increased spacing
+            const targetDist = Math.max(150, a.radius + b.radius + 110);
             
-            const force = (dist - targetDist) * 0.003;
+            const force = (dist - targetDist) * (0.0019 + (edge.strength * 0.0006));
             const fx = (dx / dist) * force;
             const fy = (dy / dist) * force;
 
-            if (a !== hoveredNode) {
+            if (a !== draggedNode) {
                 a.vx += fx;
                 a.vy += fy;
             }
-            if (b !== hoveredNode) {
+            if (b !== draggedNode) {
                 b.vx -= fx;
                 b.vy -= fy;
             }
         });
 
-        // 3. Center Gravity
+        // 3. Home Gravity
         nodes.forEach(node => {
-            if (node === hoveredNode) return; // Skip physics for hovered node
+            if (node === draggedNode) {
+                node.vx = 0;
+                node.vy = 0;
+                return;
+            }
 
-            const dx = (width / 2) - node.x;
-            const dy = (height / 2) - node.y;
-            node.vx += dx * 0.0005;
-            node.vy += dy * 0.0005;
+            const dx = node.homeX - node.x;
+            const dy = node.homeY - node.y;
+            node.vx += dx * 0.0022;
+            node.vy += dy * 0.0022;
 
             // Mouse Interaction (Repel/Attract)
             const mdx = mouse.x - node.x;
             const mdy = mouse.y - node.y;
             const mDist = Math.hypot(mdx, mdy);
             
-            if (mDist < 250) {
-                const mForce = (250 - mDist) * 0.001;
+            if (mDist > 0 && mDist < 180) {
+                const mForce = (180 - mDist) * 0.0008;
                 node.vx -= (mdx / mDist) * mForce;
                 node.vy -= (mdy / mDist) * mForce;
             }
@@ -282,21 +306,21 @@
 
                 if (dist < minDist) {
                     const overlap = minDist - dist;
-                    const nx = dx / dist;
-                    const ny = dy / dist;
+                    const nx = dist ? dx / dist : 1;
+                    const ny = dist ? dy / dist : 0;
                     
                     // Move apart proportional to inverse mass (assume equal mass for now)
                     const moveX = nx * overlap * 0.5;
                     const moveY = ny * overlap * 0.5;
 
-                    if (a !== hoveredNode) {
+                    if (a !== draggedNode) {
                         a.x -= moveX;
                         a.y -= moveY;
                         // Kill velocity in collision direction
                         a.vx *= 0.5;
                         a.vy *= 0.5;
                     }
-                    if (b !== hoveredNode) {
+                    if (b !== draggedNode) {
                         b.x += moveX;
                         b.y += moveY;
                         b.vx *= 0.5;
@@ -305,6 +329,32 @@
                 }
             }
         }
+    }
+
+    function drawLabel(node, strong = false) {
+        const fontSize = strong ? 15 : 12;
+        ctx.font = `${strong ? '700' : '650'} ${fontSize}px "Plus Jakarta Sans"`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        const label = node.id;
+        const maxWidth = Math.min(210, Math.max(86, node.radius * 4.5));
+        const width = Math.min(ctx.measureText(label).width + 18, maxWidth);
+        const height = fontSize + 10;
+        const x = node.x - (width / 2);
+        const labelGap = node.radius + 13;
+        const y = node.labelSide > 0 ? node.y + labelGap : node.y - labelGap - height;
+
+        ctx.fillStyle = strong ? 'rgba(13, 13, 11, 0.82)' : 'rgba(13, 13, 11, 0.56)';
+        ctx.strokeStyle = strong ? 'rgba(244, 241, 232, 0.24)' : 'rgba(244, 241, 232, 0.1)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(x, y, width, height, 5);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = strong ? '#f4f1e8' : 'rgba(244, 241, 232, 0.76)';
+        ctx.fillText(label, node.x, y + (height / 2), maxWidth - 14);
     }
 
     // --- Rendering ---
@@ -321,17 +371,17 @@
             ctx.lineTo(edge.target.x, edge.target.y);
             
             if (isConnectedToHover || isConnectedToSelected) {
-                ctx.strokeStyle = 'rgba(59, 130, 246, 0.8)';
-                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = 'rgba(244, 241, 232, 0.78)';
+                ctx.lineWidth = 2.2 + edge.strength * 0.3;
                 ctx.globalAlpha = 1;
             } else if (hoveredNode) {
                 // Dim unrelated edges when hovering
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+                ctx.strokeStyle = 'rgba(244, 241, 232, 0.05)';
                 ctx.lineWidth = 1;
                 ctx.globalAlpha = 0.2;
             } else {
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-                ctx.lineWidth = 1;
+                ctx.strokeStyle = 'rgba(244, 241, 232, 0.14)';
+                ctx.lineWidth = 0.8 + edge.strength * 0.2;
                 ctx.globalAlpha = 1;
             }
             ctx.stroke();
@@ -351,40 +401,35 @@
             ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
             
             if (isSelected) {
-                ctx.fillStyle = '#3b82f6'; // Brand accent
-                ctx.shadowBlur = 25;
-                ctx.shadowColor = '#3b82f6';
+                ctx.fillStyle = node.color;
+                ctx.shadowBlur = 26;
+                ctx.shadowColor = node.color;
             } else if (isHovered) {
-                ctx.fillStyle = '#60a5fa';
+                ctx.fillStyle = node.color;
                 ctx.shadowBlur = 20;
-                ctx.shadowColor = '#60a5fa';
+                ctx.shadowColor = node.color;
             } else if (isConnected) {
-                ctx.fillStyle = '#93c5fd'; // Lighter blue for connected nodes
+                ctx.fillStyle = node.color;
                 ctx.shadowBlur = 10;
-                ctx.shadowColor = '#93c5fd';
+                ctx.shadowColor = node.color;
             } else if (hoveredNode) {
                 // Dim unrelated nodes
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.fillStyle = 'rgba(244, 241, 232, 0.22)';
                 ctx.shadowBlur = 0;
             } else {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.fillStyle = node.color;
                 ctx.shadowBlur = 0;
             }
             
             ctx.fill();
             ctx.shadowBlur = 0; // Reset
+            ctx.strokeStyle = isHovered || isSelected ? 'rgba(244, 241, 232, 0.86)' : 'rgba(13, 13, 11, 0.42)';
+            ctx.lineWidth = isHovered || isSelected ? 2 : 1;
+            ctx.stroke();
 
             // Draw Label
-            if (isHovered || isSelected || isConnected || (!hoveredNode && node.radius > 20)) {
-                ctx.fillStyle = '#fff';
-                ctx.font = (isHovered || isSelected) ? 'bold 15px "Plus Jakarta Sans"' : '13px "Plus Jakarta Sans"';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                // Add text shadow for better readability
-                ctx.shadowColor = 'rgba(0,0,0,0.8)';
-                ctx.shadowBlur = 4;
-                ctx.fillText(node.id, node.x, node.y + node.radius + 18);
-                ctx.shadowBlur = 0;
+            if (isHovered || isSelected || isConnected || (!hoveredNode && (node.projects.length > 1 || node.labelRank < 8))) {
+                drawLabel(node, isHovered || isSelected);
             }
         });
     }
@@ -413,18 +458,32 @@
         
         hoveredNode = found;
         canvas.style.cursor = hoveredNode ? 'pointer' : 'default';
+
+        if (draggedNode) {
+            draggedNode.x = mouse.x;
+            draggedNode.y = mouse.y;
+            draggedNode.homeX = mouse.x;
+            draggedNode.homeY = mouse.y;
+            canvas.style.cursor = 'grabbing';
+        }
     }
 
     function onMouseDown(e) {
         mouse.isDown = true;
+        if (hoveredNode) {
+            draggedNode = hoveredNode;
+            canvas.style.cursor = 'grabbing';
+        }
     }
 
     function onMouseUp(e) {
         mouse.isDown = false;
+        draggedNode = null;
+        canvas.style.cursor = hoveredNode ? 'pointer' : 'default';
     }
 
     function onClick(e) {
-        if (hoveredNode) {
+        if (hoveredNode && !draggedNode) {
             selectNode(hoveredNode);
         } else {
             // Deselect if clicking empty space

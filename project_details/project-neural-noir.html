@@ -34,8 +34,9 @@
         <link href="../css/modern.css" rel="stylesheet" />
         <!-- Project Pages Styles -->
         <link href="../css/project-pages.css" rel="stylesheet" />
+    <link href="../css/playfolio.css" rel="stylesheet" />
     </head>
-    <body class="d-flex flex-column h-100 project-page project-page--noir">
+    <body class="playfolio-page d-flex flex-column h-100 project-page project-page--noir">
         <div class="project-wip" data-component="wip-tape">
             <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
                 <span class="project-wip__label">Work in progress – click to dismiss</span>
@@ -45,16 +46,16 @@
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg py-3">
                 <div class="container px-5">
-                    <a class="navbar-brand" href="../index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
+                    <a class="navbar-brand" href="../index.html">MG</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
                             <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
                                 <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" href="../resume.html">Resume</a></li>
-                                <li class="nav-item"><a class="nav-link" href="../projects.html">Projects</a></li>
-                                <li class="nav-item"><a class="nav-link" href="../apps.html">Apps</a></li>
-                                <li class="nav-item"><a class="nav-link" href="../contact.html">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../projects.html">Projects</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../apps.html">Apps</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../resume.html">Resume</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../contact.html">Contact</a></li>
                             </ul>
                             <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle aria-label="Toggle color scheme">
                                 <i class="bi bi-moon"></i>
@@ -70,7 +71,6 @@
                     <div class="project-shell fade-in">
                         <header class="project-hero">
                             <div>
-                                <p class="project-eyebrow">Case File · AI Narrative Engine</p>
                                 <h1>Neural Noir</h1>
                                 <p class="lead">Gemini-powered murder mysteries where suspects, clues, and props regenerate every single playthrough.</p>
                                 <div class="project-pills">
@@ -115,7 +115,7 @@
                                 <p>Procedural detective sandbox that lets players request any theme and receive a bespoke crime scene in seconds.</p>
                                 <ul class="sidecard-highlight">
                                     <li><i class="bi bi-lightning-charge"></i><span>Creates unique suspects, alibis, and props in under 15 seconds.</span></li>
-                                    <li><i class="bi bi-magic"></i><span>Gemini AI keeps tone consistent while improvising twists around player choices.</span></li>
+                                    <li><i class="bi bi-sliders"></i><span>Gemini AI keeps tone consistent while adapting twists around player choices.</span></li>
                                     <li><i class="bi bi-clipboard2-check"></i><span>Autonomous judge grades the final accusation with receipts.</span></li>
                                 </ul>
                                 <div class="sidecard-links">
@@ -195,7 +195,7 @@
                                     <p>Auto-written dossiers cross-link wounds, timelines, and weapon lore to validate your accusations.</p>
                                     <ul>
                                         <li>Evidence tags sync with gameplay triggers and photo captures.</li>
-                                        <li>Verdict generator grades logic, accuracy, and noir flair.</li>
+                                        <li>Verdict generator grades logic, accuracy, and evidence quality.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -219,7 +219,7 @@
                                     <span class="flow-index">01</span>
                                     <div class="flow-body">
                                         <h5>Theme Selection</h5>
-                                        <p>Players pitch a vibe—classic noir, neon sci-fi, cozy mystery—and Gemini seeds the canonical truth.</p>
+                                        <p>Players choose a genre and tone; Gemini seeds the canonical truth.</p>
                                     </div>
                                 </div>
                                 <div class="project-flow-step">
@@ -240,7 +240,7 @@
                                     <span class="flow-index">04</span>
                                     <div class="flow-body">
                                         <h5>Debrief & Evaluation</h5>
-                                        <p>Submit your accusation and receive a Gemini-written verdict that grades logic, accuracy, and flair.</p>
+                                        <p>Submit your accusation and receive a Gemini-written verdict that grades logic, accuracy, and evidence quality.</p>
                                     </div>
                                 </div>
                             </div>
@@ -277,8 +277,7 @@
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../js/theme.js"></script>
-        <script src="../js/scripts.js"></script>
-        <script src="../js/animations.js"></script>
+        <script src="../js/playfolio.js"></script>
         <script src="../js/project-pages.js"></script>
     </body>
 </html>

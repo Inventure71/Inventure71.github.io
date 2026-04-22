@@ -37,9 +37,10 @@
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
     <link href="../css/project-pages.css" rel="stylesheet" />
+    <link href="../css/playfolio.css" rel="stylesheet" />
 </head>
 
-<body class="d-flex flex-column h-100 project-page project-page--holo">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--holo">
     <div class="project-wip" data-component="wip-tape">
         <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
             <span class="project-wip__label">Work in progress – click to dismiss</span>
@@ -49,7 +50,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg py-3">
             <div class="container px-5">
-                <a class="navbar-brand" href="../index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
+                <a class="navbar-brand" href="../index.html">MG</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation"><span
@@ -58,9 +59,9 @@
                     <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
                         <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
                             <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="../resume.html">Resume</a></li>
                             <li class="nav-item"><a class="nav-link" href="../projects.html">Projects</a></li>
                             <li class="nav-item"><a class="nav-link" href="../apps.html">Apps</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../resume.html">Resume</a></li>
                             <li class="nav-item"><a class="nav-link" href="../contact.html">Contact</a></li>
                         </ul>
                         <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle
@@ -78,7 +79,6 @@
                 <div class="project-shell fade-in">
                     <header class="project-hero">
                         <div>
-                            <p class="project-eyebrow">Vision Interface · Touchless Media</p>
                             <h1>HoloVinyl</h1>
                             <p class="lead">Python-native holographic console that turns gestures and tracked objects
                                 into living music controls.</p>
@@ -110,8 +110,8 @@
 
                     <section class="project-media-panel project-media-panel--split">
                         <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/placeholders/debug-placeholder.svg"
-                                alt="Placeholder montage of HoloVinyl console" loading="lazy" />
+                            <img src="../assets/project-media/holovinyl/object-tracking-hero.jpg"
+                                alt="HoloVinyl object tracking UI detecting a vinyl card" loading="lazy" />
                         </div>
                         <aside class="project-sidecard">
                             <h3>Project Snapshot</h3>
@@ -249,15 +249,15 @@
                         </div>
                         <div class="project-gallery">
                             <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg"
-                                    alt="Placeholder gesture overlay mock" loading="lazy" />
-                                <figcaption>Gesture zones rendered atop the live feed for immediate feedback.
+                                <img src="../assets/project-media/holovinyl/multi-card-tracking.jpg"
+                                    alt="HoloVinyl camera view tracking multiple cards" loading="lazy" />
+                                <figcaption>Live camera feed with detection boxes feeding the interaction layer.
                                 </figcaption>
                             </figure>
                             <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg" alt="Placeholder system diagram"
+                                <img src="../assets/project-media/holovinyl/class-mapping-ui.jpg" alt="HoloVinyl class mapping UI"
                                     loading="lazy" />
-                                <figcaption>Module layout linking perception to UI event routing.</figcaption>
+                                <figcaption>Class mapping controls used to bind detected objects to interface actions.</figcaption>
                             </figure>
                         </div>
                     </section>
@@ -274,7 +274,7 @@
     </main>
 
     <!-- Footer-->
-    <footer class="py-4 mt-auto">
+    <footer class="pf-footer py-4 mt-auto">
         <div class="container px-5">
             <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                 <div class="col-auto">
@@ -292,8 +292,7 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme.js"></script>
-    <script src="../js/scripts.js"></script>
-    <script src="../js/animations.js"></script>
+    <script src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js"></script>
 </body>
 

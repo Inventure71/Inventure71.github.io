@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Apps - M.G.</title>
     <meta name="description"
-        content="Download premium apps and tools by Inventure71. Feature-packed, beautifully designed applications for your daily workflow." />
+        content="Small apps and utilities by Matteo Giorgetti." />
     <meta name="author" content="Matteo Giorgetti" />
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
@@ -36,16 +36,15 @@
     <link href="css/styles.css" rel="stylesheet" />
     <!-- Modern Design System -->
     <link href="css/modern.css" rel="stylesheet" />
-    <!-- App Store Style -->
-    <link href="css/app-store.css" rel="stylesheet" />
+    <link href="css/playfolio.css" rel="stylesheet" />
 </head>
 
-<body class="d-flex flex-column h-100">
+<body class="playfolio-page d-flex flex-column h-100">
     <main class="flex-shrink-0">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg py-3">
             <div class="container px-5">
-                <a class="navbar-brand" href="index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
+                <a class="navbar-brand" href="index.html">MG</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation"><span
@@ -54,9 +53,9 @@
                     <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
                         <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
                             <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
                             <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
                             <li class="nav-item"><a class="nav-link active" href="apps.html">Apps</a></li>
+                            <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                         </ul>
                         <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle
@@ -68,113 +67,44 @@
             </div>
         </nav>
 
-        <!-- App Store Content -->
-        <section class="py-5">
-            <div class="container px-5">
-                <!-- Hero -->
-                <div class="app-store-hero">
-                    <h1 class="app-store-title">The App Collection</h1>
-                    <p class="app-store-subtitle">Powerful tools designed for productivity and performance. Crafted with
-                        pixel-perfect precision.</p>
-                </div>
-
-                <!-- 
-                    HOW TO ADD A NEW APP:
-                    1. Copy the "app-card" div structure below.
-                    2. Paste it inside the "app-grid" div below the last app.
-                    3. Update the content:
-                       - Change the class "bi-clipboard-check" to a suitable Bootstrap Icon (https://icons.getbootstrap.com/).
-                       - Update "app-name" with the name of your app.
-                       - Update "featured-badge" if needed (or remove it).
-                       - Update "app-platform-badge" (e.g., PC Only, iOS & Android).
-                       - Update "app-description".
-                       - Update "app-meta" items (Platform, Category, etc.).
-                       - Update the "href" in the "btn-get" link to point to your new GitHub release or download URL.
-                -->
-
-                <!-- Apps Grid -->
-                <div class="app-grid">
-
-                    <!-- ClipClop -->
-                    <div class="app-card">
-                        <div class="featured-badge">Top Utility</div>
-                        <div class="app-icon-wrapper">
-                            <i class="bi bi-clipboard-check"></i>
-                        </div>
-
-                        <div class="app-content">
-                            <div class="app-header">
-                                <h3 class="app-name">ClipClop</h3>
-                                <div class="app-platform-badge">PC & Mobile</div>
-                            </div>
-
-                            <p class="app-description">
-                                The ultimate cross-platform clipboard manager. Sync your text and files seamlessly
-                                between your macOS device and Android phone.
-                            </p>
-
-                            <div class="app-meta">
-                                <div class="app-meta-item">
-                                    <i class="bi bi-apple"></i> macOS
-                                </div>
-                                <div class="app-meta-item">
-                                    <i class="bi bi-android2"></i> Android
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="app-action-area">
-                            <a href="https://github.com/Inventure71/ClipClop/releases/tag/beta.2" class="btn-get"
-                                target="_blank">
-                                <span>Get</span>
-                                <i class="bi bi-download"></i>
-                            </a>
-                        </div>
+        <section class="pf-page">
+            <div class="pf-shell">
+                <header class="pf-section-head pf-reveal">
+                    <div>
+                        <h1 class="pf-section-title">Apps</h1>
                     </div>
+                    <p class="pf-section-copy">Small utilities and experiments that are useful enough to ship.</p>
+                </header>
 
-                    <!-- TypeCraft -->
-                    <div class="app-card">
-                        <div class="app-icon-wrapper">
-                            <i class="bi bi-keyboard"></i>
+                <div class="pf-app-list pf-reveal">
+                    <article class="pf-app-row">
+                        <div class="pf-app-icon"><i class="bi bi-clipboard-check"></i></div>
+                        <div>
+                            <span class="pf-app-kicker">macOS + Android</span>
+                            <h2>ClipClop</h2>
+                            <p>A cross-platform clipboard utility for moving text and files between macOS and Android.</p>
                         </div>
+                        <a class="pf-button is-quiet" href="https://github.com/Inventure71/ClipClop/releases/tag/beta.2"
+                            target="_blank" rel="noopener" aria-label="Download ClipClop">Get <i class="bi bi-download"></i></a>
+                    </article>
 
-                        <div class="app-content">
-                            <div class="app-header">
-                                <h3 class="app-name">TypeCraft</h3>
-                                <div class="app-platform-badge">macOS</div>
-                            </div>
-
-                            <p class="app-description">
-                                Master your typing with precision. Detailed analytics, custom drills, and a beautiful
-                                interface to improve your speed and accuracy. (macOS exclusive)
-                            </p>
-
-                            <div class="app-meta">
-                                <div class="app-meta-item">
-                                    <i class="bi bi-apple"></i> macOS
-                                </div>
-                                <div class="app-meta-item">
-                                    <i class="bi bi-lightning-charge"></i> Productivity
-                                </div>
-                            </div>
+                    <article class="pf-app-row">
+                        <div class="pf-app-icon"><i class="bi bi-keyboard"></i></div>
+                        <div>
+                            <span class="pf-app-kicker">macOS</span>
+                            <h2>TypeCraft</h2>
+                            <p>A typing practice tool with analytics, custom drills, and a focused training surface.</p>
                         </div>
-
-                        <div class="app-action-area">
-                            <a href="https://github.com/Inventure71/TypeCraft/releases/tag/Stable" class="btn-get"
-                                target="_blank">
-                                <span>Get</span>
-                                <i class="bi bi-download"></i>
-                            </a>
-                        </div>
-                    </div>
-
+                        <a class="pf-button is-quiet" href="https://github.com/Inventure71/TypeCraft/releases/tag/Stable"
+                            target="_blank" rel="noopener" aria-label="Download TypeCraft">Get <i class="bi bi-download"></i></a>
+                    </article>
                 </div>
             </div>
         </section>
 
     </main>
     <!-- Footer-->
-    <footer class="py-4 mt-auto">
+    <footer class="pf-footer py-4 mt-auto">
         <div class="container px-5">
             <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                 <div class="col-auto">
@@ -193,8 +123,7 @@
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/theme.js"></script>
-    <script src="js/scripts.js"></script>
-    <script src="js/animations.js"></script>
+    <script src="js/playfolio.js"></script>
 </body>
 
 </html>

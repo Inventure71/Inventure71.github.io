@@ -114,9 +114,10 @@ This folder contains project detail pages built with a **modular, component-base
 ### 7. Image Gallery (Optional)
 ```html
 <div class="image-gallery">
-    <div class="gallery-item">
+    <figure class="gallery-card">
         <img src="../assets/project/image.png" alt="Description">
-    </div>
+        <figcaption>Short caption</figcaption>
+    </figure>
 </div>
 ```
 *Note: Click-to-zoom is automatic via JS*
@@ -169,7 +170,7 @@ Use Bootstrap Icons: https://icons.getbootstrap.com/
 The `project-pages.js` module provides:
 
 ### 1. Image Modal (Automatic)
-- Click any `.gallery-item` to enlarge
+- Click any `.gallery-card` image to enlarge
 - ESC key or click outside to close
 - No configuration needed
 
@@ -247,7 +248,7 @@ Edit the CSS class in `project-pages.css` - changes apply to all pages.
 **Modal not working?**
 - Ensure `project-pages.js` is included
 - Check browser console for errors
-- Verify `.gallery-item` class on parent div
+- Verify `.gallery-card` class on the parent figure
 
 **Styling looks wrong?**
 - Verify `project-pages.css` is included
@@ -284,5 +285,4 @@ Edit the CSS class in `project-pages.css` - changes apply to all pages.
 ---
 
 **Questions?** Check existing project pages for examples or refer to the template comments.
-
 

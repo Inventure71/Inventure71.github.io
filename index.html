@@ -4,13 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Home - M.G.</title>
+    <title>Matteo Giorgetti</title>
     <meta name="description"
-        content="Matteo Giorgetti's personal portfolio showcasing projects, resume, and contact information." />
+        content="Matteo Giorgetti is a Computer Science and AI student building interactive systems, AI tools, and practical software." />
     <meta name="author" content="Matteo Giorgetti" />
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-    <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -30,221 +28,212 @@
             }
         })();
     </script>
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="/css/styles.css" rel="stylesheet" />
-    <!-- Modern Design System -->
     <link href="/css/modern.css" rel="stylesheet" />
-    <!-- F1 Style -->
-    <link href="/css/f1-style.css" rel="stylesheet" />
+    <link href="/css/playfolio.css" rel="stylesheet" />
 </head>
 
-<body class="d-flex flex-column h-100">
+<body class="playfolio-page d-flex flex-column h-100">
     <main class="flex-shrink-0">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg py-3">
-            <div class="container px-5">
-                <a class="navbar-brand" href="/index.html"><span class="fw-bolder">Matteo Giorgetti</span></a>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="/index.html">MG</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation"><span
                         class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-3">
-                        <ul class="navbar-nav mb-2 mb-lg-0 small fw-bolder text-center text-lg-start">
-                            <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/resume.html">Resume</a></li>
+                    <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
+                        <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start">
+                            <li class="nav-item"><a class="nav-link active" href="/index.html">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
                             <li class="nav-item"><a class="nav-link" href="/apps.html">Apps</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/resume.html">Resume</a></li>
                             <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
                         </ul>
-                        <button class="theme-toggle-btn mt-2 mt-lg-0" type="button" data-theme-toggle
-                            aria-label="Toggle color scheme">
-                            <i class="bi bi-moon"></i>
-                        </button>
+                        <div class="d-flex gap-2">
+                            <button class="pf-icon-button" type="button" data-command-open aria-label="Open command menu">
+                                <i class="bi bi-command"></i>
+                            </button>
+                            <button class="theme-toggle-btn" type="button" data-theme-toggle
+                                aria-label="Toggle color scheme">
+                                <i class="bi bi-moon"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </nav>
-        <!-- Hero Section -->
-        <header class="py-5">
-            <div class="container px-5">
-                <div class="row gx-5 align-items-center min-vh-75">
-                    <div class="col-lg-6">
-                        <div class="text-center text-lg-start">
-                            <h1 class="display-2 fw-bolder mb-4 fade-in">Matteo Giorgetti</h1>
-                            <p class="lead mb-3 fade-in">Computer Science & AI Student</p>
-                            <p class="mb-5 text-secondary fade-in">Building innovative solutions with code, AI, and
-                                creativity.</p>
-                            <div class="d-flex gap-3 justify-content-center justify-content-lg-start fade-in">
-                                <a class="btn btn-primary" href="/resume.html">Resume</a>
-                                <a class="btn btn-outline-dark" href="/projects.html">Projects</a>
-                            </div>
+
+        <header class="pf-hero">
+            <div class="pf-shell pf-hero-grid">
+                <div class="pf-reveal">
+                    <h1 class="pf-title">Matteo Giorgetti</h1>
+                    <p class="pf-lede">
+                        I build AI tools, interactive experiments, and practical software with a focus on working
+                        prototypes.
+                    </p>
+                    <div class="pf-actions">
+                        <a class="pf-button" href="/projects.html"><i class="bi bi-grid-3x3-gap"></i> Explore work</a>
+                        <button class="pf-button is-quiet" type="button" data-command-open>
+                            <i class="bi bi-search"></i> Command menu
+                        </button>
+                    </div>
+
+                    <div class="pf-meta-strip" aria-label="Portfolio quick facts">
+                        <div class="pf-meta-item">
+                            <span class="pf-meta-k">Focus</span>
+                            <strong class="pf-meta-v">AI systems</strong>
+                        </div>
+                        <div class="pf-meta-item">
+                            <span class="pf-meta-k">Bias</span>
+                            <strong class="pf-meta-v">Working demos</strong>
+                        </div>
+                        <div class="pf-meta-item">
+                            <span class="pf-meta-k">Shortcut</span>
+                            <strong class="pf-meta-v">Press /</strong>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="d-flex justify-content-center mt-5 mt-lg-0">
-                            <div class="hero-portrait">
-                                <img class="profile-img" src="/assets/profile.png" alt="Matteo Giorgetti" />
-                            </div>
-                        </div>
+                </div>
+
+                <div class="pf-portrait-stage pf-reveal">
+                    <div class="pf-portrait">
+                        <img src="/assets/profile.png" alt="Matteo Giorgetti" data-portrait-cycle
+                            data-cycle-images="/assets/profile.png,/assets/profile2.png" />
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Featured Projects Section -->
-        <section class="py-5 fade-in">
-            <div class="container px-5 featured-projects-container">
-                <div class="text-center mb-5">
-                    <h2 class="display-4 fw-bolder mb-1">Featured Projects</h2>
+        <section class="pf-section">
+            <div class="pf-shell">
+                <div class="pf-section-head pf-reveal">
+                    <h2 class="pf-section-title">Selected work</h2>
+                    <p class="pf-section-copy">
+                        A few projects that represent the current direction: AI, tools, games, and interface prototypes.
+                    </p>
                 </div>
 
-                <div class="featured-projects-content">
-                    <!-- Championship Podium -->
-                    <div class="f1-podium-section fade-in">
-                        <div class="f1-podium">
-                            <div class="f1-podium-item p2"
-                                onclick="window.location.href='/project_details/project-neural-noir.html'">
-                                <div class="f1-podium-stand p2">
-                                    <div class="f1-podium-medal">🥈</div>
-                                    <div class="f1-podium-project-name">Neural Noir</div>
-                                    <div class="f1-podium-project-desc">AI-Driven Interactive Story Game</div>
-                                </div>
-                            </div>
-                            <div class="f1-podium-item p1"
-                                onclick="window.location.href='/project_details/project-budget-buddy.html'">
-                                <div class="f1-podium-stand p1">
-                                    <div class="f1-podium-medal">🥇</div>
-                                    <div class="f1-podium-project-name">Budget Buddy</div>
-                                    <div class="f1-podium-project-desc">AI-Powered Financial Chatbot</div>
-                                </div>
-                            </div>
-                            <div class="f1-podium-item p3"
-                                onclick="window.location.href='/project_details/project-holovinyl.html'">
-                                <div class="f1-podium-stand p3">
-                                    <div class="f1-podium-medal">🥉</div>
-                                    <div class="f1-podium-project-name">HoloVinyl</div>
-                                    <div class="f1-podium-project-desc">Touchless Vision Control Deck</div>
-                                </div>
-                            </div>
+                <div class="pf-workbench pf-reveal">
+                    <div class="pf-project-list" role="listbox" aria-label="Featured projects">
+                        <button class="pf-project-card is-active" type="button" data-project-card
+                            data-title="Budget Buddy" data-type="AI finance coach"
+                            data-summary="A personal finance chatbot that combines conversational AI with practical budgeting guidance."
+                            data-stack="Python, Gemini AI, financial planning" data-status="Featured"
+                            data-href="/project_details/project-budget-buddy.html" data-fallback="Budget Buddy">
+                            <span class="pf-project-index">01</span>
+                            <span>
+                                <span class="pf-project-name">Budget Buddy</span>
+                                <span class="pf-project-tags">AI agents / finance / coaching</span>
+                            </span>
+                            <i class="bi bi-arrow-up-right pf-project-arrow"></i>
+                        </button>
+                        <button class="pf-project-card" type="button" data-project-card data-title="Neural Noir"
+                            data-type="Interactive story engine"
+                            data-summary="A procedural detective game where AI generates suspects, alibis, and evidence pressure."
+                            data-stack="Gemini AI, Unreal Engine 5, procedural storytelling" data-status="Featured"
+                            data-href="/project_details/project-neural-noir.html"
+                            data-image="/assets/neural_noir/img1.png" data-fallback="Neural Noir">
+                            <span class="pf-project-index">02</span>
+                            <span>
+                                <span class="pf-project-name">Neural Noir</span>
+                                <span class="pf-project-tags">games / narrative / AI</span>
+                            </span>
+                            <i class="bi bi-arrow-up-right pf-project-arrow"></i>
+                        </button>
+                        <button class="pf-project-card" type="button" data-project-card data-title="HoloVinyl"
+                            data-type="Gesture interface"
+                            data-summary="A touchless control deck that uses computer vision to turn physical movement into music interaction."
+                            data-stack="Python, computer vision, gesture UI" data-status="Featured"
+                            data-href="/project_details/project-holovinyl.html" data-fallback="HoloVinyl">
+                            <span class="pf-project-index">03</span>
+                            <span>
+                                <span class="pf-project-name">HoloVinyl</span>
+                                <span class="pf-project-tags">vision / music / interaction</span>
+                            </span>
+                            <i class="bi bi-arrow-up-right pf-project-arrow"></i>
+                        </button>
+                    </div>
+
+                    <article class="pf-project-preview" data-project-preview aria-live="polite">
+                        <div class="pf-preview-media" data-preview-media data-fallback="Budget Buddy">
+                            <img alt="" />
                         </div>
-                    </div>
-
-                    <div class="text-center mt-5">
-                        <a href="/projects.html" class="btn btn-outline-dark">View Live Race</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Statistics Section -->
-        <section class="py-5 fade-in">
-            <div class="container px-5">
-                <div class="row text-center">
-                    <div class="col-md-4 mb-4 mb-md-0">
-                        <h2 class="fw-bold stat-number counter" data-target="10">0</h2>
-                        <p class="mb-0">Projects Completed</p>
-                    </div>
-                    <div class="col-md-4 mb-4 mb-md-0">
-                        <h2 class="fw-bold stat-number counter" data-target="100">0</h2>
-                        <p class="mb-0">Redbull drank</p>
-                    </div>
-                    <div class="col-md-4">
-                        <h2 class="fw-bold stat-number">∞</h2>
-                        <p class="mb-0">Nights awake</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section class="py-5 fade-in">
-            <div class="container px-5">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 text-center">
-                        <h2 class="display-4 fw-bolder mb-4">About</h2>
-                        <p class="lead mb-4">
-                            Computer Science and Artificial Intelligence student at IE University.
-                            Passionate about building innovative solutions with AI, automation, and interactive
-                            technologies.
-                        </p>
-                        <div class="d-flex justify-content-center gap-4">
-                            <a href="https://www.linkedin.com/in/matteo-giorgetti-026172247/" class="text-primary"
-                                style="font-size: 1.5rem;"><i class="bi bi-linkedin"></i></a>
-                            <a href="https://github.com/Inventure71" class="text-primary" style="font-size: 1.5rem;"><i
-                                    class="bi bi-github"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Best Project Section 
-            <section class="py-5" style="background-color: var(--bs-dark); color: var(--bs-light);">
-                <div class="container px-5">
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <h2 class="fw-bold">HoloVinyl - Augmented Reality Vinyl Player</h2>
-                            <p>
-                                HoloVinyl is an AI-powered augmented reality music experience that brings vinyl records to life.
-                                Users can scan a vinyl cover with their phone, and a holographic interface appears, allowing them to explore tracks, album history,
-                                and interactive visuals synced to the music. Leveraging AI-generated visualizations and real-time processing, HoloVinyl provides a unique way
-                                to experience classic and modern albums in a futuristic format.
+                        <div class="pf-preview-body">
+                            <span class="pf-preview-kicker" data-preview-kicker>AI finance coach</span>
+                            <h3 class="pf-preview-title" data-preview-title>Budget Buddy</h3>
+                            <p class="pf-preview-summary" data-preview-summary>
+                                A personal finance chatbot that combines conversational AI with practical budgeting
+                                guidance.
                             </p>
-                            <a href="project-details.html" class="btn btn-light">View Project</a>
                         </div>
-                        <div class="col-md-6">
-                            <img src="assets/holovinyl.png" alt="Screenshot of HoloVinyl" class="img-fluid rounded">
+                        <div class="pf-preview-footer">
+                            <span class="pf-stack" data-preview-stack>Python, Gemini AI, financial planning</span>
+                            <a class="pf-button is-quiet" href="/project_details/project-budget-buddy.html"
+                                data-preview-link>Open case study <i class="bi bi-arrow-right"></i></a>
                         </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="pf-section">
+            <div class="pf-shell">
+                <div class="pf-section-head pf-reveal">
+                    <h2 class="pf-section-title">How I work</h2>
+                    <p class="pf-section-copy">
+                        I like working on frontier-level projects where the technical unknowns are real and the result
+                        has to be tested, not just described.
+                    </p>
+                </div>
+                <div class="pf-principles pf-reveal">
+                    <article class="pf-principle">
+                        <span>01</span>
+                        <h3>Build the working version first.</h3>
+                        <p>The goal is to make the core loop visible quickly, then improve it from evidence.</p>
+                    </article>
+                    <article class="pf-principle">
+                        <span>02</span>
+                        <h3>Use AI for behavior, not labels.</h3>
+                        <p>AI is most useful when it changes what the software can actually do.</p>
+                    </article>
+                    <article class="pf-principle">
+                        <span>03</span>
+                        <h3>Make the UI obvious.</h3>
+                        <p>Show state, actions, and feedback plainly. Anything decorative has to earn its place.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="pf-section">
+            <div class="pf-shell">
+                <div class="pf-contact-band pf-reveal">
+                    <div>
+                        <h2>Contact</h2>
+                        <p>For projects, internships, collaborations, or feedback.</p>
                     </div>
+                    <a class="pf-button" href="/contact.html"><i class="bi bi-send"></i> Contact</a>
                 </div>
-            </section>-->
-
-
+            </div>
+        </section>
     </main>
-    <!-- Footer-->
-    <footer class="py-4 mt-auto">
-        <div class="container px-5">
-            <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                <div class="col-auto">
-                    <div class="small m-0">Copyright &copy; https://inventure71.github.io 2026</div>
-                </div>
-                <div class="col-auto">
-                    <a class="small" href="#!">Privacy</a>
-                    <span class="mx-1">&middot;</span>
-                    <a class="small" href="#!">Terms</a>
-                    <span class="mx-1">&middot;</span>
-                    <a class="small" href="#!">Contact</a>
-                </div>
+
+    <footer class="pf-footer py-4 mt-auto">
+        <div class="pf-shell d-flex flex-column flex-sm-row justify-content-between gap-2">
+            <div class="small">Copyright &copy; inventure71.github.io 2026</div>
+            <div class="small d-flex gap-3">
+                <a href="https://github.com/Inventure71">GitHub</a>
+                <a href="https://www.linkedin.com/in/matteo-giorgetti-026172247/">LinkedIn</a>
+                <a href="/assets/docs/matteo-giorgetti-resume-current.pdf">Resume PDF</a>
             </div>
         </div>
     </footer>
-    <!-- Bootstrap core JS-->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/theme.js"></script>
-    <script src="/js/scripts.js"></script>
-    <script src="/js/animations.js"></script>
-    <script>
-        (function () {
-            const images = ['/assets/profile.png', '/assets/profile2.png'];
-            const interval = 2000;
-            const img = document.querySelector('.profile-img');
-            if (!img) return;
-            let idx = 0;
-
-            img.addEventListener('load', () => {
-                img.classList.remove('is-switching');
-            });
-
-            setInterval(() => {
-                img.classList.add('is-switching');
-                setTimeout(() => {
-                    idx = (idx + 1) % images.length;
-                    img.src = images[idx];
-                }, 200);
-            }, interval);
-        })();
-    </script>
+    <script src="/js/playfolio.js"></script>
 </body>
 
 </html>
