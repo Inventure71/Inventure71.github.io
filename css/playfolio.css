@@ -94,6 +94,31 @@ body.playfolio-page {
   padding: 0.5rem 0.6rem;
 }
 
+.pf-brand-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.pf-nav-ai-button {
+  min-height: 2.05rem;
+  padding: 0.42rem 0.65rem;
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  background: var(--pf-surface);
+  color: var(--pf-ink);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.pf-nav-ai-button:hover {
+  transform: translateY(-1px);
+  border-color: var(--pf-line-strong);
+  background: var(--pf-surface-soft);
+}
+
 .playfolio-page .nav-link {
   color: var(--pf-muted) !important;
   text-transform: none;
@@ -207,6 +232,237 @@ body.playfolio-page {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1.7rem;
+}
+
+.pf-ai-toast {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 1200;
+  width: min(28rem, calc(100vw - 2rem));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.pf-ai-toast-card {
+  position: relative;
+  display: grid;
+  gap: 0.72rem;
+  overflow: hidden;
+  padding: 1rem;
+  border: 1px solid var(--pf-line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--pf-bg) 96%, transparent);
+  box-shadow: 0 22px 55px rgba(23, 23, 23, 0.16);
+  backdrop-filter: blur(16px);
+  transform: translateY(0.85rem);
+  opacity: 0;
+  transition: transform 220ms ease, opacity 220ms ease, border-color 180ms ease;
+  pointer-events: auto;
+}
+
+.pf-ai-toast.is-visible .pf-ai-toast-card {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.pf-ai-toast[data-state="success"] .pf-ai-toast-card {
+  border-color: color-mix(in srgb, var(--pf-accent-2) 42%, var(--pf-line-strong));
+}
+
+.pf-ai-toast[data-state="error"] .pf-ai-toast-card {
+  border-color: color-mix(in srgb, var(--pf-accent) 48%, var(--pf-line-strong));
+}
+
+.pf-ai-toast-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pf-muted);
+  display: inline-grid;
+  place-items: center;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.pf-ai-toast-close:hover {
+  transform: translateY(-1px);
+  color: var(--pf-ink);
+  background: var(--pf-surface-soft);
+}
+
+.pf-ai-toast-kicker {
+  width: fit-content;
+  color: var(--pf-accent-2);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.pf-ai-toast-title {
+  margin: 0;
+  padding-right: 2.4rem;
+  color: var(--pf-ink);
+  font-size: 1.24rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.pf-ai-toast-copy {
+  margin: 0;
+  max-width: 24rem;
+  color: var(--pf-muted);
+  font-size: 0.91rem;
+  line-height: 1.5;
+}
+
+.pf-ai-toast-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.15rem;
+}
+
+.pf-ai-link {
+  --ai-color: var(--pf-ink);
+  min-height: 2.35rem;
+  padding: 0.64rem 0.78rem;
+  border: 1px solid color-mix(in srgb, var(--ai-color) 38%, var(--pf-line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ai-color) 10%, var(--pf-surface));
+  color: color-mix(in srgb, var(--ai-color) 78%, var(--pf-ink)) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.48rem;
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.pf-ai-link:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--ai-color) 72%, var(--pf-line-strong));
+  background: color-mix(in srgb, var(--ai-color) 16%, var(--pf-surface));
+}
+
+.pf-ai-link img {
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 0;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.pf-ai-link.is-chatgpt {
+  --ai-color: #10a37f;
+}
+
+.pf-ai-link.is-claude {
+  --ai-color: #d97757;
+}
+
+.pf-ai-link.is-deepseek {
+  --ai-color: #4d6bfe;
+}
+
+@media (max-width: 540px) {
+  .pf-ai-toast-card {
+    padding: 1rem;
+  }
+
+  .pf-ai-toast-links {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-ai-link {
+    justify-content: flex-start;
+  }
+}
+
+.pf-ambassador-lockup {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 4;
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 0.65rem;
+  width: auto;
+  max-width: calc(100% - 2.5rem);
+  padding: 0.45rem 0.72rem 0.45rem 0.45rem;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--pf-radius);
+  background: color-mix(in srgb, var(--pf-bg) 82%, transparent);
+  box-shadow: 0 18px 45px rgba(23, 23, 23, 0.12);
+  backdrop-filter: blur(14px);
+}
+
+.pf-ambassador-logo {
+  width: clamp(3.6rem, 7vw, 4.8rem);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+  transform-origin: center;
+  transition: filter 180ms ease;
+}
+
+.pf-ambassador-logo:hover,
+.pf-ambassador-logo:focus-visible {
+  filter: drop-shadow(0 16px 28px color-mix(in srgb, var(--pf-accent-3) 28%, transparent));
+}
+
+.pf-ambassador-logo:focus-visible {
+  outline: 2px solid var(--pf-accent-3);
+  outline-offset: 4px;
+}
+
+.pf-ambassador-logo.is-flying {
+  position: relative;
+  z-index: 20;
+  filter: drop-shadow(0 22px 34px color-mix(in srgb, var(--pf-accent-3) 34%, transparent));
+  will-change: transform;
+}
+
+.pf-ambassador-logo video,
+.pf-ambassador-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.pf-ambassador-k {
+  display: block;
+  margin-bottom: 0.18rem;
+  color: var(--pf-accent-3);
+  font-size: 0.68rem;
+  font-weight: 850;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.pf-ambassador-v {
+  display: block;
+  color: var(--pf-ink);
+  font-size: clamp(0.92rem, 1.5vw, 1.05rem);
+  font-weight: 800;
+  line-height: 1.18;
 }
 
 .pf-meta-strip {
@@ -554,7 +810,7 @@ body.playfolio-page {
 
 .pf-contact-band p {
   margin-top: 0.7rem;
-  color: color-mix(in srgb, var(--pf-bg) 74%, transparent);
+  color: color-mix(in srgb, currentColor 72%, var(--pf-ink) 28%);
 }
 
 .pf-contact-band .pf-button {
@@ -1734,6 +1990,7 @@ body.playfolio-page {
   .pf-reveal,
   .pf-button,
   .playfolio-page .btn,
+  .pf-ambassador-logo,
   .pf-project-card,
   .pf-project-row,
   .pf-node,
@@ -1797,6 +2054,16 @@ body.playfolio-page {
 
   .pf-title {
     font-size: clamp(3.5rem, 22vw, 5rem);
+  }
+
+  .pf-ambassador-lockup {
+    left: 0.9rem;
+    bottom: 0.9rem;
+    max-width: calc(100% - 1.8rem);
+  }
+
+  .pf-ambassador-logo {
+    width: 3.5rem;
   }
 
   .pf-meta-strip,
