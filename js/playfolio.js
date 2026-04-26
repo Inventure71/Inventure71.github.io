@@ -661,7 +661,7 @@
   }
 
   function buildAiGuide() {
-    const origin = 'https://mgiorgetti.com';
+    const origin = new URL(document.baseURI).origin;
     const title = document.querySelector('.pf-title')?.textContent?.trim() || document.title.trim();
     const summary = document.querySelector('.pf-lede')?.textContent?.trim()
       || document.querySelector('meta[name="description"]')?.getAttribute('content')?.trim()
@@ -716,8 +716,12 @@
 
   async function copyTextToClipboard(text) {
     if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text);
-      return true;
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (error) {
+        return false;
+      }
     }
 
     const helper = document.createElement('textarea');
@@ -824,7 +828,7 @@
         showToast({
           kicker: 'Clipboard issue',
           title: 'Copy failed.',
-          copy: 'Clipboard access looks blocked in this browser. You can still open an AI below and try again.',
+          copy: 'This browser does not allow automatic copying here, so the Ask AI copy feature is unavailable in this session.',
           state: 'error',
         });
       } finally {
