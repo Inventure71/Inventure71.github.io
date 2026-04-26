@@ -1,6 +1,16 @@
 projects.txt
 resume.txt
+
+# macOS metadata
 .DS_Store
 *.DS_Store
+
+# local analysis/interview notes
+Q&A.md
+
+# generated local media exports
 prepared_video_uploads/
+
+# local browser automation artifacts
 .playwright-cli/
+.playwright-mcp/

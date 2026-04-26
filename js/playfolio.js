@@ -142,7 +142,10 @@
     navbar.className = 'navbar navbar-expand-lg';
     navbar.innerHTML = `
       <div class="container">
-        <a class="navbar-brand" href="/index.html">MG</a>
+        <div class="pf-brand-group">
+          <a class="navbar-brand" href="/index.html">MG</a>
+          <button class="pf-nav-ai-button" type="button" data-ai-guide-copy>Ask AI</button>
+        </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
           aria-expanded="false" aria-label="Toggle navigation">
@@ -173,6 +176,22 @@
     if (window.MGTheme) {
       window.MGTheme.sync();
     }
+  }
+
+  function renderSharedFooter() {
+    const footer = document.querySelector('.playfolio-page .pf-footer');
+    if (!footer) return;
+
+    footer.innerHTML = `
+      <div class="pf-shell d-flex flex-column flex-sm-row justify-content-between gap-2">
+        <div class="small">Copyright &copy; inventure71.github.io 2026</div>
+        <div class="small d-flex gap-3">
+          <a href="https://github.com/Inventure71" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/matteo-giorgetti-026172247/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="/assets/docs/matteo-giorgetti-resume-current.pdf">Resume PDF</a>
+        </div>
+      </div>
+    `;
   }
 
   const isTypingTarget = (element) => {
@@ -540,13 +559,297 @@
     }, 2400);
   }
 
+  function setupCodexAmbassadorLogo() {
+    const logo = document.querySelector('[data-codex-ambassador-logo]');
+    if (!logo) return;
+
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let frameId = 0;
+    let ball = null;
+
+    const stopBall = () => {
+      if (frameId) window.cancelAnimationFrame(frameId);
+      frameId = 0;
+      ball = null;
+      logo.classList.remove('is-flying');
+      logo.style.transform = '';
+    };
+
+    const applyBallTransform = () => {
+      if (!ball) return;
+      logo.style.transform = `translate3d(${ball.x}px, ${ball.y}px, 0) rotate(${ball.angle}deg)`;
+    };
+
+    const isNearHome = () => {
+      if (!ball) return false;
+      return Math.hypot(ball.x, ball.y) < ball.homeRadius;
+    };
+
+    const tickBall = (time) => {
+      if (!ball) return;
+
+      const dt = Math.min(0.032, (time - ball.lastTime) / 1000 || 0);
+      ball.lastTime = time;
+
+      ball.x += ball.vx * dt;
+      ball.y += ball.vy * dt;
+
+      if (ball.x <= ball.bounds.minX || ball.x >= ball.bounds.maxX) {
+        ball.x = Math.max(ball.bounds.minX, Math.min(ball.bounds.maxX, ball.x));
+        ball.vx *= -1;
+        ball.angle += ball.vy > 0 ? 58 : -58;
+      }
+
+      if (ball.y <= ball.bounds.minY || ball.y >= ball.bounds.maxY) {
+        ball.y = Math.max(ball.bounds.minY, Math.min(ball.bounds.maxY, ball.y));
+        ball.vy *= -1;
+        ball.angle += ball.vx > 0 ? -43 : 43;
+      }
+
+      ball.angle += (ball.vx > 0 ? 460 : -460) * dt;
+
+      if (!ball.hasLeftHome && !isNearHome()) {
+        ball.hasLeftHome = true;
+      }
+
+      if (ball.hasLeftHome && time - ball.startedAt > 700 && isNearHome()) {
+        stopBall();
+        return;
+      }
+
+      applyBallTransform();
+      frameId = window.requestAnimationFrame(tickBall);
+    };
+
+    const startBall = () => {
+      if (reducedMotionQuery.matches || ball) return;
+
+      const stage = logo.closest('.pf-portrait-stage');
+      if (!stage) return;
+
+      const stageRect = stage.getBoundingClientRect();
+      const rect = logo.getBoundingClientRect();
+      const speed = Math.max(760, Math.min(stageRect.width, stageRect.height) * 1.9);
+      const now = performance.now();
+      const margin = Math.max(24, rect.width * 0.32);
+
+      ball = {
+        x: 0,
+        y: 0,
+        vx: speed,
+        vy: -speed * 0.64,
+        angle: 0,
+        startedAt: now,
+        lastTime: now,
+        hasLeftHome: false,
+        homeRadius: Math.max(34, rect.width * 0.55),
+        bounds: {
+          minX: stageRect.left + margin - rect.left,
+          maxX: stageRect.right - margin - rect.right,
+          minY: stageRect.top + margin - rect.top,
+          maxY: stageRect.bottom - margin - rect.bottom,
+        },
+      };
+
+      logo.classList.add('is-flying');
+      frameId = window.requestAnimationFrame(tickBall);
+    };
+
+    logo.addEventListener('pointerenter', startBall);
+    logo.addEventListener('focus', startBall);
+    window.addEventListener('resize', stopBall);
+  }
+
+  function buildAiGuide() {
+    const origin = new URL(document.baseURI).origin;
+    const title = document.querySelector('.pf-title')?.textContent?.trim() || document.title.trim();
+    const summary = document.querySelector('.pf-lede')?.textContent?.trim()
+      || document.querySelector('meta[name="description"]')?.getAttribute('content')?.trim()
+      || '';
+    const principles = Array.from(document.querySelectorAll('.pf-principle h3'))
+      .slice(0, 3)
+      .map((node) => node.textContent.trim());
+    const featuredProjects = Array.from(document.querySelectorAll('[data-project-card]'))
+      .slice(0, 3)
+      .map((card) => {
+        const data = readProjectData(card);
+        return `- ${data.title} — ${data.summary} (${new URL(data.href, origin).href})`;
+      });
+    const startLinks = navItems.map((item) => {
+      const description = item.key === 'home'
+        ? 'overview and intro'
+        : item.key === 'projects'
+          ? 'main project index'
+          : item.key === 'apps'
+            ? 'interactive experiments and apps'
+            : item.key === 'resume'
+              ? 'experience, skills, and background'
+              : 'contact routes';
+      return `- ${item.label}: ${new URL(item.href, origin).href} — ${description}`;
+    });
+
+    return [
+      `Website guide: ${title}`,
+      '',
+      'Short intro:',
+      summary,
+      '',
+      'How to use this site with an LLM:',
+      '- Use the links below directly instead of guessing.',
+      '- Prefer project detail pages for project-specific facts.',
+      '- Use the resume page for background, skills, and experience claims.',
+      '- If the site does not state something explicitly, say that clearly.',
+      '',
+      'Best starting links:',
+      ...startLinks,
+      '',
+      'Featured projects to inspect first:',
+      ...featuredProjects,
+      '',
+      'Work style signals:',
+      ...principles.map((principle) => `- ${principle}`),
+      '',
+      'Primary contact:',
+      `- ${new URL('/contact.html', origin).href}`,
+    ].join('\n');
+  }
+
+  async function copyTextToClipboard(text) {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    const helper = document.createElement('textarea');
+    helper.value = text;
+    helper.setAttribute('readonly', '');
+    helper.style.position = 'absolute';
+    helper.style.left = '-9999px';
+    document.body.appendChild(helper);
+    helper.select();
+
+    let copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } finally {
+      helper.remove();
+    }
+    return copied;
+  }
+
+  function setupAiGuideCopy() {
+    const buttons = Array.from(document.querySelectorAll('[data-ai-guide-copy]'));
+    let toast = document.querySelector('[data-ai-guide-toast]');
+    if (!buttons.length) return;
+
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'pf-ai-toast';
+      toast.dataset.aiGuideToast = '';
+      toast.hidden = true;
+      toast.innerHTML = `
+        <div class="pf-ai-toast-card" role="status" aria-live="polite">
+          <button class="pf-ai-toast-close" type="button" data-ai-guide-toast-close aria-label="Close AI popup">
+            <i class="bi bi-x-lg"></i>
+          </button>
+          <span class="pf-ai-toast-kicker" data-ai-guide-toast-kicker>Copied</span>
+          <h2 class="pf-ai-toast-title" data-ai-guide-toast-title>Prompt ready.</h2>
+          <p class="pf-ai-toast-copy" data-ai-guide-toast-copy>
+            Go to your favorite AI, paste in the prompt, and add your specific request.
+          </p>
+          <div class="pf-ai-toast-links">
+            <a class="pf-ai-link is-chatgpt" href="https://chatgpt.com" target="_blank" rel="noopener">
+              <img src="/assets/brand/icons/ChatGPTIcon.png" alt="" />
+              <span>ChatGPT</span>
+            </a>
+            <a class="pf-ai-link is-claude" href="https://claude.ai" target="_blank" rel="noopener">
+              <img src="/assets/brand/icons/ClaudeIcon.png" alt="" />
+              <span>Claude</span>
+            </a>
+            <a class="pf-ai-link is-deepseek" href="https://chat.deepseek.com" target="_blank" rel="noopener">
+              <img src="/assets/brand/icons/DeepSeek.png" alt="" />
+              <span>DeepSeek</span>
+            </a>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(toast);
+    }
+
+    const toastKicker = toast.querySelector('[data-ai-guide-toast-kicker]');
+    const toastTitle = toast.querySelector('[data-ai-guide-toast-title]');
+    const toastCopy = toast.querySelector('[data-ai-guide-toast-copy]');
+    const closeButton = toast.querySelector('[data-ai-guide-toast-close]');
+    let resetTimer = 0;
+
+    const showToast = ({ kicker, title, copy, state }) => {
+      if (toastKicker) toastKicker.textContent = kicker;
+      if (toastTitle) toastTitle.textContent = title;
+      if (toastCopy) toastCopy.textContent = copy;
+      toast.dataset.state = state;
+      toast.hidden = false;
+
+      window.requestAnimationFrame(() => {
+        toast.classList.add('is-visible');
+      });
+    };
+
+    const hideToast = () => {
+      window.clearTimeout(resetTimer);
+      toast.classList.remove('is-visible');
+      window.setTimeout(() => {
+        if (!toast.classList.contains('is-visible')) {
+          toast.hidden = true;
+        }
+      }, 220);
+    };
+
+    closeButton?.addEventListener('click', hideToast);
+
+    buttons.forEach((button) => button.addEventListener('click', async () => {
+      hideToast();
+      button.disabled = true;
+
+      try {
+        const copied = await copyTextToClipboard(buildAiGuide());
+        if (!copied) throw new Error('Copy command was rejected.');
+        showToast({
+          kicker: 'Copied',
+          title: 'Prompt ready.',
+          copy: 'Go to your favorite AI, paste in the prompt, and add your specific request.',
+          state: 'success',
+        });
+      } catch (error) {
+        console.error(error);
+        showToast({
+          kicker: 'Clipboard issue',
+          title: 'Copy did not work.',
+          copy: 'Your browser blocked automatic copying, so the Ask AI prompt was not copied.',
+          state: 'error',
+        });
+      } finally {
+        button.disabled = false;
+        resetTimer = window.setTimeout(() => {
+          hideToast();
+        }, 8000);
+      }
+    }));
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     renderSharedNavbar();
+    renderSharedFooter();
     setupReveals();
     setupProjectPreview();
     setupProjectExplorer();
     setupCommandPalette();
     setupRaceFilters();
     setupPortraitCycle();
+    setupCodexAmbassadorLogo();
+    setupAiGuideCopy();
   });
 })();

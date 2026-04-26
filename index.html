@@ -38,7 +38,10 @@
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand" href="/index.html">MG</a>
+                <div class="pf-brand-group">
+                    <a class="navbar-brand" href="/index.html">MG</a>
+                    <button class="pf-nav-ai-button" type="button" data-ai-guide-copy>Ask AI</button>
+                </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation"><span
@@ -79,6 +82,9 @@
                         <button class="pf-button is-quiet" type="button" data-command-open>
                             <i class="bi bi-search"></i> Command menu
                         </button>
+                        <button class="pf-button is-quiet" type="button" data-ai-guide-copy>
+                            <i class="bi bi-stars"></i> Ask Your AI
+                        </button>
                     </div>
 
                     <div class="pf-meta-strip" aria-label="Portfolio quick facts">
@@ -101,6 +107,20 @@
                     <div class="pf-portrait">
                         <img src="/assets/profile.png" alt="Matteo Giorgetti" data-portrait-cycle
                             data-cycle-images="/assets/profile.png,/assets/profile2.png" />
+                    </div>
+                    <div class="pf-ambassador-lockup" aria-label="OpenAI Codex ambassador">
+                        <button class="pf-ambassador-logo" type="button" data-codex-ambassador-logo
+                            aria-label="Animate OpenAI Codex ambassador logo">
+                            <video autoplay muted loop playsinline preload="metadata"
+                                poster="/assets/brand/codex/codex-logo-ambassador.png">
+                                <source src="/assets/brand/codex/codex-logo-ambassador-animated-compressed.webm" type="video/webm" />
+                                <img src="/assets/brand/codex/codex-logo-ambassador.png" alt="" />
+                            </video>
+                        </button>
+                        <div>
+                            <span class="pf-ambassador-k">OpenAI Codex</span>
+                            <strong class="pf-ambassador-v">Ambassador</strong>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -183,25 +203,28 @@
                 <div class="pf-section-head pf-reveal">
                     <h2 class="pf-section-title">How I work</h2>
                     <p class="pf-section-copy">
-                        I like working on frontier-level projects where the technical unknowns are real and the result
-                        has to be tested, not just described.
+                        I am drawn to ideas that sit a little ahead of what feels obvious, then I try to make them
+                        concrete enough to learn where they work, where they break, and what they could become.
                     </p>
                 </div>
                 <div class="pf-principles pf-reveal">
                     <article class="pf-principle">
                         <span>01</span>
-                        <h3>Build the working version first.</h3>
-                        <p>The goal is to make the core loop visible quickly, then improve it from evidence.</p>
+                        <h3>Start from a real itch.</h3>
+                        <p>I do my best work when a project starts from a real problem, a useful gap, or a question
+                            worth chasing.</p>
                     </article>
                     <article class="pf-principle">
                         <span>02</span>
-                        <h3>Use AI for behavior, not labels.</h3>
-                        <p>AI is most useful when it changes what the software can actually do.</p>
+                        <h3>Push capability, not hype.</h3>
+                        <p>I am most interested in AI when it unlocks a real capability and makes software do
+                            something meaningfully better.</p>
                     </article>
                     <article class="pf-principle">
                         <span>03</span>
-                        <h3>Make the UI obvious.</h3>
-                        <p>Show state, actions, and feedback plainly. Anything decorative has to earn its place.</p>
+                        <h3>Chase the hard idea honestly.</h3>
+                        <p>I like ambitious ideas, but I take the constraints seriously and learn from what the system
+                            can actually handle.</p>
                     </article>
                 </div>
             </div>
@@ -219,17 +242,43 @@
             </div>
         </section>
     </main>
-
     <footer class="pf-footer py-4 mt-auto">
         <div class="pf-shell d-flex flex-column flex-sm-row justify-content-between gap-2">
             <div class="small">Copyright &copy; inventure71.github.io 2026</div>
             <div class="small d-flex gap-3">
-                <a href="https://github.com/Inventure71">GitHub</a>
-                <a href="https://www.linkedin.com/in/matteo-giorgetti-026172247/">LinkedIn</a>
+                <a href="https://github.com/Inventure71" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://www.linkedin.com/in/matteo-giorgetti-026172247/" target="_blank" rel="noopener">LinkedIn</a>
                 <a href="/assets/docs/matteo-giorgetti-resume-current.pdf">Resume PDF</a>
             </div>
         </div>
     </footer>
+
+    <div class="pf-ai-toast" data-ai-guide-toast hidden>
+        <div class="pf-ai-toast-card" role="status" aria-live="polite">
+            <button class="pf-ai-toast-close" type="button" data-ai-guide-toast-close aria-label="Close AI popup">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <span class="pf-ai-toast-kicker" data-ai-guide-toast-kicker>Copied</span>
+            <h2 class="pf-ai-toast-title" data-ai-guide-toast-title>Prompt ready.</h2>
+            <p class="pf-ai-toast-copy" data-ai-guide-toast-copy>
+                Go to your favorite AI, paste in the prompt, and add your specific request.
+            </p>
+            <div class="pf-ai-toast-links">
+                <a class="pf-ai-link is-chatgpt" href="https://chatgpt.com" target="_blank" rel="noopener">
+                    <img src="/assets/brand/icons/ChatGPTIcon.png" alt="" />
+                    <span>ChatGPT</span>
+                </a>
+                <a class="pf-ai-link is-claude" href="https://claude.ai" target="_blank" rel="noopener">
+                    <img src="/assets/brand/icons/ClaudeIcon.png" alt="" />
+                    <span>Claude</span>
+                </a>
+                <a class="pf-ai-link is-deepseek" href="https://chat.deepseek.com" target="_blank" rel="noopener">
+                    <img src="/assets/brand/icons/DeepSeek.png" alt="" />
+                    <span>DeepSeek</span>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/theme.js"></script>
