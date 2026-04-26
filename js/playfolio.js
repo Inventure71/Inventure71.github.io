@@ -827,8 +827,8 @@
         console.error(error);
         showToast({
           kicker: 'Clipboard issue',
-          title: 'Copy failed.',
-          copy: 'This browser does not allow automatic copying here, so the Ask AI copy feature is unavailable in this session.',
+          title: 'Copy did not work.',
+          copy: 'Your browser blocked automatic copying, so the Ask AI prompt was not copied.',
           state: 'error',
         });
       } finally {

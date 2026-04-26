@@ -274,6 +274,11 @@ body.playfolio-page {
   border-color: color-mix(in srgb, var(--pf-accent) 48%, var(--pf-line-strong));
 }
 
+.pf-ai-toast[data-state="error"] .pf-ai-toast-kicker,
+.pf-ai-toast[data-state="error"] .pf-ai-toast-title {
+  color: #b42318;
+}
+
 .pf-ai-toast-close {
   position: absolute;
   top: 0.75rem;
@@ -327,6 +332,10 @@ body.playfolio-page {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.6rem;
   margin-top: 0.15rem;
+}
+
+.pf-ai-toast[data-state="error"] .pf-ai-toast-links {
+  display: none;
 }
 
 .pf-ai-link {
