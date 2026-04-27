@@ -24,6 +24,20 @@ function trackSignature(track) {
   return track.centerlineControls.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join('|');
 }
 
+function placeCarAtDistance(sim, id, distance, speed = 80, offset = 0) {
+  const track = sim.snapshot().track;
+  const point = pointAt(track, distance);
+  const positioned = offsetTrackPoint(point, offset);
+  sim.setCarState(id, {
+    x: positioned.x,
+    y: positioned.y,
+    heading: point.heading,
+    speed,
+    raceDistance: distance,
+    progress: point.distance,
+  });
+}
+
 function polygonsOverlap(a, b) {
   const axes = [a, b].flatMap((corners) => [
     normalize({ x: corners[1].x - corners[0].x, y: corners[1].y - corners[0].y }),
@@ -127,6 +141,39 @@ describe('vehicle physics race simulation', () => {
     expect(signature(first.snapshot())).toEqual(signature(second.snapshot()));
   });
 
+  test('holds cars in staggered grid boxes until the start lights go out', () => {
+    const sim = createRaceSimulation({
+      seed: 17,
+      drivers,
+      totalLaps: 4,
+      rules: {
+        startLightInterval: 0.1,
+        startLightsOutHold: 0.1,
+      },
+    });
+    const initial = sim.snapshot();
+
+    expect(initial.raceControl.mode).toBe('pre-start');
+    expect(initial.raceControl.start.lightsLit).toBe(0);
+    expect(initial.cars.every((car) => car.speed === 0)).toBe(true);
+    expect(initial.cars.map((car) => Math.sign(car.signedOffset))).toEqual([-1, 1, -1, 1]);
+    expect(initial.cars.map((car) => Math.round(car.raceDistance))).toEqual([-42, -124, -206, -288]);
+
+    run(sim, 0.35);
+    const staged = sim.snapshot();
+    expect(staged.raceControl.mode).toBe('pre-start');
+    expect(staged.raceControl.start.lightsLit).toBeGreaterThan(0);
+    expect(staged.cars.map((car) => Number(car.raceDistance.toFixed(2))))
+      .toEqual(initial.cars.map((car) => Number(car.raceDistance.toFixed(2))));
+
+    run(sim, 1.1);
+    const launched = sim.snapshot();
+    expect(launched.raceControl.mode).toBe('green');
+    expect(launched.raceControl.start.lightsLit).toBe(0);
+    expect(launched.cars.some((car) => car.speed > 0)).toBe(true);
+    expect(launched.cars[0].raceDistance).toBeGreaterThan(initial.cars[0].raceDistance);
+  });
+
   test('runs deterministically on generated track seeds while changing circuit geometry', () => {
     const first = createRaceSimulation({ seed: 71, trackSeed: 10101, drivers, totalLaps: 4 });
     const repeated = createRaceSimulation({ seed: 71, trackSeed: 10101, drivers, totalLaps: 4 });
@@ -149,6 +196,56 @@ describe('vehicle physics race simulation', () => {
     expect(first.snapshot().track.drsZones).toHaveLength(3);
     expect(compactState(first.snapshot())).toEqual(compactState(repeated.snapshot()));
     expect(first.snapshot().cars.every((car) => car.surface === 'track')).toBe(true);
+  });
+
+  test('raises live aggression as race position gets worse', () => {
+    const personalityDrivers = [
+      { id: 'front', code: 'FRO', name: 'Front Runner', color: '#ff3860', pace: 1, racecraft: 0.78, personality: { aggression: 0.34 } },
+      { id: 'middle', code: 'MID', name: 'Mid Pack', color: '#ff9f1c', pace: 1, racecraft: 0.78, personality: { aggression: 0.34 } },
+      { id: 'back', code: 'BAK', name: 'Back Marker', color: '#06d6a0', pace: 1, racecraft: 0.78, personality: { aggression: 0.34 } },
+    ];
+    const sim = createRaceSimulation({ seed: 91, drivers: personalityDrivers, totalLaps: 3 });
+
+    placeCarAtDistance(sim, 'front', 1100, 82);
+    placeCarAtDistance(sim, 'middle', 1000, 82);
+    placeCarAtDistance(sim, 'back', 900, 82);
+
+    const [front, middle, back] = sim.snapshot().cars;
+
+    expect(front.id).toBe('front');
+    expect(middle.id).toBe('middle');
+    expect(back.id).toBe('back');
+    expect(front.personality.baseAggression).toBeCloseTo(0.34);
+    expect(Number.isFinite(front.aggression)).toBe(true);
+    expect(middle.aggression).toBeGreaterThan(front.aggression);
+    expect(back.aggression).toBeGreaterThan(middle.aggression);
+    expect(back.aggression).toBeGreaterThan(back.personality.baseAggression + 0.2);
+  });
+
+  test('aggressive trailing drivers commit harder to passing lanes', () => {
+    const sim = createRaceSimulation({
+      seed: 92,
+      drivers: [
+        { id: 'leader', code: 'LED', name: 'Leader', color: '#ff3860', pace: 1, racecraft: 0.78 },
+        { id: 'chaser', code: 'CHS', name: 'Chaser', color: '#118ab2', pace: 1, racecraft: 0.78 },
+      ],
+      totalLaps: 3,
+    });
+
+    placeCarAtDistance(sim, 'leader', 1100, 80, 0);
+    placeCarAtDistance(sim, 'chaser', 980, 84, 0);
+
+    const chaser = sim.cars.find((car) => car.id === 'chaser');
+    chaser.desiredOffset = 0;
+    chaser.aggression = 0.2;
+    const cautiousPlan = sim.planRacingLine(chaser, 1);
+
+    chaser.desiredOffset = 0;
+    chaser.aggression = 0.92;
+    const aggressivePlan = sim.planRacingLine(chaser, 1);
+
+    expect(Math.abs(aggressivePlan.offset)).toBeGreaterThan(Math.abs(cautiousPlan.offset));
+    expect(Math.abs(aggressivePlan.offset)).toBeGreaterThan(1.3);
   });
 
   test('resolves oriented car collisions so bodies cannot phase through each other', () => {
@@ -188,15 +285,30 @@ describe('vehicle physics race simulation', () => {
   });
 
   test('protects the nose and rear collision envelope before visible overlap', () => {
-    const sim = createRaceSimulation({ seed: 11, drivers: drivers.slice(0, 2), totalLaps: 3 });
+    const sim = createRaceSimulation({
+      seed: 11,
+      drivers: drivers.slice(0, 2),
+      totalLaps: 3,
+      rules: { standingStart: false },
+    });
     const trackPoint = pointAt(sim.snapshot().track, 1320);
     const gap = VEHICLE_LIMITS.carLength * 0.93;
-    sim.setCarState('budget', { x: trackPoint.x, y: trackPoint.y, heading: trackPoint.heading, speed: 48 });
-    sim.setCarState('noir', {
-      x: trackPoint.x + Math.cos(trackPoint.heading) * gap,
-      y: trackPoint.y + Math.sin(trackPoint.heading) * gap,
+    const noirPoint = pointAt(sim.snapshot().track, 1320 + gap);
+    sim.setCarState('budget', {
+      x: trackPoint.x,
+      y: trackPoint.y,
       heading: trackPoint.heading,
+      speed: 48,
+      progress: trackPoint.distance,
+      raceDistance: trackPoint.distance,
+    });
+    sim.setCarState('noir', {
+      x: noirPoint.x,
+      y: noirPoint.y,
+      heading: noirPoint.heading,
       speed: 42,
+      progress: noirPoint.distance,
+      raceDistance: noirPoint.distance,
     });
 
     sim.step(1 / 60);
@@ -218,7 +330,7 @@ describe('vehicle physics race simulation', () => {
       y: 0,
       heading: 0,
       steeringAngle: 0,
-      speed: 100,
+      speed: 155,
       mass: 798,
       powerNewtons: 43000,
       brakeNewtons: 59000,
@@ -231,12 +343,85 @@ describe('vehicle physics race simulation', () => {
     const normal = { ...baseCar, drsActive: false };
     const drs = { ...baseCar, drsActive: true };
 
-    for (let elapsed = 0; elapsed < 1.5; elapsed += 1 / 60) {
+    for (let elapsed = 0; elapsed < 2; elapsed += 1 / 60) {
       integrateVehiclePhysics(normal, { steering: 0, throttle: 1, brake: 0 }, 1 / 60);
       integrateVehiclePhysics(drs, { steering: 0, throttle: 1, brake: 0 }, 1 / 60);
     }
 
-    expect(drs.speedKph ?? drs.speed * 3.6).toBeGreaterThan((normal.speedKph ?? normal.speed * 3.6) + 8);
+    expect(drs.speedKph ?? drs.speed * 3.6).toBeGreaterThan((normal.speedKph ?? normal.speed * 3.6) + 4);
+  });
+
+  test('straight-line acceleration follows a power-limited curve instead of jumping to top speed', () => {
+    const car = {
+      x: 0,
+      y: 0,
+      heading: 0,
+      steeringAngle: 0,
+      speed: 0,
+      mass: 798,
+      powerNewtons: 43000,
+      brakeNewtons: 59000,
+      dragCoefficient: 0.33,
+      downforceCoefficient: 6.1,
+      tireGrip: 2.4,
+      trackState: { surface: 'track' },
+      tireEnergy: 100,
+      drsActive: false,
+    };
+
+    expect(VEHICLE_LIMITS.maxSpeed * 3.6).toBeGreaterThan(680);
+    expect(VEHICLE_LIMITS.maxSpeed * 3.6).toBeLessThan(705);
+
+    integrateVehiclePhysics(car, { steering: 0, throttle: 1, brake: 0 }, 1);
+    const oneSecondSpeed = car.speed;
+
+    for (let elapsed = 0; elapsed < 1; elapsed += 1 / 60) {
+      integrateVehiclePhysics(car, { steering: 0, throttle: 1, brake: 0 }, 1 / 60);
+    }
+    const twoSecondSpeed = car.speed;
+
+    for (let elapsed = 0; elapsed < 6; elapsed += 1 / 60) {
+      integrateVehiclePhysics(car, { steering: 0, throttle: 1, brake: 0 }, 1 / 60);
+    }
+    const eightSecondSpeed = car.speed;
+
+    for (let elapsed = 0; elapsed < 8; elapsed += 1 / 60) {
+      integrateVehiclePhysics(car, { steering: 0, throttle: 1, brake: 0 }, 1 / 60);
+    }
+    const sixteenSecondSpeed = car.speed;
+
+    expect(oneSecondSpeed * 3.6).toBeLessThan(125);
+    expect(twoSecondSpeed * 3.6).toBeLessThan(225);
+    expect(eightSecondSpeed * 3.6).toBeGreaterThan(400);
+    expect(eightSecondSpeed * 3.6).toBeLessThan(560);
+    expect(sixteenSecondSpeed * 3.6).toBeGreaterThan(610);
+    expect(sixteenSecondSpeed).toBeLessThan(VEHICLE_LIMITS.maxSpeed);
+    expect(eightSecondSpeed - twoSecondSpeed).toBeGreaterThan(sixteenSecondSpeed - eightSecondSpeed);
+  });
+
+  test('maximum braking cannot make a car stop instantly from racing speed', () => {
+    const car = {
+      x: 0,
+      y: 0,
+      heading: 0,
+      steeringAngle: 0,
+      speed: VEHICLE_LIMITS.maxSpeed,
+      mass: 798,
+      powerNewtons: 43000,
+      brakeNewtons: 59000,
+      dragCoefficient: 0.33,
+      downforceCoefficient: 6.1,
+      tireGrip: 2.4,
+      trackState: { surface: 'track' },
+      tireEnergy: 100,
+      drsActive: false,
+    };
+
+    integrateVehiclePhysics(car, { steering: 0, throttle: 0, brake: 1 }, 0.5);
+    expect(car.speed).toBeGreaterThan(VEHICLE_LIMITS.maxSpeed * 0.72);
+
+    integrateVehiclePhysics(car, { steering: 0, throttle: 0, brake: 1 }, 0.5);
+    expect(car.speed).toBeGreaterThan(VEHICLE_LIMITS.maxSpeed * 0.45);
   });
 
   test('DRS latches at the detection point until the zone ends', () => {
@@ -303,7 +488,12 @@ describe('vehicle physics race simulation', () => {
   });
 
   test('DRS cannot be gained after missing the detection point inside a zone', () => {
-    const sim = createRaceSimulation({ seed: 32, drivers: drivers.slice(0, 2), totalLaps: 3 });
+    const sim = createRaceSimulation({
+      seed: 32,
+      drivers: drivers.slice(0, 2),
+      totalLaps: 3,
+      rules: { standingStart: false },
+    });
     const track = sim.snapshot().track;
     const zone = track.drsZones[0];
     const leaderPoint = pointAt(track, zone.start + 96);
@@ -335,7 +525,12 @@ describe('vehicle physics race simulation', () => {
   });
 
   test('gravel recovery slows the car without stopping it into a pivot', () => {
-    const sim = createRaceSimulation({ seed: 41, drivers: drivers.slice(0, 1), totalLaps: 3 });
+    const sim = createRaceSimulation({
+      seed: 41,
+      drivers: drivers.slice(0, 1),
+      totalLaps: 3,
+      rules: { standingStart: false },
+    });
     const track = sim.snapshot().track;
     const point = pointAt(track, 1350);
     const gravelPoint = offsetTrackPoint(point, track.width / 2 + 82);
@@ -358,7 +553,12 @@ describe('vehicle physics race simulation', () => {
   });
 
   test('kerb riding does not trigger gravel-style stopping behavior', () => {
-    const sim = createRaceSimulation({ seed: 42, drivers: drivers.slice(0, 1), totalLaps: 3 });
+    const sim = createRaceSimulation({
+      seed: 42,
+      drivers: drivers.slice(0, 1),
+      totalLaps: 3,
+      rules: { standingStart: false },
+    });
     const track = sim.snapshot().track;
     const point = pointAt(track, 1520);
     const kerbPoint = offsetTrackPoint(point, track.width / 2 + track.kerbWidth * 0.62);
@@ -417,7 +617,12 @@ describe('vehicle physics race simulation', () => {
   });
 
   test('gravel slows an off-track car while controls rejoin the racing surface', () => {
-    const sim = createRaceSimulation({ seed: 9, drivers: drivers.slice(0, 2), totalLaps: 3 });
+    const sim = createRaceSimulation({
+      seed: 9,
+      drivers: drivers.slice(0, 2),
+      totalLaps: 3,
+      rules: { standingStart: false },
+    });
     const trackPoint = pointAt(sim.snapshot().track, 720);
     const gravelPoint = offsetTrackPoint(trackPoint, TRACK.width / 2 + 120);
 
@@ -457,6 +662,19 @@ describe('vehicle physics race simulation', () => {
       expect(Number.isFinite(car.heading)).toBe(true);
       expect(Number.isFinite(car.raceDistance)).toBe(true);
       expect(Number.isFinite(car.tireEnergy)).toBe(true);
+      expect(Number.isFinite(car.setup.maxSpeedKph)).toBe(true);
+      expect(Number.isFinite(car.setup.powerUnitKn)).toBe(true);
+      expect(Number.isFinite(car.setup.brakeSystemKn)).toBe(true);
+      expect(Number.isFinite(car.setup.dragCoefficient)).toBe(true);
+      expect(Number.isFinite(car.setup.downforceCoefficient)).toBe(true);
+      expect(Number.isFinite(car.setup.tireGrip)).toBe(true);
+      expect(Number.isFinite(car.setup.massKg)).toBe(true);
+      expect(Number.isFinite(car.aggression)).toBe(true);
+      expect(Number.isFinite(car.personality.baseAggression)).toBe(true);
+      expect(Number.isFinite(car.personality.riskTolerance)).toBe(true);
+      expect(car.setup.maxSpeedKph).toBeGreaterThan(680);
+      expect(car.setup.powerUnitKn).toBeGreaterThan(37);
+      expect(car.setup.brakeSystemKn).toBeGreaterThan(55);
       expect(car.tireEnergy).toBeGreaterThan(0);
     });
     snapshot.cars.slice(1).forEach((car) => {
@@ -474,8 +692,9 @@ describe('vehicle physics race simulation', () => {
     const laneBuckets = new Set(snapshot.cars.map((car) => Math.round(car.signedOffset / 18))).size;
 
     expect(snapshot.cars.every((car) => car.positionSource === 'integrated-vehicle')).toBe(true);
-    expect(averageSpeedKph).toBeGreaterThan(285);
-    expect(Math.min(...snapshot.cars.map((car) => car.speedKph))).toBeGreaterThan(240);
+    expect(averageSpeedKph).toBeGreaterThan(290);
+    expect(Math.min(...snapshot.cars.map((car) => car.speedKph))).toBeGreaterThan(170);
+    expect(Math.max(...snapshot.cars.map((car) => car.speedKph))).toBeLessThan(690);
     expect(laneBuckets).toBeGreaterThanOrEqual(5);
     expect(Math.max(...snapshot.cars.map((car) => car.crossTrackError))).toBeLessThan(TRACK.width / 2);
     expect(Math.max(...snapshot.cars.slice(1).map((car) => car.gapAheadSeconds))).toBeLessThan(8);

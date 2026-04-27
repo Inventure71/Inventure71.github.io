@@ -85,6 +85,22 @@ function maximumLocalTurn(track) {
   return maximum;
 }
 
+function headingDelta(first, second) {
+  let delta = ((second - first + Math.PI) % (Math.PI * 2)) - Math.PI;
+  if (delta < -Math.PI) delta += Math.PI * 2;
+  return Math.abs(delta);
+}
+
+function maximumStartGridHeadingDelta(track) {
+  const line = pointAt(track, 0);
+  const gridSlots = [0, -98, -196, -294, -392, -490, -588, -686];
+
+  return Math.max(...gridSlots.map((distanceAlong) => {
+    const point = pointAt(track, distanceAlong);
+    return headingDelta(line.heading, point.heading);
+  }));
+}
+
 describe('track model', () => {
   test('provides guidance without owning vehicle position', () => {
     const track = buildTrackModel(TRACK);
@@ -124,6 +140,17 @@ describe('track model', () => {
         sample.y < WORLD.height - 460
       ))).toBe(true);
       expectNoSelfIntersections(track);
+    });
+  });
+
+  test('normalizes the start finish line onto a straight grid section', () => {
+    [null, 7, 71, 1971, 10101, 20260427].forEach((seed) => {
+      const track = buildTrackModel(seed == null ? TRACK : createProceduralTrack(seed));
+      const line = pointAt(track, 0);
+      const exit = pointAt(track, 220);
+
+      expect(maximumStartGridHeadingDelta(track)).toBeLessThan(0.14);
+      expect(headingDelta(line.heading, exit.heading)).toBeLessThan(0.2);
     });
   });
 

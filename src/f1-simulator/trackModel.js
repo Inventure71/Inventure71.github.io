@@ -25,6 +25,8 @@ const GENERATED_CONTROL_COUNT = 20;
 const TRACK_BOUNDARY_PADDING = 520;
 const MIN_TRACK_CLEARANCE_MULTIPLIER = 1.55;
 const MAX_LOCAL_TURN_RADIANS = 1.5;
+const START_STRAIGHT_GRID_LENGTH = 760;
+const START_STRAIGHT_EXIT_LENGTH = 260;
 const PROCEDURAL_TRACK_TEMPLATES = [
   [
     [0.08, 0.55], [0.10, 0.80], [0.22, 0.89], [0.42, 0.84], [0.52, 0.93],
@@ -197,6 +199,75 @@ function hasReasonableTurnSharpness(samples) {
   return true;
 }
 
+function distanceForwardAlongTrack(from, to, totalLength) {
+  return to >= from ? to - from : totalLength - from + to;
+}
+
+function chooseStandingStartIndex(samples, totalLength) {
+  const usableSamples = samples.slice(0, -1);
+  let best = { index: 0, score: Infinity };
+
+  for (let index = 0; index < usableSamples.length; index += 1) {
+    const candidate = usableSamples[index];
+    let gridTurn = 0;
+    let gridCurvature = 0;
+    let gridCount = 0;
+    let exitTurn = 0;
+    let exitCurvature = 0;
+    let exitCount = 0;
+
+    for (let offset = 1; offset < usableSamples.length; offset += 1) {
+      const sample = usableSamples[(index - offset + usableSamples.length) % usableSamples.length];
+      const distanceToLine = distanceForwardAlongTrack(sample.distance, candidate.distance, totalLength);
+      if (distanceToLine > START_STRAIGHT_GRID_LENGTH) break;
+      gridTurn = Math.max(gridTurn, Math.abs(normalizeAngle(candidate.heading - sample.heading)));
+      gridCurvature += sample.curvature;
+      gridCount += 1;
+    }
+
+    for (let offset = 1; offset < usableSamples.length; offset += 1) {
+      const sample = usableSamples[(index + offset) % usableSamples.length];
+      const distanceFromLine = distanceForwardAlongTrack(candidate.distance, sample.distance, totalLength);
+      if (distanceFromLine > START_STRAIGHT_EXIT_LENGTH) break;
+      exitTurn = Math.max(exitTurn, Math.abs(normalizeAngle(sample.heading - candidate.heading)));
+      exitCurvature += sample.curvature;
+      exitCount += 1;
+    }
+
+    const score =
+      gridTurn * 5 +
+      exitTurn * 1.2 +
+      (gridCurvature / Math.max(1, gridCount)) * 2600 +
+      (exitCurvature / Math.max(1, exitCount)) * 650;
+
+    if (score < best.score) best = { index, score };
+  }
+
+  return best.index;
+}
+
+function rotateSamplesToStandingStart(samples, totalLength) {
+  const usableSamples = samples.slice(0, -1);
+  const startIndex = chooseStandingStartIndex(samples, totalLength);
+  const startDistance = usableSamples[startIndex].distance;
+
+  const rotated = [
+    ...usableSamples.slice(startIndex),
+    ...usableSamples.slice(0, startIndex),
+  ].map((sample) => ({
+    ...sample,
+    distance: distanceForwardAlongTrack(startDistance, sample.distance, totalLength),
+  }));
+
+  return [
+    ...rotated,
+    {
+      ...rotated[0],
+      distance: totalLength,
+    },
+  ];
+}
+
 function makeTemplatePoint([x, y], random, index) {
   const edgeDistance = Math.min(x, 1 - x, y, 1 - y);
   const jitter = edgeDistance < 0.13 ? 0.014 : 0.03;
@@ -351,12 +422,15 @@ export function buildTrackModel(track = TRACK) {
     sample.curvature = Math.abs(normalizeAngle(nextHeading - heading)) / 28;
   });
 
+  const normalizedSamples = rotateSamplesToStandingStart(samples, totalLength);
+
   return {
     ...track,
     centerlineControls: controls,
     length: totalLength,
-    samples,
-    drsZones: (track.drsZones ?? deriveDrsZones(samples, totalLength)).map((zone) => normalizeDrsZone(zone, totalLength)),
+    samples: normalizedSamples,
+    drsZones: (track.drsZones ?? deriveDrsZones(normalizedSamples, totalLength))
+      .map((zone) => normalizeDrsZone(zone, totalLength)),
   };
 }
 

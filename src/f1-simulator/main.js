@@ -13,7 +13,9 @@ const TARGET_RENDER_FPS = 60;
 const TARGET_FRAME_MS = 1000 / TARGET_RENDER_FPS;
 const FRAME_PACING_EPSILON_MS = 0.75;
 const MAX_FRAME_CATCHUP_COUNT = 4;
+const MAX_SIMULATION_STEPS_PER_RENDER = 5;
 const DOM_UPDATE_INTERVAL_MS = 100;
+const TIMING_UPDATE_INTERVAL_MS = 250;
 const SIM_SPEED = 3.25;
 const CAR_WORLD_LENGTH = 66;
 const CAR_WORLD_WIDTH = 23;
@@ -36,6 +38,7 @@ const RADIO_BREAK_MIN_MS = 4800;
 const RADIO_BREAK_MAX_MS = 11800;
 const RADIO_VISIBLE_MIN_MS = 6200;
 const RADIO_VISIBLE_MAX_MS = 9200;
+const DRS_DRAG_REDUCTION_PERCENT = 58;
 const PROJECT_DRIVERS = CHAMPIONSHIP_PROJECT_DRIVERS;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -91,6 +94,8 @@ class F1SimulatorApp {
     this.readouts = {
       timingTower: root.querySelector('[data-timing-tower]'),
       mode: root.querySelector('[data-race-mode]'),
+      startLights: root.querySelector('[data-start-lights]'),
+      startLightsLabel: root.querySelector('[data-start-lights-label]'),
       towerLap: root.querySelector('[data-tower-lap-readout]'),
       towerTotalLaps: root.querySelector('[data-tower-total-laps]'),
       towerSafetyBanner: root.querySelector('[data-tower-safety-banner]'),
@@ -108,6 +113,20 @@ class F1SimulatorApp {
       selectedDrs: root.querySelector('[data-telemetry-drs]'),
       surface: root.querySelector('[data-telemetry-surface]'),
       gap: root.querySelector('[data-telemetry-gap]'),
+      carOverview: root.querySelector('.car-overview'),
+      carOverviewDiagram: root.querySelector('.car-overview-diagram'),
+      carOverviewCode: root.querySelector('[data-car-overview-code]'),
+      carOverviewIcon: root.querySelector('[data-car-overview-icon]'),
+      carOverviewNumber: root.querySelector('[data-car-overview-number]'),
+      carOverviewCoreStat: root.querySelector('[data-car-overview-core-stat]'),
+      carOverviewMaxSpeed: root.querySelector('[data-car-overview-max-speed]'),
+      carOverviewPower: root.querySelector('[data-car-overview-power]'),
+      carOverviewBrakeForce: root.querySelector('[data-car-overview-brake-force]'),
+      carOverviewTyreGrip: root.querySelector('[data-car-overview-tyre-grip]'),
+      carOverviewAero: root.querySelector('[data-car-overview-aero]'),
+      carOverviewDrsEffect: root.querySelector('[data-car-overview-drs-effect]'),
+      carOverviewAggression: root.querySelector('[data-car-overview-aggression]'),
+      carOverviewBaseAggression: root.querySelector('[data-car-overview-base-aggression]'),
       raceDataPanel: root.querySelector('[data-race-data-panel]'),
       raceDataKicker: root.querySelector('[data-race-data-kicker]'),
       raceDataTitle: root.querySelector('[data-race-data-title]'),
@@ -151,6 +170,8 @@ class F1SimulatorApp {
     this.lastTime = performance.now();
     this.nextGameFrameTime = this.lastTime + TARGET_FRAME_MS;
     this.lastDomUpdateTime = 0;
+    this.lastTimingRenderTime = 0;
+    this.lastTimingRaceMode = null;
     this.fps = {
       frames: 0,
       current: 0,
@@ -263,8 +284,9 @@ class F1SimulatorApp {
     this.safetyButton?.addEventListener('click', () => {
       const next = this.sim.snapshot().raceControl.mode !== 'safety-car';
       this.sim.setSafetyCar(next);
-      this.safetyButton.classList.toggle('is-active', next);
-      this.safetyButton.setAttribute('aria-pressed', String(next));
+      const active = this.sim.snapshot().raceControl.mode === 'safety-car';
+      this.safetyButton.classList.toggle('is-active', active);
+      this.safetyButton.setAttribute('aria-pressed', String(active));
     });
 
     this.restartButton?.addEventListener('click', () => {
@@ -277,6 +299,8 @@ class F1SimulatorApp {
       this.safetyButton?.setAttribute('aria-pressed', 'false');
       this.drsTrails.clear();
       this.trailLayer?.clear();
+      this.lastTimingRenderTime = 0;
+      this.lastTimingRaceMode = null;
       this.renderTrack();
     });
 
@@ -323,9 +347,16 @@ class F1SimulatorApp {
     this.sampleFps(now);
     this.accumulator += frameSeconds * SIM_SPEED;
 
-    while (this.accumulator >= FIXED_STEP) {
+    let simulationSteps = 0;
+    while (this.accumulator >= FIXED_STEP && simulationSteps < MAX_SIMULATION_STEPS_PER_RENDER) {
       this.sim.step(FIXED_STEP);
       this.accumulator -= FIXED_STEP;
+      simulationSteps += 1;
+    }
+
+    if (this.accumulator >= FIXED_STEP) {
+      this.accumulator %= FIXED_STEP;
+      this.nextGameFrameTime = now + TARGET_FRAME_MS;
     }
 
     const snapshot = this.sim.snapshot();
@@ -560,6 +591,7 @@ class F1SimulatorApp {
     if (this.readouts.towerTotalLaps) this.readouts.towerTotalLaps.textContent = snapshot.totalLaps;
     if (this.readouts.timingTower) {
       this.readouts.timingTower.classList.toggle('is-safety-car', snapshot.raceControl.mode === 'safety-car');
+      this.readouts.timingTower.classList.toggle('is-pre-start', snapshot.raceControl.mode === 'pre-start');
     }
     if (this.readouts.towerSafetyBanner) {
       this.readouts.towerSafetyBanner.hidden = snapshot.raceControl.mode !== 'safety-car';
@@ -572,6 +604,7 @@ class F1SimulatorApp {
           : 'ARMED';
     }
     if (this.readouts.contacts) this.readouts.contacts.textContent = String(contactCount);
+    this.renderStartLights(snapshot.raceControl);
     if (this.readouts.camera) {
       const zoom = this.camera.mode === 'show-all'
         ? Math.round(((this.camera.scale ?? 0) / Math.max(0.0001, this.getBaseScale())) * 100)
@@ -583,7 +616,14 @@ class F1SimulatorApp {
     }
 
     this.updateCameraControls();
-    this.renderTiming(snapshot.cars, leader, snapshot.raceControl.mode);
+    if (
+      now - this.lastTimingRenderTime >= TIMING_UPDATE_INTERVAL_MS ||
+      this.lastTimingRaceMode !== snapshot.raceControl.mode
+    ) {
+      this.renderTiming(snapshot.cars, leader, snapshot.raceControl.mode);
+      this.lastTimingRenderTime = now;
+      this.lastTimingRaceMode = snapshot.raceControl.mode;
+    }
     this.renderTelemetry(selected);
     const activeRaceDataCar = this.activeRaceDataId
       ? snapshot.cars.find((car) => car.id === this.activeRaceDataId)
@@ -610,6 +650,28 @@ class F1SimulatorApp {
     this.fps.lastSample = now;
   }
 
+  renderStartLights(raceControl) {
+    const panel = this.readouts.startLights;
+    if (!panel) return;
+
+    const start = raceControl.start;
+    const visible = Boolean(start?.visible);
+    panel.hidden = !visible;
+    if (!visible) return;
+
+    const lights = panel.querySelectorAll('.start-lights__gantry span');
+    lights.forEach((light, index) => {
+      light.classList.toggle('is-lit', index < (start.lightsLit ?? 0));
+    });
+    panel.classList.toggle('is-lights-out', raceControl.mode === 'green' && start.released);
+
+    if (this.readouts.startLightsLabel) {
+      this.readouts.startLightsLabel.textContent = raceControl.mode === 'green' && start.released
+        ? 'Lights out'
+        : `${start.lightsLit}/${start.lightCount}`;
+    }
+  }
+
   selectCar(id, { focus = false } = {}) {
     this.selectedId = id;
     this.activeRaceDataId = id;
@@ -620,6 +682,7 @@ class F1SimulatorApp {
       this.camera.zoom = CAMERA_PRESETS.selected;
       this.updateCameraControls();
     }
+    this.lastTimingRenderTime = 0;
     this.updateDom(this.sim.snapshot());
   }
 
@@ -630,6 +693,8 @@ class F1SimulatorApp {
       let gap = 'Leader';
       if (raceMode === 'safety-car' && car.rank > 1) {
         gap = 'SC';
+      } else if (raceMode === 'pre-start') {
+        gap = car.rank === 1 ? 'Pole' : 'Grid';
       } else if (car.rank > 1) {
         gap = `+${Math.max(0, (leaderDistance - car.raceDistance) / Math.max(car.speed, 1)).toFixed(3)}`;
       }
@@ -655,6 +720,12 @@ class F1SimulatorApp {
 
   renderTelemetry(car) {
     if (!car) return;
+    const driver = DRIVER_BY_ID.get(car.id);
+    const icon = car.icon ?? driver?.icon ?? car.code;
+    const driverNumber = formatDriverNumber(car.driverNumber ?? driver?.driverNumber);
+    const drsState = car.drsActive ? 'OPEN' : car.drsEligible ? 'READY' : 'OFF';
+    const surface = (car.surface ?? 'track').toUpperCase();
+
     this.readouts.selectedCode.textContent = car.code;
     this.readouts.selectedCode.style.color = car.color;
     this.readouts.selectedName.textContent = car.name;
@@ -662,13 +733,30 @@ class F1SimulatorApp {
     this.readouts.throttle.textContent = `${Math.round(car.throttle * 100)}%`;
     this.readouts.brake.textContent = `${Math.round(car.brake * 100)}%`;
     this.readouts.tyres.textContent = `${Math.round(car.tireEnergy ?? 100)}%`;
-    this.readouts.selectedDrs.textContent = car.drsActive ? 'OPEN' : car.drsEligible ? 'READY' : 'OFF';
+    this.readouts.selectedDrs.textContent = drsState;
     if (this.readouts.surface) {
-      this.readouts.surface.textContent = (car.surface ?? 'track').toUpperCase();
+      this.readouts.surface.textContent = surface;
     }
     this.readouts.gap.textContent = car.rank === 1 || !Number.isFinite(car.gapAheadSeconds)
       ? '--'
       : `${car.gapAheadSeconds.toFixed(2)}s`;
+
+    this.readouts.carOverview?.style.setProperty('--driver-color', car.color);
+    this.readouts.carOverviewDiagram?.style.setProperty('--driver-color', car.color);
+    if (this.readouts.carOverviewCode) this.readouts.carOverviewCode.textContent = `${car.code} P${car.rank}`;
+    if (this.readouts.carOverviewIcon) this.readouts.carOverviewIcon.textContent = icon;
+    if (this.readouts.carOverviewNumber) this.readouts.carOverviewNumber.textContent = driverNumber;
+    if (this.readouts.carOverviewCoreStat) this.readouts.carOverviewCoreStat.textContent = `${Math.round(car.setup?.massKg ?? 0)} kg`;
+    if (this.readouts.carOverviewMaxSpeed) this.readouts.carOverviewMaxSpeed.textContent = `${Math.round(car.setup?.maxSpeedKph ?? 0)} km/h`;
+    if (this.readouts.carOverviewPower) this.readouts.carOverviewPower.textContent = `${(car.setup?.powerUnitKn ?? 0).toFixed(1)} kN`;
+    if (this.readouts.carOverviewBrakeForce) this.readouts.carOverviewBrakeForce.textContent = `${(car.setup?.brakeSystemKn ?? 0).toFixed(0)} kN`;
+    if (this.readouts.carOverviewTyreGrip) this.readouts.carOverviewTyreGrip.textContent = `${(car.setup?.tireGrip ?? 0).toFixed(2)}`;
+    if (this.readouts.carOverviewAero) this.readouts.carOverviewAero.textContent = `${(car.setup?.downforceCoefficient ?? 0).toFixed(1)} DF`;
+    if (this.readouts.carOverviewDrsEffect) this.readouts.carOverviewDrsEffect.textContent = `-${DRS_DRAG_REDUCTION_PERCENT}%`;
+    if (this.readouts.carOverviewAggression) this.readouts.carOverviewAggression.textContent = `${Math.round(car.aggressionPercent ?? (car.aggression ?? 0) * 100)}%`;
+    if (this.readouts.carOverviewBaseAggression) {
+      this.readouts.carOverviewBaseAggression.textContent = `${Math.round((car.personality?.baseAggression ?? 0) * 100)}%`;
+    }
   }
 
   renderRaceData(car) {

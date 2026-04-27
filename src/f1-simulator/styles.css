@@ -130,7 +130,7 @@ h1 {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(255px, 0.78fr) minmax(500px, 3fr) minmax(220px, 0.82fr);
+  grid-template-columns: minmax(255px, 0.78fr) minmax(500px, 3fr) minmax(270px, 0.9fr);
   gap: 0.9rem;
 }
 
@@ -530,6 +530,74 @@ h1 {
   font-size: 0.74rem;
 }
 
+.start-lights {
+  position: absolute;
+  top: 4.15rem;
+  left: 50%;
+  z-index: 4;
+  transform: translateX(-50%);
+  display: grid;
+  gap: 0.36rem;
+  justify-items: center;
+  padding: 0.58rem 0.72rem 0.68rem;
+  color: #f7f8fb;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent),
+    rgba(4, 5, 8, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.36);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  backdrop-filter: blur(14px);
+}
+
+.start-lights[hidden] {
+  display: none;
+}
+
+.start-lights__label {
+  color: rgba(244, 247, 251, 0.78);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.start-lights__gantry {
+  display: grid;
+  grid-template-columns: repeat(5, 1.35rem);
+  gap: 0.34rem;
+}
+
+.start-lights__gantry span {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  background: #15171d;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 0 12px rgba(0, 0, 0, 0.88),
+    0 0 0 rgba(225, 6, 0, 0);
+  transition: background 80ms linear, box-shadow 80ms linear, border-color 80ms linear;
+}
+
+.start-lights__gantry span.is-lit {
+  background: #e10600;
+  border-color: rgba(255, 210, 210, 0.86);
+  box-shadow:
+    inset 0 0 8px rgba(255, 255, 255, 0.18),
+    0 0 18px rgba(225, 6, 0, 0.72);
+}
+
+.start-lights.is-lights-out .start-lights__label {
+  color: #fff;
+}
+
+.start-lights.is-lights-out .start-lights__gantry span {
+  background: #08090b;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9);
+}
+
 .race-data-panel {
   position: absolute;
   left: 50%;
@@ -777,6 +845,294 @@ h1 {
   text-align: right;
 }
 
+.car-overview {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+.car-overview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+}
+
+.car-overview-header span {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.car-overview-header strong {
+  color: var(--driver-color, var(--red));
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.car-overview-diagram {
+  --arrow-line: color-mix(in srgb, var(--driver-color, var(--red)) 72%, rgba(255, 255, 255, 0.36));
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto 5.7rem auto auto;
+  gap: 0.5rem 0.5rem;
+  min-height: 15.25rem;
+  padding: 0.82rem 0.62rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--driver-color, var(--red)) 24%, transparent) 0 18%, transparent 42%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.car-overview-diagram::before {
+  content: '';
+  position: absolute;
+  inset: 0.55rem;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--arrow-line), var(--arrow-line)) 50% 23% / 1px 23% no-repeat,
+    linear-gradient(var(--arrow-line), var(--arrow-line)) 50% 77% / 1px 23% no-repeat,
+    linear-gradient(90deg, var(--arrow-line), var(--arrow-line)) 25% 50% / 24% 1px no-repeat,
+    linear-gradient(90deg, var(--arrow-line), var(--arrow-line)) 75% 50% / 24% 1px no-repeat;
+  opacity: 0.62;
+}
+
+.car-overview-diagram::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0 1px,
+    transparent 1px 36px
+  );
+  opacity: 0.44;
+}
+
+.car-overview-car {
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  align-self: center;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  width: 5.15rem;
+  height: 3.15rem;
+  color: #08090b;
+  transform: skewX(-10deg);
+}
+
+.car-overview-car::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.74), transparent 44%),
+    var(--driver-color, var(--red));
+  clip-path: polygon(12% 7%, 82% 7%, 100% 50%, 82% 93%, 12% 93%, 0 50%);
+  opacity: 0.28;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.34),
+    0 0 28px color-mix(in srgb, var(--driver-color, var(--red)) 44%, transparent);
+}
+
+.car-overview-car::after {
+  content: '';
+  position: absolute;
+  inset: 0.58rem 0.86rem;
+  border-top: 3px solid rgba(8, 9, 11, 0.74);
+  border-bottom: 3px solid rgba(8, 9, 11, 0.74);
+  transform: skewX(10deg);
+  z-index: 1;
+  opacity: 0.34;
+}
+
+.car-overview-car-image {
+  position: absolute;
+  z-index: 2;
+  inset: 0.25rem 0.2rem;
+  width: calc(100% - 0.4rem);
+  height: calc(100% - 0.5rem);
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 10px color-mix(in srgb, var(--driver-color, var(--red)) 72%, transparent))
+    saturate(1.15)
+    brightness(1.08);
+  transform: skewX(10deg);
+}
+
+.car-overview-icon,
+.car-overview-number,
+.car-overview-core-stat {
+  position: relative;
+  z-index: 3;
+  transform: skewX(10deg);
+  font-family: var(--font-mono);
+  font-weight: 900;
+}
+
+.car-overview-icon {
+  font-size: 0.86rem;
+  letter-spacing: -0.07em;
+}
+
+.car-overview-number {
+  position: absolute;
+  right: 0.42rem;
+  bottom: 0.18rem;
+  color: rgba(244, 247, 251, 0.68);
+  font-size: 0.54rem;
+}
+
+.car-overview-core-stat {
+  position: absolute;
+  left: 50%;
+  bottom: -1.05rem;
+  color: color-mix(in srgb, var(--driver-color, var(--red)) 62%, #ffffff);
+  font-size: 0.58rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: translateX(-50%) skewX(10deg);
+}
+
+.car-overview-callout {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  padding: 0.5rem 0.48rem;
+  background: rgba(8, 9, 11, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--driver-color, var(--red)) 78%, transparent);
+}
+
+.car-overview-callout::after {
+  content: '';
+  position: absolute;
+  width: 0.42rem;
+  height: 0.42rem;
+  background: var(--arrow-line);
+  transform: rotate(45deg);
+}
+
+.car-overview-callout--speed {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: stretch;
+  width: auto;
+}
+
+.car-overview-callout--speed::after {
+  right: 50%;
+  bottom: -0.25rem;
+  transform: translateX(50%) rotate(45deg);
+}
+
+.car-overview-callout--power {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: stretch;
+  width: auto;
+}
+
+.car-overview-callout--power::after {
+  left: 50%;
+  bottom: -0.25rem;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.car-overview-callout--brake {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: stretch;
+  width: auto;
+}
+
+.car-overview-callout--brake::after {
+  right: 50%;
+  top: -0.25rem;
+  transform: translateX(50%) rotate(45deg);
+}
+
+.car-overview-callout--drs {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: stretch;
+  width: auto;
+}
+
+.car-overview-callout--drs::after {
+  left: 50%;
+  top: -0.25rem;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.car-overview-callout--aggression {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  justify-self: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  align-items: end;
+  gap: 0.5rem;
+  width: auto;
+}
+
+.car-overview-callout--aggression::after {
+  left: 50%;
+  top: -0.25rem;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.car-overview-callout--aggression > span {
+  margin-bottom: 0;
+}
+
+.car-overview-callout--aggression strong {
+  text-align: right;
+}
+
+.car-overview-callout > span {
+  display: block;
+  margin-bottom: 0.18rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.car-overview-callout strong {
+  display: block;
+  overflow: hidden;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.car-overview-callout strong span {
+  display: inline;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+}
+
 @media (max-width: 1120px) {
   .sim-grid {
     grid-template-columns: 1fr;
@@ -790,6 +1146,26 @@ h1 {
   .sim-timing,
   .sim-telemetry {
     min-height: auto;
+  }
+
+  .sim-telemetry {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(280px, 1.1fr);
+    gap: 1rem;
+  }
+
+  .telemetry-header {
+    grid-column: 1 / -1;
+  }
+
+  .telemetry-grid {
+    margin-top: 0;
+  }
+
+  .car-overview {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
   }
 }
 
@@ -860,5 +1236,75 @@ h1 {
     grid-column: 1 / -1;
     margin: 0;
     min-height: 48px;
+  }
+
+  .sim-telemetry {
+    display: block;
+  }
+
+  .telemetry-grid {
+    margin-top: 1rem;
+  }
+
+  .car-overview {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .car-overview-diagram {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, auto) 5.3rem repeat(3, auto);
+  }
+
+  .car-overview-diagram::before {
+    background:
+      linear-gradient(var(--arrow-line), var(--arrow-line)) 50% 18% / 1px 16% no-repeat,
+      linear-gradient(var(--arrow-line), var(--arrow-line)) 50% 82% / 1px 16% no-repeat;
+  }
+
+  .car-overview-callout--speed,
+  .car-overview-callout--power,
+  .car-overview-callout--brake,
+  .car-overview-callout--drs,
+  .car-overview-callout--aggression,
+  .car-overview-car {
+    grid-column: 1;
+    justify-self: stretch;
+    width: auto;
+  }
+
+  .car-overview-callout--speed {
+    grid-row: 1;
+  }
+
+  .car-overview-callout--power {
+    grid-row: 2;
+  }
+
+  .car-overview-car {
+    grid-row: 3;
+    justify-self: center;
+  }
+
+  .car-overview-callout--brake {
+    grid-row: 4;
+  }
+
+  .car-overview-callout--drs {
+    grid-row: 5;
+  }
+
+  .car-overview-callout--aggression {
+    grid-row: 6;
+    display: block;
+  }
+
+  .car-overview-callout--aggression strong {
+    text-align: left;
+  }
+
+  .car-overview-callout::after {
+    display: none;
   }
 }

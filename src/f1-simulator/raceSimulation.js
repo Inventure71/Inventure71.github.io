@@ -13,6 +13,9 @@ import { getCarCorners, integrateVehiclePhysics, VEHICLE_LIMITS } from './vehicl
 const DEFAULT_TOTAL_LAPS = 10;
 const TWO_PI = Math.PI * 2;
 const MAX_COLLISION_CORRECTION = 4.5;
+const GRID_SLOT_SPACING = 82;
+const GRID_FIRST_SLOT_DISTANCE = -42;
+const GRID_LATERAL_OFFSET = 42;
 
 export const DEFAULT_RULES = {
   drsDetectionSeconds: 1,
@@ -20,6 +23,10 @@ export const DEFAULT_RULES = {
   safetyCarLeadDistance: 122,
   safetyCarGap: 128,
   collisionRestitution: 0.18,
+  standingStart: true,
+  startLightCount: 5,
+  startLightInterval: 0.72,
+  startLightsOutHold: 0.78,
 };
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -38,6 +45,30 @@ function mulberry32(seed) {
 
 function seededRange(random, min, max) {
   return min + (max - min) * random();
+}
+
+function buildDriverPersonality(driver, index, racecraft, random) {
+  const numberSeed = Number(driver.driverNumber ?? index + 1);
+  const numberBias = (((Number.isFinite(numberSeed) ? numberSeed : index + 1) % 11) - 5) * 0.014;
+  const baseAggression = clamp(
+    driver.personality?.aggression ?? 0.36 + racecraft * 0.34 + numberBias + seededRange(random, -0.045, 0.045),
+    0.18,
+    0.88,
+  );
+
+  return {
+    baseAggression,
+    riskTolerance: clamp(
+      driver.personality?.riskTolerance ?? baseAggression * 0.72 + racecraft * 0.24 + seededRange(random, -0.04, 0.04),
+      0.12,
+      0.95,
+    ),
+    patience: clamp(
+      driver.personality?.patience ?? 0.72 - baseAggression * 0.36 + racecraft * 0.12 + seededRange(random, -0.05, 0.05),
+      0.18,
+      0.9,
+    ),
+  };
 }
 
 function wrapProgress(value, length) {
@@ -70,13 +101,15 @@ function angleToPoint(car, target) {
   return normalizeAngle(angle - car.heading);
 }
 
-function createCar(driver, index, random, track) {
-  const gridDistance = -index * 98;
+function createCar(driver, index, random, track, { standingStart = false } = {}) {
+  const gridDistance = GRID_FIRST_SLOT_DISTANCE - index * GRID_SLOT_SPACING;
   const start = pointAt(track, gridDistance);
-  const offset = [-42, 0, 42][index % 3];
+  const offset = index % 2 === 0 ? -GRID_LATERAL_OFFSET : GRID_LATERAL_OFFSET;
   const position = offsetTrackPoint(start, offset);
   const pace = clamp(driver.pace ?? seededRange(random, 0.95, 1.05), 0.88, 1.12);
   const racecraft = clamp(driver.racecraft ?? seededRange(random, 0.65, 0.92), 0.45, 1);
+  const personality = buildDriverPersonality(driver, index, racecraft, random);
+  const launchSpeed = Math.max(70, 84 - index * 0.55 + pace * 4);
 
   return {
     id: driver.id ?? `car-${index + 1}`,
@@ -98,7 +131,7 @@ function createCar(driver, index, random, track) {
     steeringAngle: 0,
     yawRate: 0,
     turnRadius: Infinity,
-    speed: Math.max(70, 84 - index * 0.55 + pace * 4),
+    speed: standingStart ? 0 : launchSpeed,
     throttle: 0,
     brake: 0,
     mass: 798 + seededRange(random, -5, 5),
@@ -109,6 +142,11 @@ function createCar(driver, index, random, track) {
     tireGrip: 2.22 + racecraft * 0.28 + seededRange(random, -0.03, 0.03),
     pace,
     racecraft,
+    personality,
+    aggression: personality.baseAggression,
+    gridLocked: standingStart,
+    gridDistance,
+    gridOffset: offset,
     desiredOffset: offset,
     progress: start.distance,
     raceDistance: gridDistance,
@@ -230,6 +268,20 @@ function serializeCar(car, rank) {
     name: car.name,
     color: car.color,
     tire: car.tire,
+    personality: { ...car.personality },
+    aggression: car.aggression,
+    aggressionPercent: Math.round((car.aggression ?? 0) * 100),
+    setup: {
+      maxSpeedKph: VEHICLE_LIMITS.maxSpeed * 3.6,
+      powerUnitKn: car.powerNewtons / 1000,
+      brakeSystemKn: car.brakeNewtons / 1000,
+      dragCoefficient: car.dragCoefficient,
+      downforceCoefficient: car.downforceCoefficient,
+      tireGrip: car.tireGrip,
+      massKg: car.mass,
+      pace: car.pace,
+      racecraft: car.racecraft,
+    },
     rank,
     previousX: car.previousX ?? car.x,
     previousY: car.previousY ?? car.y,
@@ -272,12 +324,20 @@ export class F1RaceSimulation {
     this.track = buildTrackModel(trackDefinition);
     this.trackSeed = this.track.seed ?? trackSeed;
     this.rules = { ...DEFAULT_RULES, ...rules };
+    this.startLightsOutAt = this.rules.startLightCount * this.rules.startLightInterval + this.rules.startLightsOutHold;
     this.totalLaps = totalLaps;
     this.time = 0;
     this.events = [];
     this.raceControl = {
-      mode: 'green',
+      mode: this.rules.standingStart === false ? 'green' : 'pre-start',
       frozenOrder: null,
+      start: {
+        lightCount: this.rules.startLightCount,
+        lightsLit: 0,
+        lightsOutAt: this.startLightsOutAt,
+        released: this.rules.standingStart === false,
+        releasedAt: this.rules.standingStart === false ? 0 : null,
+      },
     };
     this.safetyCar = {
       deployed: false,
@@ -290,12 +350,15 @@ export class F1RaceSimulation {
       y: pointAt(this.track, this.rules.safetyCarLeadDistance).y,
       heading: pointAt(this.track, this.rules.safetyCarLeadDistance).heading,
     };
-    this.cars = drivers.map((driver, index) => createCar(driver, index, this.random, this.track));
+    this.cars = drivers.map((driver, index) => createCar(driver, index, this.random, this.track, {
+      standingStart: this.raceControl.mode === 'pre-start',
+    }));
     this.recalculateRaceState({ updateDrs: false });
   }
 
   setSafetyCar(deployed) {
     const next = Boolean(deployed);
+    if (next && this.raceControl.mode === 'pre-start') return;
     if (next === this.safetyCar.deployed) return;
     const ordered = this.orderedCars();
     this.safetyCar.deployed = next;
@@ -322,6 +385,17 @@ export class F1RaceSimulation {
     const car = this.cars.find((item) => item.id === id);
     if (!car) return;
     Object.assign(car, partial);
+    if (
+      partial.x != null ||
+      partial.y != null ||
+      partial.progress != null ||
+      partial.raceDistance != null
+    ) {
+      car.gridLocked = false;
+      if (this.raceControl.mode === 'pre-start' && this.cars.every((item) => !item.gridLocked)) {
+        this.releaseRaceStart();
+      }
+    }
     car.speed = clamp(car.speed, 0, VEHICLE_LIMITS.maxSpeed);
     car.heading = normalizeAngle(car.heading);
     car.trackState = nearestTrackState(this.track, car);
@@ -349,7 +423,15 @@ export class F1RaceSimulation {
 
     this.time += delta;
     this.events = [];
+    this.updateStartSequence();
     this.recalculateRaceState({ updateDrs: false });
+
+    if (this.raceControl.mode === 'pre-start' && this.cars.every((car) => car.gridLocked)) {
+      this.holdGridCars();
+      this.recalculateRaceState({ updateDrs: false });
+      return;
+    }
+
     this.updateSafetyCar(delta);
 
     this.orderedCars().forEach((car, index) => {
@@ -374,7 +456,14 @@ export class F1RaceSimulation {
       world: WORLD,
       track: this.track,
       totalLaps: this.totalLaps,
-      raceControl: { mode: this.raceControl.mode },
+      raceControl: {
+        mode: this.raceControl.mode,
+        start: {
+          ...this.raceControl.start,
+          visible: this.raceControl.mode === 'pre-start' ||
+            (this.raceControl.start.releasedAt != null && this.time - this.raceControl.start.releasedAt < 1.45),
+        },
+      },
       safetyCar: { ...this.safetyCar },
       rules: this.rules,
       events: [...this.events],
@@ -395,6 +484,10 @@ export class F1RaceSimulation {
   }
 
   computeDriverControls(car, orderIndex) {
+    if (car.gridLocked) {
+      return { steering: 0, throttle: 0, brake: 1 };
+    }
+
     if (this.safetyCar.deployed) {
       return this.computeSafetyCarControls(car, orderIndex);
     }
@@ -403,20 +496,26 @@ export class F1RaceSimulation {
       return this.computeRejoinControls(car);
     }
 
-    const lookahead = clamp(car.speed * 1.12 + 160, 170, 360);
+    const aggression = car.aggression ?? car.personality?.baseAggression ?? 0.5;
+    const lookahead = clamp(car.speed * (1.12 - aggression * 0.08) + 160, 160, 360);
     const targetBase = pointAt(this.track, car.progress + lookahead);
     const lanePlan = this.planRacingLine(car, orderIndex);
     const recoveryBias = car.trackState.crossTrackError > this.track.width * 0.46 ? 0 : 1;
     const target = offsetTrackPoint(targetBase, lanePlan.offset * recoveryBias);
     const angleError = angleToPoint(car, target);
     const curvature = Math.max(car.trackState.curvature, targetBase.curvature);
-    const gripBudget = 54 + car.racecraft * 11 + (car.tireEnergy ?? 100) * 0.05;
-    const cornerTarget = clamp(Math.sqrt(gripBudget / Math.max(curvature, 0.0001)) + (car.pace - 1) * 20, 72, 158);
-    const edgePenalty = Math.max(0, car.trackState.crossTrackError - this.track.width * 0.38) * 0.15;
+    const gripBudget = 54 + car.racecraft * 11 + (car.tireEnergy ?? 100) * 0.05 + aggression * 4.5;
+    const cornerTarget = clamp(
+      Math.sqrt(gripBudget / Math.max(curvature, 0.0001)) + (car.pace - 1) * 20 + aggression * 7,
+      72,
+      168,
+    );
+    const edgeTolerance = this.track.width * (0.36 + aggression * 0.1);
+    const edgePenalty = Math.max(0, car.trackState.crossTrackError - edgeTolerance) * (0.16 - aggression * 0.05);
     const trafficPenalty = Math.max(
       lanePlan.sameLaneAhead ? clamp((230 - lanePlan.sameLaneAhead.gap) * 0.16, 0, 32) : 0,
       lanePlan.sideRisk ? clamp((44 - lanePlan.sideRisk.lateral) * 0.42, 0, 16) : 0,
-    );
+    ) * (1 - aggression * 0.28);
     const desiredSpeed = clamp(
       (car.drsActive ? cornerTarget + 22 : cornerTarget) - edgePenalty - trafficPenalty,
       58,
@@ -426,8 +525,8 @@ export class F1RaceSimulation {
 
     return {
       steering: clamp(angleError * (0.82 + car.racecraft * 0.1), -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
-      throttle: speedError > 1 ? clamp(speedError / 16, 0.12, 1) : 0,
-      brake: speedError < -2 ? clamp(Math.abs(speedError) / 22, 0, 1) : 0,
+      throttle: speedError > 1 ? clamp(speedError / 16, 0.1 + aggression * 0.08, 1) : 0,
+      brake: speedError < -2 ? clamp(Math.abs(speedError) / (22 + aggression * 8), 0, 1) : 0,
     };
   }
 
@@ -478,7 +577,9 @@ export class F1RaceSimulation {
   }
 
   planRacingLine(car, orderIndex) {
-    const trackLimit = this.track.width / 2 - VEHICLE_LIMITS.carWidth * 1.15;
+    const aggression = car.aggression ?? car.personality?.baseAggression ?? 0.5;
+    const riskTolerance = car.personality?.riskTolerance ?? aggression;
+    const trackLimit = this.track.width / 2 - VEHICLE_LIMITS.carWidth * clamp(1.22 - aggression * 0.34, 0.84, 1.22);
     const preferred = Math.sin((car.index / Math.max(1, this.cars.length)) * TWO_PI) * 26;
     const currentOffset = clamp(car.desiredOffset ?? preferred, -trackLimit, trackLimit);
     const ahead = this.orderedCars()[orderIndex - 1];
@@ -492,27 +593,31 @@ export class F1RaceSimulation {
       const edgeClearance = trackLimit - Math.abs(offset);
       let score = 80;
       score -= Math.abs(offset - preferred) * 0.18;
-      score -= Math.abs(offset - currentOffset) * 0.08;
-      score -= Math.max(0, 18 - edgeClearance) * 0.9;
+      score -= Math.abs(offset - currentOffset) * (0.09 - aggression * 0.025);
+      score -= Math.max(0, 18 - edgeClearance) * (0.92 - aggression * 0.42);
 
       traffic.forEach((entry) => {
         const lateral = Math.abs(entry.signedOffset - offset);
         if (entry.gap > 0 && entry.gap < 260) {
           const overlapRisk = clamp(58 - lateral, 0, 58);
-          score -= overlapRisk * (260 - entry.gap) * 0.038;
-          if (entry.gap < 190 && lateral > 34) {
-            score += Math.min(28, lateral - 28) * 0.7;
+          score -= overlapRisk * (260 - entry.gap) * 0.038 * (1 - riskTolerance * 0.34);
+          if (entry.gap < 190 + aggression * 70 && lateral > 34 - aggression * 8) {
+            score += Math.min(30 + aggression * 18, lateral - (28 - aggression * 6)) * (0.62 + aggression * 0.82);
           }
         } else if (entry.gap <= 0 && entry.gap > -74) {
           const sideOverlapRisk = clamp(52 - lateral, 0, 52);
-          score -= sideOverlapRisk * (74 + entry.gap) * 0.052;
+          score -= sideOverlapRisk * (74 + entry.gap) * 0.052 * (1 - riskTolerance * 0.22);
         }
       });
 
       if (ahead && car.gapAhead < 230) {
         const side = car.index % 2 === 0 ? -1 : 1;
-        const passSide = clamp((ahead.trackState.signedOffset * -0.65) + side * 58, -trackLimit, trackLimit);
-        score -= Math.abs(offset - passSide) * 0.11;
+        const passSide = clamp(
+          (ahead.trackState.signedOffset * -0.65) + side * (48 + aggression * 42),
+          -trackLimit,
+          trackLimit,
+        );
+        score -= Math.abs(offset - passSide) * (0.09 + aggression * 0.08);
       }
 
       if (score > bestScore) {
@@ -521,7 +626,7 @@ export class F1RaceSimulation {
       }
     });
 
-    const laneChangeRate = 0.82 + car.racecraft * 0.36;
+    const laneChangeRate = 0.72 + car.racecraft * 0.3 + aggression * 0.58;
     car.desiredOffset = currentOffset + clamp(bestOffset - currentOffset, -laneChangeRate, laneChangeRate);
 
     return {
@@ -567,6 +672,88 @@ export class F1RaceSimulation {
     return closest;
   }
 
+  computeAggression(car, orderIndex = Math.max(0, (car.rank ?? 1) - 1)) {
+    const personality = car.personality ?? { baseAggression: 0.5, riskTolerance: 0.5, patience: 0.5 };
+    if (this.safetyCar.deployed || car.canAttack === false) {
+      return clamp(personality.baseAggression * 0.62, 0.08, 0.62);
+    }
+
+    const fieldDepth = Math.max(1, this.cars.length - 1);
+    const positionPressure = clamp(orderIndex / fieldDepth, 0, 1);
+    const gapPressure = Number.isFinite(car.gapAhead) ? clamp((230 - car.gapAhead) / 230, 0, 1) : 0;
+    const tireConfidence = clamp(((car.tireEnergy ?? 100) - 42) / 58, 0, 1);
+    const patienceDamping = (1 - gapPressure) * personality.patience * 0.08;
+
+    return clamp(
+      personality.baseAggression
+        + positionPressure * 0.26
+        + gapPressure * (0.1 + personality.riskTolerance * 0.08)
+        - (1 - tireConfidence) * 0.1
+        - patienceDamping,
+      0.08,
+      1,
+    );
+  }
+
+  updateStartSequence() {
+    const start = this.raceControl.start;
+    if (this.raceControl.mode !== 'pre-start' || !start || start.released) return;
+
+    if (this.time >= start.lightsOutAt) {
+      this.releaseRaceStart();
+      this.events.unshift({ type: 'start-lights-out', at: this.time });
+      return;
+    }
+
+    start.lightsLit = clamp(
+      Math.floor((this.time + Number.EPSILON) / this.rules.startLightInterval),
+      0,
+      start.lightCount,
+    );
+  }
+
+  releaseRaceStart() {
+    const start = this.raceControl.start;
+    this.raceControl.mode = 'green';
+    start.lightsLit = 0;
+    start.released = true;
+    start.releasedAt = this.time;
+    this.cars.forEach((car) => {
+      const wasGridLocked = car.gridLocked;
+      car.gridLocked = false;
+      const state = nearestTrackState(this.track, car);
+      car.trackState = state;
+      car.progress = state.distance;
+      if (wasGridLocked) car.raceDistance = car.gridDistance;
+      car.previousX = car.x;
+      car.previousY = car.y;
+      car.previousHeading = car.heading;
+    });
+  }
+
+  holdGridCars() {
+    this.cars.forEach((car) => {
+      if (!car.gridLocked) return;
+      const gridPoint = pointAt(this.track, car.gridDistance);
+      const position = offsetTrackPoint(gridPoint, car.gridOffset);
+      car.previousX = position.x;
+      car.previousY = position.y;
+      car.previousHeading = gridPoint.heading;
+      car.x = position.x;
+      car.y = position.y;
+      car.heading = gridPoint.heading;
+      car.speed = 0;
+      car.throttle = 0;
+      car.brake = 1;
+      car.steeringAngle = 0;
+      car.yawRate = 0;
+      car.turnRadius = Infinity;
+      car.progress = gridPoint.distance;
+      car.raceDistance = car.gridDistance;
+      car.trackState = nearestTrackState(this.track, car);
+    });
+  }
+
   updateSafetyCar(dt) {
     if (!this.safetyCar.deployed) return;
     const leader = this.orderedCars()[0];
@@ -605,6 +792,15 @@ export class F1RaceSimulation {
 
   recalculateRaceState({ updateDrs = true } = {}) {
     this.cars.forEach((car) => {
+      if (car.gridLocked) {
+        const gridPoint = pointAt(this.track, car.gridDistance);
+        car.trackState = nearestTrackState(this.track, car);
+        car.progress = gridPoint.distance;
+        car.raceDistance = car.gridDistance;
+        car.lap = 1;
+        return;
+      }
+
       car.trackState = nearestTrackState(this.track, car);
       const previousProgress = car.progress ?? car.trackState.distance;
       const delta = progressDelta(car.trackState.distance, previousProgress, this.track.length);
@@ -621,6 +817,7 @@ export class F1RaceSimulation {
       car.gapAhead = gap;
       car.gapAheadSeconds = Number.isFinite(gap) ? gap / Math.max(car.speed, 1) : Infinity;
       car.canAttack = !this.safetyCar.deployed;
+      car.aggression = this.computeAggression(car, index);
       if (updateDrs) this.updateDrsLatch(car, index);
     });
   }

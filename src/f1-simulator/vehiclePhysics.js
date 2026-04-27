@@ -6,7 +6,7 @@ export const VEHICLE_LIMITS = {
   wheelbase: 3.65,
   maxSteer: 0.56,
   steerRate: 2.35,
-  maxSpeed: 165,
+  maxSpeed: 192,
   carLength: 66,
   carWidth: 21,
 };
@@ -21,6 +21,16 @@ const SURFACE_MODEL = {
   barrier: { grip: 0.18, drag: 9, rollingResistance: 1.2 },
 };
 
+function accelerationLimit(speed, surfaceGrip) {
+  const speedRatio = clamp(speed / VEHICLE_LIMITS.maxSpeed, 0, 1);
+  return surfaceGrip * (17 * (1 - speedRatio ** 2.1) + 1.2);
+}
+
+function brakingLimit(speed, surfaceGrip) {
+  const speedRatio = clamp(speed / VEHICLE_LIMITS.maxSpeed, 0, 1);
+  return surfaceGrip * (20 + speedRatio * 14);
+}
+
 export function integrateVehiclePhysics(car, controls, dt) {
   const steeringTarget = clamp(controls.steering ?? 0, -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer);
   const steerDelta = clamp(
@@ -33,18 +43,22 @@ export function integrateVehiclePhysics(car, controls, dt) {
   const throttle = clamp(controls.throttle ?? 0, 0, 1);
   const brake = clamp(controls.brake ?? 0, 0, 1);
   const surface = SURFACE_MODEL[car.trackState?.surface] ?? SURFACE_MODEL.track;
-  const dragMultiplier = car.drsActive ? 0.58 : 1;
-  const engineForce = throttle * car.powerNewtons * Math.max(0.18, 1 - car.speed / 178);
+  const surfaceGrip = surface.grip;
+  const dragMultiplier = car.drsActive ? 0.42 : 1;
+  const speedRatio = clamp(car.speed / VEHICLE_LIMITS.maxSpeed, 0, 1);
+  const engineForce = throttle * car.powerNewtons * Math.max(0.12, 1 - speedRatio ** 1.15);
   const brakeForce = brake * car.brakeNewtons;
-  const dragForce = (car.dragCoefficient * dragMultiplier + surface.drag) * car.speed * car.speed;
+  const dragForce = (car.dragCoefficient * dragMultiplier * 0.12 + surface.drag) * car.speed * car.speed;
   const rollingForce = surface.rollingResistance * car.mass * G;
-  const acceleration = (engineForce - brakeForce - dragForce - rollingForce) / car.mass;
+  const driveAcceleration = clamp(engineForce / car.mass, 0, accelerationLimit(car.speed, surfaceGrip));
+  const brakeDeceleration = clamp(brakeForce / car.mass, 0, brakingLimit(car.speed, surfaceGrip));
+  const dragDeceleration = (dragForce + rollingForce) / car.mass;
+  const acceleration = driveAcceleration - brakeDeceleration - dragDeceleration;
 
   car.speed = clamp(car.speed + acceleration * dt, 0, VEHICLE_LIMITS.maxSpeed);
 
   const rawYawRate = car.speed / VEHICLE_LIMITS.wheelbase * Math.tan(car.steeringAngle);
   const downforceGrip = car.downforceCoefficient * car.speed * car.speed / car.mass;
-  const surfaceGrip = surface.grip;
   const tyreConditionGrip = clamp(0.82 + (car.tireEnergy ?? 100) / 560, 0.82, 1);
   const maxYawRate = ((car.tireGrip * tyreConditionGrip * G + downforceGrip) * surfaceGrip) / Math.max(car.speed, 8);
   car.yawRate = clamp(rawYawRate, -maxYawRate, maxYawRate);

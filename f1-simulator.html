@@ -7,7 +7,7 @@
   <meta name="description" content="A deterministic browser F1 race simulator prototype." />
   <title>F1 Simulator Lab - Inventure71</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-  <link href="dist/f1-simulator/f1-simulator.css?v=20260427-radio-breaks" rel="stylesheet" />
+  <link href="dist/f1-simulator/f1-simulator.css?v=20260427-standing-start" rel="stylesheet" />
 </head>
 
 <body>
@@ -57,6 +57,16 @@
           <div class="fps-counter" aria-label="Frames per second">
             <span>FPS</span>
             <strong data-fps-readout>--</strong>
+          </div>
+          <div class="start-lights" data-start-lights aria-live="polite">
+            <div class="start-lights__label" data-start-lights-label>Race start</div>
+            <div class="start-lights__gantry" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           </div>
           <div class="camera-controls" aria-label="Camera controls">
             <button type="button" data-camera-mode="overview" aria-pressed="false">Overview</button>
@@ -112,12 +122,46 @@
               <dd data-telemetry-gap>--</dd>
             </div>
           </dl>
+          <section class="car-overview" aria-label="Selected racer car overview">
+            <div class="car-overview-header">
+              <span>Car overview</span>
+              <strong data-car-overview-code>---</strong>
+            </div>
+            <div class="car-overview-diagram" style="--driver-color: #e10600">
+              <div class="car-overview-callout car-overview-callout--speed">
+                <span>Max speed</span>
+                <strong data-car-overview-max-speed>0 km/h</strong>
+              </div>
+              <div class="car-overview-callout car-overview-callout--power">
+                <span>Power unit</span>
+                <strong data-car-overview-power>0 kN</strong>
+              </div>
+              <div class="car-overview-car" aria-hidden="true">
+                <img class="car-overview-car-image" src="assets/game/f1-car-sprite-game.png" alt="" />
+                <span class="car-overview-icon" data-car-overview-icon>--</span>
+                <span class="car-overview-number" data-car-overview-number>00</span>
+                <span class="car-overview-core-stat" data-car-overview-core-stat>000 kg</span>
+              </div>
+              <div class="car-overview-callout car-overview-callout--brake">
+                <span>Brake / tyre</span>
+                <strong><span data-car-overview-brake-force>0 kN</span> / <span data-car-overview-tyre-grip>0.00</span></strong>
+              </div>
+              <div class="car-overview-callout car-overview-callout--drs">
+                <span>Aero / DRS</span>
+                <strong><span data-car-overview-aero>0.0 DF</span> / <span data-car-overview-drs-effect>0%</span></strong>
+              </div>
+              <div class="car-overview-callout car-overview-callout--aggression">
+                <span>Aggression</span>
+                <strong><span data-car-overview-aggression>0%</span> live / <span data-car-overview-base-aggression>0%</span> base</strong>
+              </div>
+            </div>
+          </section>
         </aside>
       </div>
     </section>
   </main>
 
-  <script type="module" src="dist/f1-simulator/f1-simulator.js?v=20260427-radio-breaks"></script>
+  <script type="module" src="dist/f1-simulator/f1-simulator.js?v=20260427-standing-start"></script>
 </body>
 
 </html>
