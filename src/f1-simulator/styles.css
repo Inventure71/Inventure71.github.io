@@ -542,27 +542,14 @@ h1 {
   width: min(1080px, calc(100% - 1.5rem));
   min-height: 108px;
   color: var(--text);
-  background:
-    linear-gradient(100deg, rgba(10, 12, 18, 0.96), rgba(18, 23, 34, 0.92) 58%, rgba(7, 9, 14, 0.88)),
-    var(--broadcast-panel-surface, linear-gradient(#171a20, #05060a)) center / cover no-repeat;
-  border-left: 6px solid var(--driver-color, var(--red));
-  border-bottom: 1px solid color-mix(in srgb, var(--driver-color, var(--red)) 72%, rgba(255, 255, 255, 0.2));
+  background: var(--race-data-panel-base) center / 100% 100% no-repeat;
   clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
   box-shadow: 0 18px 52px rgba(0, 0, 0, 0.42);
   overflow: hidden;
 }
 
-.race-data-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(105deg, transparent 0 58%, rgba(255, 255, 255, 0.08) 58% 70%, transparent 70%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 30%);
-}
-
 .race-data-copy,
+.race-data-divider,
 .race-data-number,
 .race-data-link {
   position: relative;
@@ -570,6 +557,8 @@ h1 {
 }
 
 .race-data-copy {
+  grid-column: 1;
+  grid-row: 1;
   min-width: 0;
   padding: 1rem 1.45rem 1.05rem;
 }
@@ -607,7 +596,21 @@ h1 {
   text-transform: uppercase;
 }
 
+.race-data-divider {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: stretch;
+  justify-self: start;
+  width: clamp(4.5rem, 7vw, 6.5rem);
+  margin-left: -2.25rem;
+  background: var(--race-data-divider) center / 100% 128% no-repeat;
+  opacity: 0.72;
+  pointer-events: none;
+}
+
 .race-data-number {
+  grid-column: 2;
+  grid-row: 1;
   display: grid;
   place-items: center;
   justify-self: stretch;
@@ -615,7 +618,6 @@ h1 {
   height: 100%;
   padding-inline: 1rem;
   color: rgba(244, 247, 251, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.14);
   font-family: var(--font-display);
   font-size: clamp(4.1rem, 9vw, 6.6rem);
   font-style: italic;
@@ -623,11 +625,13 @@ h1 {
   letter-spacing: -0.14em;
   line-height: 0.8;
   text-align: center;
-  transform: translateX(-0.08em);
+  font-variant-numeric: tabular-nums;
   -webkit-text-stroke: 1px rgba(244, 247, 251, 0.54);
 }
 
 .race-data-link {
+  grid-column: 3;
+  grid-row: 1;
   display: grid;
   place-items: center;
   align-self: center;
@@ -759,10 +763,19 @@ h1 {
   }
 
   .race-data-copy {
+    grid-column: 1;
     padding: 0.78rem 0.95rem 0.85rem;
   }
 
+  .race-data-divider {
+    grid-column: 2;
+    width: 3.8rem;
+    margin-left: -1.8rem;
+    opacity: 0.54;
+  }
+
   .race-data-number {
+    grid-column: 2;
     min-width: 4.8rem;
     height: auto;
     font-size: 3.4rem;

@@ -12,6 +12,7 @@ import { getCarCorners, integrateVehiclePhysics, VEHICLE_LIMITS } from './vehicl
 
 const DEFAULT_TOTAL_LAPS = 10;
 const TWO_PI = Math.PI * 2;
+const MAX_COLLISION_CORRECTION = 4.5;
 
 export const DEFAULT_RULES = {
   drsDetectionSeconds: 1,
@@ -72,6 +73,7 @@ function createCar(driver, index, random, track) {
     previousX: position.x,
     previousY: position.y,
     heading: start.heading,
+    previousHeading: start.heading,
     steeringAngle: 0,
     yawRate: 0,
     turnRadius: Infinity,
@@ -206,8 +208,11 @@ function serializeCar(car, rank) {
     color: car.color,
     tire: car.tire,
     rank,
+    previousX: car.previousX ?? car.x,
+    previousY: car.previousY ?? car.y,
     x: car.x,
     y: car.y,
+    previousHeading: car.previousHeading ?? car.heading,
     heading: car.heading,
     steeringAngle: car.steeringAngle,
     yawRate: car.yawRate,
@@ -251,6 +256,9 @@ export class F1RaceSimulation {
       deployed: false,
       progress: this.rules.safetyCarLeadDistance,
       speed: this.rules.safetyCarSpeed,
+      previousX: pointAt(this.track, this.rules.safetyCarLeadDistance).x,
+      previousY: pointAt(this.track, this.rules.safetyCarLeadDistance).y,
+      previousHeading: pointAt(this.track, this.rules.safetyCarLeadDistance).heading,
       x: pointAt(this.track, this.rules.safetyCarLeadDistance).x,
       y: pointAt(this.track, this.rules.safetyCarLeadDistance).y,
       heading: pointAt(this.track, this.rules.safetyCarLeadDistance).heading,
@@ -318,6 +326,7 @@ export class F1RaceSimulation {
     this.orderedCars().forEach((car, index) => {
       car.previousX = car.x;
       car.previousY = car.y;
+      car.previousHeading = car.heading;
       const controls = car.manualControls ?? this.computeDriverControls(car, index);
       integrateVehiclePhysics(car, controls, delta);
       this.applyRunoffResponse(car);
@@ -529,6 +538,9 @@ export class F1RaceSimulation {
 
   moveSafetyCarTo(progress) {
     const point = pointAt(this.track, progress);
+    this.safetyCar.previousX = this.safetyCar.x;
+    this.safetyCar.previousY = this.safetyCar.y;
+    this.safetyCar.previousHeading = this.safetyCar.heading;
     this.safetyCar.progress = progress;
     this.safetyCar.x = point.x;
     this.safetyCar.y = point.y;
@@ -590,7 +602,10 @@ export class F1RaceSimulation {
           const collision = detectObbCollision(first, second) ?? detectLongitudinalCollision(first, second);
           if (!collision) continue;
 
-          const correction = collision.depth / 2 + (collision.longitudinal ? 0.35 : 0.65);
+          const correction = Math.min(
+            collision.depth / 2 + (collision.longitudinal ? 0.35 : 0.65),
+            MAX_COLLISION_CORRECTION,
+          );
           first.x -= collision.axis.x * correction;
           first.y -= collision.axis.y * correction;
           second.x += collision.axis.x * correction;

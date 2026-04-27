@@ -3,13 +3,19 @@ import './styles.css';
 import { CHAMPIONSHIP_PROJECT_DRIVERS, formatDriverNumber } from './championship.js';
 import { ProceduralTrackAsset, PROCEDURAL_TRACK_TEXTURES } from './proceduralTrackAsset.js';
 import { createRaceSimulation } from './raceSimulation.js';
-import { offsetTrackPoint, pointAt, WORLD } from './trackModel.js';
+import { normalizeAngle, offsetTrackPoint, pointAt, WORLD } from './trackModel.js';
 
 const CAR_TEXTURE = '/assets/game/f1-car-sprite-game.png';
 const SAFETY_CAR_TEXTURE = '/assets/game/f1-safety-car-sprite.png';
 const BROADCAST_PANEL_TEXTURE = '/assets/game/f1-broadcast-panel-surface.png';
+const RACE_DATA_PANEL_TEXTURE = '/assets/game/f1-race-data-panel-base.png';
+const RACE_DATA_DIVIDER_TEXTURE = '/assets/game/f1-race-data-divider.png';
 const FIXED_STEP = 1 / 60;
-const MAX_RENDER_FPS = 60;
+const TARGET_RENDER_FPS = 60;
+const TARGET_FRAME_MS = 1000 / TARGET_RENDER_FPS;
+const FRAME_PACING_EPSILON_MS = 0.75;
+const MAX_FRAME_CATCHUP_COUNT = 4;
+const DOM_UPDATE_INTERVAL_MS = 100;
 const SIM_SPEED = 3.25;
 const CAR_WORLD_LENGTH = 66;
 const CAR_WORLD_WIDTH = 23;
@@ -30,6 +36,7 @@ const DRS_TRAIL_MIN_DISTANCE = 10;
 const PROJECT_DRIVERS = CHAMPIONSHIP_PROJECT_DRIVERS;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+const lerp = (start, end, amount) => start + (end - start) * amount;
 const DRIVER_BY_ID = new Map(PROJECT_DRIVERS.map((driver) => [driver.id, driver]));
 
 function escapeHtml(value) {
@@ -52,10 +59,17 @@ function smoothAngle(current, target, amount) {
   return current + diff * amount;
 }
 
+function interpolateAngle(previous, current, amount) {
+  if (!Number.isFinite(previous)) return current;
+  return previous + normalizeAngle(current - previous) * amount;
+}
+
 class F1SimulatorApp {
   constructor(root) {
     this.root = root;
     this.root.style.setProperty('--broadcast-panel-surface', `url('${BROADCAST_PANEL_TEXTURE}')`);
+    this.root.style.setProperty('--race-data-panel-base', `url('${RACE_DATA_PANEL_TEXTURE}')`);
+    this.root.style.setProperty('--race-data-divider', `url('${RACE_DATA_DIVIDER_TEXTURE}')`);
     this.canvasHost = root.querySelector('[data-track-canvas]');
     this.safetyButton = root.querySelector('[data-safety-car]');
     this.restartButton = root.querySelector('[data-restart-race]');
@@ -113,6 +127,8 @@ class F1SimulatorApp {
     };
     this.accumulator = 0;
     this.lastTime = performance.now();
+    this.nextGameFrameTime = this.lastTime + TARGET_FRAME_MS;
+    this.lastDomUpdateTime = 0;
     this.fps = {
       frames: 0,
       current: 0,
@@ -130,7 +146,6 @@ class F1SimulatorApp {
       resolution: Math.min(window.devicePixelRatio || 1, 2),
       backgroundAlpha: 0,
     });
-    this.app.ticker.maxFPS = MAX_RENDER_FPS;
     this.canvasHost.appendChild(this.app.canvas);
 
     this.worldLayer = new Container();
@@ -267,7 +282,18 @@ class F1SimulatorApp {
 
   tick() {
     const now = performance.now();
-    const frameSeconds = Math.min((now - this.lastTime) / 1000, 0.08);
+    if (now < this.nextGameFrameTime - FRAME_PACING_EPSILON_MS) return;
+
+    const elapsedFrameCount = clamp(
+      Math.floor((now - this.nextGameFrameTime + FRAME_PACING_EPSILON_MS) / TARGET_FRAME_MS) + 1,
+      1,
+      MAX_FRAME_CATCHUP_COUNT,
+    );
+    const frameSeconds = (TARGET_FRAME_MS * elapsedFrameCount) / 1000;
+    this.nextGameFrameTime += TARGET_FRAME_MS * elapsedFrameCount;
+    if (now - this.nextGameFrameTime > TARGET_FRAME_MS * MAX_FRAME_CATCHUP_COUNT) {
+      this.nextGameFrameTime = now + TARGET_FRAME_MS;
+    }
     this.lastTime = now;
     this.sampleFps(now);
     this.accumulator += frameSeconds * SIM_SPEED;
@@ -278,10 +304,36 @@ class F1SimulatorApp {
     }
 
     const snapshot = this.sim.snapshot();
-    this.applyCamera(snapshot);
-    this.renderDrsTrails(snapshot);
-    this.renderCars(snapshot);
-    this.updateDom(snapshot);
+    const renderSnapshot = this.createRenderSnapshot(snapshot, clamp(this.accumulator / FIXED_STEP, 0, 1));
+    this.applyCamera(renderSnapshot);
+    this.renderDrsTrails(renderSnapshot);
+    this.renderCars(renderSnapshot);
+    if (now - this.lastDomUpdateTime >= DOM_UPDATE_INTERVAL_MS) {
+      this.updateDom(snapshot);
+      this.lastDomUpdateTime = now;
+    }
+  }
+
+  createRenderSnapshot(snapshot, alpha) {
+    return {
+      ...snapshot,
+      cars: snapshot.cars.map((car) => ({
+        ...car,
+        x: lerp(car.previousX ?? car.x, car.x, alpha),
+        y: lerp(car.previousY ?? car.y, car.y, alpha),
+        heading: interpolateAngle(car.previousHeading ?? car.heading, car.heading, alpha),
+      })),
+      safetyCar: {
+        ...snapshot.safetyCar,
+        x: lerp(snapshot.safetyCar.previousX ?? snapshot.safetyCar.x, snapshot.safetyCar.x, alpha),
+        y: lerp(snapshot.safetyCar.previousY ?? snapshot.safetyCar.y, snapshot.safetyCar.y, alpha),
+        heading: interpolateAngle(
+          snapshot.safetyCar.previousHeading ?? snapshot.safetyCar.heading,
+          snapshot.safetyCar.heading,
+          alpha,
+        ),
+      },
+    };
   }
 
   renderTrack() {
