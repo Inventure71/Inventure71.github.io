@@ -1,25 +1,73 @@
 export const WORLD = {
-  width: 1700,
-  height: 1020,
+  width: 7600,
+  height: 4600,
 };
 
 export const TRACK = {
   name: 'Apex Harbor GP',
-  width: 210,
-  sampleCount: 980,
+  width: 230,
+  gravelWidth: 165,
+  runoffWidth: 260,
+  sampleCount: 3600,
   drsZones: [
-    { id: 'main-straight', startRatio: 0.16, endRatio: 0.28 },
-    { id: 'back-straight', startRatio: 0.58, endRatio: 0.72 },
+    { id: 'main-straight', startRatio: 0.02, endRatio: 0.14 },
+    { id: 'back-straight', startRatio: 0.43, endRatio: 0.56 },
+    { id: 'harbor-straight', startRatio: 0.82, endRatio: 0.93 },
   ],
 };
 
 const TWO_PI = Math.PI * 2;
 
-function rawCenterPoint(t) {
+const CENTERLINE_CONTROLS = [
+  { x: WORLD.width * 0.05, y: WORLD.height * 0.56 },
+  { x: WORLD.width * 0.10, y: WORLD.height * 0.81 },
+  { x: WORLD.width * 0.23, y: WORLD.height * 0.91 },
+  { x: WORLD.width * 0.35, y: WORLD.height * 0.80 },
+  { x: WORLD.width * 0.48, y: WORLD.height * 0.90 },
+  { x: WORLD.width * 0.59, y: WORLD.height * 0.75 },
+  { x: WORLD.width * 0.71, y: WORLD.height * 0.87 },
+  { x: WORLD.width * 0.82, y: WORLD.height * 0.72 },
+  { x: WORLD.width * 0.94, y: WORLD.height * 0.66 },
+  { x: WORLD.width * 0.96, y: WORLD.height * 0.47 },
+  { x: WORLD.width * 0.88, y: WORLD.height * 0.33 },
+  { x: WORLD.width * 0.74, y: WORLD.height * 0.31 },
+  { x: WORLD.width * 0.64, y: WORLD.height * 0.18 },
+  { x: WORLD.width * 0.54, y: WORLD.height * 0.31 },
+  { x: WORLD.width * 0.43, y: WORLD.height * 0.13 },
+  { x: WORLD.width * 0.29, y: WORLD.height * 0.18 },
+  { x: WORLD.width * 0.17, y: WORLD.height * 0.31 },
+  { x: WORLD.width * 0.08, y: WORLD.height * 0.43 },
+];
+
+function catmullRom(p0, p1, p2, p3, t) {
+  const t2 = t * t;
+  const t3 = t2 * t;
   return {
-    x: WORLD.width * (0.5 + Math.cos(t) * 0.382 + Math.cos(t * 3.1) * 0.046 - Math.sin(t * 1.7) * 0.025),
-    y: WORLD.height * (0.51 + Math.sin(t) * 0.322 + Math.sin(t * 2.2) * 0.052 + Math.cos(t * 1.4) * 0.02),
+    x: 0.5 * (
+      (2 * p1.x) +
+      (-p0.x + p2.x) * t +
+      (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 +
+      (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3
+    ),
+    y: 0.5 * (
+      (2 * p1.y) +
+      (-p0.y + p2.y) * t +
+      (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 +
+      (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3
+    ),
   };
+}
+
+function rawCenterPoint(ratio) {
+  const count = CENTERLINE_CONTROLS.length;
+  const scaled = ratio * count;
+  const index = Math.floor(scaled) % count;
+  const localT = scaled - Math.floor(scaled);
+  const p0 = CENTERLINE_CONTROLS[(index - 1 + count) % count];
+  const p1 = CENTERLINE_CONTROLS[index];
+  const p2 = CENTERLINE_CONTROLS[(index + 1) % count];
+  const p3 = CENTERLINE_CONTROLS[(index + 2) % count];
+  return catmullRom(p0, p1, p2, p3, localT);
 }
 
 function distance(a, b) {
@@ -35,8 +83,7 @@ function normalizeAngle(angle) {
 export function buildTrackModel(track = TRACK) {
   const base = [];
   for (let index = 0; index <= track.sampleCount; index += 1) {
-    const t = (index / track.sampleCount) * TWO_PI - Math.PI / 2;
-    base.push(rawCenterPoint(t));
+    base.push(rawCenterPoint(index / track.sampleCount));
   }
 
   let totalLength = 0;
@@ -115,11 +162,24 @@ export function nearestTrackState(track, position) {
   const dx = position.x - best.x;
   const dy = position.y - best.y;
   const signedOffset = dx * best.normalX + dy * best.normalY;
+  const crossTrackError = Math.abs(signedOffset);
+  const trackEdge = track.width / 2;
+  const gravelEdge = trackEdge + track.gravelWidth;
+  const runoffEdge = gravelEdge + track.runoffWidth;
+  const surface = crossTrackError <= trackEdge
+    ? 'track'
+    : crossTrackError <= gravelEdge
+      ? 'gravel'
+      : crossTrackError <= runoffEdge
+        ? 'grass'
+        : 'barrier';
+
   return {
     ...best,
     signedOffset,
-    crossTrackError: Math.abs(signedOffset),
-    onTrack: Math.abs(signedOffset) <= track.width / 2,
+    crossTrackError,
+    surface,
+    onTrack: surface === 'track',
   };
 }
 

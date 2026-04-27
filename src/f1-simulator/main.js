@@ -1,12 +1,22 @@
 import { Application, Assets, Container, Graphics, Sprite, Texture } from 'pixi.js';
 import './styles.css';
 import { PROJECT_DRIVERS } from './drivers.js';
+import { ProceduralTrackAsset, PROCEDURAL_TRACK_TEXTURES } from './proceduralTrackAsset.js';
 import { createRaceSimulation } from './raceSimulation.js';
 import { offsetTrackPoint, pointAt, WORLD } from './trackModel.js';
 
 const CAR_TEXTURE = '/assets/game/f1-car-sprite-game.png';
 const FIXED_STEP = 1 / 60;
-const SIM_SPEED = 1.65;
+const SIM_SPEED = 3.25;
+const CAR_WORLD_LENGTH = 66;
+const CAR_WORLD_WIDTH = 23;
+const CAMERA_PRESETS = {
+  overview: 1,
+  leader: 5.35,
+  selected: 6.1,
+};
+const DRS_TRAIL_TTL = 0.68;
+const DRS_TRAIL_MIN_DISTANCE = 10;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -24,11 +34,16 @@ class F1SimulatorApp {
     this.safetyButton = root.querySelector('[data-safety-car]');
     this.restartButton = root.querySelector('[data-restart-race]');
     this.timingList = root.querySelector('[data-timing-list]');
+    this.cameraButtons = root.querySelectorAll('[data-camera-mode]');
+    this.zoomInButton = root.querySelector('[data-zoom-in]');
+    this.zoomOutButton = root.querySelector('[data-zoom-out]');
     this.readouts = {
       mode: root.querySelector('[data-race-mode]'),
       lap: root.querySelector('[data-lap-readout]'),
       drs: root.querySelector('[data-drs-readout]'),
       contacts: root.querySelector('[data-contact-readout]'),
+      camera: root.querySelector('[data-camera-readout]'),
+      fps: root.querySelector('[data-fps-readout]'),
       selectedCode: root.querySelector('[data-selected-code]'),
       selectedName: root.querySelector('[data-selected-name]'),
       speed: root.querySelector('[data-telemetry-speed]'),
@@ -36,18 +51,34 @@ class F1SimulatorApp {
       brake: root.querySelector('[data-telemetry-brake]'),
       tyres: root.querySelector('[data-telemetry-tyres]'),
       selectedDrs: root.querySelector('[data-telemetry-drs]'),
+      surface: root.querySelector('[data-telemetry-surface]'),
       gap: root.querySelector('[data-telemetry-gap]'),
     };
     this.sim = null;
     this.app = null;
-    this.trackLayer = null;
+    this.worldLayer = null;
+    this.trackAsset = null;
     this.drsLayer = null;
+    this.trailLayer = null;
     this.carLayer = null;
+    this.textures = {};
     this.carSprites = new Map();
     this.carHitAreas = new Map();
+    this.drsTrails = new Map();
     this.selectedId = PROJECT_DRIVERS[0]?.id ?? null;
+    this.camera = {
+      mode: 'leader',
+      zoom: CAMERA_PRESETS.leader,
+      x: WORLD.width / 2,
+      y: WORLD.height / 2,
+    };
     this.accumulator = 0;
     this.lastTime = performance.now();
+    this.fps = {
+      frames: 0,
+      current: 0,
+      lastSample: this.lastTime,
+    };
   }
 
   async init() {
@@ -62,32 +93,64 @@ class F1SimulatorApp {
     });
     this.canvasHost.appendChild(this.app.canvas);
 
-    this.trackLayer = new Container();
+    this.worldLayer = new Container();
     this.drsLayer = new Container();
+    this.trailLayer = new Graphics();
     this.carLayer = new Container();
-    this.app.stage.addChild(this.trackLayer, this.drsLayer, this.carLayer);
+    this.app.stage.addChild(this.worldLayer);
 
-    await this.loadCars();
+    await this.loadAssets();
+    this.trackAsset = new ProceduralTrackAsset({ textures: this.textures, world: WORLD });
+    this.worldLayer.addChild(this.trackAsset.container, this.drsLayer, this.trailLayer, this.carLayer);
+    this.createCars();
     this.bindControls();
     this.renderTrack();
-    window.addEventListener('resize', () => this.renderTrack());
+    window.addEventListener('resize', () => this.applyCamera(this.sim.snapshot()));
     this.app.ticker.add(() => this.tick());
   }
 
-  async loadCars() {
-    let texture = Texture.WHITE;
+  async loadAssets() {
+    this.textures.car = Texture.WHITE;
     try {
-      texture = await Assets.load(CAR_TEXTURE);
-      texture.source.scaleMode = 'linear';
-      texture.source.autoGenerateMipmaps = true;
+      this.textures.car = await Assets.load(CAR_TEXTURE);
+      this.textures.car.source.scaleMode = 'linear';
+      this.textures.car.source.autoGenerateMipmaps = true;
     } catch {
-      texture = Texture.WHITE;
+      this.textures.car = Texture.WHITE;
+    }
+
+    await Promise.all(Object.entries(PROCEDURAL_TRACK_TEXTURES).map(async ([key, url]) => {
+      try {
+        const texture = await Assets.load(url);
+        texture.source.scaleMode = 'linear';
+        this.textures[key] = texture;
+      } catch {
+        this.textures[key] = Texture.WHITE;
+      }
+    }));
+  }
+
+  createCars() {
+    const texture = this.textures.car ?? Texture.WHITE;
+    const baseScale = Math.min(
+      CAR_WORLD_LENGTH / Math.max(texture.width, 1),
+      CAR_WORLD_WIDTH / Math.max(texture.height, 1),
+    );
+
+    this.carSprites.forEach((sprite) => sprite.destroy());
+    this.carHitAreas.forEach((hit) => hit.destroy());
+    this.carSprites.clear();
+    this.carHitAreas.clear();
+    this.drsTrails.clear();
+
+    if (this.safetySprite) {
+      this.safetySprite.destroy();
+      this.safetySprite = null;
     }
 
     PROJECT_DRIVERS.forEach((driver) => {
       const sprite = new Sprite(texture);
       sprite.anchor.set(0.5);
-      const baseScale = Math.min(54 / Math.max(texture.width, 1), 21 / Math.max(texture.height, 1));
       sprite.baseScale = baseScale;
       sprite.scale.set(baseScale);
       sprite.tint = driver.color;
@@ -101,7 +164,7 @@ class F1SimulatorApp {
       this.carLayer.addChild(sprite);
 
       const hit = new Graphics();
-      hit.circle(0, 0, 16).fill({ color: 0xffffff, alpha: 0.001 });
+      hit.circle(0, 0, 24).fill({ color: 0xffffff, alpha: 0.001 });
       hit.eventMode = 'static';
       hit.cursor = 'pointer';
       hit.on('pointerdown', () => {
@@ -126,7 +189,27 @@ class F1SimulatorApp {
       this.selectedId = PROJECT_DRIVERS[0]?.id ?? null;
       this.safetyButton?.classList.remove('is-active');
       this.safetyButton?.setAttribute('aria-pressed', 'false');
+      this.drsTrails.clear();
+      this.trailLayer?.clear();
       this.renderTrack();
+    });
+
+    this.cameraButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        this.camera.mode = button.dataset.cameraMode;
+        this.camera.zoom = CAMERA_PRESETS[this.camera.mode] ?? this.camera.zoom;
+        this.updateCameraControls();
+      });
+    });
+
+    this.zoomInButton?.addEventListener('click', () => {
+      this.camera.zoom = clamp(this.camera.zoom + 0.42, 0.72, 8.5);
+      this.updateCameraControls();
+    });
+
+    this.zoomOutButton?.addEventListener('click', () => {
+      this.camera.zoom = clamp(this.camera.zoom - 0.42, 0.72, 8.5);
+      this.updateCameraControls();
     });
   }
 
@@ -134,6 +217,7 @@ class F1SimulatorApp {
     const now = performance.now();
     const frameSeconds = Math.min((now - this.lastTime) / 1000, 0.08);
     this.lastTime = now;
+    this.sampleFps(now);
     this.accumulator += frameSeconds * SIM_SPEED;
 
     while (this.accumulator >= FIXED_STEP) {
@@ -142,49 +226,35 @@ class F1SimulatorApp {
     }
 
     const snapshot = this.sim.snapshot();
+    this.applyCamera(snapshot);
+    this.renderDrsTrails(snapshot);
     this.renderCars(snapshot);
     this.updateDom(snapshot);
   }
 
   renderTrack() {
-    const width = this.canvasHost.clientWidth || 900;
-    const height = this.canvasHost.clientHeight || 640;
-    this.trackLayer.removeChildren();
     this.drsLayer.removeChildren();
     const snapshot = this.sim.snapshot();
     const track = snapshot.track;
 
-    const base = new Graphics();
-    const points = track.samples.map((point) => this.worldToScreen(point, width, height));
-    const roadWidth = clamp((track.width / WORLD.width) * width, 76, 112);
-    base.moveTo(points[0].x, points[0].y);
-    points.slice(1).forEach((point) => base.lineTo(point.x, point.y));
-    base.stroke({ width: roadWidth + 18, color: 0x08090b, alpha: 0.78, join: 'round', cap: 'round' });
-    base.stroke({ width: roadWidth, color: 0x2a2f37, alpha: 1, join: 'round', cap: 'round' });
-    base.stroke({ width: 5, color: 0xf4f7fb, alpha: 0.46, join: 'round', cap: 'round' });
-    base.stroke({ width: 2, color: 0xe10600, alpha: 0.74, join: 'round', cap: 'round' });
-    this.trackLayer.addChild(base);
+    this.trackAsset.render(track);
 
     track.drsZones.forEach((zone) => {
       const zoneLine = new Graphics();
       const steps = 44;
       for (let index = 0; index <= steps; index += 1) {
-        const point = this.worldToScreen(pointAt(track, zone.start + ((zone.end - zone.start) * index) / steps), width, height);
+        const basePoint = pointAt(track, zone.start + ((zone.end - zone.start) * index) / steps);
+        const point = offsetTrackPoint(basePoint, track.width / 2 - 22);
         if (index === 0) zoneLine.moveTo(point.x, point.y);
         else zoneLine.lineTo(point.x, point.y);
       }
-      zoneLine.stroke({ width: clamp(roadWidth * 0.16, 12, 18), color: 0x14c784, alpha: 0.72, join: 'round', cap: 'round' });
+      zoneLine.stroke({ width: 8, color: 0x14c784, alpha: 0.5, join: 'round', cap: 'round' });
       this.drsLayer.addChild(zoneLine);
     });
   }
 
   renderCars(snapshot) {
-    const width = this.canvasHost.clientWidth || 900;
-    const height = this.canvasHost.clientHeight || 640;
-    const carViews = snapshot.cars.map((car) => ({ ...car, ...this.worldToScreen(car, width, height) }));
-    const safety = this.worldToScreen(snapshot.safetyCar, width, height);
-
-    carViews.forEach((car) => {
+    snapshot.cars.forEach((car) => {
       const sprite = this.carSprites.get(car.id);
       const hit = this.carHitAreas.get(car.id);
       if (!sprite || !hit) return;
@@ -201,17 +271,92 @@ class F1SimulatorApp {
 
     if (!this.safetySprite && snapshot.safetyCar.deployed) {
       this.safetySprite = new Graphics();
-      this.safetySprite.roundRect(-24, -10, 48, 20, 4).fill(0xfacc15);
-      this.safetySprite.rect(-18, -6, 14, 12).fill(0x111318);
+      this.safetySprite.roundRect(-32, -12, 64, 24, 5).fill(0xfacc15);
+      this.safetySprite.rect(-23, -7, 18, 14).fill(0x111318);
       this.carLayer.addChild(this.safetySprite);
     }
 
     if (this.safetySprite) {
       this.safetySprite.visible = snapshot.safetyCar.deployed;
-      this.safetySprite.x = safety.x;
-      this.safetySprite.y = safety.y;
+      this.safetySprite.x = snapshot.safetyCar.x;
+      this.safetySprite.y = snapshot.safetyCar.y;
       this.safetySprite.rotation = snapshot.safetyCar.heading;
     }
+  }
+
+  renderDrsTrails(snapshot) {
+    if (!this.trailLayer) return;
+
+    snapshot.cars.forEach((car) => {
+      const history = this.drsTrails.get(car.id) ?? [];
+      const rear = {
+        x: car.x - Math.cos(car.heading) * CAR_WORLD_LENGTH * 0.46,
+        y: car.y - Math.sin(car.heading) * CAR_WORLD_LENGTH * 0.46,
+        at: snapshot.time,
+      };
+      const last = history[history.length - 1];
+
+      if (
+        car.drsActive &&
+        (!last || Math.hypot(rear.x - last.x, rear.y - last.y) >= DRS_TRAIL_MIN_DISTANCE)
+      ) {
+        history.push(rear);
+      }
+
+      const activeTrail = history.filter((point) => snapshot.time - point.at <= DRS_TRAIL_TTL);
+      if (activeTrail.length) this.drsTrails.set(car.id, activeTrail);
+      else this.drsTrails.delete(car.id);
+    });
+
+    this.trailLayer.clear();
+    this.drsTrails.forEach((history) => {
+      for (let index = 1; index < history.length; index += 1) {
+        const previous = history[index - 1];
+        const point = history[index];
+        const age = snapshot.time - point.at;
+        const life = clamp(1 - age / DRS_TRAIL_TTL, 0, 1);
+        this.trailLayer.moveTo(previous.x, previous.y);
+        this.trailLayer.lineTo(point.x, point.y);
+        this.trailLayer.stroke({
+          width: 5 + life * 7,
+          color: 0x3be8ff,
+          alpha: 0.22 + life * 0.48,
+          cap: 'round',
+          join: 'round',
+        });
+      }
+    });
+  }
+
+  applyCamera(snapshot) {
+    if (!this.worldLayer) return;
+
+    const width = this.canvasHost.clientWidth || 900;
+    const height = this.canvasHost.clientHeight || 640;
+    const baseScale = Math.min(width / (WORLD.width + 260), height / (WORLD.height + 220));
+    const scale = baseScale * this.camera.zoom;
+    const target = this.getCameraTarget(snapshot);
+    this.camera.x += (target.x - this.camera.x) * 0.08;
+    this.camera.y += (target.y - this.camera.y) * 0.08;
+    this.worldLayer.scale.set(scale);
+    this.worldLayer.position.set(
+      width / 2 - this.camera.x * scale,
+      height / 2 - this.camera.y * scale,
+    );
+  }
+
+  getCameraTarget(snapshot) {
+    if (this.camera.mode === 'overview') {
+      return { x: WORLD.width / 2, y: WORLD.height / 2 };
+    }
+
+    if (this.camera.mode === 'selected') {
+      const selected = snapshot.cars.find((car) => car.id === this.selectedId);
+      if (selected) return selected;
+    }
+
+    const leader = snapshot.cars[0];
+    return leader ? { x: leader.x, y: leader.y } : { x: WORLD.width / 2, y: WORLD.height / 2 };
   }
 
   updateDom(snapshot) {
@@ -229,9 +374,25 @@ class F1SimulatorApp {
         ? `${activeDrs} OPEN`
         : 'ARMED';
     this.readouts.contacts.textContent = String(contactCount);
+    if (this.readouts.camera) {
+      this.readouts.camera.textContent = `${this.camera.mode.toUpperCase()} ${Math.round(this.camera.zoom * 100)}%`;
+    }
+    if (this.readouts.fps) {
+      this.readouts.fps.textContent = this.fps.current ? `${this.fps.current}` : '--';
+    }
 
+    this.updateCameraControls();
     this.renderTiming(snapshot.cars, leader, snapshot.raceControl.mode);
     this.renderTelemetry(selected);
+  }
+
+  sampleFps(now) {
+    this.fps.frames += 1;
+    const elapsed = now - this.fps.lastSample;
+    if (elapsed < 500) return;
+    this.fps.current = Math.round((this.fps.frames * 1000) / elapsed);
+    this.fps.frames = 0;
+    this.fps.lastSample = now;
   }
 
   renderTiming(cars, leader, raceMode) {
@@ -274,16 +435,20 @@ class F1SimulatorApp {
     this.readouts.brake.textContent = `${Math.round(car.brake * 100)}%`;
     this.readouts.tyres.textContent = `${Math.round(car.tireEnergy ?? 100)}%`;
     this.readouts.selectedDrs.textContent = car.drsActive ? 'OPEN' : car.drsEligible ? 'READY' : 'OFF';
+    if (this.readouts.surface) {
+      this.readouts.surface.textContent = (car.surface ?? 'track').toUpperCase();
+    }
     this.readouts.gap.textContent = car.rank === 1 || !Number.isFinite(car.gapAheadSeconds)
       ? '--'
       : `${car.gapAheadSeconds.toFixed(2)}s`;
   }
 
-  worldToScreen(point, width, height) {
-    return {
-      x: (point.x / WORLD.width) * width,
-      y: (point.y / WORLD.height) * height,
-    };
+  updateCameraControls() {
+    this.cameraButtons.forEach((button) => {
+      const isActive = button.dataset.cameraMode === this.camera.mode;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
   }
 }
 

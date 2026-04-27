@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
 import { PROJECT_DRIVERS } from '../drivers.js';
 import { createRaceSimulation } from '../raceSimulation.js';
-import { TRACK } from '../trackModel.js';
-import { getCarCorners, integrateVehiclePhysics } from '../vehiclePhysics.js';
+import { buildTrackModel, offsetTrackPoint, pointAt, TRACK } from '../trackModel.js';
+import { getCarCorners, integrateVehiclePhysics, VEHICLE_LIMITS } from '../vehiclePhysics.js';
 
 const drivers = [
   { id: 'budget', code: 'BUD', name: 'Budget Buddy', color: '#ff3860', pace: 0.94, racecraft: 0.74 },
@@ -43,7 +43,37 @@ function project(points, axis) {
   return { min: Math.min(...values), max: Math.max(...values) };
 }
 
+function orientation(a, b, c) {
+  return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+}
+
+function segmentsIntersect(a, b, c, d) {
+  const abC = orientation(a, b, c);
+  const abD = orientation(a, b, d);
+  const cdA = orientation(c, d, a);
+  const cdB = orientation(c, d, b);
+  return abC * abD < 0 && cdA * cdB < 0;
+}
+
 describe('vehicle physics race simulation', () => {
+  test('generates a non-self-intersecting circuit centerline', () => {
+    const track = buildTrackModel(TRACK);
+    const points = track.samples.filter((_, index) => index % 6 === 0);
+    const intersections = [];
+
+    for (let first = 0; first < points.length - 1; first += 1) {
+      for (let second = first + 2; second < points.length - 1; second += 1) {
+        const sharesLoopClosure = first === 0 && second >= points.length - 3;
+        if (sharesLoopClosure) continue;
+        if (segmentsIntersect(points[first], points[first + 1], points[second], points[second + 1])) {
+          intersections.push([first, second]);
+        }
+      }
+    }
+
+    expect(intersections).toEqual([]);
+  });
+
   test('turns by steering angle and turn radius instead of lateral snapping', () => {
     const car = {
       x: 0,
@@ -108,6 +138,50 @@ describe('vehicle physics race simulation', () => {
     expect(snapshot.events.some((event) => event.type === 'contact')).toBe(true);
   });
 
+  test('resolves nose-to-tail contact across the full rendered car length', () => {
+    const sim = createRaceSimulation({ seed: 8, drivers: drivers.slice(0, 2), totalLaps: 3 });
+    const trackPoint = pointAt(sim.snapshot().track, 960);
+    sim.setCarState('budget', { x: trackPoint.x, y: trackPoint.y, heading: trackPoint.heading, speed: 26 });
+    sim.setCarState('noir', {
+      x: trackPoint.x + Math.cos(trackPoint.heading) * 44,
+      y: trackPoint.y + Math.sin(trackPoint.heading) * 44,
+      heading: trackPoint.heading,
+      speed: 22,
+    });
+
+    sim.step(1 / 60);
+
+    const snapshot = sim.snapshot();
+    const first = snapshot.cars.find((car) => car.id === 'budget');
+    const second = snapshot.cars.find((car) => car.id === 'noir');
+
+    expect(polygonsOverlap(getCarCorners(first), getCarCorners(second))).toBe(false);
+    expect(snapshot.events.some((event) => event.type === 'contact')).toBe(true);
+  });
+
+  test('protects the nose and rear collision envelope before visible overlap', () => {
+    const sim = createRaceSimulation({ seed: 11, drivers: drivers.slice(0, 2), totalLaps: 3 });
+    const trackPoint = pointAt(sim.snapshot().track, 1320);
+    const gap = VEHICLE_LIMITS.carLength * 0.93;
+    sim.setCarState('budget', { x: trackPoint.x, y: trackPoint.y, heading: trackPoint.heading, speed: 48 });
+    sim.setCarState('noir', {
+      x: trackPoint.x + Math.cos(trackPoint.heading) * gap,
+      y: trackPoint.y + Math.sin(trackPoint.heading) * gap,
+      heading: trackPoint.heading,
+      speed: 42,
+    });
+
+    sim.step(1 / 60);
+
+    const snapshot = sim.snapshot();
+    const first = snapshot.cars.find((car) => car.id === 'budget');
+    const second = snapshot.cars.find((car) => car.id === 'noir');
+
+    expect(second.raceDistance - first.raceDistance).toBeGreaterThanOrEqual(VEHICLE_LIMITS.carLength * 0.9);
+    expect(polygonsOverlap(getCarCorners(first), getCarCorners(second))).toBe(false);
+    expect(snapshot.events.some((event) => event.type === 'contact')).toBe(true);
+  });
+
   test('safety car neutralizes racing, disables DRS, and reduces speed through vehicle controls', () => {
     const sim = createRaceSimulation({ seed: 21, drivers, totalLaps: 5 });
     run(sim, 5);
@@ -131,16 +205,43 @@ describe('vehicle physics race simulation', () => {
     const frozenOrder = sim.snapshot().cars.map((car) => car.id);
 
     sim.setSafetyCar(true);
-    run(sim, 24);
+    run(sim, 28);
     const snapshot = sim.snapshot();
     const queueGaps = snapshot.cars.slice(1).map((car, index) => snapshot.cars[index].raceDistance - car.raceDistance);
 
     expect(snapshot.cars.map((car) => car.id)).toEqual(frozenOrder);
     expect(snapshot.cars.every((car) => car.drsActive === false)).toBe(true);
     expect(Math.max(...snapshot.cars.map((car) => Math.abs(car.signedOffset)))).toBeLessThan(TRACK.width * 0.18);
-    expect(Math.min(...queueGaps)).toBeGreaterThan(32);
-    expect(Math.max(...queueGaps)).toBeLessThan(120);
+    expect(snapshot.safetyCar.progress - snapshot.cars[0].raceDistance).toBeGreaterThan(95);
+    expect(Math.min(...queueGaps)).toBeGreaterThan(72);
+    expect(Math.max(...queueGaps)).toBeLessThan(190);
     expect(Math.max(...snapshot.cars.map((car) => car.speedKph))).toBeLessThan(255);
+  });
+
+  test('gravel slows an off-track car while controls rejoin the racing surface', () => {
+    const sim = createRaceSimulation({ seed: 9, drivers: drivers.slice(0, 2), totalLaps: 3 });
+    const trackPoint = pointAt(sim.snapshot().track, 720);
+    const gravelPoint = offsetTrackPoint(trackPoint, TRACK.width / 2 + 120);
+
+    sim.setCarState('budget', {
+      x: gravelPoint.x,
+      y: gravelPoint.y,
+      heading: trackPoint.heading + 0.7,
+      speed: 78,
+    });
+
+    const before = sim.snapshot().cars.find((car) => car.id === 'budget');
+    run(sim, 4);
+    const slowed = sim.snapshot().cars.find((car) => car.id === 'budget');
+    run(sim, 12);
+    const after = sim.snapshot().cars.find((car) => car.id === 'budget');
+
+    expect(before.surface).toBe('gravel');
+    expect(slowed.surface).toBe('gravel');
+    expect(slowed.speedKph).toBeLessThan(before.speedKph * 0.45);
+    expect(after.surface).toBe('track');
+    expect(after.speedKph).toBeGreaterThan(slowed.speedKph);
+    expect(Math.abs(after.signedOffset)).toBeLessThan(TRACK.width / 2);
   });
 
   test('publishes finite race timing and tyre state for the browser UI', () => {

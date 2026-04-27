@@ -36,6 +36,13 @@
 
         <section class="sim-canvas-panel" aria-label="Track view">
           <div class="track-canvas" data-track-canvas></div>
+          <div class="camera-controls" aria-label="Camera controls">
+            <button type="button" data-camera-mode="overview" aria-pressed="false">Overview</button>
+            <button type="button" data-camera-mode="leader" aria-pressed="true">Leader</button>
+            <button type="button" data-camera-mode="selected" aria-pressed="false">Selected</button>
+            <button type="button" data-zoom-out aria-label="Zoom out">-</button>
+            <button type="button" data-zoom-in aria-label="Zoom in">+</button>
+          </div>
           <div class="race-hud">
             <div>
               <span>LAP</span>
@@ -48,6 +55,14 @@
             <div>
               <span>CONTACTS</span>
               <strong data-contact-readout>0</strong>
+            </div>
+            <div>
+              <span>CAM</span>
+              <strong data-camera-readout>LEADER</strong>
+            </div>
+            <div>
+              <span>FPS</span>
+              <strong data-fps-readout>--</strong>
             </div>
           </div>
         </section>
@@ -77,6 +92,10 @@
             <div>
               <dt>DRS</dt>
               <dd data-telemetry-drs>OFF</dd>
+            </div>
+            <div>
+              <dt>Surface</dt>
+              <dd data-telemetry-surface>TRACK</dd>
             </div>
             <div>
               <dt>Gap</dt>

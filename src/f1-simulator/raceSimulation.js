@@ -16,13 +16,13 @@ const TWO_PI = Math.PI * 2;
 export const DEFAULT_RULES = {
   drsDetectionSeconds: 1,
   safetyCarSpeed: 46,
-  safetyCarLeadDistance: 82,
-  safetyCarGap: 50,
+  safetyCarLeadDistance: 122,
+  safetyCarGap: 128,
   collisionRestitution: 0.18,
 };
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-const LANE_OFFSETS = [-62, -42, -22, 0, 22, 42, 62];
+const LANE_OFFSETS = [-78, -52, -26, 0, 26, 52, 78];
 
 function mulberry32(seed) {
   let state = seed >>> 0;
@@ -49,7 +49,7 @@ function angleToPoint(car, target) {
 }
 
 function createCar(driver, index, random, track) {
-  const gridDistance = -index * 54;
+  const gridDistance = -index * 98;
   const start = pointAt(track, gridDistance);
   const offset = [-42, 0, 42][index % 3];
   const position = offsetTrackPoint(start, offset);
@@ -70,15 +70,15 @@ function createCar(driver, index, random, track) {
     steeringAngle: 0,
     yawRate: 0,
     turnRadius: Infinity,
-    speed: Math.max(54, 69 - index * 0.58 + pace * 2),
+    speed: Math.max(70, 84 - index * 0.55 + pace * 4),
     throttle: 0,
     brake: 0,
     mass: 798 + seededRange(random, -5, 5),
-    powerNewtons: 26000 * pace,
-    brakeNewtons: 48000,
-    dragCoefficient: 0.5 + seededRange(random, -0.035, 0.035),
-    downforceCoefficient: 4.7 + seededRange(random, -0.16, 0.16),
-    tireGrip: 2.08 + racecraft * 0.24 + seededRange(random, -0.03, 0.03),
+    powerNewtons: 43000 * pace,
+    brakeNewtons: 59000,
+    dragCoefficient: 0.33 + seededRange(random, -0.026, 0.026),
+    downforceCoefficient: 6.1 + seededRange(random, -0.18, 0.18),
+    tireGrip: 2.22 + racecraft * 0.28 + seededRange(random, -0.03, 0.03),
     pace,
     racecraft,
     desiredOffset: offset,
@@ -144,6 +144,29 @@ function detectObbCollision(a, b) {
   return { axis: minimumAxis, depth: minimumOverlap };
 }
 
+function detectLongitudinalCollision(a, b) {
+  const longitudinalGap = b.raceDistance - a.raceDistance;
+  const absoluteLongitudinalGap = Math.abs(longitudinalGap);
+  const lateralGap = Math.abs((a.trackState?.signedOffset ?? 0) - (b.trackState?.signedOffset ?? 0));
+  const headingDelta = Math.abs(normalizeAngle(a.heading - b.heading));
+  const requiredGap = VEHICLE_LIMITS.carLength * 0.98;
+
+  if (absoluteLongitudinalGap >= requiredGap) return null;
+  if (lateralGap > VEHICLE_LIMITS.carWidth * 1.08) return null;
+  if (headingDelta > 0.58) return null;
+
+  const blendedHeading = a.heading + normalizeAngle(b.heading - a.heading) * 0.5;
+  let axis = normalizeVector({ x: Math.cos(blendedHeading), y: Math.sin(blendedHeading) });
+  const direction = { x: b.x - a.x, y: b.y - a.y };
+  if (dot(direction, axis) < 0) axis = { x: -axis.x, y: -axis.y };
+
+  return {
+    axis,
+    depth: requiredGap - absoluteLongitudinalGap,
+    longitudinal: true,
+  };
+}
+
 function forwardVector(car) {
   return { x: Math.cos(car.heading), y: Math.sin(car.heading) };
 }
@@ -192,6 +215,7 @@ function serializeCar(car, rank) {
     canAttack: car.canAttack,
     signedOffset: car.trackState?.signedOffset ?? 0,
     crossTrackError: car.trackState?.crossTrackError ?? 0,
+    surface: car.trackState?.surface ?? 'track',
     contactCooldown: car.contactCooldown,
     tireEnergy: car.tireEnergy,
     positionSource: 'integrated-vehicle',
@@ -284,7 +308,7 @@ export class F1RaceSimulation {
       car.previousY = car.y;
       const controls = car.manualControls ?? this.computeDriverControls(car, index);
       integrateVehiclePhysics(car, controls, delta);
-      this.resolveTrackLimit(car);
+      this.applyRunoffResponse(car);
       car.contactCooldown = Math.max(0, car.contactCooldown - delta);
     });
 
@@ -324,31 +348,52 @@ export class F1RaceSimulation {
       return this.computeSafetyCarControls(car, orderIndex);
     }
 
-    const lookahead = clamp(car.speed * 1.05 + 96, 108, 210);
+    if (!car.trackState.onTrack) {
+      return this.computeRejoinControls(car);
+    }
+
+    const lookahead = clamp(car.speed * 1.12 + 160, 170, 360);
     const targetBase = pointAt(this.track, car.progress + lookahead);
     const lanePlan = this.planRacingLine(car, orderIndex);
     const recoveryBias = car.trackState.crossTrackError > TRACK.width * 0.46 ? 0 : 1;
     const target = offsetTrackPoint(targetBase, lanePlan.offset * recoveryBias);
     const angleError = angleToPoint(car, target);
     const curvature = Math.max(car.trackState.curvature, targetBase.curvature);
-    const gripBudget = 38 + car.racecraft * 8 + (car.tireEnergy ?? 100) * 0.03;
-    const cornerTarget = clamp(Math.sqrt(gripBudget / Math.max(curvature, 0.0001)) + (car.pace - 1) * 16, 52, 112);
-    const edgePenalty = Math.max(0, car.trackState.crossTrackError - TRACK.width * 0.38) * 0.18;
+    const gripBudget = 54 + car.racecraft * 11 + (car.tireEnergy ?? 100) * 0.05;
+    const cornerTarget = clamp(Math.sqrt(gripBudget / Math.max(curvature, 0.0001)) + (car.pace - 1) * 20, 72, 158);
+    const edgePenalty = Math.max(0, car.trackState.crossTrackError - TRACK.width * 0.38) * 0.15;
     const trafficPenalty = Math.max(
-      lanePlan.sameLaneAhead ? clamp((148 - lanePlan.sameLaneAhead.gap) * 0.22, 0, 26) : 0,
-      lanePlan.sideRisk ? clamp((36 - lanePlan.sideRisk.lateral) * 0.45, 0, 14) : 0,
+      lanePlan.sameLaneAhead ? clamp((230 - lanePlan.sameLaneAhead.gap) * 0.16, 0, 32) : 0,
+      lanePlan.sideRisk ? clamp((44 - lanePlan.sideRisk.lateral) * 0.42, 0, 16) : 0,
     );
     const desiredSpeed = clamp(
       (car.drsActive ? cornerTarget + 9 : cornerTarget) - edgePenalty - trafficPenalty,
-      36,
+      58,
       VEHICLE_LIMITS.maxSpeed,
     );
     const speedError = desiredSpeed - car.speed;
 
     return {
       steering: clamp(angleError * (0.82 + car.racecraft * 0.1), -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
-      throttle: speedError > 1 ? clamp(speedError / 20, 0.1, 1) : 0,
-      brake: speedError < -2 ? clamp(Math.abs(speedError) / 24, 0, 1) : 0,
+      throttle: speedError > 1 ? clamp(speedError / 16, 0.12, 1) : 0,
+      brake: speedError < -2 ? clamp(Math.abs(speedError) / 22, 0, 1) : 0,
+    };
+  }
+
+  computeRejoinControls(car) {
+    const lookahead = clamp(car.speed * 0.64 + 96, 106, 180);
+    const targetBase = pointAt(this.track, car.progress + lookahead);
+    const target = offsetTrackPoint(targetBase, 0);
+    const angleError = angleToPoint(car, target);
+    const distanceFromRoad = Math.max(0, car.trackState.crossTrackError - TRACK.width / 2);
+    const surfaceTargetSpeed = car.trackState.surface === 'gravel' ? 39 : 30;
+    const desiredSpeed = clamp(surfaceTargetSpeed - distanceFromRoad * 0.035, 16, 44);
+    const speedError = desiredSpeed - car.speed;
+
+    return {
+      steering: clamp(angleError * 1.18, -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
+      throttle: Math.abs(angleError) < 0.8 && speedError > 1 ? clamp(speedError / 18, 0, 0.46) : 0,
+      brake: speedError < -1 ? clamp(Math.abs(speedError) / 18, 0.08, 1) : 0,
     };
   }
 
@@ -392,21 +437,21 @@ export class F1RaceSimulation {
 
       traffic.forEach((entry) => {
         const lateral = Math.abs(entry.signedOffset - offset);
-        if (entry.gap > 0 && entry.gap < 170) {
-          const overlapRisk = clamp(50 - lateral, 0, 50);
-          score -= overlapRisk * (170 - entry.gap) * 0.052;
-          if (entry.gap < 130 && lateral > 30) {
+        if (entry.gap > 0 && entry.gap < 260) {
+          const overlapRisk = clamp(58 - lateral, 0, 58);
+          score -= overlapRisk * (260 - entry.gap) * 0.038;
+          if (entry.gap < 190 && lateral > 34) {
             score += Math.min(28, lateral - 28) * 0.7;
           }
-        } else if (entry.gap <= 0 && entry.gap > -52) {
-          const sideOverlapRisk = clamp(46 - lateral, 0, 46);
-          score -= sideOverlapRisk * (52 + entry.gap) * 0.055;
+        } else if (entry.gap <= 0 && entry.gap > -74) {
+          const sideOverlapRisk = clamp(52 - lateral, 0, 52);
+          score -= sideOverlapRisk * (74 + entry.gap) * 0.052;
         }
       });
 
-      if (ahead && car.gapAhead < 150) {
+      if (ahead && car.gapAhead < 230) {
         const side = car.index % 2 === 0 ? -1 : 1;
-        const passSide = clamp((ahead.trackState.signedOffset * -0.65) + side * 44, -trackLimit, trackLimit);
+        const passSide = clamp((ahead.trackState.signedOffset * -0.65) + side * 58, -trackLimit, trackLimit);
         score -= Math.abs(offset - passSide) * 0.11;
       }
 
@@ -416,12 +461,12 @@ export class F1RaceSimulation {
       }
     });
 
-    const laneChangeRate = 0.62 + car.racecraft * 0.28;
+    const laneChangeRate = 0.82 + car.racecraft * 0.36;
     car.desiredOffset = currentOffset + clamp(bestOffset - currentOffset, -laneChangeRate, laneChangeRate);
 
     return {
       offset: car.desiredOffset,
-      sameLaneAhead: this.findLaneTrafficAhead(car, car.desiredOffset, 148),
+      sameLaneAhead: this.findLaneTrafficAhead(car, car.desiredOffset, 230),
       sideRisk: this.findLaneTrafficBeside(car, car.desiredOffset),
     };
   }
@@ -434,7 +479,7 @@ export class F1RaceSimulation {
         gap: other.raceDistance - car.raceDistance,
         signedOffset: other.trackState?.signedOffset ?? 0,
       }))
-      .filter((entry) => entry.gap > -58 && entry.gap < 180);
+      .filter((entry) => entry.gap > -82 && entry.gap < 280);
   }
 
   findLaneTrafficAhead(car, offset, maxDistance) {
@@ -442,7 +487,7 @@ export class F1RaceSimulation {
 
     this.scanNearbyTraffic(car).forEach((entry) => {
       if (entry.gap <= 0 || entry.gap > maxDistance) return;
-      if (Math.abs(entry.signedOffset - offset) > 36) return;
+      if (Math.abs(entry.signedOffset - offset) > 42) return;
       if (!closest || entry.gap < closest.gap) closest = entry;
     });
 
@@ -454,8 +499,8 @@ export class F1RaceSimulation {
 
     this.scanNearbyTraffic(car).forEach((entry) => {
       const lateral = Math.abs(entry.signedOffset - offset);
-      if (Math.abs(entry.gap) > 42 || lateral > 36) return;
-      const risk = (42 - Math.abs(entry.gap)) + (36 - lateral);
+      if (Math.abs(entry.gap) > 58 || lateral > 44) return;
+      const risk = (58 - Math.abs(entry.gap)) + (44 - lateral);
       if (!closest || risk > closest.risk) closest = { ...entry, lateral, risk };
     });
 
@@ -478,9 +523,9 @@ export class F1RaceSimulation {
     this.safetyCar.heading = point.heading;
   }
 
-  resolveTrackLimit(car) {
+  applyRunoffResponse(car) {
     const state = nearestTrackState(this.track, car);
-    const signedLimit = TRACK.width / 2 - VEHICLE_LIMITS.carWidth * 0.45;
+    const signedLimit = TRACK.width / 2 + TRACK.gravelWidth + TRACK.runoffWidth;
     const overshoot = Math.abs(state.signedOffset) - signedLimit;
     if (overshoot <= 0) {
       car.trackState = state;
@@ -490,8 +535,8 @@ export class F1RaceSimulation {
     const side = Math.sign(state.signedOffset) || 1;
     car.x -= state.normalX * side * overshoot;
     car.y -= state.normalY * side * overshoot;
-    car.speed = clamp(car.speed * clamp(1 - overshoot * 0.006, 0.72, 0.985), 0, VEHICLE_LIMITS.maxSpeed);
-    car.heading = normalizeAngle(car.heading - side * clamp(overshoot * 0.0015, 0.004, 0.035));
+    car.speed = clamp(car.speed * clamp(1 - overshoot * 0.012, 0.22, 0.86), 0, VEHICLE_LIMITS.maxSpeed);
+    car.heading = normalizeAngle(car.heading - side * clamp(overshoot * 0.0028, 0.018, 0.08));
     car.trackState = nearestTrackState(this.track, car);
   }
 
@@ -530,10 +575,10 @@ export class F1RaceSimulation {
         for (let j = i + 1; j < this.cars.length; j += 1) {
           const first = this.cars[i];
           const second = this.cars[j];
-          const collision = detectObbCollision(first, second);
+          const collision = detectObbCollision(first, second) ?? detectLongitudinalCollision(first, second);
           if (!collision) continue;
 
-          const correction = collision.depth / 2 + 0.65;
+          const correction = collision.depth / 2 + (collision.longitudinal ? 1.1 : 0.65);
           first.x -= collision.axis.x * correction;
           first.y -= collision.axis.y * correction;
           second.x += collision.axis.x * correction;

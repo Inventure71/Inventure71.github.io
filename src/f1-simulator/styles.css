@@ -46,6 +46,8 @@ a {
   min-height: 100svh;
   padding: clamp(0.85rem, 2vw, 1.4rem);
   background:
+    linear-gradient(115deg, rgba(225, 6, 0, 0.18), transparent 32%),
+    linear-gradient(245deg, rgba(244, 247, 251, 0.08), transparent 26%),
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
     radial-gradient(circle at 12% 8%, rgba(225, 6, 0, 0.22), transparent 28rem),
@@ -67,7 +69,8 @@ a {
   align-items: center;
   gap: 1rem;
   min-height: 72px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 2px solid rgba(225, 6, 0, 0.76);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24);
 }
 
 .sim-backlink,
@@ -94,6 +97,12 @@ a {
   color: #0a0b0d;
   background: var(--yellow);
   border-color: var(--yellow);
+}
+
+.camera-controls button.is-active {
+  color: #08090b;
+  background: var(--text);
+  border-color: var(--text);
 }
 
 .sim-title-block {
@@ -225,7 +234,9 @@ h1 {
 .sim-canvas-panel {
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.42);
+  box-shadow:
+    inset 0 0 90px rgba(0, 0, 0, 0.42),
+    0 24px 70px rgba(0, 0, 0, 0.32);
 }
 
 .track-canvas {
@@ -239,17 +250,49 @@ h1 {
   display: block;
 }
 
+.camera-controls {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  max-width: calc(100% - 2rem);
+  padding: 0.35rem;
+  background: rgba(8, 9, 11, 0.72);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+}
+
+.camera-controls button {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.48rem 0.58rem;
+  cursor: pointer;
+}
+
+.camera-controls button:hover {
+  border-color: var(--text);
+}
+
 .race-hud {
   position: absolute;
   left: 1rem;
   right: 1rem;
   bottom: 1rem;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1px;
   background: rgba(255, 255, 255, 0.13);
   border: 1px solid var(--line);
   pointer-events: none;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
 }
 
 .race-hud > div {
@@ -354,6 +397,6 @@ h1 {
   }
 
   .race-hud {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

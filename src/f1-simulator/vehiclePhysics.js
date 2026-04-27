@@ -6,12 +6,19 @@ export const VEHICLE_LIMITS = {
   wheelbase: 3.65,
   maxSteer: 0.56,
   steerRate: 2.35,
-  maxSpeed: 114,
-  carLength: 34,
-  carWidth: 14,
+  maxSpeed: 165,
+  carLength: 66,
+  carWidth: 21,
 };
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const SURFACE_MODEL = {
+  track: { grip: 1, drag: 0, rollingResistance: 0 },
+  gravel: { grip: 0.43, drag: 5.4, rollingResistance: 0.72 },
+  grass: { grip: 0.34, drag: 3.2, rollingResistance: 0.42 },
+  barrier: { grip: 0.18, drag: 9, rollingResistance: 1.2 },
+};
 
 export function integrateVehiclePhysics(car, controls, dt) {
   const steeringTarget = clamp(controls.steering ?? 0, -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer);
@@ -24,17 +31,19 @@ export function integrateVehiclePhysics(car, controls, dt) {
 
   const throttle = clamp(controls.throttle ?? 0, 0, 1);
   const brake = clamp(controls.brake ?? 0, 0, 1);
+  const surface = SURFACE_MODEL[car.trackState?.surface] ?? SURFACE_MODEL.track;
   const dragMultiplier = car.drsActive ? 0.82 : 1;
-  const engineForce = throttle * car.powerNewtons * Math.max(0.25, 1 - car.speed / 118);
+  const engineForce = throttle * car.powerNewtons * Math.max(0.18, 1 - car.speed / 178);
   const brakeForce = brake * car.brakeNewtons;
-  const dragForce = car.dragCoefficient * dragMultiplier * car.speed * car.speed;
-  const acceleration = (engineForce - brakeForce - dragForce) / car.mass;
+  const dragForce = (car.dragCoefficient * dragMultiplier + surface.drag) * car.speed * car.speed;
+  const rollingForce = surface.rollingResistance * car.mass * G;
+  const acceleration = (engineForce - brakeForce - dragForce - rollingForce) / car.mass;
 
   car.speed = clamp(car.speed + acceleration * dt, 0, VEHICLE_LIMITS.maxSpeed);
 
   const rawYawRate = car.speed / VEHICLE_LIMITS.wheelbase * Math.tan(car.steeringAngle);
   const downforceGrip = car.downforceCoefficient * car.speed * car.speed / car.mass;
-  const surfaceGrip = car.trackState?.onTrack ? 1 : 0.58;
+  const surfaceGrip = surface.grip;
   const tyreConditionGrip = clamp(0.82 + (car.tireEnergy ?? 100) / 560, 0.82, 1);
   const maxYawRate = ((car.tireGrip * tyreConditionGrip * G + downforceGrip) * surfaceGrip) / Math.max(car.speed, 8);
   car.yawRate = clamp(rawYawRate, -maxYawRate, maxYawRate);
