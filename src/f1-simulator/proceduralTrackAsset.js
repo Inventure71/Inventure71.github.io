@@ -14,6 +14,9 @@ const GRAVEL_COLOR = 0xb49a68;
 const ASPHALT_COLOR = 0x4a4d52;
 const FINISH_LINE_DEPTH = 58;
 const FINISH_LINE_COLUMNS = 10;
+const SEGMENTED_STROKE_STEP = 2;
+const KERB_STEP = 4;
+const KERB_CURVATURE_THRESHOLD = 0.00038;
 
 function makeTrackPath(track, offset = 0) {
   const path = new Graphics();
@@ -32,6 +35,41 @@ function makeTrackPath(track, offset = 0) {
 
 function textureOrWhite(texture) {
   return texture ?? Texture.WHITE;
+}
+
+function offsetSegmentIsSafe(track, current, next, start, end, offset) {
+  const centerDistance = Math.hypot(next.x - current.x, next.y - current.y);
+  const edgeDistance = Math.hypot(end.x - start.x, end.y - start.y);
+  const maxEdgeDistance = Math.max(centerDistance * 2.6, track.width * 0.58);
+  return edgeDistance <= maxEdgeDistance && Math.abs(offset) <= track.width + track.gravelWidth + track.runoffWidth;
+}
+
+function drawSegmentedOffsetStroke(graphics, track, {
+  side,
+  offset,
+  width,
+  color,
+  alpha = 1,
+  step = SEGMENTED_STROKE_STEP,
+  cap = 'round',
+}) {
+  const samples = track.samples.slice(0, -1);
+  for (let index = 0; index < samples.length; index += step) {
+    const current = samples[index];
+    const next = samples[(index + step) % samples.length];
+    const start = offsetTrackPoint(current, side * offset);
+    const end = offsetTrackPoint(next, side * offset);
+    if (!offsetSegmentIsSafe(track, current, next, start, end, offset)) continue;
+    graphics.moveTo(start.x, start.y);
+    graphics.lineTo(end.x, end.y);
+    graphics.stroke({
+      width,
+      color,
+      alpha,
+      join: 'round',
+      cap,
+    });
+  }
 }
 
 export class ProceduralTrackAsset {
@@ -63,27 +101,22 @@ export class ProceduralTrackAsset {
   }
 
   addGravelRunoff(track) {
-    const gravel = this.makeRunoffSideBand(
-      track,
-      track.width / 2 + 8,
-      track.width / 2 + track.gravelWidth,
-      GRAVEL_COLOR,
-    );
-    this.container.addChild(gravel);
-  }
-
-  makeRunoffSideBand(track, innerOffset, outerOffset, color) {
-    const band = new Graphics();
-    const samples = track.samples.slice(0, -1);
+    const gravel = new Graphics();
+    const innerOffset = track.width / 2 + 8;
+    const outerOffset = track.width / 2 + track.gravelWidth;
+    const centerOffset = (innerOffset + outerOffset) / 2;
+    const width = outerOffset - innerOffset;
 
     [-1, 1].forEach((side) => {
-      const outerPoints = samples.map((sample) => offsetTrackPoint(sample, side * outerOffset));
-      const innerPoints = [...samples].reverse().map((sample) => offsetTrackPoint(sample, side * innerOffset));
-      const polygon = [...outerPoints, ...innerPoints].flatMap((point) => [point.x, point.y]);
-      band.poly(polygon).fill(color);
+      drawSegmentedOffsetStroke(gravel, track, {
+        side,
+        offset: centerOffset,
+        width,
+        color: GRAVEL_COLOR,
+        step: 4,
+      });
     });
-
-    return band;
+    this.container.addChild(gravel);
   }
 
   addMaskedMaterial({ track, texture, strokeWidth, alpha, tileScale }) {
@@ -139,47 +172,55 @@ export class ProceduralTrackAsset {
   }
 
   addBorders(track) {
+    const borders = new Graphics();
+
     [-1, 1].forEach((side) => {
-      const edge = makeTrackPath(track, side * track.width / 2);
-      edge.stroke({
+      drawSegmentedOffsetStroke(borders, track, {
+        side,
+        offset: track.width / 2,
         width: 5,
         color: 0xf8fafc,
         alpha: 0.86,
-        join: 'round',
-        cap: 'butt',
+        step: 4,
       });
-      this.container.addChild(edge);
 
-      const darkEdge = makeTrackPath(track, side * (track.width / 2 + 15));
-      darkEdge.stroke({
+      drawSegmentedOffsetStroke(borders, track, {
+        side,
+        offset: track.width / 2 + 15,
         width: 7,
         color: 0x090a0d,
         alpha: 0.56,
-        join: 'round',
-        cap: 'butt',
+        step: 4,
       });
-      this.container.addChild(darkEdge);
     });
+
+    this.container.addChild(borders);
   }
 
   addKerbs(track) {
     const kerbs = new Graphics();
     const samples = track.samples.slice(0, -1);
-    const step = 12;
 
-    for (let index = 0; index < samples.length; index += step) {
+    for (let index = 0; index < samples.length; index += KERB_STEP) {
       const sample = samples[index];
-      const next = samples[(index + step) % samples.length];
+      const next = samples[(index + KERB_STEP) % samples.length];
       const curvature = Math.max(sample.curvature, next.curvature);
-      if (curvature < 0.00038) continue;
+      if (curvature < KERB_CURVATURE_THRESHOLD) continue;
 
-      const color = Math.floor(index / step) % 2 === 0 ? 0xe10600 : 0xf8fafc;
+      const color = Math.floor(index / KERB_STEP) % 2 === 0 ? 0xe10600 : 0xf8fafc;
       [-1, 1].forEach((side) => {
-        const innerA = offsetTrackPoint(sample, side * (track.width / 2 - 5));
-        const outerA = offsetTrackPoint(sample, side * (track.width / 2 + 24));
-        const outerB = offsetTrackPoint(next, side * (track.width / 2 + 24));
-        const innerB = offsetTrackPoint(next, side * (track.width / 2 - 5));
-        kerbs.poly([innerA.x, innerA.y, outerA.x, outerA.y, outerB.x, outerB.y, innerB.x, innerB.y]).fill(color);
+        const start = offsetTrackPoint(sample, side * (track.width / 2 + 9));
+        const end = offsetTrackPoint(next, side * (track.width / 2 + 9));
+        if (!offsetSegmentIsSafe(track, sample, next, start, end, track.width / 2 + 9)) return;
+        kerbs.moveTo(start.x, start.y);
+        kerbs.lineTo(end.x, end.y);
+        kerbs.stroke({
+          width: 29,
+          color,
+          alpha: 1,
+          join: 'round',
+          cap: 'butt',
+        });
       });
     }
     this.container.addChild(kerbs);

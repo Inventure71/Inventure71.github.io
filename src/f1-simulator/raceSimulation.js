@@ -1,7 +1,6 @@
 import {
   buildTrackModel,
   createProceduralTrack,
-  isInDrsZone,
   nearestTrackState,
   offsetTrackPoint,
   pointAt,
@@ -43,6 +42,27 @@ function seededRange(random, min, max) {
 
 function wrapProgress(value, length) {
   return ((value % length) + length) % length;
+}
+
+function distanceForward(from, to, length) {
+  return wrapProgress(to - from, length);
+}
+
+function crossesDistance(previous, current, target, length) {
+  const travelled = distanceForward(previous, current, length);
+  if (travelled <= 0 || travelled > length / 2) return false;
+  const targetOffset = distanceForward(previous, target, length);
+  return targetOffset > 0 && targetOffset <= travelled + 0.001;
+}
+
+function isProgressInZone(track, progress, zone) {
+  const wrapped = wrapProgress(progress, track.length);
+  const start = wrapProgress(zone.start, track.length);
+  const end = wrapProgress(zone.end, track.length);
+  if (zone.end - zone.start >= track.length) return true;
+  return end >= start
+    ? wrapped >= start && wrapped <= end
+    : wrapped >= start || wrapped <= end;
 }
 
 function angleToPoint(car, target) {
@@ -98,6 +118,8 @@ function createCar(driver, index, random, track) {
     gapAheadSeconds: Infinity,
     drsEligible: false,
     drsActive: false,
+    drsZoneId: null,
+    drsZoneEnabled: false,
     canAttack: true,
     trackState: start,
     contactCooldown: 0,
@@ -230,6 +252,8 @@ function serializeCar(car, rank) {
     gapAheadSeconds: car.gapAheadSeconds,
     drsEligible: car.drsEligible,
     drsActive: car.drsActive,
+    drsZoneId: car.drsZoneId,
+    drsZoneEnabled: car.drsZoneEnabled,
     canAttack: car.canAttack,
     signedOffset: car.trackState?.signedOffset ?? 0,
     crossTrackError: car.trackState?.crossTrackError ?? 0,
@@ -267,7 +291,7 @@ export class F1RaceSimulation {
       heading: pointAt(this.track, this.rules.safetyCarLeadDistance).heading,
     };
     this.cars = drivers.map((driver, index) => createCar(driver, index, this.random, this.track));
-    this.recalculateRaceState();
+    this.recalculateRaceState({ updateDrs: false });
   }
 
   setSafetyCar(deployed) {
@@ -287,6 +311,8 @@ export class F1RaceSimulation {
         car.desiredOffset = 0;
         car.drsActive = false;
         car.drsEligible = false;
+        car.drsZoneId = null;
+        car.drsZoneEnabled = false;
       });
     }
     this.events.unshift({ type: next ? 'safety-car' : 'green-flag', at: this.time });
@@ -303,7 +329,7 @@ export class F1RaceSimulation {
     car.raceDistance = (car.raceDistance ?? car.trackState.distance) + delta;
     car.progress = car.trackState.distance;
     car.lap = this.computeLap(car.raceDistance);
-    this.recalculateRaceState();
+    this.recalculateRaceState({ updateDrs: false });
   }
 
   setCarControls(id, controls) {
@@ -323,13 +349,14 @@ export class F1RaceSimulation {
 
     this.time += delta;
     this.events = [];
-    this.recalculateRaceState();
+    this.recalculateRaceState({ updateDrs: false });
     this.updateSafetyCar(delta);
 
     this.orderedCars().forEach((car, index) => {
       car.previousX = car.x;
       car.previousY = car.y;
       car.previousHeading = car.heading;
+      car.previousProgress = car.progress;
       const controls = car.manualControls ?? this.computeDriverControls(car, index);
       integrateVehiclePhysics(car, controls, delta);
       this.applyRunoffResponse(car);
@@ -405,19 +432,28 @@ export class F1RaceSimulation {
   }
 
   computeRejoinControls(car) {
-    const lookahead = clamp(car.speed * 0.64 + 96, 106, 180);
+    const lookahead = clamp(car.speed * 0.72 + 118, 118, 220);
     const targetBase = pointAt(this.track, car.progress + lookahead);
     const target = offsetTrackPoint(targetBase, 0);
     const angleError = angleToPoint(car, target);
     const distanceFromRoad = Math.max(0, car.trackState.crossTrackError - this.track.width / 2);
-    const surfaceTargetSpeed = car.trackState.surface === 'gravel' ? 39 : 30;
-    const desiredSpeed = clamp(surfaceTargetSpeed - distanceFromRoad * 0.035, 16, 44);
+    const surfaceTargetSpeed = car.trackState.surface === 'gravel'
+      ? 54
+      : car.trackState.surface === 'grass'
+        ? 44
+        : 30;
+    const desiredSpeed = clamp(surfaceTargetSpeed - distanceFromRoad * 0.045, 20, surfaceTargetSpeed);
     const speedError = desiredSpeed - car.speed;
+    const alignment = clamp(1 - Math.abs(angleError) / Math.PI, 0.28, 1);
+    const lowSpeedRecovery = car.speed < 18 ? 0.16 : 0;
+    const throttleLimit = car.trackState.surface === 'gravel' ? 0.62 : 0.48;
 
     return {
-      steering: clamp(angleError * 1.18, -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
-      throttle: Math.abs(angleError) < 0.8 && speedError > 1 ? clamp(speedError / 18, 0, 0.46) : 0,
-      brake: speedError < -1 ? clamp(Math.abs(speedError) / 18, 0.08, 1) : 0,
+      steering: clamp(angleError * 0.92, -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
+      throttle: speedError > 0
+        ? clamp((speedError / 24) * alignment + lowSpeedRecovery, 0.08, throttleLimit)
+        : lowSpeedRecovery,
+      brake: speedError < -5 ? clamp(Math.abs(speedError) / 30, 0.04, 0.74) : 0,
     };
   }
 
@@ -567,7 +603,7 @@ export class F1RaceSimulation {
     car.trackState = nearestTrackState(this.track, car);
   }
 
-  recalculateRaceState() {
+  recalculateRaceState({ updateDrs = true } = {}) {
     this.cars.forEach((car) => {
       car.trackState = nearestTrackState(this.track, car);
       const previousProgress = car.progress ?? car.trackState.distance;
@@ -585,13 +621,45 @@ export class F1RaceSimulation {
       car.gapAhead = gap;
       car.gapAheadSeconds = Number.isFinite(gap) ? gap / Math.max(car.speed, 1) : Infinity;
       car.canAttack = !this.safetyCar.deployed;
-      car.drsEligible =
-        !this.safetyCar.deployed &&
-        index > 0 &&
-        isInDrsZone(this.track, car.progress) &&
-        car.gapAheadSeconds <= this.rules.drsDetectionSeconds;
-      car.drsActive = car.drsEligible;
+      if (updateDrs) this.updateDrsLatch(car, index);
     });
+  }
+
+  updateDrsLatch(car, orderIndex) {
+    if (this.safetyCar.deployed) {
+      car.drsEligible = false;
+      car.drsActive = false;
+      car.drsZoneId = null;
+      car.drsZoneEnabled = false;
+      return;
+    }
+
+    const previousProgress = car.previousProgress ?? car.progress;
+    const currentZone = car.drsZoneId
+      ? this.track.drsZones.find((zone) => zone.id === car.drsZoneId)
+      : null;
+
+    if (currentZone && !isProgressInZone(this.track, car.progress, currentZone)) {
+      car.drsZoneId = null;
+      car.drsZoneEnabled = false;
+    }
+
+    if (!car.drsZoneId) {
+      const crossedZone = this.track.drsZones.find((zone) => (
+        crossesDistance(previousProgress, car.progress, zone.start, this.track.length)
+      ));
+      if (crossedZone) {
+        car.drsZoneId = crossedZone.id;
+        car.drsZoneEnabled = orderIndex > 0 && car.gapAheadSeconds <= this.rules.drsDetectionSeconds;
+      }
+    }
+
+    const activeZone = car.drsZoneId
+      ? this.track.drsZones.find((zone) => zone.id === car.drsZoneId)
+      : null;
+    const inLatchedZone = activeZone ? isProgressInZone(this.track, car.progress, activeZone) : false;
+    car.drsEligible = Boolean(car.drsZoneEnabled && inLatchedZone);
+    car.drsActive = car.drsEligible;
   }
 
   resolveCollisions() {

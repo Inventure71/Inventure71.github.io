@@ -15,8 +15,9 @@ const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 const SURFACE_MODEL = {
   track: { grip: 1, drag: 0, rollingResistance: 0 },
-  gravel: { grip: 0.43, drag: 5.4, rollingResistance: 0.72 },
-  grass: { grip: 0.34, drag: 3.2, rollingResistance: 0.42 },
+  kerb: { grip: 0.92, drag: 0.12, rollingResistance: 0.045 },
+  gravel: { grip: 0.43, drag: 2.6, rollingResistance: 0.48 },
+  grass: { grip: 0.34, drag: 1.9, rollingResistance: 0.36 },
   barrier: { grip: 0.18, drag: 9, rollingResistance: 1.2 },
 };
 

@@ -6,6 +6,7 @@ export const WORLD = {
 export const TRACK = {
   name: 'Apex Harbor GP',
   width: 230,
+  kerbWidth: 34,
   gravelWidth: 165,
   runoffWidth: 260,
   sampleCount: 3600,
@@ -19,9 +20,31 @@ export const TRACK = {
 const TWO_PI = Math.PI * 2;
 const GENERATED_TRACK_MIN_LENGTH = 7600;
 const GENERATED_TRACK_MAX_LENGTH = 14500;
-const GENERATED_TRACK_ATTEMPTS = 12;
-const GENERATED_CONTROL_COUNT = 18;
+const GENERATED_TRACK_ATTEMPTS = 320;
+const GENERATED_CONTROL_COUNT = 20;
 const TRACK_BOUNDARY_PADDING = 520;
+const MIN_TRACK_CLEARANCE_MULTIPLIER = 1.55;
+const MAX_LOCAL_TURN_RADIANS = 1.5;
+const PROCEDURAL_TRACK_TEMPLATES = [
+  [
+    [0.08, 0.55], [0.10, 0.80], [0.22, 0.89], [0.42, 0.84], [0.52, 0.93],
+    [0.60, 0.75], [0.74, 0.88], [0.91, 0.76], [0.94, 0.54], [0.82, 0.46],
+    [0.94, 0.28], [0.78, 0.18], [0.62, 0.31], [0.54, 0.13], [0.43, 0.30],
+    [0.33, 0.17], [0.20, 0.24], [0.12, 0.38], [0.22, 0.48], [0.13, 0.50],
+  ],
+  [
+    [0.07, 0.46], [0.14, 0.72], [0.25, 0.83], [0.39, 0.73], [0.47, 0.88],
+    [0.56, 0.70], [0.67, 0.82], [0.88, 0.84], [0.95, 0.63], [0.83, 0.56],
+    [0.92, 0.43], [0.79, 0.35], [0.88, 0.20], [0.68, 0.15], [0.58, 0.29],
+    [0.47, 0.18], [0.34, 0.30], [0.21, 0.19], [0.10, 0.28], [0.17, 0.39],
+  ],
+  [
+    [0.06, 0.61], [0.13, 0.86], [0.31, 0.91], [0.43, 0.79], [0.57, 0.87],
+    [0.71, 0.70], [0.92, 0.72], [0.95, 0.50], [0.84, 0.43], [0.91, 0.32],
+    [0.74, 0.24], [0.69, 0.11], [0.54, 0.18], [0.45, 0.08], [0.35, 0.22],
+    [0.23, 0.17], [0.11, 0.31], [0.24, 0.43], [0.15, 0.52], [0.28, 0.60],
+  ],
+];
 
 const CENTERLINE_CONTROLS = [
   { x: WORLD.width * 0.05, y: WORLD.height * 0.56 },
@@ -143,27 +166,89 @@ function samplesStayInsideWorld(samples) {
   ));
 }
 
-function generateCenterlineControls(seed) {
-  const random = mulberry32(seed);
-  const center = { x: WORLD.width / 2, y: WORLD.height / 2 };
-  const horizontalWave = seededRange(random, 0, TWO_PI);
-  const verticalWave = seededRange(random, 0, TWO_PI);
-  const kinkWave = seededRange(random, 0, TWO_PI);
-  const angleStep = TWO_PI / GENERATED_CONTROL_COUNT;
+function hasEnoughTrackClearance(samples, totalLength, minimumClearance) {
+  const points = samples.slice(0, -1).filter((_, index) => index % 24 === 0);
+  for (let first = 0; first < points.length; first += 1) {
+    for (let second = first + 1; second < points.length; second += 1) {
+      const arcDistance = Math.abs(points[second].distance - points[first].distance);
+      const loopDistance = Math.min(arcDistance, totalLength - arcDistance);
+      if (loopDistance < 700) continue;
+      if (distance(points[first], points[second]) < minimumClearance) return false;
+    }
+  }
+  return true;
+}
 
-  return Array.from({ length: GENERATED_CONTROL_COUNT }, (_, index) => {
-    const angleJitter = seededRange(random, -angleStep * 0.22, angleStep * 0.22);
-    const angle = Math.PI + index * angleStep + angleJitter;
-    const harmonic = Math.sin(angle * 3 + horizontalWave) * 0.10 + Math.sin(angle * 5 + kinkWave) * 0.045;
-    const rx = WORLD.width * seededRange(random, 0.335, 0.392) * (1 + harmonic);
-    const ry = WORLD.height * seededRange(random, 0.300, 0.372) * (1 - harmonic * 0.55);
-    const pinch = 1 + Math.sin(angle * 2 + verticalWave) * seededRange(random, -0.055, 0.075);
+function hasReasonableTurnSharpness(samples) {
+  const usableSamples = samples.slice(0, -1);
+  const window = 30;
+  const step = 6;
 
+  for (let index = 0; index < usableSamples.length; index += step) {
+    let accumulatedTurn = 0;
+    for (let offset = 0; offset < window; offset += step) {
+      const current = usableSamples[(index + offset) % usableSamples.length];
+      const next = usableSamples[(index + offset + step) % usableSamples.length];
+      accumulatedTurn += Math.abs(normalizeAngle(next.heading - current.heading));
+    }
+    if (accumulatedTurn > MAX_LOCAL_TURN_RADIANS) return false;
+  }
+
+  return true;
+}
+
+function makeTemplatePoint([x, y], random, index) {
+  const edgeDistance = Math.min(x, 1 - x, y, 1 - y);
+  const jitter = edgeDistance < 0.13 ? 0.014 : 0.03;
+  const chicaneNudge = index % 5 === 2 ? seededRange(random, -0.024, 0.024) : 0;
+
+  return {
+    x: Math.min(Math.max(x + seededRange(random, -jitter, jitter) + chicaneNudge, 0.06), 0.94),
+    y: Math.min(Math.max(y + seededRange(random, -jitter, jitter) - chicaneNudge * 0.55, 0.08), 0.92),
+  };
+}
+
+function applySectorMorph(points, random) {
+  const center = { x: 0.5, y: 0.5 };
+  const horizontalBias = seededRange(random, -0.035, 0.035);
+  const verticalBias = seededRange(random, -0.035, 0.035);
+  const squeeze = seededRange(random, 0.94, 1.06);
+  const stretch = seededRange(random, 0.93, 1.07);
+  const layoutScale = seededRange(random, 0.76, 0.84);
+
+  return points.map((point, index) => {
+    const turnComplex = index % 4 === 1 ? seededRange(random, -0.024, 0.024) : 0;
     return {
-      x: center.x + Math.cos(angle) * rx * pinch,
-      y: center.y + Math.sin(angle) * ry * pinch,
+      x: Math.min(Math.max(center.x + (point.x - center.x) * stretch * layoutScale + horizontalBias + turnComplex, 0.06), 0.94),
+      y: Math.min(Math.max(center.y + (point.y - center.y) * squeeze * layoutScale + verticalBias - turnComplex * 0.4, 0.08), 0.92),
     };
   });
+}
+
+function normalizedToWorld(point) {
+  const usableWidth = WORLD.width - TRACK_BOUNDARY_PADDING * 2;
+  const usableHeight = WORLD.height - TRACK_BOUNDARY_PADDING * 2;
+  return {
+    x: TRACK_BOUNDARY_PADDING + point.x * usableWidth,
+    y: TRACK_BOUNDARY_PADDING + point.y * usableHeight,
+  };
+}
+
+function rotateControls(controls, random) {
+  const rotation = Math.floor(seededRange(random, 0, controls.length));
+  return [...controls.slice(rotation), ...controls.slice(0, rotation)];
+}
+
+function generateCenterlineControls(seed) {
+  const random = mulberry32(seed);
+  const template = PROCEDURAL_TRACK_TEMPLATES[Math.floor(seededRange(random, 0, PROCEDURAL_TRACK_TEMPLATES.length))]
+    ?? PROCEDURAL_TRACK_TEMPLATES[0];
+  const normalized = applySectorMorph(
+    template.map((point, index) => makeTemplatePoint(point, random, index)),
+    random,
+  );
+
+  return rotateControls(normalized.map(normalizedToWorld), random);
 }
 
 function generateFallbackCenterlineControls(seed) {
@@ -292,6 +377,8 @@ export function createProceduralTrack(seed = Date.now()) {
       model.length >= GENERATED_TRACK_MIN_LENGTH &&
       model.length <= GENERATED_TRACK_MAX_LENGTH &&
       samplesStayInsideWorld(model.samples) &&
+      hasEnoughTrackClearance(model.samples, model.length, model.width * MIN_TRACK_CLEARANCE_MULTIPLIER) &&
+      hasReasonableTurnSharpness(model.samples) &&
       !hasSelfIntersections(model.samples);
 
     if (valid) {
@@ -357,22 +444,25 @@ export function nearestTrackState(track, position) {
   const signedOffset = dx * best.normalX + dy * best.normalY;
   const crossTrackError = Math.abs(signedOffset);
   const trackEdge = track.width / 2;
-  const gravelEdge = trackEdge + track.gravelWidth;
+  const kerbEdge = trackEdge + (track.kerbWidth ?? 0);
+  const gravelEdge = kerbEdge + track.gravelWidth;
   const runoffEdge = gravelEdge + track.runoffWidth;
   const surface = crossTrackError <= trackEdge
     ? 'track'
-    : crossTrackError <= gravelEdge
-      ? 'gravel'
-      : crossTrackError <= runoffEdge
-        ? 'grass'
-        : 'barrier';
+    : crossTrackError <= kerbEdge
+      ? 'kerb'
+      : crossTrackError <= gravelEdge
+        ? 'gravel'
+        : crossTrackError <= runoffEdge
+          ? 'grass'
+          : 'barrier';
 
   return {
     ...best,
     signedOffset,
     crossTrackError,
     surface,
-    onTrack: surface === 'track',
+    onTrack: surface === 'track' || surface === 'kerb',
   };
 }
 

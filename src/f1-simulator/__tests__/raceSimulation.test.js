@@ -239,6 +239,147 @@ describe('vehicle physics race simulation', () => {
     expect(drs.speedKph ?? drs.speed * 3.6).toBeGreaterThan((normal.speedKph ?? normal.speed * 3.6) + 8);
   });
 
+  test('DRS latches at the detection point until the zone ends', () => {
+    const sim = createRaceSimulation({ seed: 31, drivers: drivers.slice(0, 2), totalLaps: 3 });
+    const track = sim.snapshot().track;
+    const zone = track.drsZones[0];
+    const leaderPoint = pointAt(track, zone.start + 70);
+    const chasingPoint = pointAt(track, zone.start - 5);
+
+    sim.setCarState('budget', {
+      x: leaderPoint.x,
+      y: leaderPoint.y,
+      heading: leaderPoint.heading,
+      speed: 70,
+      raceDistance: zone.start + 70,
+      progress: leaderPoint.distance,
+    });
+    sim.setCarState('noir', {
+      x: chasingPoint.x,
+      y: chasingPoint.y,
+      heading: chasingPoint.heading,
+      speed: 82,
+      raceDistance: zone.start - 5,
+      progress: chasingPoint.distance,
+    });
+
+    run(sim, 0.16);
+    let snapshot = sim.snapshot();
+    let chasing = snapshot.cars.find((car) => car.id === 'noir');
+
+    expect(chasing.drsActive).toBe(true);
+    expect(chasing.drsZoneId).toBe(zone.id);
+
+    const farLeaderPoint = pointAt(track, chasing.progress + 250);
+    sim.setCarState('budget', {
+      x: farLeaderPoint.x,
+      y: farLeaderPoint.y,
+      heading: farLeaderPoint.heading,
+      speed: 90,
+      raceDistance: chasing.raceDistance + 250,
+      progress: farLeaderPoint.distance,
+    });
+    sim.step(1 / 60);
+    snapshot = sim.snapshot();
+    chasing = snapshot.cars.find((car) => car.id === 'noir');
+
+    expect(chasing.gapAheadSeconds).toBeGreaterThan(1);
+    expect(chasing.drsActive).toBe(true);
+
+    const afterZonePoint = pointAt(track, zone.end + 20);
+    sim.setCarState('noir', {
+      x: afterZonePoint.x,
+      y: afterZonePoint.y,
+      heading: afterZonePoint.heading,
+      speed: 90,
+      raceDistance: zone.end + 20,
+      progress: afterZonePoint.distance,
+    });
+    sim.step(1 / 60);
+    chasing = sim.snapshot().cars.find((car) => car.id === 'noir');
+
+    expect(chasing.drsActive).toBe(false);
+    expect(chasing.drsZoneId).toBe(null);
+  });
+
+  test('DRS cannot be gained after missing the detection point inside a zone', () => {
+    const sim = createRaceSimulation({ seed: 32, drivers: drivers.slice(0, 2), totalLaps: 3 });
+    const track = sim.snapshot().track;
+    const zone = track.drsZones[0];
+    const leaderPoint = pointAt(track, zone.start + 96);
+    const chasingPoint = pointAt(track, zone.start + 42);
+
+    sim.setCarState('budget', {
+      x: leaderPoint.x,
+      y: leaderPoint.y,
+      heading: leaderPoint.heading,
+      speed: 72,
+      raceDistance: zone.start + 96,
+      progress: leaderPoint.distance,
+    });
+    sim.setCarState('noir', {
+      x: chasingPoint.x,
+      y: chasingPoint.y,
+      heading: chasingPoint.heading,
+      speed: 84,
+      raceDistance: zone.start + 42,
+      progress: chasingPoint.distance,
+    });
+
+    run(sim, 0.5);
+
+    const chasing = sim.snapshot().cars.find((car) => car.id === 'noir');
+    expect(chasing.gapAheadSeconds).toBeLessThan(1);
+    expect(chasing.drsActive).toBe(false);
+    expect(chasing.drsZoneId).toBe(null);
+  });
+
+  test('gravel recovery slows the car without stopping it into a pivot', () => {
+    const sim = createRaceSimulation({ seed: 41, drivers: drivers.slice(0, 1), totalLaps: 3 });
+    const track = sim.snapshot().track;
+    const point = pointAt(track, 1350);
+    const gravelPoint = offsetTrackPoint(point, track.width / 2 + 82);
+
+    sim.setCarState('budget', {
+      x: gravelPoint.x,
+      y: gravelPoint.y,
+      heading: point.heading + 1.25,
+      speed: 44,
+      progress: point.distance,
+      raceDistance: point.distance,
+    });
+
+    run(sim, 2.2);
+
+    const car = sim.snapshot().cars.find((item) => item.id === 'budget');
+    expect(car.surface === 'track' || car.surface === 'gravel').toBe(true);
+    expect(car.speed).toBeGreaterThan(14);
+    expect(car.raceDistance).toBeGreaterThan(point.distance + 40);
+  });
+
+  test('kerb riding does not trigger gravel-style stopping behavior', () => {
+    const sim = createRaceSimulation({ seed: 42, drivers: drivers.slice(0, 1), totalLaps: 3 });
+    const track = sim.snapshot().track;
+    const point = pointAt(track, 1520);
+    const kerbPoint = offsetTrackPoint(point, track.width / 2 + track.kerbWidth * 0.62);
+
+    sim.setCarState('budget', {
+      x: kerbPoint.x,
+      y: kerbPoint.y,
+      heading: point.heading + 0.16,
+      speed: 72,
+      progress: point.distance,
+      raceDistance: point.distance,
+    });
+
+    run(sim, 1.2);
+
+    const car = sim.snapshot().cars.find((item) => item.id === 'budget');
+    expect(['track', 'kerb']).toContain(car.surface);
+    expect(car.speed).toBeGreaterThan(54);
+    expect(car.raceDistance).toBeGreaterThan(point.distance + 70);
+  });
+
   test('safety car neutralizes racing, disables DRS, and reduces speed through vehicle controls', () => {
     const sim = createRaceSimulation({ seed: 21, drivers, totalLaps: 5 });
     run(sim, 5);
@@ -295,7 +436,8 @@ describe('vehicle physics race simulation', () => {
 
     expect(before.surface).toBe('gravel');
     expect(slowed.surface).toBe('gravel');
-    expect(slowed.speedKph).toBeLessThan(before.speedKph * 0.45);
+    expect(slowed.speedKph).toBeLessThan(before.speedKph * 0.62);
+    expect(slowed.speedKph).toBeGreaterThan(before.speedKph * 0.32);
     expect(after.surface).toBe('track');
     expect(after.speedKph).toBeGreaterThan(slowed.speedKph);
     expect(Math.abs(after.signedOffset)).toBeLessThan(TRACK.width / 2);

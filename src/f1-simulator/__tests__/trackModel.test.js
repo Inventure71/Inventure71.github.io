@@ -42,6 +42,49 @@ function trackSignature(track) {
   return track.centerlineControls.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join('|');
 }
 
+function radialCoefficientOfVariation(track) {
+  const center = { x: WORLD.width / 2, y: WORLD.height / 2 };
+  const radii = track.centerlineControls.map((point) => Math.hypot(point.x - center.x, point.y - center.y));
+  const mean = radii.reduce((total, radius) => total + radius, 0) / radii.length;
+  const variance = radii.reduce((total, radius) => total + (radius - mean) ** 2, 0) / radii.length;
+  return Math.sqrt(variance) / mean;
+}
+
+function minimumNonAdjacentSampleDistance(track) {
+  const points = track.samples.slice(0, -1).filter((_, index) => index % 24 === 0);
+  let minimum = Infinity;
+
+  for (let first = 0; first < points.length; first += 1) {
+    for (let second = first + 1; second < points.length; second += 1) {
+      const arcDistance = Math.abs(points[second].distance - points[first].distance);
+      const loopDistance = Math.min(arcDistance, track.length - arcDistance);
+      if (loopDistance < 700) continue;
+      minimum = Math.min(minimum, Math.hypot(points[first].x - points[second].x, points[first].y - points[second].y));
+    }
+  }
+
+  return minimum;
+}
+
+function maximumLocalTurn(track) {
+  const samples = track.samples.slice(0, -1);
+  let maximum = 0;
+
+  for (let index = 0; index < samples.length; index += 6) {
+    let turn = 0;
+    for (let offset = 0; offset < 30; offset += 6) {
+      const current = samples[(index + offset) % samples.length];
+      const next = samples[(index + offset + 6) % samples.length];
+      let delta = ((next.heading - current.heading + Math.PI) % (Math.PI * 2)) - Math.PI;
+      if (delta < -Math.PI) delta += Math.PI * 2;
+      turn += Math.abs(delta);
+    }
+    maximum = Math.max(maximum, turn);
+  }
+
+  return maximum;
+}
+
 describe('track model', () => {
   test('provides guidance without owning vehicle position', () => {
     const track = buildTrackModel(TRACK);
@@ -65,12 +108,15 @@ describe('track model', () => {
   });
 
   test('generated circuits stay inside the world and do not self-intersect', () => {
-    [7, 71, 1971, 20260427].forEach((seed) => {
+    [7, 71, 1971, 10101, 20260427].forEach((seed) => {
       const track = buildTrackModel(createProceduralTrack(seed));
 
       expect(track.length).toBeGreaterThan(7600);
       expect(track.length).toBeLessThan(14500);
       expect(track.drsZones).toHaveLength(3);
+      expect(radialCoefficientOfVariation(track)).toBeGreaterThan(0.28);
+      expect(minimumNonAdjacentSampleDistance(track)).toBeGreaterThan(track.width * 1.55);
+      expect(maximumLocalTurn(track)).toBeLessThanOrEqual(1.5);
       expect(track.samples.every((sample) => (
         sample.x > 460 &&
         sample.x < WORLD.width - 460 &&
@@ -79,5 +125,20 @@ describe('track model', () => {
       ))).toBe(true);
       expectNoSelfIntersections(track);
     });
+  });
+
+  test('treats the visual kerb band as drivable track-adjacent surface', () => {
+    const track = buildTrackModel(TRACK);
+    const center = pointAt(track, track.length * 0.3);
+    const kerbPoint = offsetTrackPoint(center, track.width / 2 + track.kerbWidth * 0.55);
+    const gravelPoint = offsetTrackPoint(center, track.width / 2 + track.kerbWidth + 18);
+
+    const kerbState = nearestTrackState(track, kerbPoint);
+    const gravelState = nearestTrackState(track, gravelPoint);
+
+    expect(kerbState.surface).toBe('kerb');
+    expect(kerbState.onTrack).toBe(true);
+    expect(gravelState.surface).toBe('gravel');
+    expect(gravelState.onTrack).toBe(false);
   });
 });
