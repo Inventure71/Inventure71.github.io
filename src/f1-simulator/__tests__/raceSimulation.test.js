@@ -125,6 +125,24 @@ describe('vehicle physics race simulation', () => {
     expect(snapshot.cars[0].speed).toBeLessThanOrEqual(snapshot.rules.safetyCarSpeed + 12);
   });
 
+  test('safety car forms a single-file queue in the frozen race order', () => {
+    const sim = createRaceSimulation({ seed: 1971, drivers: PROJECT_DRIVERS, totalLaps: 8 });
+    run(sim, 45);
+    const frozenOrder = sim.snapshot().cars.map((car) => car.id);
+
+    sim.setSafetyCar(true);
+    run(sim, 24);
+    const snapshot = sim.snapshot();
+    const queueGaps = snapshot.cars.slice(1).map((car, index) => snapshot.cars[index].raceDistance - car.raceDistance);
+
+    expect(snapshot.cars.map((car) => car.id)).toEqual(frozenOrder);
+    expect(snapshot.cars.every((car) => car.drsActive === false)).toBe(true);
+    expect(Math.max(...snapshot.cars.map((car) => Math.abs(car.signedOffset)))).toBeLessThan(TRACK.width * 0.18);
+    expect(Math.min(...queueGaps)).toBeGreaterThan(32);
+    expect(Math.max(...queueGaps)).toBeLessThan(120);
+    expect(Math.max(...snapshot.cars.map((car) => car.speedKph))).toBeLessThan(255);
+  });
+
   test('publishes finite race timing and tyre state for the browser UI', () => {
     const sim = createRaceSimulation({ seed: 31, drivers, totalLaps: 5 });
 

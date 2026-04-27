@@ -4,7 +4,7 @@ import { PROJECT_DRIVERS } from './drivers.js';
 import { createRaceSimulation } from './raceSimulation.js';
 import { offsetTrackPoint, pointAt, WORLD } from './trackModel.js';
 
-const CAR_TEXTURE = '/assets/game/f1-car-sprite.png';
+const CAR_TEXTURE = '/assets/game/f1-car-sprite-game.png';
 const FIXED_STEP = 1 / 60;
 const SIM_SPEED = 1.65;
 
@@ -78,6 +78,8 @@ class F1SimulatorApp {
     let texture = Texture.WHITE;
     try {
       texture = await Assets.load(CAR_TEXTURE);
+      texture.source.scaleMode = 'linear';
+      texture.source.autoGenerateMipmaps = true;
     } catch {
       texture = Texture.WHITE;
     }
@@ -85,7 +87,7 @@ class F1SimulatorApp {
     PROJECT_DRIVERS.forEach((driver) => {
       const sprite = new Sprite(texture);
       sprite.anchor.set(0.5);
-      const baseScale = Math.min(46 / Math.max(texture.width, 1), 20 / Math.max(texture.height, 1));
+      const baseScale = Math.min(54 / Math.max(texture.width, 1), 21 / Math.max(texture.height, 1));
       sprite.baseScale = baseScale;
       sprite.scale.set(baseScale);
       sprite.tint = driver.color;
@@ -191,7 +193,7 @@ class F1SimulatorApp {
       sprite.currentRotation = smoothAngle(sprite.currentRotation, car.heading, 0.24);
       sprite.rotation = sprite.currentRotation;
       sprite.alpha = snapshot.raceControl.mode === 'safety-car' ? 0.82 : 1;
-      sprite.scale.set(sprite.baseScale * (car.drsActive ? 1.12 : 1));
+      sprite.scale.set(sprite.baseScale);
       sprite.tint = Number.parseInt(car.color.replace('#', ''), 16);
       hit.x = car.x;
       hit.y = car.y;

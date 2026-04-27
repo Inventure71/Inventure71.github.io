@@ -15,9 +15,9 @@ const TWO_PI = Math.PI * 2;
 
 export const DEFAULT_RULES = {
   drsDetectionSeconds: 1,
-  safetyCarSpeed: 42,
-  safetyCarLeadDistance: 145,
-  safetyCarGap: 40,
+  safetyCarSpeed: 46,
+  safetyCarLeadDistance: 82,
+  safetyCarGap: 50,
   collisionRestitution: 0.18,
 };
 
@@ -74,9 +74,9 @@ function createCar(driver, index, random, track) {
     throttle: 0,
     brake: 0,
     mass: 798 + seededRange(random, -5, 5),
-    powerNewtons: 23500 * pace,
-    brakeNewtons: 46000,
-    dragCoefficient: 0.54 + seededRange(random, -0.035, 0.035),
+    powerNewtons: 26000 * pace,
+    brakeNewtons: 48000,
+    dragCoefficient: 0.5 + seededRange(random, -0.035, 0.035),
     downforceCoefficient: 4.7 + seededRange(random, -0.16, 0.16),
     tireGrip: 2.08 + racecraft * 0.24 + seededRange(random, -0.03, 0.03),
     pace,
@@ -226,9 +226,22 @@ export class F1RaceSimulation {
   setSafetyCar(deployed) {
     const next = Boolean(deployed);
     if (next === this.safetyCar.deployed) return;
+    const ordered = this.orderedCars();
     this.safetyCar.deployed = next;
     this.raceControl.mode = next ? 'safety-car' : 'green';
-    this.raceControl.frozenOrder = next ? this.orderedCars().map((car) => car.id) : null;
+    this.raceControl.frozenOrder = next ? ordered.map((car) => car.id) : null;
+    if (next) {
+      const leader = ordered[0];
+      const safetyCarProgress = (leader?.raceDistance ?? 0) + this.rules.safetyCarLeadDistance;
+      if (this.safetyCar.progress < safetyCarProgress) {
+        this.moveSafetyCarTo(safetyCarProgress);
+      }
+      this.cars.forEach((car) => {
+        car.desiredOffset = 0;
+        car.drsActive = false;
+        car.drsEligible = false;
+      });
+    }
     this.events.unshift({ type: next ? 'safety-car' : 'green-flag', at: this.time });
   }
 
@@ -319,7 +332,7 @@ export class F1RaceSimulation {
     const angleError = angleToPoint(car, target);
     const curvature = Math.max(car.trackState.curvature, targetBase.curvature);
     const gripBudget = 38 + car.racecraft * 8 + (car.tireEnergy ?? 100) * 0.03;
-    const cornerTarget = clamp(Math.sqrt(gripBudget / Math.max(curvature, 0.0001)) + (car.pace - 1) * 16, 48, 106);
+    const cornerTarget = clamp(Math.sqrt(gripBudget / Math.max(curvature, 0.0001)) + (car.pace - 1) * 16, 52, 112);
     const edgePenalty = Math.max(0, car.trackState.crossTrackError - TRACK.width * 0.38) * 0.18;
     const trafficPenalty = Math.max(
       lanePlan.sameLaneAhead ? clamp((148 - lanePlan.sameLaneAhead.gap) * 0.22, 0, 26) : 0,
@@ -340,19 +353,22 @@ export class F1RaceSimulation {
   }
 
   computeSafetyCarControls(car, orderIndex) {
-    const referenceProgress = orderIndex === 0
-      ? this.safetyCar.progress - this.rules.safetyCarLeadDistance
-      : this.orderedCars()[orderIndex - 1].raceDistance - this.rules.safetyCarGap;
-    const targetBase = pointAt(this.track, referenceProgress + 100);
-    const target = offsetTrackPoint(targetBase, [-24, 0, 24][car.index % 3] * 0.45);
-    const gapCorrection = clamp((referenceProgress - car.raceDistance) * 0.08, -10, 8);
-    const desiredSpeed = this.rules.safetyCarSpeed + gapCorrection;
+    const queueSlot = this.safetyCar.progress - this.rules.safetyCarLeadDistance - orderIndex * this.rules.safetyCarGap;
+    const lookahead = clamp(car.speed * 0.8 + 74, 84, 148);
+    const targetBase = pointAt(this.track, car.progress + lookahead);
+    const target = offsetTrackPoint(targetBase, 0);
+    const slotError = queueSlot - car.raceDistance;
+    const desiredSpeed = clamp(
+      this.rules.safetyCarSpeed + slotError * 0.24,
+      22,
+      this.rules.safetyCarSpeed + 32,
+    );
     const speedError = desiredSpeed - car.speed;
 
     return {
-      steering: clamp(angleToPoint(car, target) * 0.85, -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
-      throttle: speedError > 1 ? clamp(speedError / 14, 0, 0.55) : 0,
-      brake: speedError < -1 ? clamp(Math.abs(speedError) / 16, 0, 0.9) : 0,
+      steering: clamp(angleToPoint(car, target) * 1.04, -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
+      throttle: speedError > 1 ? clamp(speedError / 16, 0, 0.5) : 0,
+      brake: speedError < -0.5 ? clamp(Math.abs(speedError) / 14, 0, 1) : 0,
     };
   }
 
@@ -451,6 +467,10 @@ export class F1RaceSimulation {
     const leader = this.orderedCars()[0];
     const targetProgress = (leader?.raceDistance ?? 0) + this.rules.safetyCarLeadDistance;
     const progress = Math.max(this.safetyCar.progress + this.safetyCar.speed * dt, targetProgress);
+    this.moveSafetyCarTo(progress);
+  }
+
+  moveSafetyCarTo(progress) {
     const point = pointAt(this.track, progress);
     this.safetyCar.progress = progress;
     this.safetyCar.x = point.x;

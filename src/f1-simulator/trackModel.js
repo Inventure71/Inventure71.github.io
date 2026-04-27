@@ -1,12 +1,12 @@
 export const WORLD = {
-  width: 1200,
-  height: 720,
+  width: 1700,
+  height: 1020,
 };
 
 export const TRACK = {
   name: 'Apex Harbor GP',
-  width: 154,
-  sampleCount: 840,
+  width: 210,
+  sampleCount: 980,
   drsZones: [
     { id: 'main-straight', startRatio: 0.16, endRatio: 0.28 },
     { id: 'back-straight', startRatio: 0.58, endRatio: 0.72 },

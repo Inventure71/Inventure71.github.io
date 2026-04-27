@@ -17,3 +17,6 @@ prepared_video_uploads/
 
 # npm dependencies
 node_modules/
+
+
+output/

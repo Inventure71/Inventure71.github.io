@@ -6,7 +6,7 @@ export const VEHICLE_LIMITS = {
   wheelbase: 3.65,
   maxSteer: 0.56,
   steerRate: 2.35,
-  maxSpeed: 108,
+  maxSpeed: 114,
   carLength: 34,
   carWidth: 14,
 };
