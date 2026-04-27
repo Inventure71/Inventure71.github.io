@@ -7,7 +7,7 @@
   <meta name="description" content="A deterministic browser F1 race simulator prototype." />
   <title>F1 Simulator Lab - Inventure71</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-  <link href="dist/f1-simulator/f1-simulator.css?v=20260427-race-data-assets" rel="stylesheet" />
+  <link href="dist/f1-simulator/f1-simulator.css?v=20260427-number-left" rel="stylesheet" />
 </head>
 
 <body>
@@ -66,13 +66,12 @@
             <button type="button" data-zoom-out aria-label="Zoom out">-</button>
             <button type="button" data-zoom-in aria-label="Zoom in">+</button>
           </div>
-          <div class="race-data-panel" data-race-data-panel>
+          <div class="race-data-panel" data-race-data-panel aria-live="polite">
             <div class="race-data-copy">
-              <span class="race-data-kicker">Project</span>
+              <span class="race-data-kicker" data-race-data-kicker>Project</span>
               <strong data-race-data-title>Budget Buddy</strong>
               <span class="race-data-subtitle" data-race-data-subtitle>BUD P1</span>
             </div>
-            <span class="race-data-divider" aria-hidden="true"></span>
             <strong class="race-data-number" data-race-data-number>71</strong>
             <a class="race-data-link" href="/projects.html" target="_blank" rel="noopener" data-race-data-link>Go to project</a>
           </div>
@@ -118,7 +117,7 @@
     </section>
   </main>
 
-  <script type="module" src="dist/f1-simulator/f1-simulator.js?v=20260427-race-data-assets"></script>
+  <script type="module" src="dist/f1-simulator/f1-simulator.js?v=20260427-number-left"></script>
 </body>
 
 </html>

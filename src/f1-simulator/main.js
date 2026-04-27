@@ -8,8 +8,6 @@ import { normalizeAngle, offsetTrackPoint, pointAt, WORLD } from './trackModel.j
 const CAR_TEXTURE = '/assets/game/f1-car-sprite-game.png';
 const SAFETY_CAR_TEXTURE = '/assets/game/f1-safety-car-sprite.png';
 const BROADCAST_PANEL_TEXTURE = '/assets/game/f1-broadcast-panel-surface.png';
-const RACE_DATA_PANEL_TEXTURE = '/assets/game/f1-race-data-panel-base.png';
-const RACE_DATA_DIVIDER_TEXTURE = '/assets/game/f1-race-data-divider.png';
 const FIXED_STEP = 1 / 60;
 const TARGET_RENDER_FPS = 60;
 const TARGET_FRAME_MS = 1000 / TARGET_RENDER_FPS;
@@ -33,6 +31,10 @@ const SHOW_ALL_TOP_RESERVED = 92;
 const SHOW_ALL_BOTTOM_RESERVED = 132;
 const DRS_TRAIL_TTL = 0.68;
 const DRS_TRAIL_MIN_DISTANCE = 10;
+const RACE_DATA_SELECTED_VISIBLE_MS = 5200;
+const RACE_ALERT_VISIBLE_MS = 7600;
+const RACE_ALERT_LIMIT = 4;
+const RACE_IDLE_QUOTE_INTERVAL = 5.2;
 const PROJECT_DRIVERS = CHAMPIONSHIP_PROJECT_DRIVERS;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -68,8 +70,6 @@ class F1SimulatorApp {
   constructor(root) {
     this.root = root;
     this.root.style.setProperty('--broadcast-panel-surface', `url('${BROADCAST_PANEL_TEXTURE}')`);
-    this.root.style.setProperty('--race-data-panel-base', `url('${RACE_DATA_PANEL_TEXTURE}')`);
-    this.root.style.setProperty('--race-data-divider', `url('${RACE_DATA_DIVIDER_TEXTURE}')`);
     this.canvasHost = root.querySelector('[data-track-canvas]');
     this.safetyButton = root.querySelector('[data-safety-car]');
     this.restartButton = root.querySelector('[data-restart-race]');
@@ -98,6 +98,7 @@ class F1SimulatorApp {
       surface: root.querySelector('[data-telemetry-surface]'),
       gap: root.querySelector('[data-telemetry-gap]'),
       raceDataPanel: root.querySelector('[data-race-data-panel]'),
+      raceDataKicker: root.querySelector('[data-race-data-kicker]'),
       raceDataTitle: root.querySelector('[data-race-data-title]'),
       raceDataCode: root.querySelector('[data-race-data-code]'),
       raceDataPace: root.querySelector('[data-race-data-pace]'),
@@ -118,6 +119,10 @@ class F1SimulatorApp {
     this.carHitAreas = new Map();
     this.drsTrails = new Map();
     this.selectedId = PROJECT_DRIVERS[0]?.id ?? null;
+    this.activeRaceDataId = this.selectedId;
+    this.lastRaceDataInteraction = performance.now();
+    this.raceAlerts = [];
+    this.seenAlertKeys = new Set();
     this.camera = {
       mode: 'leader',
       zoom: CAMERA_PRESETS.leader,
@@ -248,6 +253,10 @@ class F1SimulatorApp {
     this.restartButton?.addEventListener('click', () => {
       this.sim = createRaceSimulation({ seed: 1971, drivers: PROJECT_DRIVERS, totalLaps: 10 });
       this.selectedId = PROJECT_DRIVERS[0]?.id ?? null;
+      this.activeRaceDataId = this.selectedId;
+      this.lastRaceDataInteraction = performance.now();
+      this.raceAlerts = [];
+      this.seenAlertKeys.clear();
       this.safetyButton?.classList.remove('is-active');
       this.safetyButton?.setAttribute('aria-pressed', 'false');
       this.drsTrails.clear();
@@ -519,6 +528,12 @@ class F1SimulatorApp {
     const selected = snapshot.cars.find((car) => car.id === this.selectedId) ?? leader;
     const activeDrs = snapshot.cars.filter((car) => car.drsActive).length;
     const contactCount = snapshot.events.filter((event) => event.type === 'contact').length;
+    const now = performance.now();
+
+    this.captureRaceAlerts(snapshot, now);
+    if (this.activeRaceDataId && now - this.lastRaceDataInteraction > RACE_DATA_SELECTED_VISIBLE_MS) {
+      this.activeRaceDataId = null;
+    }
 
     if (this.readouts.mode) {
       this.readouts.mode.textContent = snapshot.raceControl.mode === 'safety-car' ? 'SC' : 'GREEN';
@@ -554,7 +569,14 @@ class F1SimulatorApp {
     this.updateCameraControls();
     this.renderTiming(snapshot.cars, leader, snapshot.raceControl.mode);
     this.renderTelemetry(selected);
-    this.renderRaceData(selected);
+    const activeRaceDataCar = this.activeRaceDataId
+      ? snapshot.cars.find((car) => car.id === this.activeRaceDataId)
+      : null;
+    if (activeRaceDataCar) {
+      this.renderRaceData(activeRaceDataCar);
+    } else {
+      this.renderRaceAlerts(snapshot, { leader, activeDrs, contactCount });
+    }
   }
 
   getBaseScale() {
@@ -574,6 +596,8 @@ class F1SimulatorApp {
 
   selectCar(id, { focus = false } = {}) {
     this.selectedId = id;
+    this.activeRaceDataId = id;
+    this.lastRaceDataInteraction = performance.now();
     if (focus) {
       this.camera.mode = 'selected';
       this.camera.zoom = CAMERA_PRESETS.selected;
@@ -636,6 +660,11 @@ class F1SimulatorApp {
     if (!driver) return;
 
     this.readouts.raceDataPanel.style.setProperty('--driver-color', driver.color);
+    this.readouts.raceDataPanel.classList.add('is-project-mode');
+    this.readouts.raceDataPanel.classList.remove('is-alert-mode');
+    this.readouts.raceDataPanel.removeAttribute('data-idle-mode');
+    this.readouts.raceDataPanel.removeAttribute('data-alert-tone');
+    if (this.readouts.raceDataKicker) this.readouts.raceDataKicker.textContent = 'Project';
     this.readouts.raceDataTitle.textContent = driver.name;
     if (this.readouts.raceDataCode) this.readouts.raceDataCode.textContent = `${car.code} P${car.rank}`;
     if (this.readouts.raceDataPace) this.readouts.raceDataPace.textContent = `${Math.round(car.speedKph)} km/h`;
@@ -648,11 +677,122 @@ class F1SimulatorApp {
     this.readouts.raceDataLink.href = driver.projectUrl;
     this.readouts.raceDataLink.target = '_blank';
     this.readouts.raceDataLink.rel = 'noopener';
+    this.readouts.raceDataLink.hidden = false;
     if (this.readouts.raceDataChips) {
       this.readouts.raceDataChips.innerHTML = (driver.raceData ?? [])
         .map((item) => `<span>${escapeHtml(item)}</span>`)
         .join('');
     }
+  }
+
+  captureRaceAlerts(snapshot, now = performance.now()) {
+    snapshot.events.forEach((event) => {
+      const key = `${event.type}:${event.at}:${event.carId ?? ''}:${event.otherCarId ?? ''}`;
+      if (this.seenAlertKeys.has(key)) return;
+      this.seenAlertKeys.add(key);
+
+      const alert = this.describeRaceEvent(event, snapshot);
+      if (alert) {
+        this.raceAlerts.unshift({
+          ...alert,
+          createdAt: now,
+        });
+      }
+    });
+
+    this.raceAlerts = this.raceAlerts
+      .filter((alert) => now - alert.createdAt <= RACE_ALERT_VISIBLE_MS)
+      .slice(0, RACE_ALERT_LIMIT);
+
+    if (this.seenAlertKeys.size > 80) {
+      this.seenAlertKeys = new Set(Array.from(this.seenAlertKeys).slice(-40));
+    }
+  }
+
+  describeRaceEvent(event, snapshot) {
+    if (event.type === 'safety-car') {
+      return {
+        tone: 'safety',
+        color: '#ffd400',
+        title: 'Safety car',
+        subtitle: `Field neutralized - DRS disabled - lap ${snapshot.cars[0]?.lap ?? 1}/${snapshot.totalLaps}`,
+      };
+    }
+
+    if (event.type === 'green-flag') {
+      return {
+        tone: 'green',
+        color: '#20d66b',
+        title: 'Green flag',
+        subtitle: `Racing resumed - DRS armed - lap ${snapshot.cars[0]?.lap ?? 1}/${snapshot.totalLaps}`,
+      };
+    }
+
+    if (event.type === 'contact') {
+      const first = snapshot.cars.find((car) => car.id === event.carId);
+      const second = snapshot.cars.find((car) => car.id === event.otherCarId);
+      return {
+        tone: 'contact',
+        color: '#ff2f5f',
+        title: 'Contact reported',
+        subtitle: `${first?.code ?? 'CAR'} / ${second?.code ?? 'CAR'} under race-control review`,
+      };
+    }
+
+    return null;
+  }
+
+  renderRaceAlerts(snapshot, { leader, activeDrs, contactCount }) {
+    if (!this.readouts.raceDataPanel) return;
+    const now = performance.now();
+    const recentContactCount = this.raceAlerts
+      .filter((alert) => alert.tone === 'contact' && now - alert.createdAt <= RACE_ALERT_VISIBLE_MS)
+      .length;
+    const latestAlert = this.raceAlerts[0];
+    const fallbackAlert = snapshot.raceControl.mode === 'safety-car'
+      ? {
+        tone: 'safety',
+        color: '#ffd400',
+        title: 'Safety car',
+        subtitle: `Field in order - DRS disabled - contacts ${recentContactCount || contactCount}`,
+      }
+      : null;
+    const idleInfo = this.getIdleProjectQuote(snapshot, { leader, activeDrs, contactCount });
+    const alert = latestAlert ?? fallbackAlert ?? idleInfo;
+
+    this.readouts.raceDataPanel.style.setProperty('--driver-color', alert.color);
+    this.readouts.raceDataPanel.classList.add('is-alert-mode');
+    this.readouts.raceDataPanel.classList.remove('is-project-mode');
+    this.readouts.raceDataPanel.dataset.alertTone = alert.tone;
+    this.readouts.raceDataPanel.dataset.idleMode = alert.kind === 'quote' ? 'quote' : 'alert';
+    if (this.readouts.raceDataKicker) {
+      this.readouts.raceDataKicker.textContent = alert.kind === 'quote' ? 'Project radio' : 'Race alert';
+    }
+    this.readouts.raceDataTitle.textContent = alert.title;
+    if (this.readouts.raceDataNumber) this.readouts.raceDataNumber.textContent = '';
+    if (this.readouts.raceDataSubtitle) this.readouts.raceDataSubtitle.textContent = alert.subtitle;
+    if (this.readouts.raceDataLink) {
+      this.readouts.raceDataLink.hidden = true;
+      this.readouts.raceDataLink.removeAttribute('href');
+    }
+  }
+
+  getIdleProjectQuote(snapshot, { leader, activeDrs, contactCount }) {
+    const index = Math.floor(snapshot.time / RACE_IDLE_QUOTE_INTERVAL) % PROJECT_DRIVERS.length;
+    const driver = PROJECT_DRIVERS[index] ?? PROJECT_DRIVERS[0];
+    const quoteIndex = Math.floor(snapshot.time / (RACE_IDLE_QUOTE_INTERVAL * PROJECT_DRIVERS.length))
+      % Math.max(1, driver.raceData?.length ?? 1);
+    const quote = driver.raceData?.[quoteIndex] ?? 'Project entry';
+    const car = snapshot.cars.find((item) => item.id === driver.id);
+    const raceContext = `P${car?.rank ?? '-'} - ${activeDrs ? `${activeDrs} DRS open` : 'DRS armed'} - contacts ${contactCount}`;
+
+    return {
+      kind: 'quote',
+      tone: 'quote',
+      color: driver.color,
+      title: `"${quote}"`,
+      subtitle: `${driver.code} - ${driver.name} - ${raceContext} - leader ${leader?.code ?? '---'}`,
+    };
   }
 
   updateCameraControls() {

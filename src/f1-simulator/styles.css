@@ -537,19 +537,45 @@ h1 {
   transform: translateX(-50%);
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) clamp(7rem, 14vw, 10rem) auto;
+  grid-template-columns: clamp(6.5rem, 12vw, 9.6rem) minmax(280px, 1fr) auto;
   align-items: center;
   width: min(1080px, calc(100% - 1.5rem));
-  min-height: 108px;
+  min-height: 104px;
   color: var(--text);
-  background: var(--race-data-panel-base) center / 100% 100% no-repeat;
+  background:
+    linear-gradient(104deg, rgba(10, 13, 22, 0.98) 0 58%, rgba(33, 39, 51, 0.9) 58.2% 68%, rgba(8, 10, 16, 0.98) 68.2% 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 82px);
+  border-left: 6px solid var(--driver-color, var(--red));
+  border-bottom: 3px solid var(--driver-color, var(--red));
   clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
-  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.42);
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.42), inset 0 1px rgba(255, 255, 255, 0.12);
   overflow: hidden;
+  transition: width 180ms ease, min-height 180ms ease, background-color 180ms ease;
+}
+
+.race-data-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--driver-color, var(--red)) 70%, transparent) 0, transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 42%);
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.race-data-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: min(42%, 430px);
+  height: 4px;
+  background: linear-gradient(90deg, var(--driver-color, var(--red)), transparent);
+  pointer-events: none;
 }
 
 .race-data-copy,
-.race-data-divider,
 .race-data-number,
 .race-data-link {
   position: relative;
@@ -557,10 +583,10 @@ h1 {
 }
 
 .race-data-copy {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
   min-width: 0;
-  padding: 1rem 1.45rem 1.05rem;
+  padding: 0.92rem 1.45rem 0.98rem 0.55rem;
 }
 
 .race-data-kicker {
@@ -579,10 +605,10 @@ h1 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  font-size: clamp(1.85rem, 3.5vw, 2.9rem);
   line-height: 0.92;
   text-transform: uppercase;
-  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45), 0 0 24px color-mix(in srgb, var(--driver-color, var(--red)) 28%, transparent);
 }
 
 .race-data-subtitle {
@@ -596,20 +622,8 @@ h1 {
   text-transform: uppercase;
 }
 
-.race-data-divider {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: stretch;
-  justify-self: start;
-  width: clamp(4.5rem, 7vw, 6.5rem);
-  margin-left: -2.25rem;
-  background: var(--race-data-divider) center / 100% 128% no-repeat;
-  opacity: 0.72;
-  pointer-events: none;
-}
-
 .race-data-number {
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 1;
   display: grid;
   place-items: center;
@@ -627,6 +641,48 @@ h1 {
   text-align: center;
   font-variant-numeric: tabular-nums;
   -webkit-text-stroke: 1px rgba(244, 247, 251, 0.54);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.race-data-panel.is-project-mode .race-data-number {
+  transform: translateX(-8px);
+}
+
+.race-data-panel.is-alert-mode {
+  grid-template-columns: minmax(280px, 1fr);
+  width: min(780px, calc(100% - 1.5rem));
+}
+
+.race-data-panel.is-alert-mode .race-data-copy {
+  grid-column: 1;
+  padding-left: 1.45rem;
+}
+
+.race-data-panel.is-alert-mode .race-data-copy strong {
+  color: #f8fafc;
+  font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+}
+
+.race-data-panel.is-alert-mode .race-data-number {
+  display: none;
+}
+
+.race-data-panel.is-alert-mode .race-data-link {
+  display: none;
+}
+
+.race-data-panel[data-alert-tone="contact"] {
+  animation: race-alert-pulse 680ms ease-out 1;
+}
+
+@keyframes race-alert-pulse {
+  0% {
+    filter: brightness(1.28);
+  }
+
+  100% {
+    filter: brightness(1);
+  }
 }
 
 .race-data-link {
@@ -762,20 +818,23 @@ h1 {
     min-height: 88px;
   }
 
+  .race-data-panel.is-alert-mode {
+    grid-template-columns: minmax(0, 1fr);
+    width: calc(100% - 1.5rem);
+  }
+
   .race-data-copy {
-    grid-column: 1;
+    grid-column: 2;
     padding: 0.78rem 0.95rem 0.85rem;
   }
 
-  .race-data-divider {
-    grid-column: 2;
-    width: 3.8rem;
-    margin-left: -1.8rem;
-    opacity: 0.54;
+  .race-data-panel.is-alert-mode .race-data-copy {
+    grid-column: 1;
+    padding-left: 0.95rem;
   }
 
   .race-data-number {
-    grid-column: 2;
+    grid-column: 1;
     min-width: 4.8rem;
     height: auto;
     font-size: 3.4rem;
