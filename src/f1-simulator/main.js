@@ -34,7 +34,7 @@ const DRS_TRAIL_MIN_DISTANCE = 10;
 const RACE_DATA_SELECTED_VISIBLE_MS = 5200;
 const RACE_ALERT_VISIBLE_MS = 7600;
 const RACE_ALERT_LIMIT = 4;
-const RACE_IDLE_QUOTE_INTERVAL = 5.2;
+const RACE_IDLE_QUOTE_INTERVAL = 8.8;
 const PROJECT_DRIVERS = CHAMPIONSHIP_PROJECT_DRIVERS;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -757,7 +757,7 @@ class F1SimulatorApp {
         subtitle: `Field in order - DRS disabled - contacts ${recentContactCount || contactCount}`,
       }
       : null;
-    const idleInfo = this.getIdleProjectQuote(snapshot, { leader, activeDrs, contactCount });
+    const idleInfo = this.getIdleProjectQuote(snapshot);
     const alert = latestAlert ?? fallbackAlert ?? idleInfo;
 
     this.readouts.raceDataPanel.style.setProperty('--driver-color', alert.color);
@@ -777,21 +777,19 @@ class F1SimulatorApp {
     }
   }
 
-  getIdleProjectQuote(snapshot, { leader, activeDrs, contactCount }) {
+  getIdleProjectQuote(snapshot) {
     const index = Math.floor(snapshot.time / RACE_IDLE_QUOTE_INTERVAL) % PROJECT_DRIVERS.length;
     const driver = PROJECT_DRIVERS[index] ?? PROJECT_DRIVERS[0];
     const quoteIndex = Math.floor(snapshot.time / (RACE_IDLE_QUOTE_INTERVAL * PROJECT_DRIVERS.length))
       % Math.max(1, driver.raceData?.length ?? 1);
     const quote = driver.raceData?.[quoteIndex] ?? 'Project entry';
-    const car = snapshot.cars.find((item) => item.id === driver.id);
-    const raceContext = `P${car?.rank ?? '-'} - ${activeDrs ? `${activeDrs} DRS open` : 'DRS armed'} - contacts ${contactCount}`;
 
     return {
       kind: 'quote',
       tone: 'quote',
       color: driver.color,
-      title: `"${quote}"`,
-      subtitle: `${driver.code} - ${driver.name} - ${raceContext} - leader ${leader?.code ?? '---'}`,
+      title: driver.name,
+      subtitle: `${driver.code} - "${quote}"`,
     };
   }
 
