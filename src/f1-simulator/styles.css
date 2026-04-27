@@ -198,6 +198,7 @@ h1 {
 .broadcast-brand {
   display: flex;
   align-items: center;
+  justify-content: center;
   min-height: 52px;
   padding: 0.35rem 0.55rem 0.55rem;
   color: #f7f8fb;
@@ -536,9 +537,9 @@ h1 {
   transform: translateX(-50%);
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) clamp(8rem, 18vw, 12rem) auto;
+  grid-template-columns: minmax(280px, 1fr) clamp(7rem, 14vw, 10rem) auto;
   align-items: center;
-  width: min(1080px, calc(100% - 3rem));
+  width: min(1080px, calc(100% - 1.5rem));
   min-height: 108px;
   color: var(--text);
   background:
@@ -589,7 +590,7 @@ h1 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: clamp(1.7rem, 3.6vw, 2.75rem);
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
   line-height: 0.92;
   text-transform: uppercase;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
@@ -621,6 +622,8 @@ h1 {
   font-weight: 900;
   letter-spacing: -0.14em;
   line-height: 0.8;
+  text-align: center;
+  transform: translateX(-0.08em);
   -webkit-text-stroke: 1px rgba(244, 247, 251, 0.54);
 }
 
@@ -628,9 +631,9 @@ h1 {
   display: grid;
   place-items: center;
   align-self: center;
-  min-width: clamp(142px, 15vw, 190px);
+  min-width: clamp(132px, 13vw, 176px);
   min-height: 3.1rem;
-  margin-right: 1rem;
+  margin-right: 0.85rem;
   padding: 0 1.05rem;
   color: #f6f8fb;
   background: color-mix(in srgb, var(--driver-color, var(--red)) 88%, #111318);

@@ -9,6 +9,7 @@ const CAR_TEXTURE = '/assets/game/f1-car-sprite-game.png';
 const SAFETY_CAR_TEXTURE = '/assets/game/f1-safety-car-sprite.png';
 const BROADCAST_PANEL_TEXTURE = '/assets/game/f1-broadcast-panel-surface.png';
 const FIXED_STEP = 1 / 60;
+const MAX_RENDER_FPS = 60;
 const SIM_SPEED = 3.25;
 const CAR_WORLD_LENGTH = 66;
 const CAR_WORLD_WIDTH = 23;
@@ -129,6 +130,7 @@ class F1SimulatorApp {
       resolution: Math.min(window.devicePixelRatio || 1, 2),
       backgroundAlpha: 0,
     });
+    this.app.ticker.maxFPS = MAX_RENDER_FPS;
     this.canvasHost.appendChild(this.app.canvas);
 
     this.worldLayer = new Container();

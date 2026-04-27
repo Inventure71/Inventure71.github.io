@@ -1,5 +1,5 @@
 import { Container, Graphics, Texture, TilingSprite } from 'pixi.js';
-import { offsetTrackPoint, WORLD } from './trackModel.js';
+import { offsetTrackPoint, pointAt, WORLD } from './trackModel.js';
 
 export const PROCEDURAL_TRACK_TEXTURES = {
   asphalt: '/assets/game/f1-texture-asphalt.png',
@@ -12,6 +12,8 @@ const WORLD_BACKGROUND_PADDING = 2200;
 const GRASS_COLOR = 0x2e7d32;
 const GRAVEL_COLOR = 0xb49a68;
 const ASPHALT_COLOR = 0x4a4d52;
+const FINISH_LINE_DEPTH = 58;
+const FINISH_LINE_COLUMNS = 10;
 
 function makeTrackPath(track, offset = 0) {
   const path = new Graphics();
@@ -46,6 +48,7 @@ export class ProceduralTrackAsset {
     this.addAsphalt(track);
     this.addKerbs(track);
     this.addBorders(track);
+    this.addFinishLine(track);
   }
 
   addGrass() {
@@ -180,6 +183,35 @@ export class ProceduralTrackAsset {
       });
     }
     this.container.addChild(kerbs);
+  }
+
+  addFinishLine(track) {
+    const finishLine = new Graphics();
+    const halfDepth = FINISH_LINE_DEPTH / 2;
+    this.addFinishLineHalf(finishLine, track, -halfDepth, 0, 0);
+    this.addFinishLineHalf(finishLine, track, 0, halfDepth, 1);
+    this.container.addChild(finishLine);
+  }
+
+  addFinishLineHalf(graphics, track, startDistance, endDistance, rowOffset) {
+    const start = pointAt(track, startDistance);
+    const end = pointAt(track, endDistance);
+    const roadPadding = 10;
+    const width = track.width - roadPadding * 2;
+    const leftEdge = -width / 2;
+    const cellWidth = width / FINISH_LINE_COLUMNS;
+
+    for (let column = 0; column < FINISH_LINE_COLUMNS; column += 1) {
+      const innerOffset = leftEdge + column * cellWidth;
+      const outerOffset = innerOffset + cellWidth;
+      const color = (column + rowOffset) % 2 === 0 ? 0xf8fafc : 0x0b0d12;
+      const a = offsetTrackPoint(start, innerOffset);
+      const b = offsetTrackPoint(start, outerOffset);
+      const c = offsetTrackPoint(end, outerOffset);
+      const d = offsetTrackPoint(end, innerOffset);
+
+      graphics.poly([a.x, a.y, b.x, b.y, c.x, c.y, d.x, d.y]).fill(color);
+    }
   }
 
 }
