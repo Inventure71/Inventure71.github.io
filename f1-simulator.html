@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="A deterministic browser F1 race simulator prototype." />
+  <title>F1 Simulator Lab - Inventure71</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link href="dist/f1-simulator/f1-simulator.css" rel="stylesheet" />
+</head>
+
+<body>
+  <main class="sim-shell" id="f1-simulator-root">
+    <section class="sim-workspace" aria-label="F1 race simulator">
+      <header class="sim-topbar">
+        <a class="sim-backlink" href="projects.html">Projects</a>
+        <div class="sim-title-block">
+          <p class="sim-kicker">Race Control</p>
+          <h1>F1 Simulator Lab</h1>
+        </div>
+        <div class="sim-controls" aria-label="Race controls">
+          <button class="sim-control sim-control--safety" type="button" data-safety-car aria-pressed="false">Safety Car</button>
+          <button class="sim-control" type="button" data-restart-race>Restart</button>
+        </div>
+      </header>
+
+      <div class="sim-grid">
+        <aside class="sim-timing" aria-label="Timing tower">
+          <div class="timing-header">
+            <span>Timing</span>
+            <strong data-race-mode>GREEN</strong>
+          </div>
+          <ol class="timing-list" data-timing-list></ol>
+        </aside>
+
+        <section class="sim-canvas-panel" aria-label="Track view">
+          <div class="track-canvas" data-track-canvas></div>
+          <div class="race-hud">
+            <div>
+              <span>LAP</span>
+              <strong data-lap-readout>1/8</strong>
+            </div>
+            <div>
+              <span>DRS</span>
+              <strong data-drs-readout>ARMED</strong>
+            </div>
+            <div>
+              <span>CONTACTS</span>
+              <strong data-contact-readout>0</strong>
+            </div>
+          </div>
+        </section>
+
+        <aside class="sim-telemetry" aria-label="Selected car telemetry">
+          <div class="telemetry-header">
+            <span data-selected-code>---</span>
+            <strong data-selected-name>Select car</strong>
+          </div>
+          <dl class="telemetry-grid">
+            <div>
+              <dt>Speed</dt>
+              <dd data-telemetry-speed>0 km/h</dd>
+            </div>
+            <div>
+              <dt>Throttle</dt>
+              <dd data-telemetry-throttle>0%</dd>
+            </div>
+            <div>
+              <dt>Brake</dt>
+              <dd data-telemetry-brake>0%</dd>
+            </div>
+            <div>
+              <dt>Tyres</dt>
+              <dd data-telemetry-tyres>0%</dd>
+            </div>
+            <div>
+              <dt>DRS</dt>
+              <dd data-telemetry-drs>OFF</dd>
+            </div>
+            <div>
+              <dt>Gap</dt>
+              <dd data-telemetry-gap>--</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="dist/f1-simulator/f1-simulator.js"></script>
+</body>
+
+</html>

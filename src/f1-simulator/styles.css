@@ -1,0 +1,359 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85,500;100,700;110,900&family=IBM+Plex+Mono:wght@500;600;700&display=swap');
+
+:root {
+  color-scheme: dark;
+  --surface: #08090b;
+  --surface-raised: #111318;
+  --surface-panel: #171a20;
+  --line: rgba(255, 255, 255, 0.13);
+  --line-strong: rgba(255, 255, 255, 0.28);
+  --text: #f4f7fb;
+  --muted: #8d97a7;
+  --red: #e10600;
+  --green: #14c784;
+  --yellow: #ffd166;
+  --blue: #39a7ff;
+  --track: #262a31;
+  --track-edge: #f4f7fb;
+  --font-display: 'Archivo', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-display);
+}
+
+body {
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+.sim-shell {
+  min-height: 100svh;
+  padding: clamp(0.85rem, 2vw, 1.4rem);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    radial-gradient(circle at 12% 8%, rgba(225, 6, 0, 0.22), transparent 28rem),
+    radial-gradient(circle at 86% 82%, rgba(20, 199, 132, 0.16), transparent 34rem),
+    var(--surface);
+  background-size: 44px 44px, 44px 44px, auto, auto, auto;
+}
+
+.sim-workspace {
+  min-height: calc(100svh - clamp(1.7rem, 4vw, 2.8rem));
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.sim-topbar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  min-height: 72px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sim-backlink,
+.sim-control {
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 0.75rem 0.9rem;
+  cursor: pointer;
+}
+
+.sim-backlink:hover,
+.sim-control:hover {
+  border-color: var(--text);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sim-control--safety.is-active {
+  color: #0a0b0d;
+  background: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.sim-title-block {
+  min-width: 0;
+}
+
+.sim-kicker {
+  margin: 0 0 0.2rem;
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 4.6rem);
+  line-height: 0.88;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.sim-controls {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+
+.sim-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(210px, 0.72fr) minmax(500px, 3fr) minmax(220px, 0.82fr);
+  gap: 0.9rem;
+}
+
+.sim-timing,
+.sim-telemetry,
+.sim-canvas-panel {
+  min-height: 0;
+  background: color-mix(in srgb, var(--surface-raised) 92%, transparent);
+  border: 1px solid var(--line);
+}
+
+.sim-timing,
+.sim-telemetry {
+  padding: 0.9rem;
+  overflow: hidden;
+}
+
+.timing-header,
+.telemetry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line);
+  text-transform: uppercase;
+}
+
+.timing-header span,
+.telemetry-header span {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+
+.timing-header strong {
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+.timing-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.timing-row {
+  display: grid;
+  grid-template-columns: 2ch 4ch minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: center;
+  min-height: 38px;
+  padding: 0.45rem 0.55rem;
+  border-left: 3px solid var(--driver-color, var(--red));
+  background: rgba(255, 255, 255, 0.045);
+  cursor: pointer;
+}
+
+.timing-row.is-selected {
+  outline: 1px solid var(--driver-color, var(--red));
+  background: color-mix(in srgb, var(--driver-color, var(--red)) 16%, rgba(255, 255, 255, 0.04));
+}
+
+.timing-position,
+.timing-code,
+.timing-gap {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.timing-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.timing-gap {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.timing-row[data-drs='true'] .timing-gap {
+  color: var(--green);
+}
+
+.sim-canvas-panel {
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.42);
+}
+
+.track-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.track-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.race-hud {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid var(--line);
+  pointer-events: none;
+}
+
+.race-hud > div {
+  padding: 0.75rem;
+  background: rgba(8, 9, 11, 0.82);
+}
+
+.race-hud span,
+.telemetry-grid dt {
+  display: block;
+  margin-bottom: 0.22rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.race-hud strong,
+.telemetry-grid dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(0.86rem, 1.6vw, 1.15rem);
+}
+
+.telemetry-header {
+  align-items: flex-start;
+}
+
+.telemetry-header strong {
+  min-width: 0;
+  text-align: right;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+}
+
+.telemetry-grid {
+  margin: 1rem 0 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--line);
+}
+
+.telemetry-grid > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.82rem 0.7rem;
+  background: var(--surface-panel);
+}
+
+.telemetry-grid dd {
+  color: var(--text);
+  text-align: right;
+}
+
+@media (max-width: 1120px) {
+  .sim-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sim-canvas-panel {
+    min-height: 62svh;
+    order: -1;
+  }
+
+  .sim-timing,
+  .sim-telemetry {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .sim-shell {
+    padding: 0.75rem;
+  }
+
+  .sim-topbar {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .sim-controls,
+  .sim-backlink {
+    justify-content: stretch;
+  }
+
+  .sim-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sim-control,
+  .sim-backlink {
+    text-align: center;
+  }
+
+  .sim-canvas-panel {
+    min-height: 58svh;
+  }
+
+  .race-hud {
+    grid-template-columns: 1fr;
+  }
+}
