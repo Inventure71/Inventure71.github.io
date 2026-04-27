@@ -32,7 +32,7 @@ export function integrateVehiclePhysics(car, controls, dt) {
   const throttle = clamp(controls.throttle ?? 0, 0, 1);
   const brake = clamp(controls.brake ?? 0, 0, 1);
   const surface = SURFACE_MODEL[car.trackState?.surface] ?? SURFACE_MODEL.track;
-  const dragMultiplier = car.drsActive ? 0.82 : 1;
+  const dragMultiplier = car.drsActive ? 0.58 : 1;
   const engineForce = throttle * car.powerNewtons * Math.max(0.18, 1 - car.speed / 178);
   const brakeForce = brake * car.brakeNewtons;
   const dragForce = (car.dragCoefficient * dragMultiplier + surface.drag) * car.speed * car.speed;

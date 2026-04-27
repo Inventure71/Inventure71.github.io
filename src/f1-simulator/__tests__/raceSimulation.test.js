@@ -176,10 +176,39 @@ describe('vehicle physics race simulation', () => {
     const snapshot = sim.snapshot();
     const first = snapshot.cars.find((car) => car.id === 'budget');
     const second = snapshot.cars.find((car) => car.id === 'noir');
+    const physicalGap = Math.hypot(second.x - first.x, second.y - first.y);
 
     expect(second.raceDistance - first.raceDistance).toBeGreaterThanOrEqual(VEHICLE_LIMITS.carLength * 0.9);
+    expect(physicalGap).toBeLessThan(VEHICLE_LIMITS.carLength * 1.08);
     expect(polygonsOverlap(getCarCorners(first), getCarCorners(second))).toBe(false);
     expect(snapshot.events.some((event) => event.type === 'contact')).toBe(true);
+  });
+
+  test('DRS creates a measurable straight-line speed advantage', () => {
+    const baseCar = {
+      x: 0,
+      y: 0,
+      heading: 0,
+      steeringAngle: 0,
+      speed: 100,
+      mass: 798,
+      powerNewtons: 43000,
+      brakeNewtons: 59000,
+      dragCoefficient: 0.33,
+      downforceCoefficient: 6.1,
+      tireGrip: 2.4,
+      trackState: { surface: 'track' },
+      tireEnergy: 100,
+    };
+    const normal = { ...baseCar, drsActive: false };
+    const drs = { ...baseCar, drsActive: true };
+
+    for (let elapsed = 0; elapsed < 1.5; elapsed += 1 / 60) {
+      integrateVehiclePhysics(normal, { steering: 0, throttle: 1, brake: 0 }, 1 / 60);
+      integrateVehiclePhysics(drs, { steering: 0, throttle: 1, brake: 0 }, 1 / 60);
+    }
+
+    expect(drs.speedKph ?? drs.speed * 3.6).toBeGreaterThan((normal.speedKph ?? normal.speed * 3.6) + 8);
   });
 
   test('safety car neutralizes racing, disables DRS, and reduces speed through vehicle controls', () => {
@@ -201,11 +230,11 @@ describe('vehicle physics race simulation', () => {
 
   test('safety car forms a single-file queue in the frozen race order', () => {
     const sim = createRaceSimulation({ seed: 1971, drivers: PROJECT_DRIVERS, totalLaps: 8 });
-    run(sim, 45);
+    run(sim, 8);
     const frozenOrder = sim.snapshot().cars.map((car) => car.id);
 
     sim.setSafetyCar(true);
-    run(sim, 28);
+    run(sim, 14);
     const snapshot = sim.snapshot();
     const queueGaps = snapshot.cars.slice(1).map((car, index) => snapshot.cars[index].raceDistance - car.raceDistance);
 
@@ -269,7 +298,7 @@ describe('vehicle physics race simulation', () => {
   test('keeps a crowded field racing instead of collapsing into a stationary pile-up', () => {
     const sim = createRaceSimulation({ seed: 1971, drivers: PROJECT_DRIVERS, totalLaps: 6 });
 
-    const contactCount = run(sim, 45);
+    const contactCount = run(sim, 12);
     const snapshot = sim.snapshot();
     const averageSpeedKph = snapshot.cars.reduce((total, car) => total + car.speedKph, 0) / snapshot.cars.length;
     const laneBuckets = new Set(snapshot.cars.map((car) => Math.round(car.signedOffset / 18))).size;

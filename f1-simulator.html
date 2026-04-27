@@ -7,7 +7,7 @@
   <meta name="description" content="A deterministic browser F1 race simulator prototype." />
   <title>F1 Simulator Lab - Inventure71</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-  <link href="dist/f1-simulator/f1-simulator.css" rel="stylesheet" />
+  <link href="dist/f1-simulator/f1-simulator.css?v=20260427-championship-ui" rel="stylesheet" />
 </head>
 
 <body>
@@ -26,44 +26,54 @@
       </header>
 
       <div class="sim-grid">
-        <aside class="sim-timing" aria-label="Timing tower">
-          <div class="timing-header">
-            <span>Timing</span>
-            <strong data-race-mode>GREEN</strong>
+        <aside class="sim-timing broadcast-tower" data-timing-tower aria-label="Timing tower">
+          <div class="broadcast-tower-frame">
+            <div class="broadcast-brand">
+              <img class="broadcast-f1-logo" src="assets/game/f1Logo.png" alt="F1" />
+            </div>
+            <div class="broadcast-lap">
+              <span>Lap</span>
+              <strong data-tower-lap-readout>1</strong>
+              <span>/</span>
+              <span data-tower-total-laps>10</span>
+            </div>
+            <div class="broadcast-safety-banner" data-tower-safety-banner>
+              <span>FIA</span>
+              <strong>Safety Car</strong>
+            </div>
+            <div class="broadcast-column-head" aria-hidden="true">
+              <span>Pos</span>
+              <span>Car</span>
+              <span>Project</span>
+              <span>Gap</span>
+              <span>Tyre</span>
+            </div>
+            <ol class="timing-list" data-timing-list></ol>
           </div>
-          <ol class="timing-list" data-timing-list></ol>
         </aside>
 
         <section class="sim-canvas-panel" aria-label="Track view">
           <div class="track-canvas" data-track-canvas></div>
+          <div class="fps-counter" aria-label="Frames per second">
+            <span>FPS</span>
+            <strong data-fps-readout>--</strong>
+          </div>
           <div class="camera-controls" aria-label="Camera controls">
             <button type="button" data-camera-mode="overview" aria-pressed="false">Overview</button>
             <button type="button" data-camera-mode="leader" aria-pressed="true">Leader</button>
             <button type="button" data-camera-mode="selected" aria-pressed="false">Selected</button>
+            <button type="button" data-camera-mode="show-all" aria-pressed="false">Show all</button>
             <button type="button" data-zoom-out aria-label="Zoom out">-</button>
             <button type="button" data-zoom-in aria-label="Zoom in">+</button>
           </div>
-          <div class="race-hud">
-            <div>
-              <span>LAP</span>
-              <strong data-lap-readout>1/8</strong>
+          <div class="race-data-panel" data-race-data-panel>
+            <div class="race-data-copy">
+              <span class="race-data-kicker">Project</span>
+              <strong data-race-data-title>Budget Buddy</strong>
+              <span class="race-data-subtitle" data-race-data-subtitle>BUD P1</span>
             </div>
-            <div>
-              <span>DRS</span>
-              <strong data-drs-readout>ARMED</strong>
-            </div>
-            <div>
-              <span>CONTACTS</span>
-              <strong data-contact-readout>0</strong>
-            </div>
-            <div>
-              <span>CAM</span>
-              <strong data-camera-readout>LEADER</strong>
-            </div>
-            <div>
-              <span>FPS</span>
-              <strong data-fps-readout>--</strong>
-            </div>
+            <strong class="race-data-number" data-race-data-number>71</strong>
+            <a class="race-data-link" href="/projects.html" target="_blank" rel="noopener" data-race-data-link>Go to project</a>
           </div>
         </section>
 
@@ -107,7 +117,7 @@
     </section>
   </main>
 
-  <script type="module" src="dist/f1-simulator/f1-simulator.js"></script>
+  <script type="module" src="dist/f1-simulator/f1-simulator.js?v=20260427-championship-ui"></script>
 </body>
 
 </html>

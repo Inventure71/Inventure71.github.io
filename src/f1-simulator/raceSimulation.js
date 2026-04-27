@@ -59,8 +59,13 @@ function createCar(driver, index, random, track) {
   return {
     id: driver.id ?? `car-${index + 1}`,
     code: driver.code ?? `C${index + 1}`,
+    timingCode: driver.timingCode ?? driver.code ?? `C${index + 1}`,
+    driverNumber: driver.driverNumber ?? index + 1,
+    icon: driver.icon ?? String(index + 1).padStart(2, '0'),
+    raceName: driver.raceName ?? driver.code ?? `CAR${index + 1}`,
     name: driver.name ?? `Car ${index + 1}`,
     color: driver.color ?? '#e10600',
+    tire: driver.tire ?? ['M', 'H', 'S'][index % 3],
     index,
     x: position.x,
     y: position.y,
@@ -146,23 +151,25 @@ function detectObbCollision(a, b) {
 
 function detectLongitudinalCollision(a, b) {
   const longitudinalGap = b.raceDistance - a.raceDistance;
-  const absoluteLongitudinalGap = Math.abs(longitudinalGap);
-  const lateralGap = Math.abs((a.trackState?.signedOffset ?? 0) - (b.trackState?.signedOffset ?? 0));
   const headingDelta = Math.abs(normalizeAngle(a.heading - b.heading));
-  const requiredGap = VEHICLE_LIMITS.carLength * 0.98;
-
-  if (absoluteLongitudinalGap >= requiredGap) return null;
-  if (lateralGap > VEHICLE_LIMITS.carWidth * 1.08) return null;
-  if (headingDelta > 0.58) return null;
-
   const blendedHeading = a.heading + normalizeAngle(b.heading - a.heading) * 0.5;
   let axis = normalizeVector({ x: Math.cos(blendedHeading), y: Math.sin(blendedHeading) });
   const direction = { x: b.x - a.x, y: b.y - a.y };
-  if (dot(direction, axis) < 0) axis = { x: -axis.x, y: -axis.y };
+  const physicalLongitudinalGap = dot(direction, axis);
+  if (physicalLongitudinalGap < 0) axis = { x: -axis.x, y: -axis.y };
+
+  const physicalLongitudinalSeparation = Math.abs(physicalLongitudinalGap);
+  const lateralGap = Math.abs(direction.x * -axis.y + direction.y * axis.x);
+  const requiredGap = VEHICLE_LIMITS.carLength * 0.96;
+
+  if (Math.abs(longitudinalGap) > VEHICLE_LIMITS.carLength * 1.45) return null;
+  if (physicalLongitudinalSeparation >= requiredGap) return null;
+  if (lateralGap > VEHICLE_LIMITS.carWidth * 0.82) return null;
+  if (headingDelta > 0.58) return null;
 
   return {
     axis,
-    depth: requiredGap - absoluteLongitudinalGap,
+    depth: requiredGap - physicalLongitudinalSeparation,
     longitudinal: true,
   };
 }
@@ -191,8 +198,13 @@ function serializeCar(car, rank) {
   return {
     id: car.id,
     code: car.code,
+    timingCode: car.timingCode,
+    driverNumber: car.driverNumber,
+    icon: car.icon,
+    raceName: car.raceName,
     name: car.name,
     color: car.color,
+    tire: car.tire,
     rank,
     x: car.x,
     y: car.y,
@@ -367,7 +379,7 @@ export class F1RaceSimulation {
       lanePlan.sideRisk ? clamp((44 - lanePlan.sideRisk.lateral) * 0.42, 0, 16) : 0,
     );
     const desiredSpeed = clamp(
-      (car.drsActive ? cornerTarget + 9 : cornerTarget) - edgePenalty - trafficPenalty,
+      (car.drsActive ? cornerTarget + 22 : cornerTarget) - edgePenalty - trafficPenalty,
       58,
       VEHICLE_LIMITS.maxSpeed,
     );
@@ -578,7 +590,7 @@ export class F1RaceSimulation {
           const collision = detectObbCollision(first, second) ?? detectLongitudinalCollision(first, second);
           if (!collision) continue;
 
-          const correction = collision.depth / 2 + (collision.longitudinal ? 1.1 : 0.65);
+          const correction = collision.depth / 2 + (collision.longitudinal ? 0.35 : 0.65);
           first.x -= collision.axis.x * correction;
           first.y -= collision.axis.y * correction;
           second.x += collision.axis.x * correction;

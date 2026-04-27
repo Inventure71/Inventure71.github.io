@@ -11,6 +11,7 @@ const MATERIAL_TILE_SCALE = {
 const WORLD_BACKGROUND_PADDING = 2200;
 const GRASS_COLOR = 0x2e7d32;
 const GRAVEL_COLOR = 0xb49a68;
+const ASPHALT_COLOR = 0x4a4d52;
 
 function makeTrackPath(track, offset = 0) {
   const path = new Graphics();
@@ -105,19 +106,29 @@ export class ProceduralTrackAsset {
   }
 
   addAsphalt(track) {
+    const asphaltBase = makeTrackPath(track);
+    asphaltBase.stroke({
+      width: track.width,
+      color: ASPHALT_COLOR,
+      alpha: 1,
+      join: 'round',
+      cap: 'butt',
+    });
+    this.container.addChild(asphaltBase);
+
     this.addMaskedMaterial({
       track,
       texture: this.textures.asphalt,
       strokeWidth: track.width,
-      alpha: 0.94,
+      alpha: 0.18,
       tileScale: MATERIAL_TILE_SCALE.asphalt,
     });
 
     const roadTint = makeTrackPath(track);
     roadTint.stroke({
       width: track.width,
-      color: 0x1b2027,
-      alpha: 0.34,
+      color: 0x34383e,
+      alpha: 0.18,
       join: 'round',
       cap: 'butt',
     });

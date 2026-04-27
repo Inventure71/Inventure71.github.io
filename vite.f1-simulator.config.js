@@ -11,6 +11,10 @@ export default defineConfig({
       output: {
         entryFileNames: 'f1-simulator.js',
         chunkFileNames: 'chunks/[name]-[hash].js',
+        manualChunks(id) {
+          if (id.includes('/node_modules/pixi.js/')) return 'pixi';
+          return undefined;
+        },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name?.endsWith('.css')) {
             return 'f1-simulator.css';

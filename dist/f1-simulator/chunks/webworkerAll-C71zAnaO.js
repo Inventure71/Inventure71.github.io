@@ -1,1 +1,0 @@
-import"../f1-simulator.js";import"./init-C8cdqu2l.js";

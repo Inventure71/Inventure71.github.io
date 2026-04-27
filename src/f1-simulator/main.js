@@ -1,24 +1,48 @@
 import { Application, Assets, Container, Graphics, Sprite, Texture } from 'pixi.js';
 import './styles.css';
-import { PROJECT_DRIVERS } from './drivers.js';
+import { CHAMPIONSHIP_PROJECT_DRIVERS, formatDriverNumber } from './championship.js';
 import { ProceduralTrackAsset, PROCEDURAL_TRACK_TEXTURES } from './proceduralTrackAsset.js';
 import { createRaceSimulation } from './raceSimulation.js';
 import { offsetTrackPoint, pointAt, WORLD } from './trackModel.js';
 
 const CAR_TEXTURE = '/assets/game/f1-car-sprite-game.png';
+const SAFETY_CAR_TEXTURE = '/assets/game/f1-safety-car-sprite.png';
+const BROADCAST_PANEL_TEXTURE = '/assets/game/f1-broadcast-panel-surface.png';
 const FIXED_STEP = 1 / 60;
 const SIM_SPEED = 3.25;
 const CAR_WORLD_LENGTH = 66;
 const CAR_WORLD_WIDTH = 23;
+const SAFETY_CAR_WORLD_LENGTH = 92;
+const SAFETY_CAR_WORLD_WIDTH = 38;
 const CAMERA_PRESETS = {
   overview: 1,
   leader: 5.35,
   selected: 6.1,
 };
+const SHOW_ALL_PADDING = 520;
+const SHOW_ALL_MIN_ZOOM = 1.1;
+const SHOW_ALL_MAX_ZOOM = 6.4;
+const SHOW_ALL_TOP_RESERVED = 92;
+const SHOW_ALL_BOTTOM_RESERVED = 132;
 const DRS_TRAIL_TTL = 0.68;
 const DRS_TRAIL_MIN_DISTANCE = 10;
+const PROJECT_DRIVERS = CHAMPIONSHIP_PROJECT_DRIVERS;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+const DRIVER_BY_ID = new Map(PROJECT_DRIVERS.map((driver) => [driver.id, driver]));
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function getTireClass(tire) {
+  return String(tire ?? 'M').toLowerCase();
+}
 
 function smoothAngle(current, target, amount) {
   if (!Number.isFinite(current)) return target;
@@ -30,6 +54,7 @@ function smoothAngle(current, target, amount) {
 class F1SimulatorApp {
   constructor(root) {
     this.root = root;
+    this.root.style.setProperty('--broadcast-panel-surface', `url('${BROADCAST_PANEL_TEXTURE}')`);
     this.canvasHost = root.querySelector('[data-track-canvas]');
     this.safetyButton = root.querySelector('[data-safety-car]');
     this.restartButton = root.querySelector('[data-restart-race]');
@@ -38,7 +63,11 @@ class F1SimulatorApp {
     this.zoomInButton = root.querySelector('[data-zoom-in]');
     this.zoomOutButton = root.querySelector('[data-zoom-out]');
     this.readouts = {
+      timingTower: root.querySelector('[data-timing-tower]'),
       mode: root.querySelector('[data-race-mode]'),
+      towerLap: root.querySelector('[data-tower-lap-readout]'),
+      towerTotalLaps: root.querySelector('[data-tower-total-laps]'),
+      towerSafetyBanner: root.querySelector('[data-tower-safety-banner]'),
       lap: root.querySelector('[data-lap-readout]'),
       drs: root.querySelector('[data-drs-readout]'),
       contacts: root.querySelector('[data-contact-readout]'),
@@ -53,6 +82,14 @@ class F1SimulatorApp {
       selectedDrs: root.querySelector('[data-telemetry-drs]'),
       surface: root.querySelector('[data-telemetry-surface]'),
       gap: root.querySelector('[data-telemetry-gap]'),
+      raceDataPanel: root.querySelector('[data-race-data-panel]'),
+      raceDataTitle: root.querySelector('[data-race-data-title]'),
+      raceDataCode: root.querySelector('[data-race-data-code]'),
+      raceDataPace: root.querySelector('[data-race-data-pace]'),
+      raceDataNumber: root.querySelector('[data-race-data-number]'),
+      raceDataSubtitle: root.querySelector('[data-race-data-subtitle]'),
+      raceDataChips: root.querySelector('[data-race-data-chips]'),
+      raceDataLink: root.querySelector('[data-race-data-link]'),
     };
     this.sim = null;
     this.app = null;
@@ -69,6 +106,7 @@ class F1SimulatorApp {
     this.camera = {
       mode: 'leader',
       zoom: CAMERA_PRESETS.leader,
+      scale: null,
       x: WORLD.width / 2,
       y: WORLD.height / 2,
     };
@@ -119,6 +157,14 @@ class F1SimulatorApp {
       this.textures.car = Texture.WHITE;
     }
 
+    try {
+      this.textures.safetyCar = await Assets.load(SAFETY_CAR_TEXTURE);
+      this.textures.safetyCar.source.scaleMode = 'linear';
+      this.textures.safetyCar.source.autoGenerateMipmaps = true;
+    } catch {
+      this.textures.safetyCar = Texture.WHITE;
+    }
+
     await Promise.all(Object.entries(PROCEDURAL_TRACK_TEXTURES).map(async ([key, url]) => {
       try {
         const texture = await Assets.load(url);
@@ -157,8 +203,7 @@ class F1SimulatorApp {
       sprite.eventMode = 'static';
       sprite.cursor = 'pointer';
       sprite.on('pointerdown', () => {
-        this.selectedId = driver.id;
-        this.updateDom(this.sim.snapshot());
+        this.selectCar(driver.id, { focus: true });
       });
       this.carSprites.set(driver.id, sprite);
       this.carLayer.addChild(sprite);
@@ -168,8 +213,7 @@ class F1SimulatorApp {
       hit.eventMode = 'static';
       hit.cursor = 'pointer';
       hit.on('pointerdown', () => {
-        this.selectedId = driver.id;
-        this.updateDom(this.sim.snapshot());
+        this.selectCar(driver.id, { focus: true });
       });
       this.carHitAreas.set(driver.id, hit);
       this.carLayer.addChild(hit);
@@ -197,7 +241,7 @@ class F1SimulatorApp {
     this.cameraButtons.forEach((button) => {
       button.addEventListener('click', () => {
         this.camera.mode = button.dataset.cameraMode;
-        this.camera.zoom = CAMERA_PRESETS[this.camera.mode] ?? this.camera.zoom;
+        if (CAMERA_PRESETS[this.camera.mode]) this.camera.zoom = CAMERA_PRESETS[this.camera.mode];
         this.updateCameraControls();
       });
     });
@@ -210,6 +254,12 @@ class F1SimulatorApp {
     this.zoomOutButton?.addEventListener('click', () => {
       this.camera.zoom = clamp(this.camera.zoom - 0.42, 0.72, 8.5);
       this.updateCameraControls();
+    });
+
+    this.timingList?.addEventListener('pointerdown', (event) => {
+      const row = event.target instanceof Element ? event.target.closest('[data-driver-id]') : null;
+      if (!row) return;
+      this.selectCar(row.dataset.driverId, { focus: true });
     });
   }
 
@@ -270,9 +320,14 @@ class F1SimulatorApp {
     });
 
     if (!this.safetySprite && snapshot.safetyCar.deployed) {
-      this.safetySprite = new Graphics();
-      this.safetySprite.roundRect(-32, -12, 64, 24, 5).fill(0xfacc15);
-      this.safetySprite.rect(-23, -7, 18, 14).fill(0x111318);
+      const texture = this.textures.safetyCar ?? Texture.WHITE;
+      this.safetySprite = new Sprite(texture);
+      this.safetySprite.anchor.set(0.5);
+      this.safetySprite.baseScale = Math.min(
+        SAFETY_CAR_WORLD_LENGTH / Math.max(texture.width, 1),
+        SAFETY_CAR_WORLD_WIDTH / Math.max(texture.height, 1),
+      );
+      this.safetySprite.scale.set(this.safetySprite.baseScale);
       this.carLayer.addChild(this.safetySprite);
     }
 
@@ -334,15 +389,61 @@ class F1SimulatorApp {
     const width = this.canvasHost.clientWidth || 900;
     const height = this.canvasHost.clientHeight || 640;
     const baseScale = Math.min(width / (WORLD.width + 260), height / (WORLD.height + 220));
-    const scale = baseScale * this.camera.zoom;
-    const target = this.getCameraTarget(snapshot);
+    const frame = this.getCameraFrame(snapshot, width, height, baseScale);
+    const scale = frame.scale;
+    const target = frame.target;
     this.camera.x += (target.x - this.camera.x) * 0.08;
     this.camera.y += (target.y - this.camera.y) * 0.08;
-    this.worldLayer.scale.set(scale);
+    const activeScale = this.camera.scale === null
+      ? scale
+      : this.camera.scale + (scale - this.camera.scale) * 0.12;
+    this.camera.scale = activeScale;
+    this.worldLayer.scale.set(activeScale);
     this.worldLayer.position.set(
-      width / 2 - this.camera.x * scale,
-      height / 2 - this.camera.y * scale,
+      frame.screenX - this.camera.x * activeScale,
+      frame.screenY - this.camera.y * activeScale,
     );
+  }
+
+  getCameraFrame(snapshot, width, height, baseScale) {
+    if (this.camera.mode === 'show-all') {
+      const bounds = snapshot.cars.reduce((box, car) => ({
+        minX: Math.min(box.minX, car.x),
+        minY: Math.min(box.minY, car.y),
+        maxX: Math.max(box.maxX, car.x),
+        maxY: Math.max(box.maxY, car.y),
+      }), {
+        minX: Infinity,
+        minY: Infinity,
+        maxX: -Infinity,
+        maxY: -Infinity,
+      });
+      const target = {
+        x: (bounds.minX + bounds.maxX) / 2,
+        y: (bounds.minY + bounds.maxY) / 2,
+      };
+      const fitWidth = Math.max(CAR_WORLD_LENGTH * 3, bounds.maxX - bounds.minX + SHOW_ALL_PADDING);
+      const fitHeight = Math.max(CAR_WORLD_LENGTH * 3, bounds.maxY - bounds.minY + SHOW_ALL_PADDING);
+      const safeHeight = Math.max(height * 0.48, height - SHOW_ALL_TOP_RESERVED - SHOW_ALL_BOTTOM_RESERVED);
+      const scale = clamp(
+        Math.min(width / fitWidth, safeHeight / fitHeight),
+        baseScale * SHOW_ALL_MIN_ZOOM,
+        baseScale * SHOW_ALL_MAX_ZOOM,
+      );
+      return {
+        target,
+        scale,
+        screenX: width / 2,
+        screenY: SHOW_ALL_TOP_RESERVED + safeHeight / 2,
+      };
+    }
+
+    return {
+      target: this.getCameraTarget(snapshot),
+      scale: baseScale * this.camera.zoom,
+      screenX: width / 2,
+      screenY: height / 2,
+    };
   }
 
   getCameraTarget(snapshot) {
@@ -365,17 +466,32 @@ class F1SimulatorApp {
     const activeDrs = snapshot.cars.filter((car) => car.drsActive).length;
     const contactCount = snapshot.events.filter((event) => event.type === 'contact').length;
 
-    this.readouts.mode.textContent = snapshot.raceControl.mode === 'safety-car' ? 'SC' : 'GREEN';
-    this.readouts.mode.style.color = snapshot.raceControl.mode === 'safety-car' ? 'var(--yellow)' : 'var(--green)';
-    this.readouts.lap.textContent = `${leader?.lap ?? 1}/${snapshot.totalLaps}`;
-    this.readouts.drs.textContent = snapshot.raceControl.mode === 'safety-car'
-      ? 'DISABLED'
-      : activeDrs
-        ? `${activeDrs} OPEN`
-        : 'ARMED';
-    this.readouts.contacts.textContent = String(contactCount);
+    if (this.readouts.mode) {
+      this.readouts.mode.textContent = snapshot.raceControl.mode === 'safety-car' ? 'SC' : 'GREEN';
+      this.readouts.mode.style.color = snapshot.raceControl.mode === 'safety-car' ? 'var(--yellow)' : 'var(--green)';
+    }
+    if (this.readouts.lap) this.readouts.lap.textContent = `${leader?.lap ?? 1}/${snapshot.totalLaps}`;
+    if (this.readouts.towerLap) this.readouts.towerLap.textContent = leader?.lap ?? 1;
+    if (this.readouts.towerTotalLaps) this.readouts.towerTotalLaps.textContent = snapshot.totalLaps;
+    if (this.readouts.timingTower) {
+      this.readouts.timingTower.classList.toggle('is-safety-car', snapshot.raceControl.mode === 'safety-car');
+    }
+    if (this.readouts.towerSafetyBanner) {
+      this.readouts.towerSafetyBanner.hidden = snapshot.raceControl.mode !== 'safety-car';
+    }
+    if (this.readouts.drs) {
+      this.readouts.drs.textContent = snapshot.raceControl.mode === 'safety-car'
+        ? 'DISABLED'
+        : activeDrs
+          ? `${activeDrs} OPEN`
+          : 'ARMED';
+    }
+    if (this.readouts.contacts) this.readouts.contacts.textContent = String(contactCount);
     if (this.readouts.camera) {
-      this.readouts.camera.textContent = `${this.camera.mode.toUpperCase()} ${Math.round(this.camera.zoom * 100)}%`;
+      const zoom = this.camera.mode === 'show-all'
+        ? Math.round(((this.camera.scale ?? 0) / Math.max(0.0001, this.getBaseScale())) * 100)
+        : Math.round(this.camera.zoom * 100);
+      this.readouts.camera.textContent = `${this.camera.mode.toUpperCase().replace('-', ' ')} ${zoom}%`;
     }
     if (this.readouts.fps) {
       this.readouts.fps.textContent = this.fps.current ? `${this.fps.current}` : '--';
@@ -384,6 +500,13 @@ class F1SimulatorApp {
     this.updateCameraControls();
     this.renderTiming(snapshot.cars, leader, snapshot.raceControl.mode);
     this.renderTelemetry(selected);
+    this.renderRaceData(selected);
+  }
+
+  getBaseScale() {
+    const width = this.canvasHost.clientWidth || 900;
+    const height = this.canvasHost.clientHeight || 640;
+    return Math.min(width / (WORLD.width + 260), height / (WORLD.height + 220));
   }
 
   sampleFps(now) {
@@ -395,34 +518,44 @@ class F1SimulatorApp {
     this.fps.lastSample = now;
   }
 
+  selectCar(id, { focus = false } = {}) {
+    this.selectedId = id;
+    if (focus) {
+      this.camera.mode = 'selected';
+      this.camera.zoom = CAMERA_PRESETS.selected;
+      this.updateCameraControls();
+    }
+    this.updateDom(this.sim.snapshot());
+  }
+
   renderTiming(cars, leader, raceMode) {
     const leaderDistance = leader?.raceDistance ?? 0;
     this.timingList.innerHTML = cars.map((car) => {
-      let gap = 'LEADER';
+      const driver = DRIVER_BY_ID.get(car.id);
+      let gap = 'Leader';
       if (raceMode === 'safety-car' && car.rank > 1) {
         gap = 'SC';
       } else if (car.rank > 1) {
-        gap = `+${Math.max(0, (leaderDistance - car.raceDistance) / Math.max(car.speed, 1)).toFixed(2)}s`;
+        gap = `+${Math.max(0, (leaderDistance - car.raceDistance) / Math.max(car.speed, 1)).toFixed(3)}`;
       }
+      const tire = car.tire ?? driver?.tire ?? 'M';
+      const timingCode = car.timingCode ?? driver?.timingCode ?? car.code;
+      const icon = car.icon ?? driver?.icon ?? timingCode;
+
       return `
         <li>
           <button class="timing-row ${car.id === this.selectedId ? 'is-selected' : ''}" type="button"
-            data-driver-id="${car.id}" data-drs="${car.drsActive}" style="--driver-color: ${car.color}">
+            data-driver-id="${escapeHtml(car.id)}" aria-label="Select ${escapeHtml(car.name)}"
+            style="--driver-color: ${escapeHtml(car.color)}">
             <span class="timing-position">${car.rank}</span>
-            <span class="timing-code">${car.code}</span>
-            <span class="timing-name">${car.name}</span>
-            <span class="timing-gap">${car.drsActive ? 'DRS' : gap}</span>
+            <span class="timing-icon" aria-hidden="true">${escapeHtml(icon)}</span>
+            <span class="timing-name" title="${escapeHtml(car.name)}">${escapeHtml(timingCode)}</span>
+            <span class="timing-gap">${escapeHtml(gap)}</span>
+            <span class="timing-tire timing-tire--${getTireClass(tire)}">${escapeHtml(tire)}</span>
           </button>
         </li>
       `;
     }).join('');
-
-    this.timingList.querySelectorAll('[data-driver-id]').forEach((button) => {
-      button.addEventListener('click', () => {
-        this.selectedId = button.dataset.driverId;
-        this.updateDom(this.sim.snapshot());
-      });
-    });
   }
 
   renderTelemetry(car) {
@@ -441,6 +574,31 @@ class F1SimulatorApp {
     this.readouts.gap.textContent = car.rank === 1 || !Number.isFinite(car.gapAheadSeconds)
       ? '--'
       : `${car.gapAheadSeconds.toFixed(2)}s`;
+  }
+
+  renderRaceData(car) {
+    if (!car || !this.readouts.raceDataPanel) return;
+    const driver = PROJECT_DRIVERS.find((item) => item.id === car.id);
+    if (!driver) return;
+
+    this.readouts.raceDataPanel.style.setProperty('--driver-color', driver.color);
+    this.readouts.raceDataTitle.textContent = driver.name;
+    if (this.readouts.raceDataCode) this.readouts.raceDataCode.textContent = `${car.code} P${car.rank}`;
+    if (this.readouts.raceDataPace) this.readouts.raceDataPace.textContent = `${Math.round(car.speedKph)} km/h`;
+    if (this.readouts.raceDataNumber) {
+      this.readouts.raceDataNumber.textContent = formatDriverNumber(car.driverNumber ?? driver.driverNumber);
+    }
+    if (this.readouts.raceDataSubtitle) {
+      this.readouts.raceDataSubtitle.textContent = `${car.code} - P${car.rank} - ${driver.raceData?.[0] ?? 'Project entry'}`;
+    }
+    this.readouts.raceDataLink.href = driver.projectUrl;
+    this.readouts.raceDataLink.target = '_blank';
+    this.readouts.raceDataLink.rel = 'noopener';
+    if (this.readouts.raceDataChips) {
+      this.readouts.raceDataChips.innerHTML = (driver.raceData ?? [])
+        .map((item) => `<span>${escapeHtml(item)}</span>`)
+        .join('');
+    }
   }
 
   updateCameraControls() {
