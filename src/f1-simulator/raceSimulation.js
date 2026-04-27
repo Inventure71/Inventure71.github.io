@@ -1,5 +1,6 @@
 import {
   buildTrackModel,
+  createProceduralTrack,
   isInDrsZone,
   nearestTrackState,
   offsetTrackPoint,
@@ -240,10 +241,12 @@ function serializeCar(car, rank) {
 }
 
 export class F1RaceSimulation {
-  constructor({ seed = 1, drivers = [], totalLaps = DEFAULT_TOTAL_LAPS, rules = {} } = {}) {
+  constructor({ seed = 1, drivers = [], totalLaps = DEFAULT_TOTAL_LAPS, rules = {}, track = null, trackSeed = null } = {}) {
     this.seed = seed;
     this.random = mulberry32(seed);
-    this.track = buildTrackModel(TRACK);
+    const trackDefinition = track ?? (trackSeed == null ? TRACK : createProceduralTrack(trackSeed));
+    this.track = buildTrackModel(trackDefinition);
+    this.trackSeed = this.track.seed ?? trackSeed;
     this.rules = { ...DEFAULT_RULES, ...rules };
     this.totalLaps = totalLaps;
     this.time = 0;
@@ -376,13 +379,13 @@ export class F1RaceSimulation {
     const lookahead = clamp(car.speed * 1.12 + 160, 170, 360);
     const targetBase = pointAt(this.track, car.progress + lookahead);
     const lanePlan = this.planRacingLine(car, orderIndex);
-    const recoveryBias = car.trackState.crossTrackError > TRACK.width * 0.46 ? 0 : 1;
+    const recoveryBias = car.trackState.crossTrackError > this.track.width * 0.46 ? 0 : 1;
     const target = offsetTrackPoint(targetBase, lanePlan.offset * recoveryBias);
     const angleError = angleToPoint(car, target);
     const curvature = Math.max(car.trackState.curvature, targetBase.curvature);
     const gripBudget = 54 + car.racecraft * 11 + (car.tireEnergy ?? 100) * 0.05;
     const cornerTarget = clamp(Math.sqrt(gripBudget / Math.max(curvature, 0.0001)) + (car.pace - 1) * 20, 72, 158);
-    const edgePenalty = Math.max(0, car.trackState.crossTrackError - TRACK.width * 0.38) * 0.15;
+    const edgePenalty = Math.max(0, car.trackState.crossTrackError - this.track.width * 0.38) * 0.15;
     const trafficPenalty = Math.max(
       lanePlan.sameLaneAhead ? clamp((230 - lanePlan.sameLaneAhead.gap) * 0.16, 0, 32) : 0,
       lanePlan.sideRisk ? clamp((44 - lanePlan.sideRisk.lateral) * 0.42, 0, 16) : 0,
@@ -406,7 +409,7 @@ export class F1RaceSimulation {
     const targetBase = pointAt(this.track, car.progress + lookahead);
     const target = offsetTrackPoint(targetBase, 0);
     const angleError = angleToPoint(car, target);
-    const distanceFromRoad = Math.max(0, car.trackState.crossTrackError - TRACK.width / 2);
+    const distanceFromRoad = Math.max(0, car.trackState.crossTrackError - this.track.width / 2);
     const surfaceTargetSpeed = car.trackState.surface === 'gravel' ? 39 : 30;
     const desiredSpeed = clamp(surfaceTargetSpeed - distanceFromRoad * 0.035, 16, 44);
     const speedError = desiredSpeed - car.speed;
@@ -439,7 +442,7 @@ export class F1RaceSimulation {
   }
 
   planRacingLine(car, orderIndex) {
-    const trackLimit = TRACK.width / 2 - VEHICLE_LIMITS.carWidth * 1.15;
+    const trackLimit = this.track.width / 2 - VEHICLE_LIMITS.carWidth * 1.15;
     const preferred = Math.sin((car.index / Math.max(1, this.cars.length)) * TWO_PI) * 26;
     const currentOffset = clamp(car.desiredOffset ?? preferred, -trackLimit, trackLimit);
     const ahead = this.orderedCars()[orderIndex - 1];
@@ -549,7 +552,7 @@ export class F1RaceSimulation {
 
   applyRunoffResponse(car) {
     const state = nearestTrackState(this.track, car);
-    const signedLimit = TRACK.width / 2 + TRACK.gravelWidth + TRACK.runoffWidth;
+    const signedLimit = this.track.width / 2 + this.track.gravelWidth + this.track.runoffWidth;
     const overshoot = Math.abs(state.signedOffset) - signedLimit;
     if (overshoot <= 0) {
       car.trackState = state;

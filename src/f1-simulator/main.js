@@ -32,14 +32,25 @@ const SHOW_ALL_BOTTOM_RESERVED = 132;
 const DRS_TRAIL_TTL = 0.68;
 const DRS_TRAIL_MIN_DISTANCE = 10;
 const RACE_DATA_SELECTED_VISIBLE_MS = 5200;
-const RACE_ALERT_VISIBLE_MS = 7600;
-const RACE_ALERT_LIMIT = 4;
-const RACE_IDLE_QUOTE_INTERVAL = 8.8;
+const RADIO_BREAK_MIN_MS = 4800;
+const RADIO_BREAK_MAX_MS = 11800;
+const RADIO_VISIBLE_MIN_MS = 6200;
+const RADIO_VISIBLE_MAX_MS = 9200;
 const PROJECT_DRIVERS = CHAMPIONSHIP_PROJECT_DRIVERS;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 const lerp = (start, end, amount) => start + (end - start) * amount;
 const DRIVER_BY_ID = new Map(PROJECT_DRIVERS.map((driver) => [driver.id, driver]));
+
+function createPageTrackSeed() {
+  const values = new Uint32Array(1);
+  try {
+    globalThis.crypto?.getRandomValues?.(values);
+  } catch {
+    values[0] = 0;
+  }
+  return (values[0] || Math.floor(Date.now() + performance.now() * 1000)) >>> 0;
+}
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -118,11 +129,17 @@ class F1SimulatorApp {
     this.carSprites = new Map();
     this.carHitAreas = new Map();
     this.drsTrails = new Map();
+    this.trackSeed = createPageTrackSeed();
     this.selectedId = PROJECT_DRIVERS[0]?.id ?? null;
     this.activeRaceDataId = this.selectedId;
     this.lastRaceDataInteraction = performance.now();
-    this.raceAlerts = [];
-    this.seenAlertKeys = new Set();
+    this.radioRandomState = (this.trackSeed ^ 0x9e3779b9) >>> 0;
+    this.radioState = {
+      visible: false,
+      nextChangeAt: this.lastRaceDataInteraction + this.randomRadioRange(RADIO_BREAK_MIN_MS, RADIO_BREAK_MAX_MS),
+      driverIndex: 0,
+      quoteIndex: 0,
+    };
     this.camera = {
       mode: 'leader',
       zoom: CAMERA_PRESETS.leader,
@@ -142,7 +159,7 @@ class F1SimulatorApp {
   }
 
   async init() {
-    this.sim = createRaceSimulation({ seed: 1971, drivers: PROJECT_DRIVERS, totalLaps: 10 });
+    this.sim = createRaceSimulation({ seed: 1971, trackSeed: this.trackSeed, drivers: PROJECT_DRIVERS, totalLaps: 10 });
     this.app = new Application();
     await this.app.init({
       resizeTo: this.canvasHost,
@@ -251,12 +268,11 @@ class F1SimulatorApp {
     });
 
     this.restartButton?.addEventListener('click', () => {
-      this.sim = createRaceSimulation({ seed: 1971, drivers: PROJECT_DRIVERS, totalLaps: 10 });
+      this.sim = createRaceSimulation({ seed: 1971, trackSeed: this.trackSeed, drivers: PROJECT_DRIVERS, totalLaps: 10 });
       this.selectedId = PROJECT_DRIVERS[0]?.id ?? null;
       this.activeRaceDataId = this.selectedId;
       this.lastRaceDataInteraction = performance.now();
-      this.raceAlerts = [];
-      this.seenAlertKeys.clear();
+      this.scheduleRadioBreak(this.lastRaceDataInteraction);
       this.safetyButton?.classList.remove('is-active');
       this.safetyButton?.setAttribute('aria-pressed', 'false');
       this.drsTrails.clear();
@@ -530,9 +546,9 @@ class F1SimulatorApp {
     const contactCount = snapshot.events.filter((event) => event.type === 'contact').length;
     const now = performance.now();
 
-    this.captureRaceAlerts(snapshot, now);
     if (this.activeRaceDataId && now - this.lastRaceDataInteraction > RACE_DATA_SELECTED_VISIBLE_MS) {
       this.activeRaceDataId = null;
+      this.scheduleRadioBreak(now);
     }
 
     if (this.readouts.mode) {
@@ -575,7 +591,7 @@ class F1SimulatorApp {
     if (activeRaceDataCar) {
       this.renderRaceData(activeRaceDataCar);
     } else {
-      this.renderRaceAlerts(snapshot, { leader, activeDrs, contactCount });
+      this.renderProjectRadio(now);
     }
   }
 
@@ -598,6 +614,7 @@ class F1SimulatorApp {
     this.selectedId = id;
     this.activeRaceDataId = id;
     this.lastRaceDataInteraction = performance.now();
+    this.scheduleRadioBreak(this.lastRaceDataInteraction);
     if (focus) {
       this.camera.mode = 'selected';
       this.camera.zoom = CAMERA_PRESETS.selected;
@@ -660,10 +677,10 @@ class F1SimulatorApp {
     if (!driver) return;
 
     this.readouts.raceDataPanel.style.setProperty('--driver-color', driver.color);
+    this.readouts.raceDataPanel.classList.remove('is-hidden');
     this.readouts.raceDataPanel.classList.add('is-project-mode');
-    this.readouts.raceDataPanel.classList.remove('is-alert-mode');
+    this.readouts.raceDataPanel.classList.remove('is-radio-mode');
     this.readouts.raceDataPanel.removeAttribute('data-idle-mode');
-    this.readouts.raceDataPanel.removeAttribute('data-alert-tone');
     if (this.readouts.raceDataKicker) this.readouts.raceDataKicker.textContent = 'Project';
     this.readouts.raceDataTitle.textContent = driver.name;
     if (this.readouts.raceDataCode) this.readouts.raceDataCode.textContent = `${car.code} P${car.rank}`;
@@ -685,108 +702,77 @@ class F1SimulatorApp {
     }
   }
 
-  captureRaceAlerts(snapshot, now = performance.now()) {
-    snapshot.events.forEach((event) => {
-      const key = `${event.type}:${event.at}:${event.carId ?? ''}:${event.otherCarId ?? ''}`;
-      if (this.seenAlertKeys.has(key)) return;
-      this.seenAlertKeys.add(key);
-
-      const alert = this.describeRaceEvent(event, snapshot);
-      if (alert) {
-        this.raceAlerts.unshift({
-          ...alert,
-          createdAt: now,
-        });
-      }
-    });
-
-    this.raceAlerts = this.raceAlerts
-      .filter((alert) => now - alert.createdAt <= RACE_ALERT_VISIBLE_MS)
-      .slice(0, RACE_ALERT_LIMIT);
-
-    if (this.seenAlertKeys.size > 80) {
-      this.seenAlertKeys = new Set(Array.from(this.seenAlertKeys).slice(-40));
-    }
-  }
-
-  describeRaceEvent(event, snapshot) {
-    if (event.type === 'safety-car') {
-      return {
-        tone: 'safety',
-        color: '#ffd400',
-        title: 'Safety car',
-        subtitle: `Field neutralized - DRS disabled - lap ${snapshot.cars[0]?.lap ?? 1}/${snapshot.totalLaps}`,
-      };
-    }
-
-    if (event.type === 'green-flag') {
-      return {
-        tone: 'green',
-        color: '#20d66b',
-        title: 'Green flag',
-        subtitle: `Racing resumed - DRS armed - lap ${snapshot.cars[0]?.lap ?? 1}/${snapshot.totalLaps}`,
-      };
-    }
-
-    if (event.type === 'contact') {
-      const first = snapshot.cars.find((car) => car.id === event.carId);
-      const second = snapshot.cars.find((car) => car.id === event.otherCarId);
-      return {
-        tone: 'contact',
-        color: '#ff2f5f',
-        title: 'Contact reported',
-        subtitle: `${first?.code ?? 'CAR'} / ${second?.code ?? 'CAR'} under race-control review`,
-      };
-    }
-
-    return null;
-  }
-
-  renderRaceAlerts(snapshot, { leader, activeDrs, contactCount }) {
+  renderProjectRadio(now = performance.now()) {
     if (!this.readouts.raceDataPanel) return;
-    const now = performance.now();
-    const recentContactCount = this.raceAlerts
-      .filter((alert) => alert.tone === 'contact' && now - alert.createdAt <= RACE_ALERT_VISIBLE_MS)
-      .length;
-    const latestAlert = this.raceAlerts[0];
-    const fallbackAlert = snapshot.raceControl.mode === 'safety-car'
-      ? {
-        tone: 'safety',
-        color: '#ffd400',
-        title: 'Safety car',
-        subtitle: `Field in order - DRS disabled - contacts ${recentContactCount || contactCount}`,
-      }
-      : null;
-    const idleInfo = this.getIdleProjectQuote(snapshot);
-    const alert = latestAlert ?? fallbackAlert ?? idleInfo;
-
-    this.readouts.raceDataPanel.style.setProperty('--driver-color', alert.color);
-    this.readouts.raceDataPanel.classList.add('is-alert-mode');
-    this.readouts.raceDataPanel.classList.remove('is-project-mode');
-    this.readouts.raceDataPanel.dataset.alertTone = alert.tone;
-    this.readouts.raceDataPanel.dataset.idleMode = alert.kind === 'quote' ? 'quote' : 'alert';
-    if (this.readouts.raceDataKicker) {
-      this.readouts.raceDataKicker.textContent = alert.kind === 'quote' ? 'Project radio' : 'Race alert';
+    this.updateRadioSchedule(now);
+    if (!this.radioState.visible) {
+      this.hideRaceDataPanel();
+      return;
     }
-    this.readouts.raceDataTitle.textContent = alert.title;
+
+    const radio = this.getProjectRadioQuote();
+
+    this.readouts.raceDataPanel.style.setProperty('--driver-color', radio.color);
+    this.readouts.raceDataPanel.classList.remove('is-hidden');
+    this.readouts.raceDataPanel.classList.add('is-radio-mode');
+    this.readouts.raceDataPanel.classList.remove('is-project-mode');
+    this.readouts.raceDataPanel.dataset.idleMode = 'quote';
+    if (this.readouts.raceDataKicker) this.readouts.raceDataKicker.textContent = 'Project radio';
+    this.readouts.raceDataTitle.textContent = radio.title;
     if (this.readouts.raceDataNumber) this.readouts.raceDataNumber.textContent = '';
-    if (this.readouts.raceDataSubtitle) this.readouts.raceDataSubtitle.textContent = alert.subtitle;
+    if (this.readouts.raceDataSubtitle) this.readouts.raceDataSubtitle.textContent = radio.subtitle;
     if (this.readouts.raceDataLink) {
       this.readouts.raceDataLink.hidden = true;
       this.readouts.raceDataLink.removeAttribute('href');
     }
   }
 
-  getIdleProjectQuote(snapshot) {
-    const index = Math.floor(snapshot.time / RACE_IDLE_QUOTE_INTERVAL) % PROJECT_DRIVERS.length;
-    const driver = PROJECT_DRIVERS[index] ?? PROJECT_DRIVERS[0];
-    const quoteIndex = Math.floor(snapshot.time / (RACE_IDLE_QUOTE_INTERVAL * PROJECT_DRIVERS.length))
-      % Math.max(1, driver.raceData?.length ?? 1);
-    const quote = driver.raceData?.[quoteIndex] ?? 'Project entry';
+  hideRaceDataPanel() {
+    this.readouts.raceDataPanel.classList.add('is-hidden');
+    this.readouts.raceDataPanel.classList.remove('is-project-mode', 'is-radio-mode');
+    this.readouts.raceDataPanel.removeAttribute('data-idle-mode');
+    if (this.readouts.raceDataLink) this.readouts.raceDataLink.hidden = true;
+  }
+
+  updateRadioSchedule(now) {
+    while (now >= this.radioState.nextChangeAt) {
+      if (this.radioState.visible) {
+        this.scheduleRadioBreak(this.radioState.nextChangeAt);
+      } else {
+        this.scheduleRadioPopup(this.radioState.nextChangeAt);
+      }
+    }
+  }
+
+  scheduleRadioBreak(now) {
+    this.radioState.visible = false;
+    this.radioState.nextChangeAt = now + this.randomRadioRange(RADIO_BREAK_MIN_MS, RADIO_BREAK_MAX_MS);
+  }
+
+  scheduleRadioPopup(now) {
+    const driverIndex = Math.floor(this.nextRadioRandom() * PROJECT_DRIVERS.length);
+    const driver = PROJECT_DRIVERS[driverIndex] ?? PROJECT_DRIVERS[0];
+    const quoteCount = Math.max(1, driver.raceData?.length ?? 1);
+    this.radioState.visible = true;
+    this.radioState.driverIndex = driverIndex;
+    this.radioState.quoteIndex = Math.floor(this.nextRadioRandom() * quoteCount);
+    this.radioState.nextChangeAt = now + this.randomRadioRange(RADIO_VISIBLE_MIN_MS, RADIO_VISIBLE_MAX_MS);
+  }
+
+  randomRadioRange(min, max) {
+    return min + this.nextRadioRandom() * (max - min);
+  }
+
+  nextRadioRandom() {
+    this.radioRandomState = (Math.imul(1664525, this.radioRandomState) + 1013904223) >>> 0;
+    return this.radioRandomState / 0x100000000;
+  }
+
+  getProjectRadioQuote() {
+    const driver = PROJECT_DRIVERS[this.radioState.driverIndex] ?? PROJECT_DRIVERS[0];
+    const quote = driver.raceData?.[this.radioState.quoteIndex] ?? 'Project entry';
 
     return {
-      kind: 'quote',
-      tone: 'quote',
       color: driver.color,
       title: driver.name,
       subtitle: `${driver.code} - "${quote}"`,

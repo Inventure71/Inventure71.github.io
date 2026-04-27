@@ -20,6 +20,10 @@ function run(sim, seconds, dt = 1 / 60) {
   return contactCount;
 }
 
+function trackSignature(track) {
+  return track.centerlineControls.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join('|');
+}
+
 function polygonsOverlap(a, b) {
   const axes = [a, b].flatMap((corners) => [
     normalize({ x: corners[1].x - corners[0].x, y: corners[1].y - corners[0].y }),
@@ -121,6 +125,30 @@ describe('vehicle physics race simulation', () => {
 
     expect(first.snapshot().cars).toHaveLength(drivers.length);
     expect(signature(first.snapshot())).toEqual(signature(second.snapshot()));
+  });
+
+  test('runs deterministically on generated track seeds while changing circuit geometry', () => {
+    const first = createRaceSimulation({ seed: 71, trackSeed: 10101, drivers, totalLaps: 4 });
+    const repeated = createRaceSimulation({ seed: 71, trackSeed: 10101, drivers, totalLaps: 4 });
+    const differentTrack = createRaceSimulation({ seed: 71, trackSeed: 20202, drivers, totalLaps: 4 });
+
+    expect(trackSignature(first.snapshot().track)).toBe(trackSignature(repeated.snapshot().track));
+    expect(trackSignature(first.snapshot().track)).not.toBe(trackSignature(differentTrack.snapshot().track));
+
+    run(first, 4);
+    run(repeated, 4);
+
+    const compactState = (snapshot) => snapshot.cars.map((car) => ({
+      id: car.id,
+      x: Number(car.x.toFixed(2)),
+      y: Number(car.y.toFixed(2)),
+      raceDistance: Number(car.raceDistance.toFixed(2)),
+      surface: car.surface,
+    }));
+
+    expect(first.snapshot().track.drsZones).toHaveLength(3);
+    expect(compactState(first.snapshot())).toEqual(compactState(repeated.snapshot()));
+    expect(first.snapshot().cars.every((car) => car.surface === 'track')).toBe(true);
   });
 
   test('resolves oriented car collisions so bodies cannot phase through each other', () => {
