@@ -1222,18 +1222,18 @@ body.playfolio-page {
 .pf-paddock-layout {
   position: relative;
   isolation: isolate;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  min-height: clamp(620px, 74vh, 880px);
   padding: 0.9rem;
   background: transparent;
   overflow: hidden;
 }
 
+.pf-paddock-grid {
+  min-height: clamp(620px, 74vh, 880px);
+}
+
 .pf-paddock-timing,
 .pf-paddock-race,
-.pf-paddock-safety,
-.pf-paddock-radio {
+.pf-paddock-safety {
   min-width: 0;
   min-height: 0;
   transition: opacity 220ms ease, transform 220ms ease;
@@ -1242,11 +1242,9 @@ body.playfolio-page {
 .pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-timing,
 .pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-race,
 .pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-safety,
-.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-radio,
 .pf-paddock-layout[data-simulator-state="error"] .pf-paddock-timing,
 .pf-paddock-layout[data-simulator-state="error"] .pf-paddock-race,
-.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-safety,
-.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-radio {
+.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-safety {
   opacity: 0;
   transform: scale(0.985);
   pointer-events: none;
@@ -1332,19 +1330,9 @@ body.playfolio-page {
 
 .pf-paddock-race,
 .pf-paddock-timing,
-.pf-paddock-safety,
-.pf-paddock-radio {
-  grid-column: 1;
+.pf-paddock-safety {
+  grid-column: 1 / -1;
   grid-row: 1;
-}
-
-.pf-paddock-race .sim-canvas-panel {
-  width: 100%;
-  height: 100%;
-}
-
-.pf-paddock-race .sim-canvas-panel {
-  min-height: clamp(560px, 72vh, 840px);
 }
 
 .pf-paddock-timing {
@@ -1372,17 +1360,6 @@ body.playfolio-page {
   pointer-events: auto;
 }
 
-.pf-paddock-radio {
-  position: relative;
-  z-index: 3;
-  background: transparent;
-  pointer-events: none;
-}
-
-.pf-paddock-radio .race-data-panel {
-  pointer-events: auto;
-}
-
 @media (max-width: 1024px) {
   .project-race-page .f1-broadcast-layout {
     grid-template-columns: 1fr;
@@ -1400,37 +1377,24 @@ body.playfolio-page {
     flex: 0 0 auto;
   }
 
-  .pf-paddock-layout {
-    grid-template-columns: 1fr;
-  }
-
   .pf-paddock-race {
-    grid-column: 1;
+    grid-column: 1 / -1;
     grid-row: 1;
   }
 
-  .pf-paddock-safety,
-  .pf-paddock-radio {
-    grid-column: 1;
+  .pf-paddock-safety {
+    grid-column: 1 / -1;
     grid-row: 1;
   }
 
   .pf-paddock-race,
-  .pf-paddock-safety,
-  .pf-paddock-radio {
+  .pf-paddock-safety {
     order: -1;
   }
 
   .pf-paddock-timing {
     grid-column: 1;
     grid-row: 2;
-    justify-self: stretch;
-    width: auto;
-    margin: 0.9rem 0 0;
-  }
-
-  .pf-paddock-timing .sim-timing {
-    min-height: 420px;
   }
 }
 
