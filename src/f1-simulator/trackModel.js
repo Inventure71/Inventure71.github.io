@@ -13,9 +13,9 @@ export const TRACK = {
   runoffWidth: 260,
   sampleCount: 3600,
   drsZones: [
-    { id: 'main-straight', startRatio: 0.02, endRatio: 0.14 },
-    { id: 'back-straight', startRatio: 0.43, endRatio: 0.56 },
-    { id: 'harbor-straight', startRatio: 0.82, endRatio: 0.93 },
+    { id: 'main-straight', startRatio: 0.02, endRatio: 0.18 },
+    { id: 'back-straight', startRatio: 0.43, endRatio: 0.60 },
+    { id: 'harbor-straight', startRatio: 0.82, endRatio: 0.96 },
   ],
 };
 
@@ -353,7 +353,7 @@ function scoreStraightWindow(samples, startIndex, windowSize) {
 
 function deriveDrsZones(samples, totalLength) {
   const usableSampleCount = samples.length - 1;
-  const windowSize = Math.max(80, Math.floor(usableSampleCount * 0.055));
+  const windowSize = Math.max(96, Math.floor(usableSampleCount * 0.07));
   const candidates = [];
 
   for (let index = 0; index < usableSampleCount; index += Math.floor(windowSize / 2)) {
@@ -365,7 +365,7 @@ function deriveDrsZones(samples, totalLength) {
     if (distance < 360) continue;
     candidates.push({
       startRatio: start.distance / totalLength,
-      endRatio: (start.distance + Math.min(distance, totalLength * 0.12)) / totalLength,
+      endRatio: (start.distance + Math.min(distance, totalLength * 0.16)) / totalLength,
       score: scoreStraightWindow(samples, index, windowSize),
     });
   }

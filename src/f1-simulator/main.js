@@ -604,7 +604,7 @@ class F1SimulatorApp {
       now - this.lastTimingRenderTime >= TIMING_UPDATE_INTERVAL_MS ||
       this.lastTimingRaceMode !== snapshot.raceControl.mode
     ) {
-      this.renderTiming(snapshot.cars, leader, snapshot.raceControl.mode);
+      this.renderTiming(snapshot.cars, snapshot.raceControl.mode);
       this.lastTimingRenderTime = now;
       this.lastTimingRaceMode = snapshot.raceControl.mode;
     }
@@ -669,9 +669,8 @@ class F1SimulatorApp {
     this.updateDom(this.sim.snapshot());
   }
 
-  renderTiming(cars, leader, raceMode) {
+  renderTiming(cars, raceMode) {
     if (!this.timingList) return;
-    const leaderDistance = leader?.raceDistance ?? 0;
     this.timingList.innerHTML = cars.map((car) => {
       const driver = DRIVER_BY_ID.get(car.id);
       let gap = 'Leader';
@@ -680,7 +679,7 @@ class F1SimulatorApp {
       } else if (raceMode === 'pre-start') {
         gap = car.rank === 1 ? 'Pole' : 'Grid';
       } else if (car.rank > 1) {
-        gap = `+${Math.max(0, (leaderDistance - car.raceDistance) / Math.max(car.speed, 1)).toFixed(3)}`;
+        gap = `+${Math.max(0, car.leaderGapSeconds ?? 0).toFixed(3)}`;
       }
       const tire = car.tire ?? driver?.tire ?? 'M';
       const timingCode = car.timingCode ?? driver?.timingCode ?? car.code;

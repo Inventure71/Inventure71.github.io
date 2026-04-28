@@ -7,7 +7,8 @@ import {
   TRACK,
   WORLD,
 } from './trackModel.js';
-import { clamp, createMulberry32, normalizeAngle, seededRange, TWO_PI, wrapDistance } from './simMath.js';
+import { buildDriverPersonality, decideDriverControls } from './driverController.js';
+import { clamp, createMulberry32, normalizeAngle, seededRange, wrapDistance } from './simMath.js';
 import { getCarCorners, integrateVehiclePhysics, VEHICLE_LIMITS } from './vehiclePhysics.js';
 
 const DEFAULT_TOTAL_LAPS = 10;
@@ -15,6 +16,8 @@ const MAX_COLLISION_CORRECTION = 4.5;
 const GRID_SLOT_SPACING = 82;
 const GRID_FIRST_SLOT_DISTANCE = -42;
 const GRID_LATERAL_OFFSET = 42;
+const TIMING_HISTORY_WINDOW_SECONDS = 18;
+const TIMING_HISTORY_MAX_SAMPLES = 720;
 
 export const DEFAULT_RULES = {
   drsDetectionSeconds: 1,
@@ -27,32 +30,6 @@ export const DEFAULT_RULES = {
   startLightInterval: 0.72,
   startLightsOutHold: 0.78,
 };
-
-const LANE_OFFSETS = [-78, -52, -26, 0, 26, 52, 78];
-
-function buildDriverPersonality(driver, index, racecraft, random) {
-  const numberSeed = Number(driver.driverNumber ?? index + 1);
-  const numberBias = (((Number.isFinite(numberSeed) ? numberSeed : index + 1) % 11) - 5) * 0.014;
-  const baseAggression = clamp(
-    driver.personality?.aggression ?? 0.36 + racecraft * 0.34 + numberBias + seededRange(random, -0.045, 0.045),
-    0.18,
-    0.88,
-  );
-
-  return {
-    baseAggression,
-    riskTolerance: clamp(
-      driver.personality?.riskTolerance ?? baseAggression * 0.72 + racecraft * 0.24 + seededRange(random, -0.04, 0.04),
-      0.12,
-      0.95,
-    ),
-    patience: clamp(
-      driver.personality?.patience ?? 0.72 - baseAggression * 0.36 + racecraft * 0.12 + seededRange(random, -0.05, 0.05),
-      0.18,
-      0.9,
-    ),
-  };
-}
 
 function wrapProgress(value, length) {
   return wrapDistance(value, length);
@@ -77,11 +54,6 @@ function isProgressInZone(track, progress, zone) {
   return end >= start
     ? wrapped >= start && wrapped <= end
     : wrapped >= start || wrapped <= end;
-}
-
-function angleToPoint(car, target) {
-  const angle = Math.atan2(target.y - car.y, target.x - car.x);
-  return normalizeAngle(angle - car.heading);
 }
 
 function createCar(driver, index, random, track, { standingStart = false } = {}) {
@@ -137,10 +109,13 @@ function createCar(driver, index, random, track, { standingStart = false } = {})
     rank: index + 1,
     gapAhead: Infinity,
     gapAheadSeconds: Infinity,
+    leaderGapSeconds: 0,
     drsEligible: false,
     drsActive: false,
     drsZoneId: null,
     drsZoneEnabled: false,
+    timingHistory: [],
+    drsDetection: {},
     canAttack: true,
     trackState: start,
     contactCooldown: 0,
@@ -240,6 +215,76 @@ function progressDelta(a, b, trackLength) {
   return delta;
 }
 
+function trimTimingHistory(history, currentTime) {
+  const cutoff = currentTime - TIMING_HISTORY_WINDOW_SECONDS;
+  while (history.length > 2 && (history[0].time < cutoff || history.length > TIMING_HISTORY_MAX_SAMPLES)) {
+    history.shift();
+  }
+}
+
+function resetTimingHistory(car, currentTime) {
+  car.timingHistory = [{ time: currentTime, raceDistance: car.raceDistance }];
+}
+
+function recordTimingSample(car, currentTime) {
+  if (!Number.isFinite(car.raceDistance)) return;
+  if (!Array.isArray(car.timingHistory)) {
+    resetTimingHistory(car, currentTime);
+    return;
+  }
+
+  const previous = car.timingHistory[car.timingHistory.length - 1];
+  if (
+    previous &&
+    Math.abs(previous.time - currentTime) <= 1e-6 &&
+    Math.abs(previous.raceDistance - car.raceDistance) <= 1e-3
+  ) {
+    return;
+  }
+
+  car.timingHistory.push({ time: currentTime, raceDistance: car.raceDistance });
+  trimTimingHistory(car.timingHistory, currentTime);
+}
+
+function interpolateTimeAtDistance(history, targetDistance) {
+  if (!Array.isArray(history) || history.length < 2) return null;
+
+  for (let index = history.length - 1; index > 0; index -= 1) {
+    const current = history[index];
+    const previous = history[index - 1];
+    if (targetDistance < previous.raceDistance || targetDistance > current.raceDistance) continue;
+
+    const coveredDistance = current.raceDistance - previous.raceDistance;
+    if (coveredDistance <= 1e-6) return current.time;
+    const ratio = (targetDistance - previous.raceDistance) / coveredDistance;
+    return previous.time + (current.time - previous.time) * ratio;
+  }
+
+  return null;
+}
+
+function estimateGapAheadSeconds(ahead, car, currentTime) {
+  if (!ahead) return Infinity;
+
+  const crossingTime = interpolateTimeAtDistance(ahead.timingHistory, car.raceDistance);
+  if (Number.isFinite(crossingTime)) {
+    return Math.max(0, currentTime - crossingTime);
+  }
+
+  const speedReference = Math.max((ahead.speed + car.speed) * 0.5, 1);
+  return Math.max(0, (ahead.raceDistance - car.raceDistance) / speedReference);
+}
+
+function recordDrsDetection(car, zoneId, currentTime) {
+  const previous = car.drsDetection?.[zoneId] ?? { passage: 0, time: -Infinity };
+  const next = { passage: previous.passage + 1, time: currentTime };
+  car.drsDetection = {
+    ...(car.drsDetection ?? {}),
+    [zoneId]: next,
+  };
+  return next;
+}
+
 function serializeCar(car, rank) {
   return {
     id: car.id,
@@ -285,6 +330,7 @@ function serializeCar(car, rank) {
     lap: car.lap,
     gapAhead: car.gapAhead,
     gapAheadSeconds: car.gapAheadSeconds,
+    leaderGapSeconds: car.leaderGapSeconds,
     drsEligible: car.drsEligible,
     drsActive: car.drsActive,
     drsZoneId: car.drsZoneId,
@@ -338,6 +384,7 @@ export class F1RaceSimulation {
       standingStart: this.raceControl.mode === 'pre-start',
     }));
     this.recalculateRaceState({ updateDrs: false });
+    this.cars.forEach((car) => resetTimingHistory(car, this.time));
   }
 
   setSafetyCar(deployed) {
@@ -387,6 +434,12 @@ export class F1RaceSimulation {
     car.raceDistance = (car.raceDistance ?? car.trackState.distance) + delta;
     car.progress = car.trackState.distance;
     car.lap = this.computeLap(car.raceDistance);
+    car.drsZoneId = null;
+    car.drsZoneEnabled = false;
+    car.drsActive = false;
+    car.drsEligible = false;
+    car.drsDetection = {};
+    resetTimingHistory(car, this.time);
     this.recalculateRaceState({ updateDrs: false });
   }
 
@@ -418,12 +471,18 @@ export class F1RaceSimulation {
 
     this.updateSafetyCar(delta);
 
-    this.orderedCars().forEach((car, index) => {
+    const orderedCars = this.orderedCars();
+    const raceContext = this.driverRaceContext(orderedCars);
+    orderedCars.forEach((car, index) => {
       car.previousX = car.x;
       car.previousY = car.y;
       car.previousHeading = car.heading;
       car.previousProgress = car.progress;
-      const controls = car.manualControls ?? this.computeDriverControls(car, index);
+      const controls = decideDriverControls({
+        car,
+        orderIndex: index,
+        race: raceContext,
+      });
       integrateVehiclePhysics(car, controls, delta);
       this.applyRunoffResponse(car);
       car.contactCooldown = Math.max(0, car.contactCooldown - delta);
@@ -467,193 +526,14 @@ export class F1RaceSimulation {
     });
   }
 
-  computeDriverControls(car, orderIndex) {
-    if (car.gridLocked) {
-      return { steering: 0, throttle: 0, brake: 1 };
-    }
-
-    if (this.safetyCar.deployed) {
-      return this.computeSafetyCarControls(car, orderIndex);
-    }
-
-    if (!car.trackState.onTrack) {
-      return this.computeRejoinControls(car);
-    }
-
-    const aggression = car.aggression ?? car.personality?.baseAggression ?? 0.5;
-    const lookahead = clamp(car.speed * (1.12 - aggression * 0.08) + 160, 160, 360);
-    const targetBase = pointAt(this.track, car.progress + lookahead);
-    const lanePlan = this.planRacingLine(car, orderIndex);
-    const recoveryBias = car.trackState.crossTrackError > this.track.width * 0.46 ? 0 : 1;
-    const target = offsetTrackPoint(targetBase, lanePlan.offset * recoveryBias);
-    const angleError = angleToPoint(car, target);
-    const curvature = Math.max(car.trackState.curvature, targetBase.curvature);
-    const gripBudget = 54 + car.racecraft * 11 + (car.tireEnergy ?? 100) * 0.05 + aggression * 4.5;
-    const cornerTarget = clamp(
-      Math.sqrt(gripBudget / Math.max(curvature, 0.0001)) + (car.pace - 1) * 20 + aggression * 7,
-      72,
-      168,
-    );
-    const edgeTolerance = this.track.width * (0.36 + aggression * 0.1);
-    const edgePenalty = Math.max(0, car.trackState.crossTrackError - edgeTolerance) * (0.16 - aggression * 0.05);
-    const trafficPenalty = Math.max(
-      lanePlan.sameLaneAhead ? clamp((230 - lanePlan.sameLaneAhead.gap) * 0.16, 0, 32) : 0,
-      lanePlan.sideRisk ? clamp((44 - lanePlan.sideRisk.lateral) * 0.42, 0, 16) : 0,
-    ) * (1 - aggression * 0.28);
-    const desiredSpeed = clamp(
-      (car.drsActive ? cornerTarget + 22 : cornerTarget) - edgePenalty - trafficPenalty,
-      58,
-      VEHICLE_LIMITS.maxSpeed,
-    );
-    const speedError = desiredSpeed - car.speed;
-
+  driverRaceContext(orderedCars = this.orderedCars()) {
     return {
-      steering: clamp(angleError * (0.82 + car.racecraft * 0.1), -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
-      throttle: speedError > 1 ? clamp(speedError / 16, 0.1 + aggression * 0.08, 1) : 0,
-      brake: speedError < -2 ? clamp(Math.abs(speedError) / (22 + aggression * 8), 0, 1) : 0,
+      track: this.track,
+      cars: this.cars,
+      orderedCars,
+      safetyCar: this.safetyCar,
+      rules: this.rules,
     };
-  }
-
-  computeRejoinControls(car) {
-    const lookahead = clamp(car.speed * 0.72 + 118, 118, 220);
-    const targetBase = pointAt(this.track, car.progress + lookahead);
-    const target = offsetTrackPoint(targetBase, 0);
-    const angleError = angleToPoint(car, target);
-    const distanceFromRoad = Math.max(0, car.trackState.crossTrackError - this.track.width / 2);
-    const surfaceTargetSpeed = car.trackState.surface === 'gravel'
-      ? 54
-      : car.trackState.surface === 'grass'
-        ? 44
-        : 30;
-    const desiredSpeed = clamp(surfaceTargetSpeed - distanceFromRoad * 0.045, 20, surfaceTargetSpeed);
-    const speedError = desiredSpeed - car.speed;
-    const alignment = clamp(1 - Math.abs(angleError) / Math.PI, 0.28, 1);
-    const lowSpeedRecovery = car.speed < 18 ? 0.16 : 0;
-    const throttleLimit = car.trackState.surface === 'gravel' ? 0.62 : 0.48;
-
-    return {
-      steering: clamp(angleError * 0.92, -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
-      throttle: speedError > 0
-        ? clamp((speedError / 24) * alignment + lowSpeedRecovery, 0.08, throttleLimit)
-        : lowSpeedRecovery,
-      brake: speedError < -5 ? clamp(Math.abs(speedError) / 30, 0.04, 0.74) : 0,
-    };
-  }
-
-  computeSafetyCarControls(car, orderIndex) {
-    const queueSlot = this.safetyCar.progress - this.rules.safetyCarLeadDistance - orderIndex * this.rules.safetyCarGap;
-    const lookahead = clamp(car.speed * 0.8 + 74, 84, 148);
-    const targetBase = pointAt(this.track, car.progress + lookahead);
-    const target = offsetTrackPoint(targetBase, 0);
-    const slotError = queueSlot - car.raceDistance;
-    const desiredSpeed = clamp(
-      this.rules.safetyCarSpeed + slotError * 0.24,
-      22,
-      this.rules.safetyCarSpeed + 32,
-    );
-    const speedError = desiredSpeed - car.speed;
-
-    return {
-      steering: clamp(angleToPoint(car, target) * 1.04, -VEHICLE_LIMITS.maxSteer, VEHICLE_LIMITS.maxSteer),
-      throttle: speedError > 1 ? clamp(speedError / 16, 0, 0.5) : 0,
-      brake: speedError < -0.5 ? clamp(Math.abs(speedError) / 14, 0, 1) : 0,
-    };
-  }
-
-  planRacingLine(car, orderIndex) {
-    const aggression = car.aggression ?? car.personality?.baseAggression ?? 0.5;
-    const riskTolerance = car.personality?.riskTolerance ?? aggression;
-    const trackLimit = this.track.width / 2 - VEHICLE_LIMITS.carWidth * clamp(1.22 - aggression * 0.34, 0.84, 1.22);
-    const preferred = Math.sin((car.index / Math.max(1, this.cars.length)) * TWO_PI) * 26;
-    const currentOffset = clamp(car.desiredOffset ?? preferred, -trackLimit, trackLimit);
-    const ahead = this.orderedCars()[orderIndex - 1];
-    const traffic = this.scanNearbyTraffic(car);
-
-    let bestOffset = currentOffset;
-    let bestScore = -Infinity;
-
-    LANE_OFFSETS.forEach((rawOffset) => {
-      const offset = clamp(rawOffset, -trackLimit, trackLimit);
-      const edgeClearance = trackLimit - Math.abs(offset);
-      let score = 80;
-      score -= Math.abs(offset - preferred) * 0.18;
-      score -= Math.abs(offset - currentOffset) * (0.09 - aggression * 0.025);
-      score -= Math.max(0, 18 - edgeClearance) * (0.92 - aggression * 0.42);
-
-      traffic.forEach((entry) => {
-        const lateral = Math.abs(entry.signedOffset - offset);
-        if (entry.gap > 0 && entry.gap < 260) {
-          const overlapRisk = clamp(58 - lateral, 0, 58);
-          score -= overlapRisk * (260 - entry.gap) * 0.038 * (1 - riskTolerance * 0.34);
-          if (entry.gap < 190 + aggression * 70 && lateral > 34 - aggression * 8) {
-            score += Math.min(30 + aggression * 18, lateral - (28 - aggression * 6)) * (0.62 + aggression * 0.82);
-          }
-        } else if (entry.gap <= 0 && entry.gap > -74) {
-          const sideOverlapRisk = clamp(52 - lateral, 0, 52);
-          score -= sideOverlapRisk * (74 + entry.gap) * 0.052 * (1 - riskTolerance * 0.22);
-        }
-      });
-
-      if (ahead && car.gapAhead < 230) {
-        const side = car.index % 2 === 0 ? -1 : 1;
-        const passSide = clamp(
-          (ahead.trackState.signedOffset * -0.65) + side * (48 + aggression * 42),
-          -trackLimit,
-          trackLimit,
-        );
-        score -= Math.abs(offset - passSide) * (0.09 + aggression * 0.08);
-      }
-
-      if (score > bestScore) {
-        bestScore = score;
-        bestOffset = offset;
-      }
-    });
-
-    const laneChangeRate = 0.72 + car.racecraft * 0.3 + aggression * 0.58;
-    car.desiredOffset = currentOffset + clamp(bestOffset - currentOffset, -laneChangeRate, laneChangeRate);
-
-    return {
-      offset: car.desiredOffset,
-      sameLaneAhead: this.findLaneTrafficAhead(traffic, car.desiredOffset, 230),
-      sideRisk: this.findLaneTrafficBeside(traffic, car.desiredOffset),
-    };
-  }
-
-  scanNearbyTraffic(car) {
-    return this.cars
-      .filter((other) => other !== car)
-      .map((other) => ({
-        car: other,
-        gap: other.raceDistance - car.raceDistance,
-        signedOffset: other.trackState?.signedOffset ?? 0,
-      }))
-      .filter((entry) => entry.gap > -82 && entry.gap < 280);
-  }
-
-  findLaneTrafficAhead(traffic, offset, maxDistance) {
-    let closest = null;
-
-    traffic.forEach((entry) => {
-      if (entry.gap <= 0 || entry.gap > maxDistance) return;
-      if (Math.abs(entry.signedOffset - offset) > 42) return;
-      if (!closest || entry.gap < closest.gap) closest = entry;
-    });
-
-    return closest;
-  }
-
-  findLaneTrafficBeside(traffic, offset) {
-    let closest = null;
-
-    traffic.forEach((entry) => {
-      const lateral = Math.abs(entry.signedOffset - offset);
-      if (Math.abs(entry.gap) > 58 || lateral > 44) return;
-      const risk = (58 - Math.abs(entry.gap)) + (44 - lateral);
-      if (!closest || risk > closest.risk) closest = { ...entry, lateral, risk };
-    });
-
-    return closest;
   }
 
   computeAggression(car, orderIndex = Math.max(0, (car.rank ?? 1) - 1)) {
@@ -793,20 +673,23 @@ export class F1RaceSimulation {
       car.lap = this.computeLap(car.raceDistance);
     });
 
+    this.cars.forEach((car) => recordTimingSample(car, this.time));
+
     const ordered = this.orderedCars();
     ordered.forEach((car, index) => {
       const ahead = ordered[index - 1];
       const gap = ahead ? ahead.raceDistance - car.raceDistance : Infinity;
       car.rank = index + 1;
       car.gapAhead = gap;
-      car.gapAheadSeconds = Number.isFinite(gap) ? gap / Math.max(car.speed, 1) : Infinity;
+      car.gapAheadSeconds = Number.isFinite(gap) ? estimateGapAheadSeconds(ahead, car, this.time) : Infinity;
+      car.leaderGapSeconds = ahead ? ahead.leaderGapSeconds + car.gapAheadSeconds : 0;
       car.canAttack = !this.safetyCar.deployed;
       car.aggression = this.computeAggression(car, index);
-      if (updateDrs) this.updateDrsLatch(car, index);
+      if (updateDrs) this.updateDrsLatch(car, ahead, index);
     });
   }
 
-  updateDrsLatch(car, orderIndex) {
+  updateDrsLatch(car, ahead, orderIndex) {
     if (this.safetyCar.deployed) {
       car.drsEligible = false;
       car.drsActive = false;
@@ -831,7 +714,15 @@ export class F1RaceSimulation {
       ));
       if (crossedZone) {
         car.drsZoneId = crossedZone.id;
-        car.drsZoneEnabled = orderIndex > 0 && car.gapAheadSeconds <= this.rules.drsDetectionSeconds;
+        const crossing = recordDrsDetection(car, crossedZone.id, this.time);
+        const aheadCrossing = ahead?.drsDetection?.[crossedZone.id];
+        car.drsZoneEnabled = Boolean(
+          orderIndex > 0 &&
+          aheadCrossing &&
+          aheadCrossing.passage === crossing.passage &&
+          crossing.time >= aheadCrossing.time &&
+          crossing.time - aheadCrossing.time <= this.rules.drsDetectionSeconds + 1e-6
+        );
       }
     }
 

@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+import { planRacingLine } from '../driverController.js';
 import { PROJECT_DRIVERS } from '../drivers.js';
 import { createRaceSimulation } from '../raceSimulation.js';
 import { buildTrackModel, offsetTrackPoint, pointAt, TRACK } from '../trackModel.js';
@@ -238,11 +239,11 @@ describe('vehicle physics race simulation', () => {
     const chaser = sim.cars.find((car) => car.id === 'chaser');
     chaser.desiredOffset = 0;
     chaser.aggression = 0.2;
-    const cautiousPlan = sim.planRacingLine(chaser, 1);
+    const cautiousPlan = planRacingLine(chaser, 1, sim.driverRaceContext());
 
     chaser.desiredOffset = 0;
     chaser.aggression = 0.92;
-    const aggressivePlan = sim.planRacingLine(chaser, 1);
+    const aggressivePlan = planRacingLine(chaser, 1, sim.driverRaceContext());
 
     expect(Math.abs(aggressivePlan.offset)).toBeGreaterThan(Math.abs(cautiousPlan.offset));
     expect(Math.abs(aggressivePlan.offset)).toBeGreaterThan(1.3);
@@ -447,6 +448,9 @@ describe('vehicle physics race simulation', () => {
       raceDistance: zone.start - 5,
       progress: chasingPoint.distance,
     });
+    sim.cars.find((car) => car.id === 'budget').drsDetection = {
+      [zone.id]: { passage: 1, time: sim.time },
+    };
 
     run(sim, 0.16);
     let snapshot = sim.snapshot();
@@ -485,6 +489,52 @@ describe('vehicle physics race simulation', () => {
 
     expect(chasing.drsActive).toBe(false);
     expect(chasing.drsZoneId).toBe(null);
+  });
+
+  test('estimates the gap to the car ahead from crossed track time, not the trailing car speed', () => {
+    const sim = createRaceSimulation({
+      seed: 57,
+      drivers: drivers.slice(0, 2),
+      totalLaps: 3,
+      rules: { standingStart: false },
+    });
+    const leader = sim.cars.find((car) => car.id === 'budget');
+    const chaser = sim.cars.find((car) => car.id === 'noir');
+    const leaderPoint = pointAt(sim.track, 1000);
+    const chaserPoint = pointAt(sim.track, 940);
+
+    sim.time = 12;
+    Object.assign(leader, {
+      x: leaderPoint.x,
+      y: leaderPoint.y,
+      heading: leaderPoint.heading,
+      speed: 60,
+      progress: leaderPoint.distance,
+      raceDistance: 1000,
+      timingHistory: [
+        { time: 11, raceDistance: 940 },
+        { time: 12, raceDistance: 1000 },
+      ],
+    });
+    Object.assign(chaser, {
+      x: chaserPoint.x,
+      y: chaserPoint.y,
+      heading: chaserPoint.heading,
+      speed: 120,
+      progress: chaserPoint.distance,
+      raceDistance: 940,
+      timingHistory: [
+        { time: 12, raceDistance: 940 },
+      ],
+    });
+
+    sim.recalculateRaceState({ updateDrs: false });
+    const snapshot = sim.snapshot();
+    const noir = snapshot.cars.find((car) => car.id === 'noir');
+    const trailingSpeedEstimate = noir.gapAhead / Math.max(noir.speed, 1);
+
+    expect(trailingSpeedEstimate).toBeLessThan(0.55);
+    expect(noir.gapAheadSeconds).toBeCloseTo(1, 1);
   });
 
   test('DRS cannot be gained after missing the detection point inside a zone', () => {

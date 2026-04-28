@@ -116,6 +116,15 @@ describe('track model', () => {
     expect(state.onTrack).toBe(false);
   });
 
+  test('keeps the handcrafted DRS zones long enough to cover the full main straights', () => {
+    const track = buildTrackModel(TRACK);
+    const zoneLengths = track.drsZones.map((zone) => (zone.end - zone.start) / track.length);
+
+    expect(zoneLengths[0]).toBeCloseTo(0.16, 6);
+    expect(zoneLengths[1]).toBeCloseTo(0.17, 6);
+    expect(zoneLengths[2]).toBeCloseTo(0.14, 6);
+  });
+
   test('generates deterministic but seed-distinct circuit definitions', () => {
     const first = createProceduralTrack(12345);
     const repeated = createProceduralTrack(12345);
