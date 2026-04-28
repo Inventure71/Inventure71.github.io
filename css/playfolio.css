@@ -15,6 +15,7 @@
   --pf-radius: 8px;
   --pf-max: 1180px;
   --pf-pad: clamp(1rem, 4vw, 2rem);
+  --pf-section-space: clamp(2.75rem, 6vw, 4.5rem);
 }
 
 :root[data-theme="dark"] {
@@ -201,7 +202,7 @@ body.playfolio-page {
   min-height: auto;
   display: grid;
   align-items: center;
-  padding-block: 1rem clamp(1rem, 2vw, 2rem) !important;
+  padding-block: var(--pf-section-space) !important;
 }
 
 .pf-hero-grid {
@@ -474,40 +475,6 @@ body.playfolio-page {
   line-height: 1.18;
 }
 
-.pf-meta-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  margin-top: clamp(1.15rem, 3vw, 2.25rem);
-  border: 1px solid var(--pf-line);
-  background: var(--pf-line);
-  border-radius: var(--pf-radius);
-  overflow: hidden;
-}
-
-.pf-meta-item {
-  min-height: 4.3rem;
-  padding: 0.9rem;
-  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface));
-  display: grid;
-  align-content: start;
-  gap: 0.38rem;
-}
-
-.pf-meta-k {
-  color: var(--pf-muted);
-  font-size: 0.76rem;
-  font-weight: 750;
-}
-
-.pf-meta-v {
-  display: block;
-  color: var(--pf-ink);
-  font-size: clamp(1rem, 2vw, 1.35rem);
-  font-weight: 800;
-  line-height: 1.05;
-}
-
 .pf-portrait-stage {
   position: relative;
   min-height: clamp(360px, 38vw, 450px);
@@ -556,15 +523,7 @@ body.playfolio-page {
 }
 
 .pf-section {
-  padding-block: clamp(2.5rem, 6vw, 4.5rem);
-}
-
-.pf-section + .pf-section {
-  padding-top: clamp(1.25rem, 3vw, 2rem);
-}
-
-.playfolio-page .pf-hero + .pf-section {
-  padding-top: clamp(0.75rem, 2vw, 1.25rem) !important;
+  padding-block: var(--pf-section-space);
 }
 
 .pf-section-head {
@@ -2075,7 +2034,6 @@ body.playfolio-page {
     width: 3.5rem;
   }
 
-  .pf-meta-strip,
   .pf-principles,
   .pf-contact-band {
     grid-template-columns: 1fr;
