@@ -1,4 +1,4 @@
-import { normalizeAngle } from './trackModel.js';
+import { clamp, normalizeAngle } from './simMath.js';
 
 const G = 9.80665;
 
@@ -10,8 +10,6 @@ export const VEHICLE_LIMITS = {
   carLength: 66,
   carWidth: 21,
 };
-
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 const SURFACE_MODEL = {
   track: { grip: 1, drag: 0, rollingResistance: 0 },

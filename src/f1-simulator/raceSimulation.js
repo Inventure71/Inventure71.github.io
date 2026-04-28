@@ -6,12 +6,11 @@ import {
   pointAt,
   TRACK,
   WORLD,
-  normalizeAngle,
 } from './trackModel.js';
+import { clamp, createMulberry32, normalizeAngle, seededRange, TWO_PI, wrapDistance } from './simMath.js';
 import { getCarCorners, integrateVehiclePhysics, VEHICLE_LIMITS } from './vehiclePhysics.js';
 
 const DEFAULT_TOTAL_LAPS = 10;
-const TWO_PI = Math.PI * 2;
 const MAX_COLLISION_CORRECTION = 4.5;
 const GRID_SLOT_SPACING = 82;
 const GRID_FIRST_SLOT_DISTANCE = -42;
@@ -29,23 +28,7 @@ export const DEFAULT_RULES = {
   startLightsOutHold: 0.78,
 };
 
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 const LANE_OFFSETS = [-78, -52, -26, 0, 26, 52, 78];
-
-function mulberry32(seed) {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function seededRange(random, min, max) {
-  return min + (max - min) * random();
-}
 
 function buildDriverPersonality(driver, index, racecraft, random) {
   const numberSeed = Number(driver.driverNumber ?? index + 1);
@@ -72,7 +55,7 @@ function buildDriverPersonality(driver, index, racecraft, random) {
 }
 
 function wrapProgress(value, length) {
-  return ((value % length) + length) % length;
+  return wrapDistance(value, length);
 }
 
 function distanceForward(from, to, length) {
@@ -319,7 +302,7 @@ function serializeCar(car, rank) {
 export class F1RaceSimulation {
   constructor({ seed = 1, drivers = [], totalLaps = DEFAULT_TOTAL_LAPS, rules = {}, track = null, trackSeed = null } = {}) {
     this.seed = seed;
-    this.random = mulberry32(seed);
+    this.random = createMulberry32(seed);
     const trackDefinition = track ?? (trackSeed == null ? TRACK : createProceduralTrack(trackSeed));
     this.track = buildTrackModel(trackDefinition);
     this.trackSeed = this.track.seed ?? trackSeed;
@@ -339,16 +322,17 @@ export class F1RaceSimulation {
         releasedAt: this.rules.standingStart === false ? 0 : null,
       },
     };
+    const safetyCarStart = pointAt(this.track, this.rules.safetyCarLeadDistance);
     this.safetyCar = {
       deployed: false,
       progress: this.rules.safetyCarLeadDistance,
       speed: this.rules.safetyCarSpeed,
-      previousX: pointAt(this.track, this.rules.safetyCarLeadDistance).x,
-      previousY: pointAt(this.track, this.rules.safetyCarLeadDistance).y,
-      previousHeading: pointAt(this.track, this.rules.safetyCarLeadDistance).heading,
-      x: pointAt(this.track, this.rules.safetyCarLeadDistance).x,
-      y: pointAt(this.track, this.rules.safetyCarLeadDistance).y,
-      heading: pointAt(this.track, this.rules.safetyCarLeadDistance).heading,
+      previousX: safetyCarStart.x,
+      previousY: safetyCarStart.y,
+      previousHeading: safetyCarStart.heading,
+      x: safetyCarStart.x,
+      y: safetyCarStart.y,
+      heading: safetyCarStart.heading,
     };
     this.cars = drivers.map((driver, index) => createCar(driver, index, this.random, this.track, {
       standingStart: this.raceControl.mode === 'pre-start',
@@ -631,8 +615,8 @@ export class F1RaceSimulation {
 
     return {
       offset: car.desiredOffset,
-      sameLaneAhead: this.findLaneTrafficAhead(car, car.desiredOffset, 230),
-      sideRisk: this.findLaneTrafficBeside(car, car.desiredOffset),
+      sameLaneAhead: this.findLaneTrafficAhead(traffic, car.desiredOffset, 230),
+      sideRisk: this.findLaneTrafficBeside(traffic, car.desiredOffset),
     };
   }
 
@@ -647,10 +631,10 @@ export class F1RaceSimulation {
       .filter((entry) => entry.gap > -82 && entry.gap < 280);
   }
 
-  findLaneTrafficAhead(car, offset, maxDistance) {
+  findLaneTrafficAhead(traffic, offset, maxDistance) {
     let closest = null;
 
-    this.scanNearbyTraffic(car).forEach((entry) => {
+    traffic.forEach((entry) => {
       if (entry.gap <= 0 || entry.gap > maxDistance) return;
       if (Math.abs(entry.signedOffset - offset) > 42) return;
       if (!closest || entry.gap < closest.gap) closest = entry;
@@ -659,10 +643,10 @@ export class F1RaceSimulation {
     return closest;
   }
 
-  findLaneTrafficBeside(car, offset) {
+  findLaneTrafficBeside(traffic, offset) {
     let closest = null;
 
-    this.scanNearbyTraffic(car).forEach((entry) => {
+    traffic.forEach((entry) => {
       const lateral = Math.abs(entry.signedOffset - offset);
       if (Math.abs(entry.gap) > 58 || lateral > 44) return;
       const risk = (58 - Math.abs(entry.gap)) + (44 - lateral);

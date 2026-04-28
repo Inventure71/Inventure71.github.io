@@ -1,3 +1,5 @@
+import { clamp, createMulberry32, normalizeAngle, seededRange, TWO_PI, wrapDistance } from './simMath.js';
+
 export const WORLD = {
   width: 7600,
   height: 4600,
@@ -17,7 +19,6 @@ export const TRACK = {
   ],
 };
 
-const TWO_PI = Math.PI * 2;
 const GENERATED_TRACK_MIN_LENGTH = 7600;
 const GENERATED_TRACK_MAX_LENGTH = 14500;
 const GENERATED_TRACK_ATTEMPTS = 320;
@@ -88,21 +89,6 @@ function catmullRom(p0, p1, p2, p3, t) {
   };
 }
 
-function mulberry32(seed) {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function seededRange(random, min, max) {
-  return min + (max - min) * random();
-}
-
 function normalizeSeed(seed) {
   if (Number.isFinite(seed)) return seed >>> 0;
   let hash = 2166136261;
@@ -129,17 +115,19 @@ function distance(a, b) {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
 
-function normalizeAngle(angle) {
-  let value = ((angle + Math.PI) % TWO_PI) - Math.PI;
-  if (value < -Math.PI) value += TWO_PI;
-  return value;
-}
-
 function orientation(a, b, c) {
   return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
 
+function segmentBoxesOverlap(a, b, c, d) {
+  return (
+    Math.max(Math.min(a.x, b.x), Math.min(c.x, d.x)) <= Math.min(Math.max(a.x, b.x), Math.max(c.x, d.x)) &&
+    Math.max(Math.min(a.y, b.y), Math.min(c.y, d.y)) <= Math.min(Math.max(a.y, b.y), Math.max(c.y, d.y))
+  );
+}
+
 function segmentsIntersect(a, b, c, d) {
+  if (!segmentBoxesOverlap(a, b, c, d)) return false;
   const abC = orientation(a, b, c);
   const abD = orientation(a, b, d);
   const cdA = orientation(c, d, a);
@@ -170,12 +158,15 @@ function samplesStayInsideWorld(samples) {
 
 function hasEnoughTrackClearance(samples, totalLength, minimumClearance) {
   const points = samples.slice(0, -1).filter((_, index) => index % 24 === 0);
+  const minimumClearanceSquared = minimumClearance * minimumClearance;
   for (let first = 0; first < points.length; first += 1) {
     for (let second = first + 1; second < points.length; second += 1) {
       const arcDistance = Math.abs(points[second].distance - points[first].distance);
       const loopDistance = Math.min(arcDistance, totalLength - arcDistance);
       if (loopDistance < 700) continue;
-      if (distance(points[first], points[second]) < minimumClearance) return false;
+      const dx = points[first].x - points[second].x;
+      const dy = points[first].y - points[second].y;
+      if (dx * dx + dy * dy < minimumClearanceSquared) return false;
     }
   }
   return true;
@@ -274,8 +265,8 @@ function makeTemplatePoint([x, y], random, index) {
   const chicaneNudge = index % 5 === 2 ? seededRange(random, -0.024, 0.024) : 0;
 
   return {
-    x: Math.min(Math.max(x + seededRange(random, -jitter, jitter) + chicaneNudge, 0.06), 0.94),
-    y: Math.min(Math.max(y + seededRange(random, -jitter, jitter) - chicaneNudge * 0.55, 0.08), 0.92),
+    x: clamp(x + seededRange(random, -jitter, jitter) + chicaneNudge, 0.06, 0.94),
+    y: clamp(y + seededRange(random, -jitter, jitter) - chicaneNudge * 0.55, 0.08, 0.92),
   };
 }
 
@@ -290,8 +281,8 @@ function applySectorMorph(points, random) {
   return points.map((point, index) => {
     const turnComplex = index % 4 === 1 ? seededRange(random, -0.024, 0.024) : 0;
     return {
-      x: Math.min(Math.max(center.x + (point.x - center.x) * stretch * layoutScale + horizontalBias + turnComplex, 0.06), 0.94),
-      y: Math.min(Math.max(center.y + (point.y - center.y) * squeeze * layoutScale + verticalBias - turnComplex * 0.4, 0.08), 0.92),
+      x: clamp(center.x + (point.x - center.x) * stretch * layoutScale + horizontalBias + turnComplex, 0.06, 0.94),
+      y: clamp(center.y + (point.y - center.y) * squeeze * layoutScale + verticalBias - turnComplex * 0.4, 0.08, 0.92),
     };
   });
 }
@@ -311,7 +302,7 @@ function rotateControls(controls, random) {
 }
 
 function generateCenterlineControls(seed) {
-  const random = mulberry32(seed);
+  const random = createMulberry32(seed);
   const template = PROCEDURAL_TRACK_TEMPLATES[Math.floor(seededRange(random, 0, PROCEDURAL_TRACK_TEMPLATES.length))]
     ?? PROCEDURAL_TRACK_TEMPLATES[0];
   const normalized = applySectorMorph(
@@ -323,7 +314,7 @@ function generateCenterlineControls(seed) {
 }
 
 function generateFallbackCenterlineControls(seed) {
-  const random = mulberry32(seed ^ 0xa5a5a5a5);
+  const random = createMulberry32(seed ^ 0xa5a5a5a5);
   const center = { x: WORLD.width / 2, y: WORLD.height / 2 };
   const phaseA = seededRange(random, 0, TWO_PI);
   const phaseB = seededRange(random, 0, TWO_PI);
@@ -473,7 +464,7 @@ export function createProceduralTrack(seed = Date.now()) {
 }
 
 export function pointAt(track, distanceAlong) {
-  const wrapped = ((distanceAlong % track.length) + track.length) % track.length;
+  const wrapped = wrapDistance(distanceAlong, track.length);
   let low = 0;
   let high = track.samples.length - 1;
 
@@ -486,7 +477,7 @@ export function pointAt(track, distanceAlong) {
   const next = track.samples[low] ?? track.samples[0];
   const previous = track.samples[Math.max(0, low - 1)] ?? next;
   const span = Math.max(1, next.distance - previous.distance);
-  const amount = Math.min(Math.max((wrapped - previous.distance) / span, 0), 1);
+  const amount = clamp((wrapped - previous.distance) / span, 0, 1);
 
   return {
     x: previous.x + (next.x - previous.x) * amount,
@@ -549,10 +540,10 @@ export function offsetTrackPoint(point, offset) {
 }
 
 export function isInDrsZone(track, progress) {
-  const wrapped = ((progress % track.length) + track.length) % track.length;
+  const wrapped = wrapDistance(progress, track.length);
   return track.drsZones.some((zone) => {
-    const start = ((zone.start % track.length) + track.length) % track.length;
-    const end = ((zone.end % track.length) + track.length) % track.length;
+    const start = wrapDistance(zone.start, track.length);
+    const end = wrapDistance(zone.end, track.length);
     if (zone.end - zone.start >= track.length) return true;
     return end >= start
       ? wrapped >= start && wrapped <= end

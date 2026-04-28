@@ -101,6 +101,9 @@ function maximumStartGridHeadingDelta(track) {
   }));
 }
 
+const GENERATED_TRACK_SEEDS = [7, 71, 1971, 10101, 20260427];
+const START_GRID_TRACK_SEEDS = [null, ...GENERATED_TRACK_SEEDS];
+
 describe('track model', () => {
   test('provides guidance without owning vehicle position', () => {
     const track = buildTrackModel(TRACK);
@@ -123,35 +126,31 @@ describe('track model', () => {
     expect(first.drsZones).toHaveLength(3);
   });
 
-  test('generated circuits stay inside the world and do not self-intersect', () => {
-    [7, 71, 1971, 10101, 20260427].forEach((seed) => {
-      const track = buildTrackModel(createProceduralTrack(seed));
+  test.each(GENERATED_TRACK_SEEDS)('generated circuit seed %s stays inside the world and does not self-intersect', (seed) => {
+    const track = buildTrackModel(createProceduralTrack(seed));
 
-      expect(track.length).toBeGreaterThan(7600);
-      expect(track.length).toBeLessThan(14500);
-      expect(track.drsZones).toHaveLength(3);
-      expect(radialCoefficientOfVariation(track)).toBeGreaterThan(0.28);
-      expect(minimumNonAdjacentSampleDistance(track)).toBeGreaterThan(track.width * 1.55);
-      expect(maximumLocalTurn(track)).toBeLessThanOrEqual(1.5);
-      expect(track.samples.every((sample) => (
-        sample.x > 460 &&
-        sample.x < WORLD.width - 460 &&
-        sample.y > 460 &&
-        sample.y < WORLD.height - 460
-      ))).toBe(true);
-      expectNoSelfIntersections(track);
-    });
+    expect(track.length).toBeGreaterThan(7600);
+    expect(track.length).toBeLessThan(14500);
+    expect(track.drsZones).toHaveLength(3);
+    expect(radialCoefficientOfVariation(track)).toBeGreaterThan(0.28);
+    expect(minimumNonAdjacentSampleDistance(track)).toBeGreaterThan(track.width * 1.55);
+    expect(maximumLocalTurn(track)).toBeLessThanOrEqual(1.5);
+    expect(track.samples.every((sample) => (
+      sample.x > 460 &&
+      sample.x < WORLD.width - 460 &&
+      sample.y > 460 &&
+      sample.y < WORLD.height - 460
+    ))).toBe(true);
+    expectNoSelfIntersections(track);
   });
 
-  test('normalizes the start finish line onto a straight grid section', () => {
-    [null, 7, 71, 1971, 10101, 20260427].forEach((seed) => {
-      const track = buildTrackModel(seed == null ? TRACK : createProceduralTrack(seed));
-      const line = pointAt(track, 0);
-      const exit = pointAt(track, 220);
+  test.each(START_GRID_TRACK_SEEDS)('normalizes seed %s start finish line onto a straight grid section', (seed) => {
+    const track = buildTrackModel(seed == null ? TRACK : createProceduralTrack(seed));
+    const line = pointAt(track, 0);
+    const exit = pointAt(track, 220);
 
-      expect(maximumStartGridHeadingDelta(track)).toBeLessThan(0.14);
-      expect(headingDelta(line.heading, exit.heading)).toBeLessThan(0.2);
-    });
+    expect(maximumStartGridHeadingDelta(track)).toBeLessThan(0.14);
+    expect(headingDelta(line.heading, exit.heading)).toBeLessThan(0.2);
   });
 
   test('treats the visual kerb band as drivable track-adjacent surface', () => {

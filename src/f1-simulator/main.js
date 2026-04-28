@@ -3,7 +3,9 @@ import './styles.css';
 import { CHAMPIONSHIP_PROJECT_DRIVERS, formatDriverNumber } from './championship.js';
 import { ProceduralTrackAsset, PROCEDURAL_TRACK_TEXTURES } from './proceduralTrackAsset.js';
 import { createRaceSimulation } from './raceSimulation.js';
-import { normalizeAngle, offsetTrackPoint, pointAt, WORLD } from './trackModel.js';
+import { createRenderSnapshot } from './renderSnapshot.js';
+import { clamp } from './simMath.js';
+import { offsetTrackPoint, pointAt, WORLD } from './trackModel.js';
 
 const CAR_TEXTURE = '/assets/game/f1-car-sprite-game.png';
 const SAFETY_CAR_TEXTURE = '/assets/game/f1-safety-car-sprite.png';
@@ -41,9 +43,8 @@ const RADIO_VISIBLE_MAX_MS = 9200;
 const DRS_DRAG_REDUCTION_PERCENT = 58;
 const PROJECT_DRIVERS = CHAMPIONSHIP_PROJECT_DRIVERS;
 
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-const lerp = (start, end, amount) => start + (end - start) * amount;
 const DRIVER_BY_ID = new Map(PROJECT_DRIVERS.map((driver) => [driver.id, driver]));
+const TINT_BY_COLOR = new Map();
 
 function createPageTrackSeed() {
   const values = new Uint32Array(1);
@@ -68,16 +69,19 @@ function getTireClass(tire) {
   return String(tire ?? 'M').toLowerCase();
 }
 
+function colorToTint(color) {
+  if (TINT_BY_COLOR.has(color)) return TINT_BY_COLOR.get(color);
+  const tint = Number.parseInt(String(color ?? '').replace('#', ''), 16);
+  const normalizedTint = Number.isFinite(tint) ? tint : 0xffffff;
+  TINT_BY_COLOR.set(color, normalizedTint);
+  return normalizedTint;
+}
+
 function smoothAngle(current, target, amount) {
   if (!Number.isFinite(current)) return target;
   let diff = ((target - current + Math.PI) % (Math.PI * 2)) - Math.PI;
   if (diff < -Math.PI) diff += Math.PI * 2;
   return current + diff * amount;
-}
-
-function interpolateAngle(previous, current, amount) {
-  if (!Number.isFinite(previous)) return current;
-  return previous + normalizeAngle(current - previous) * amount;
 }
 
 class F1SimulatorApp {
@@ -130,13 +134,11 @@ class F1SimulatorApp {
       raceDataPanel: root.querySelector('[data-race-data-panel]'),
       raceDataKicker: root.querySelector('[data-race-data-kicker]'),
       raceDataTitle: root.querySelector('[data-race-data-title]'),
-      raceDataCode: root.querySelector('[data-race-data-code]'),
-      raceDataPace: root.querySelector('[data-race-data-pace]'),
       raceDataNumber: root.querySelector('[data-race-data-number]'),
       raceDataSubtitle: root.querySelector('[data-race-data-subtitle]'),
-      raceDataChips: root.querySelector('[data-race-data-chips]'),
       raceDataLink: root.querySelector('[data-race-data-link]'),
     };
+    this.startLightNodes = [...(this.readouts.startLights?.querySelectorAll('.start-lights__gantry span') ?? [])];
     this.sim = null;
     this.app = null;
     this.worldLayer = null;
@@ -180,6 +182,10 @@ class F1SimulatorApp {
   }
 
   async init() {
+    if (!this.canvasHost) {
+      throw new Error('F1 simulator canvas host is missing.');
+    }
+
     this.sim = createRaceSimulation({ seed: 1971, trackSeed: this.trackSeed, drivers: PROJECT_DRIVERS, totalLaps: 10 });
     this.app = new Application();
     await this.app.init({
@@ -259,7 +265,7 @@ class F1SimulatorApp {
       sprite.anchor.set(0.5);
       sprite.baseScale = baseScale;
       sprite.scale.set(baseScale);
-      sprite.tint = driver.color;
+      sprite.tint = colorToTint(driver.color);
       sprite.eventMode = 'static';
       sprite.cursor = 'pointer';
       sprite.on('pointerdown', () => {
@@ -360,7 +366,7 @@ class F1SimulatorApp {
     }
 
     const snapshot = this.sim.snapshot();
-    const renderSnapshot = this.createRenderSnapshot(snapshot, clamp(this.accumulator / FIXED_STEP, 0, 1));
+    const renderSnapshot = createRenderSnapshot(snapshot, clamp(this.accumulator / FIXED_STEP, 0, 1));
     this.applyCamera(renderSnapshot);
     this.renderDrsTrails(renderSnapshot);
     this.renderCars(renderSnapshot);
@@ -368,28 +374,6 @@ class F1SimulatorApp {
       this.updateDom(snapshot);
       this.lastDomUpdateTime = now;
     }
-  }
-
-  createRenderSnapshot(snapshot, alpha) {
-    return {
-      ...snapshot,
-      cars: snapshot.cars.map((car) => ({
-        ...car,
-        x: lerp(car.previousX ?? car.x, car.x, alpha),
-        y: lerp(car.previousY ?? car.y, car.y, alpha),
-        heading: interpolateAngle(car.previousHeading ?? car.heading, car.heading, alpha),
-      })),
-      safetyCar: {
-        ...snapshot.safetyCar,
-        x: lerp(snapshot.safetyCar.previousX ?? snapshot.safetyCar.x, snapshot.safetyCar.x, alpha),
-        y: lerp(snapshot.safetyCar.previousY ?? snapshot.safetyCar.y, snapshot.safetyCar.y, alpha),
-        heading: interpolateAngle(
-          snapshot.safetyCar.previousHeading ?? snapshot.safetyCar.heading,
-          snapshot.safetyCar.heading,
-          alpha,
-        ),
-      },
-    };
   }
 
   renderTrack() {
@@ -424,7 +408,7 @@ class F1SimulatorApp {
       sprite.rotation = sprite.currentRotation;
       sprite.alpha = snapshot.raceControl.mode === 'safety-car' ? 0.82 : 1;
       sprite.scale.set(sprite.baseScale);
-      sprite.tint = Number.parseInt(car.color.replace('#', ''), 16);
+      sprite.tint = colorToTint(car.color);
       hit.x = car.x;
       hit.y = car.y;
     });
@@ -659,8 +643,7 @@ class F1SimulatorApp {
     panel.hidden = !visible;
     if (!visible) return;
 
-    const lights = panel.querySelectorAll('.start-lights__gantry span');
-    lights.forEach((light, index) => {
+    this.startLightNodes.forEach((light, index) => {
       light.classList.toggle('is-lit', index < (start.lightsLit ?? 0));
     });
     panel.classList.toggle('is-lights-out', raceControl.mode === 'green' && start.released);
@@ -687,6 +670,7 @@ class F1SimulatorApp {
   }
 
   renderTiming(cars, leader, raceMode) {
+    if (!this.timingList) return;
     const leaderDistance = leader?.raceDistance ?? 0;
     this.timingList.innerHTML = cars.map((car) => {
       const driver = DRIVER_BY_ID.get(car.id);
@@ -771,22 +755,17 @@ class F1SimulatorApp {
     this.readouts.raceDataPanel.removeAttribute('data-idle-mode');
     if (this.readouts.raceDataKicker) this.readouts.raceDataKicker.textContent = 'Project';
     this.readouts.raceDataTitle.textContent = driver.name;
-    if (this.readouts.raceDataCode) this.readouts.raceDataCode.textContent = `${car.code} P${car.rank}`;
-    if (this.readouts.raceDataPace) this.readouts.raceDataPace.textContent = `${Math.round(car.speedKph)} km/h`;
     if (this.readouts.raceDataNumber) {
       this.readouts.raceDataNumber.textContent = formatDriverNumber(car.driverNumber ?? driver.driverNumber);
     }
     if (this.readouts.raceDataSubtitle) {
       this.readouts.raceDataSubtitle.textContent = `${car.code} - P${car.rank} - ${driver.raceData?.[0] ?? 'Project entry'}`;
     }
-    this.readouts.raceDataLink.href = driver.projectUrl;
-    this.readouts.raceDataLink.target = '_blank';
-    this.readouts.raceDataLink.rel = 'noopener';
-    this.readouts.raceDataLink.hidden = false;
-    if (this.readouts.raceDataChips) {
-      this.readouts.raceDataChips.innerHTML = (driver.raceData ?? [])
-        .map((item) => `<span>${escapeHtml(item)}</span>`)
-        .join('');
+    if (this.readouts.raceDataLink) {
+      this.readouts.raceDataLink.href = driver.projectUrl;
+      this.readouts.raceDataLink.target = '_blank';
+      this.readouts.raceDataLink.rel = 'noopener';
+      this.readouts.raceDataLink.hidden = false;
     }
   }
 
@@ -879,5 +858,8 @@ class F1SimulatorApp {
 const root = document.getElementById('f1-simulator-root');
 if (root) {
   const app = new F1SimulatorApp(root);
-  app.init();
+  app.init().catch((error) => {
+    root.dataset.simulatorState = 'error';
+    console.error('F1 simulator failed to initialize.', error);
+  });
 }
