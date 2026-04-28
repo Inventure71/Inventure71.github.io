@@ -1335,6 +1335,14 @@ body.playfolio-page {
   grid-row: 1;
 }
 
+.pf-paddock-race {
+  display: grid;
+}
+
+.pf-paddock-race > .sim-canvas-panel {
+  min-height: 100%;
+}
+
 .pf-paddock-timing {
   position: relative;
   z-index: 4;
