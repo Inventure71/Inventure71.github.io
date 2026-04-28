@@ -1118,6 +1118,18 @@ body.playfolio-page {
   padding-top: clamp(2.2rem, 5vw, 4rem);
 }
 
+.project-race-page .pf-page > .pf-shell {
+  width: min(1580px, calc(100% - clamp(1rem, 2.5vw, 2.5rem)));
+}
+
+.pf-race-note {
+  margin: 0 0 1rem;
+  max-width: 82rem;
+  color: var(--pf-muted);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
 .pf-race-controls {
   margin-bottom: 1rem;
   border: 1px solid var(--pf-line);
@@ -1222,13 +1234,13 @@ body.playfolio-page {
 .pf-paddock-layout {
   position: relative;
   isolation: isolate;
-  padding: 0.9rem;
+  padding: clamp(0.45rem, 1vw, 0.85rem);
   background: transparent;
   overflow: hidden;
 }
 
 .pf-paddock-grid {
-  min-height: clamp(620px, 74vh, 880px);
+  min-height: clamp(700px, 82vh, 980px);
 }
 
 .pf-paddock-timing,
@@ -1368,6 +1380,48 @@ body.playfolio-page {
   pointer-events: auto;
 }
 
+.pf-network-jump {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-block: 1px solid var(--pf-line);
+  color: var(--pf-muted);
+}
+
+.pf-network-jump__copy {
+  max-width: 68rem;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.pf-network-jump__button {
+  min-height: 2.65rem;
+  padding: 0.72rem 0.95rem;
+  border: 1px solid var(--pf-line-strong);
+  border-radius: 6px;
+  color: var(--pf-ink) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.52rem;
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.pf-network-jump__button:hover,
+.pf-network-jump__button:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--pf-ink);
+  background: var(--pf-surface-soft);
+}
+
 @media (max-width: 1024px) {
   .project-race-page .f1-broadcast-layout {
     grid-template-columns: 1fr;
@@ -1403,6 +1457,25 @@ body.playfolio-page {
   .pf-paddock-timing {
     grid-column: 1;
     grid-row: 2;
+  }
+
+  .pf-paddock-grid {
+    min-height: clamp(620px, 78vh, 860px);
+  }
+}
+
+@media (max-width: 720px) {
+  .project-race-page .pf-page > .pf-shell {
+    width: min(100% - 1rem, 1580px);
+  }
+
+  .pf-network-jump {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pf-network-jump__button {
+    width: 100%;
   }
 }
 

@@ -72,11 +72,13 @@
                     <div>
                         <h1 class="pf-section-title">Project race</h1>
                     </div>
-                    <p class="pf-section-copy">
-                        Cars are projects. Hover a car for details, use the leaderboard for direct navigation, or open
-                        the tag map for another view.
-                    </p>
                 </header>
+
+                <p class="pf-race-note">
+                    Each car represents a project. Hover or select entries to inspect them, use the leaderboard for
+                    direct links, and press the safety car control if you want to neutralize the race and click around
+                    more easily.
+                </p>
 
                 <div class="pf-paddock-layout" data-paddock-shell data-simulator-state="booting"
                     aria-label="PaddockJS project race" aria-busy="true">
@@ -98,6 +100,17 @@
                         <div id="paddock-race-root" class="f1-sim-component pf-paddock-race"></div>
                         <div id="paddock-safety-root" class="f1-sim-component pf-paddock-safety"></div>
                     </div>
+                </div>
+
+                <div class="pf-network-jump" aria-label="Open project network view">
+                    <span class="pf-network-jump__copy">
+                        Prefer the relationship view? Open the project network to see the same work grouped by tags and
+                        shared themes.
+                    </span>
+                    <a class="pf-network-jump__button" href="tags.html">
+                        <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                        <span>Open network view</span>
+                    </a>
                 </div>
             </div>
         </section>
