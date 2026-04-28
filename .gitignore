@@ -14,3 +14,9 @@ prepared_video_uploads/
 # local browser automation artifacts
 .playwright-cli/
 .playwright-mcp/
+
+# npm dependencies
+node_modules/
+
+
+output/
