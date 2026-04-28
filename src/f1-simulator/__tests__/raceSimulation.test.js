@@ -400,6 +400,41 @@ describe('vehicle physics race simulation', () => {
     expect(eightSecondSpeed - twoSecondSpeed).toBeGreaterThan(sixteenSecondSpeed - eightSecondSpeed);
   });
 
+  test('uses vehicle constructor arguments as the car physics setup', () => {
+    const sim = createRaceSimulation({
+      seed: 44,
+      drivers: [{
+        id: 'custom',
+        code: 'CUS',
+        name: 'Custom Pair',
+        color: '#ffffff',
+        pace: 1,
+        racecraft: 0.78,
+        vehicle: {
+          id: 'custom-vehicle',
+          name: 'Custom Vehicle',
+          mass: 790,
+          powerNewtons: 45200,
+          brakeNewtons: 61300,
+          dragCoefficient: 0.305,
+          downforceCoefficient: 6.32,
+          tireGrip: 2.48,
+        },
+      }],
+      totalLaps: 3,
+      rules: { standingStart: false },
+    });
+
+    const setup = sim.snapshot().cars[0].setup;
+
+    expect(setup.massKg).toBe(790);
+    expect(setup.powerUnitKn).toBeCloseTo(45.2);
+    expect(setup.brakeSystemKn).toBeCloseTo(61.3);
+    expect(setup.dragCoefficient).toBeCloseTo(0.305);
+    expect(setup.downforceCoefficient).toBeCloseTo(6.32);
+    expect(setup.tireGrip).toBeCloseTo(2.48);
+  });
+
   test('maximum braking cannot make a car stop instantly from racing speed', () => {
     const car = {
       x: 0,

@@ -65,6 +65,7 @@ function createCar(driver, index, random, track, { standingStart = false } = {})
   const racecraft = clamp(driver.racecraft ?? seededRange(random, 0.65, 0.92), 0.45, 1);
   const personality = buildDriverPersonality(driver, index, racecraft, random);
   const launchSpeed = Math.max(70, 84 - index * 0.55 + pace * 4);
+  const vehicle = driver.vehicle ?? {};
 
   return {
     id: driver.id ?? `car-${index + 1}`,
@@ -89,12 +90,16 @@ function createCar(driver, index, random, track, { standingStart = false } = {})
     speed: standingStart ? 0 : launchSpeed,
     throttle: 0,
     brake: 0,
-    mass: 798 + seededRange(random, -5, 5),
-    powerNewtons: 43000 * pace,
-    brakeNewtons: 59000,
-    dragCoefficient: 0.33 + seededRange(random, -0.026, 0.026),
-    downforceCoefficient: 6.1 + seededRange(random, -0.18, 0.18),
-    tireGrip: 2.22 + racecraft * 0.28 + seededRange(random, -0.03, 0.03),
+    vehicleId: vehicle.id ?? null,
+    vehicleName: vehicle.name ?? null,
+    vehicleRatings: vehicle.ratings ? { ...vehicle.ratings } : null,
+    mass: vehicle.mass ?? 798 + seededRange(random, -5, 5),
+    powerNewtons: vehicle.powerNewtons ?? 43000 * pace,
+    brakeNewtons: vehicle.brakeNewtons ?? 59000,
+    dragCoefficient: vehicle.dragCoefficient ?? 0.33 + seededRange(random, -0.026, 0.026),
+    downforceCoefficient: vehicle.downforceCoefficient ?? 6.1 + seededRange(random, -0.18, 0.18),
+    tireGrip: vehicle.tireGrip ?? 2.22 + racecraft * 0.28 + seededRange(random, -0.03, 0.03),
+    tireCare: vehicle.tireCare ?? 1,
     pace,
     racecraft,
     personality,
@@ -300,12 +305,16 @@ function serializeCar(car, rank) {
     aggression: car.aggression,
     aggressionPercent: Math.round((car.aggression ?? 0) * 100),
     setup: {
+      vehicleId: car.vehicleId,
+      vehicleName: car.vehicleName,
+      vehicleRatings: car.vehicleRatings ? { ...car.vehicleRatings } : null,
       maxSpeedKph: VEHICLE_LIMITS.maxSpeed * 3.6,
       powerUnitKn: car.powerNewtons / 1000,
       brakeSystemKn: car.brakeNewtons / 1000,
       dragCoefficient: car.dragCoefficient,
       downforceCoefficient: car.downforceCoefficient,
       tireGrip: car.tireGrip,
+      tireCare: car.tireCare,
       massKg: car.mass,
       pace: car.pace,
       racecraft: car.racecraft,
