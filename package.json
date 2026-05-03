@@ -6,11 +6,11 @@
   "scripts": {
     "build:f1": "vite build --config vite.f1-simulator.config.js",
     "test": "npm run test:f1",
-    "test:f1": "vitest run --root ../PaddockJS src",
+    "test:f1": "vitest run js",
     "check": "npm run test && npm run build:f1"
   },
   "dependencies": {
-    "@inventure71/paddockjs": "file:../PaddockJS",
+    "@inventure71/paddockjs": "^0.3.0",
     "pixi.js": "8.18.1"
   },
   "devDependencies": {
