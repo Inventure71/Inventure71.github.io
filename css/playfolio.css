@@ -1240,23 +1240,19 @@ body.playfolio-page {
 }
 
 .pf-paddock-grid {
+  display: grid;
   min-height: clamp(700px, 82vh, 980px);
 }
 
-.pf-paddock-timing,
-.pf-paddock-race,
-.pf-paddock-safety {
+.pf-paddock-race {
   min-width: 0;
-  min-height: 0;
+  min-height: 100%;
+  height: 100%;
   transition: opacity 220ms ease, transform 220ms ease;
 }
 
-.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-timing,
 .pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-race,
-.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-safety,
-.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-timing,
-.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-race,
-.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-safety {
+.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-race {
   opacity: 0;
   transform: scale(0.985);
   pointer-events: none;
@@ -1340,9 +1336,7 @@ body.playfolio-page {
   }
 }
 
-.pf-paddock-race,
-.pf-paddock-timing,
-.pf-paddock-safety {
+.pf-paddock-race {
   grid-column: 1 / -1;
   grid-row: 1;
 }
@@ -1351,33 +1345,15 @@ body.playfolio-page {
   display: grid;
 }
 
-.pf-paddock-race > .sim-canvas-panel {
+.pf-paddock-race .sim-canvas-panel,
+.pf-paddock-race .race-telemetry-drawer {
+  padding: 0 !important;
+}
+
+.pf-paddock-race > .sim-canvas-panel,
+.pf-paddock-race > .race-telemetry-drawer {
   min-height: 100%;
-}
-
-.pf-paddock-timing {
-  position: relative;
-  z-index: 4;
-  background: transparent;
-  pointer-events: none;
-}
-
-.pf-paddock-timing .sim-timing {
-  pointer-events: auto;
-}
-
-.pf-paddock-safety {
-  position: relative;
-  z-index: 5;
-  align-self: start;
-  justify-self: end;
-  margin: 1rem 1rem 0 0;
-  background: transparent;
-  pointer-events: none;
-}
-
-.pf-paddock-safety .sim-control {
-  pointer-events: auto;
+  height: 100%;
 }
 
 .pf-network-jump {
@@ -1444,19 +1420,8 @@ body.playfolio-page {
     grid-row: 1;
   }
 
-  .pf-paddock-safety {
-    grid-column: 1 / -1;
-    grid-row: 1;
-  }
-
-  .pf-paddock-race,
-  .pf-paddock-safety {
+  .pf-paddock-race {
     order: -1;
-  }
-
-  .pf-paddock-timing {
-    grid-column: 1;
-    grid-row: 2;
   }
 
   .pf-paddock-grid {

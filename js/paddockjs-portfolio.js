@@ -5,16 +5,16 @@ import {
   mountF1Simulator,
 } from '@inventure71/paddockjs';
 import { setPaddockShellState, syncPaddockShellLayout } from './paddockjs-boot-state.js';
+import { createFreshTrackSeed } from './paddockjs-track-seed.js';
 
 const root = document.getElementById('f1-simulator-root');
-const timingRoot = document.getElementById('paddock-timing-root');
 const raceRoot = document.getElementById('paddock-race-root');
-const safetyRoot = document.getElementById('paddock-safety-root');
 const paddockShell = document.querySelector('[data-paddock-shell]');
 
 const portfolioOptions = {
   drivers: DEMO_PROJECT_DRIVERS,
   entries: CHAMPIONSHIP_ENTRY_BLUEPRINTS,
+  trackSeed: createFreshTrackSeed(),
   title: 'F1 Simulator Lab',
   kicker: 'Race Control',
   backLinkHref: 'projects.html',
@@ -28,8 +28,10 @@ const projectSimulatorUi = {
   layoutPreset: 'left-tower-overlay',
   cameraControls: 'embedded',
   showFps: false,
+  telemetryModules: ['core', 'sectors', 'lapTimes', 'sectorTimes'],
   timingTowerVerticalFit: 'expand-race-view',
   raceDataBannerSize: 'auto',
+  raceDataTelemetryDetail: true,
   raceDataBanners: {
     initial: 'radio',
     enabled: ['project', 'radio'],
@@ -50,14 +52,15 @@ async function mountProjectsSimulator() {
     ui: projectSimulatorUi,
   });
 
-  simulator.mountTimingTower(timingRoot);
-  simulator.mountRaceCanvas(raceRoot, { includeRaceDataPanel: true });
-  simulator.mountSafetyCarControl(safetyRoot);
+  simulator.mountRaceTelemetryDrawer(raceRoot, {
+    timingTowerVerticalFit: projectSimulatorUi.timingTowerVerticalFit,
+    raceDataTelemetryDetail: projectSimulatorUi.raceDataTelemetryDetail,
+  });
   await simulator.start();
   setPaddockShellState(paddockShell, 'ready');
 }
 
-if (root || (timingRoot && raceRoot && safetyRoot)) {
+if (root || raceRoot) {
   const mount = root ? mountStandaloneSimulator : mountProjectsSimulator;
 
   mount().catch((error) => {
