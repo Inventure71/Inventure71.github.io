@@ -1255,6 +1255,49 @@ body.playfolio-page {
   height: 100%;
 }
 
+.pf-package-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-top: 0.75rem;
+  padding: 0.72rem 1rem;
+  border-top: 1px solid var(--pf-line);
+  color: var(--pf-muted);
+  font-size: 0.94rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.pf-package-note__badge {
+  flex: 0 0 auto;
+  min-width: 2.45rem;
+  padding: 0.28rem 0.48rem;
+  border: 1px solid var(--pf-line-strong);
+  border-radius: 6px;
+  color: var(--pf-ink);
+  font-family: var(--pf-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.pf-package-note a {
+  color: var(--pf-ink);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.pf-package-note a:hover,
+.pf-package-note a:focus-visible {
+  color: #62d995;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
 .pf-network-jump {
   display: flex;
   align-items: center;
@@ -1320,6 +1363,12 @@ body.playfolio-page {
   .pf-network-jump {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .pf-package-note {
+    align-items: center;
+    flex-direction: column;
+    gap: 0.55rem;
   }
 
   .pf-network-jump__button {
