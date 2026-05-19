@@ -11,10 +11,22 @@ const root = document.getElementById('f1-simulator-root');
 const raceRoot = document.getElementById('paddock-race-root');
 const paddockShell = document.querySelector('[data-paddock-shell]');
 
+const raceRules = {
+  modules: {
+    pitStops: {
+      enabled: true,
+    },
+    stalledDnf: {
+      enabled: true,
+    },
+  },
+};
+
 const portfolioOptions = {
   drivers: DEMO_PROJECT_DRIVERS,
   entries: CHAMPIONSHIP_ENTRY_BLUEPRINTS,
   trackSeed: createFreshTrackSeed(),
+  rules: raceRules,
   title: 'F1 Simulator Lab',
   kicker: 'Race Control',
   backLinkHref: 'projects.html',

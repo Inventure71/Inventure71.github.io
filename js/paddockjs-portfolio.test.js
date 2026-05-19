@@ -18,6 +18,14 @@ describe('PaddockJS project race integration', () => {
     expect(source).not.toContain('paddock-safety-root');
   });
 
+  test('enables pit stops and stalled off-track DNF rules for the project race', () => {
+    const source = readFileSync(sourcePath, 'utf8');
+
+    expect(source).toMatch(/pitStops:\s*{\s*enabled:\s*true,\s*}/);
+    expect(source).toMatch(/stalledDnf:\s*{\s*enabled:\s*true,\s*}/);
+    expect(source).toContain('rules: raceRules');
+  });
+
   test('lets the package drawer controls stay anchored while the race fills the host mount', () => {
     const css = readFileSync(cssPath, 'utf8');
 
