@@ -1,0 +1,263 @@
+/* Shared Playfolio foundation */
+
+:root {
+  --pf-bg: #f7f6f1;
+  --pf-surface: #ffffff;
+  --pf-surface-soft: #ebe9df;
+  --pf-ink: #171717;
+  --pf-muted: #67645d;
+  --pf-line: rgba(23, 23, 23, 0.13);
+  --pf-line-strong: rgba(23, 23, 23, 0.28);
+  --pf-accent: #e95d35;
+  --pf-accent-2: #167f68;
+  --pf-accent-3: #2f6ce5;
+  --pf-shadow: 0 24px 70px rgba(23, 23, 23, 0.09);
+  --pf-radius: 8px;
+  --pf-max: 1180px;
+  --pf-pad: clamp(1rem, 4vw, 2rem);
+  --pf-section-space: clamp(2.75rem, 6vw, 4.5rem);
+}
+
+:root[data-theme="dark"] {
+  --pf-bg: #0d0d0b;
+  --pf-surface: #171714;
+  --pf-surface-soft: #24231d;
+  --pf-ink: #f4f1e8;
+  --pf-muted: #aaa69a;
+  --pf-line: rgba(244, 241, 232, 0.14);
+  --pf-line-strong: rgba(244, 241, 232, 0.34);
+  --pf-accent: #ff7048;
+  --pf-accent-2: #40b898;
+  --pf-accent-3: #79a0ff;
+  --pf-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+html {
+  background: var(--pf-bg) !important;
+}
+
+body.playfolio-page {
+  min-height: 100vh;
+  background:
+    linear-gradient(90deg, transparent calc(100% - 1px), var(--pf-line) 100%) 0 0 / 80px 80px,
+    linear-gradient(180deg, transparent calc(100% - 1px), var(--pf-line) 100%) 0 0 / 80px 80px,
+    var(--pf-bg) !important;
+  color: var(--pf-ink);
+}
+
+.playfolio-page * {
+  letter-spacing: 0;
+}
+
+.playfolio-page a {
+  color: inherit;
+}
+
+.playfolio-page img {
+  border-radius: var(--pf-radius);
+}
+
+.pf-shell {
+  width: min(var(--pf-max), calc(100% - (var(--pf-pad) * 2)));
+  margin-inline: auto;
+}
+
+.playfolio-page .navbar {
+  width: min(var(--pf-max), calc(100% - (var(--pf-pad) * 2)));
+  top: 0.75rem;
+  margin: 0.75rem auto 0;
+  padding: 0.45rem 0;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--pf-radius);
+  background: color-mix(in srgb, var(--pf-bg) 88%, transparent) !important;
+  box-shadow: none;
+}
+
+.playfolio-page .navbar .container {
+  max-width: none;
+  padding-inline: 0.7rem !important;
+}
+
+.playfolio-page .navbar-toggler {
+  border: 1px solid var(--pf-line);
+  border-radius: 6px;
+  color: var(--pf-ink);
+}
+
+.playfolio-page .navbar-toggler:focus {
+  box-shadow: 0 0 0 0.18rem color-mix(in srgb, var(--pf-accent-3) 24%, transparent);
+}
+
+.playfolio-page .navbar-brand {
+  color: var(--pf-ink) !important;
+  font-size: 0.95rem;
+  font-weight: 750;
+  padding: 0.5rem 0.6rem;
+}
+
+.pf-brand-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.pf-nav-ai-button {
+  min-height: 2.05rem;
+  padding: 0.42rem 0.65rem;
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  background: var(--pf-surface);
+  color: var(--pf-ink);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.pf-nav-ai-button:hover {
+  transform: translateY(-1px);
+  border-color: var(--pf-line-strong);
+  background: var(--pf-surface-soft);
+}
+
+.playfolio-page .nav-link {
+  color: var(--pf-muted) !important;
+  text-transform: none;
+  font-weight: 650;
+  font-size: 0.86rem;
+  padding: 0.5rem 0.65rem !important;
+  border-radius: 6px !important;
+}
+
+.playfolio-page .nav-link:hover,
+.playfolio-page .nav-link.active {
+  color: var(--pf-ink) !important;
+  background: var(--pf-surface-soft);
+}
+
+.playfolio-page .theme-toggle-btn,
+.pf-icon-button {
+  width: 2.45rem;
+  height: 2.45rem;
+  border: 1px solid var(--pf-line);
+  border-radius: 6px !important;
+  background: var(--pf-surface);
+  color: var(--pf-ink);
+  display: inline-grid;
+  place-items: center;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.playfolio-page .theme-toggle-btn:hover,
+.pf-icon-button:hover {
+  transform: translateY(-1px);
+  border-color: var(--pf-line-strong);
+  background: var(--pf-surface-soft);
+}
+
+.pf-button,
+.playfolio-page .btn {
+  min-height: 2.75rem;
+  border: 1px solid var(--pf-ink) !important;
+  border-radius: 6px !important;
+  padding: 0.78rem 1rem !important;
+  background: var(--pf-ink) !important;
+  color: var(--pf-bg) !important;
+  font-size: 0.86rem !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+  gap: 0.5rem;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.pf-button:hover,
+.playfolio-page .btn:hover {
+  transform: translateY(-2px);
+  background: var(--pf-accent) !important;
+  border-color: var(--pf-accent) !important;
+  color: #fff !important;
+}
+
+.pf-button.is-quiet,
+.playfolio-page .btn-outline-dark {
+  background: transparent !important;
+  color: var(--pf-ink) !important;
+  border-color: var(--pf-line-strong) !important;
+}
+
+.pf-button.is-quiet:hover,
+.playfolio-page .btn-outline-dark:hover {
+  background: var(--pf-surface-soft) !important;
+  color: var(--pf-ink) !important;
+  border-color: var(--pf-ink) !important;
+}
+
+.pf-page {
+  padding: clamp(3.5rem, 8vw, 7rem) 0 clamp(3rem, 8vw, 6rem);
+}
+
+.playfolio-page .pf-hero {
+  min-height: auto;
+  display: grid;
+  align-items: center;
+  padding-block: var(--pf-section-space) !important;
+}
+
+.pf-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(330px, 0.94fr);
+  gap: clamp(2rem, 7vw, 5rem);
+  align-items: center;
+}
+
+.pf-title {
+  max-width: 8.5ch;
+  margin: 0 0 1rem;
+  color: var(--pf-ink);
+  font-size: clamp(3.4rem, 8vw, 6.2rem);
+  font-weight: 850;
+  line-height: 0.88;
+}
+
+.pf-lede {
+  max-width: 52rem;
+  color: var(--pf-muted);
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  line-height: 1.52;
+}
+
+.pf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.7rem;
+}
+
+.pf-section {
+  padding-block: var(--pf-section-space);
+}
+
+.pf-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(260px, 0.38fr);
+  gap: 2rem;
+  align-items: end;
+  padding: 0 !important;
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.pf-section-title {
+  margin: 0;
+  color: var(--pf-ink);
+  font-size: clamp(2.2rem, 6vw, 5.6rem);
+  font-weight: 850;
+  line-height: 0.92;
+}
+
+.pf-section-copy {
+  color: var(--pf-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}

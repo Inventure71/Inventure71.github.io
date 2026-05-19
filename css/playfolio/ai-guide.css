@@ -1,0 +1,164 @@
+/* Ask AI toast */
+
+.pf-ai-toast {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 1200;
+  width: min(28rem, calc(100vw - 2rem));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.pf-ai-toast-card {
+  position: relative;
+  display: grid;
+  gap: 0.72rem;
+  overflow: hidden;
+  padding: 1rem;
+  border: 1px solid var(--pf-line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--pf-bg) 96%, transparent);
+  box-shadow: 0 22px 55px rgba(23, 23, 23, 0.16);
+  backdrop-filter: blur(16px);
+  transform: translateY(0.85rem);
+  opacity: 0;
+  transition: transform 220ms ease, opacity 220ms ease, border-color 180ms ease;
+  pointer-events: auto;
+}
+
+.pf-ai-toast.is-visible .pf-ai-toast-card {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.pf-ai-toast[data-state="success"] .pf-ai-toast-card {
+  border-color: color-mix(in srgb, var(--pf-accent-2) 42%, var(--pf-line-strong));
+}
+
+.pf-ai-toast[data-state="error"] .pf-ai-toast-card {
+  border-color: color-mix(in srgb, var(--pf-accent) 48%, var(--pf-line-strong));
+}
+
+.pf-ai-toast[data-state="error"] .pf-ai-toast-kicker,
+.pf-ai-toast[data-state="error"] .pf-ai-toast-title {
+  color: #b42318;
+}
+
+.pf-ai-toast-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pf-muted);
+  display: inline-grid;
+  place-items: center;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.pf-ai-toast-close:hover {
+  transform: translateY(-1px);
+  color: var(--pf-ink);
+  background: var(--pf-surface-soft);
+}
+
+.pf-ai-toast-kicker {
+  width: fit-content;
+  color: var(--pf-accent-2);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.pf-ai-toast-title {
+  margin: 0;
+  padding-right: 2.4rem;
+  color: var(--pf-ink);
+  font-size: 1.24rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.pf-ai-toast-copy {
+  margin: 0;
+  max-width: 24rem;
+  color: var(--pf-muted);
+  font-size: 0.91rem;
+  line-height: 1.5;
+}
+
+.pf-ai-toast-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.15rem;
+}
+
+.pf-ai-toast[data-state="error"] .pf-ai-toast-links {
+  display: none;
+}
+
+.pf-ai-link {
+  --ai-color: var(--pf-ink);
+  min-height: 2.35rem;
+  padding: 0.64rem 0.78rem;
+  border: 1px solid color-mix(in srgb, var(--ai-color) 38%, var(--pf-line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ai-color) 10%, var(--pf-surface));
+  color: color-mix(in srgb, var(--ai-color) 78%, var(--pf-ink)) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.48rem;
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.pf-ai-link:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--ai-color) 72%, var(--pf-line-strong));
+  background: color-mix(in srgb, var(--ai-color) 16%, var(--pf-surface));
+}
+
+.pf-ai-link img {
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 0;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.pf-ai-link.is-chatgpt {
+  --ai-color: #10a37f;
+}
+
+.pf-ai-link.is-claude {
+  --ai-color: #d97757;
+}
+
+.pf-ai-link.is-deepseek {
+  --ai-color: #4d6bfe;
+}
+
+@media (max-width: 540px) {
+  .pf-ai-toast-card {
+    padding: 1rem;
+  }
+
+  .pf-ai-toast-links {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-ai-link {
+    justify-content: flex-start;
+  }
+}

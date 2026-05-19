@@ -4,6 +4,7 @@ import { describe, expect, test } from 'vitest';
 
 const sourcePath = fileURLToPath(new URL('./paddockjs-portfolio.js', import.meta.url));
 const cssPath = fileURLToPath(new URL('../css/playfolio.css', import.meta.url));
+const raceCssPath = fileURLToPath(new URL('../css/playfolio/race.css', import.meta.url));
 
 describe('PaddockJS project race integration', () => {
   test('uses the package-owned telemetry drawer instead of detached safety controls', () => {
@@ -41,13 +42,15 @@ describe('PaddockJS project race integration', () => {
 
   test('lets the package drawer controls stay anchored while the race fills the host mount', () => {
     const css = readFileSync(cssPath, 'utf8');
+    const raceCss = readFileSync(raceCssPath, 'utf8');
 
-    expect(css).toContain('.pf-paddock-grid');
-    expect(css).toContain('display: grid');
-    expect(css).toContain('.pf-paddock-race .race-telemetry-drawer');
-    expect(css).toContain('padding: 0 !important');
-    expect(css).not.toContain('.race-telemetry-drawer.is-telemetry-open .race-telemetry-drawer__controls');
-    expect(css).not.toContain('right: calc(var(--telemetry-drawer-width) + 1rem)');
+    expect(css).toContain('@import url("./playfolio/race.css");');
+    expect(raceCss).toContain('.pf-paddock-grid');
+    expect(raceCss).toContain('display: grid');
+    expect(raceCss).toContain('.pf-paddock-race .race-telemetry-drawer');
+    expect(raceCss).toContain('padding: 0 !important');
+    expect(raceCss).not.toContain('.race-telemetry-drawer.is-telemetry-open .race-telemetry-drawer__controls');
+    expect(raceCss).not.toContain('right: calc(var(--telemetry-drawer-width) + 1rem)');
   });
 
 });

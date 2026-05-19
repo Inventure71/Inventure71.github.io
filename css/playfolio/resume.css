@@ -1,0 +1,260 @@
+/* Resume page */
+
+.pf-resume-page {
+  padding-top: clamp(2.75rem, 6vw, 5.5rem);
+}
+
+.pf-resume-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.7rem;
+}
+
+.pf-resume-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: end;
+  padding-top: 0 !important;
+  padding-bottom: clamp(1.5rem, 4vw, 2rem);
+  border-bottom: 1px solid var(--pf-line);
+}
+
+.pf-resume-top h1 {
+  max-width: 10ch;
+  margin: 0;
+  color: var(--pf-ink);
+  font-size: clamp(3rem, 7vw, 5.8rem);
+  font-weight: 850;
+  line-height: 0.88;
+}
+
+.pf-resume-top p {
+  max-width: 55rem;
+  margin: 1rem 0 0;
+  color: var(--pf-muted);
+  font-size: clamp(1rem, 2vw, 1.22rem);
+  line-height: 1.55;
+}
+
+.pf-resume-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
+  gap: 1.1rem;
+  align-items: start;
+  margin-top: 1.1rem;
+}
+
+.pf-resume-panel {
+  position: sticky;
+  top: 5.8rem;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--pf-radius);
+  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface));
+  overflow: hidden;
+}
+
+.pf-resume-id {
+  padding: 0.9rem;
+  border-bottom: 1px solid var(--pf-line);
+}
+
+.pf-resume-id span,
+.pf-resume-block header span,
+.pf-resume-line time,
+.pf-resume-projects article > span,
+.pf-resume-projects small,
+.pf-resume-place {
+  display: block;
+  color: var(--pf-muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.pf-resume-id strong,
+.pf-resume-id a {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--pf-ink);
+  font-size: 0.92rem;
+  font-weight: 760;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.pf-resume-id a:hover,
+.pf-resume-nav a:hover {
+  color: var(--pf-accent);
+}
+
+.pf-resume-id a {
+  overflow-wrap: anywhere;
+}
+
+.pf-resume-nav {
+  display: grid;
+  gap: 0;
+  border-bottom: 1px solid var(--pf-line);
+}
+
+.pf-resume-nav a {
+  padding: 0.75rem 0.9rem;
+  border-top: 1px solid var(--pf-line);
+  color: var(--pf-ink);
+  font-size: 0.84rem;
+  font-weight: 760;
+  text-decoration: none;
+}
+
+.pf-resume-nav a:first-child {
+  border-top: 0;
+}
+
+.pf-resume-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding: 0.9rem;
+}
+
+.pf-resume-tags span {
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  padding: 0.42rem 0.58rem;
+  color: var(--pf-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.pf-resume-doc {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.pf-resume-block {
+  padding-block: 0 !important;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--pf-radius);
+  background: var(--pf-line);
+  overflow: hidden;
+}
+
+.resume-page .pf-resume-doc > .pf-resume-block {
+  padding-block: 0 !important;
+}
+
+.pf-resume-block > header {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 1px;
+  align-items: stretch;
+  padding: 0 !important;
+  background: var(--pf-line);
+}
+
+.pf-resume-block > header span,
+.pf-resume-block > header h2 {
+  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface));
+  padding: 0.85rem 1rem;
+}
+
+.pf-resume-block > header h2 {
+  margin: 0;
+  color: var(--pf-ink);
+  font-size: clamp(1.3rem, 3vw, 2.2rem);
+  font-weight: 850;
+  line-height: 1;
+}
+
+.pf-resume-line {
+  display: grid;
+  grid-template-columns: minmax(116px, 0.23fr) minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem;
+  border-top: 1px solid var(--pf-line);
+  background: color-mix(in srgb, var(--pf-bg) 84%, var(--pf-surface));
+}
+
+.pf-resume-line h3,
+.pf-resume-projects h3,
+.pf-resume-skills h3 {
+  margin: 0;
+  color: var(--pf-ink);
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  font-weight: 830;
+  line-height: 1.05;
+}
+
+.pf-resume-line p,
+.pf-resume-projects p,
+.pf-resume-skills p {
+  margin: 0.5rem 0 0;
+  color: var(--pf-muted);
+  line-height: 1.55;
+}
+
+.pf-resume-place {
+  margin-top: 0.28rem !important;
+}
+
+.pf-resume-badge {
+  align-self: start;
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  padding: 0.46rem 0.64rem;
+  color: var(--pf-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.pf-resume-projects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid var(--pf-line);
+  background: var(--pf-line);
+}
+
+.pf-resume-projects article {
+  min-height: 10.5rem;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--pf-bg) 84%, var(--pf-surface));
+  display: flex;
+  flex-direction: column;
+}
+
+.pf-resume-projects article:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  min-height: 8.5rem;
+}
+
+.pf-resume-projects h3 {
+  margin-top: auto;
+}
+
+.pf-resume-projects small {
+  display: block;
+  margin-top: 0.9rem;
+}
+
+.pf-resume-projects--compact article {
+  min-height: 9rem;
+}
+
+.pf-resume-skills {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid var(--pf-line);
+  background: var(--pf-line);
+}
+
+.pf-resume-skills > div {
+  min-height: 9rem;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--pf-bg) 84%, var(--pf-surface));
+}

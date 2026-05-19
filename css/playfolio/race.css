@@ -1,0 +1,287 @@
+/* Race page and simulator bridge */
+
+.project-race-page .pf-section-head {
+  margin-bottom: 1rem;
+}
+
+.project-race-page .pf-page {
+  padding-top: clamp(2.2rem, 5vw, 4rem);
+}
+
+.project-race-page .pf-page > .pf-shell {
+  width: min(1580px, calc(100% - clamp(1rem, 2.5vw, 2.5rem)));
+}
+
+.pf-race-note {
+  margin: 0 0 1rem;
+  max-width: 82rem;
+  color: var(--pf-muted);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.pf-paddock-layout {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(0.45rem, 1vw, 0.85rem);
+  background: transparent;
+  overflow: hidden;
+}
+
+.pf-paddock-grid {
+  display: grid;
+  min-height: clamp(700px, 82vh, 980px);
+}
+
+.pf-paddock-race {
+  min-width: 0;
+  min-height: 100%;
+  height: 100%;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-race,
+.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-race {
+  opacity: 0;
+  transform: scale(0.985);
+  pointer-events: none;
+}
+
+.pf-paddock-loading,
+.pf-paddock-error {
+  position: absolute;
+  inset: 0.9rem;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0.9rem;
+  padding: 1.2rem;
+  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--pf-line) 88%, transparent);
+  background:
+    radial-gradient(circle at top, rgba(225, 6, 0, 0.14), transparent 35%),
+    linear-gradient(180deg, rgba(8, 10, 14, 0.92), rgba(8, 10, 14, 0.8));
+  backdrop-filter: blur(10px);
+  transition: opacity 220ms ease;
+}
+
+.pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-loading,
+.pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-error {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pf-paddock-loading__label,
+.pf-paddock-error {
+  color: #f3f4f7;
+  font-family: var(--pf-display);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  letter-spacing: 0.04em;
+}
+
+.pf-paddock-loading__lights {
+  display: grid;
+  grid-template-columns: repeat(5, 1.5rem);
+  gap: 0.5rem;
+}
+
+.pf-paddock-loading__lights span {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(56, 10, 14, 0.76);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.58);
+  animation: pf-paddock-light-pulse 1s infinite alternate;
+}
+
+.pf-paddock-loading__lights span:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.pf-paddock-loading__lights span:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+.pf-paddock-loading__lights span:nth-child(4) {
+  animation-delay: 0.36s;
+}
+
+.pf-paddock-loading__lights span:nth-child(5) {
+  animation-delay: 0.48s;
+}
+
+@keyframes pf-paddock-light-pulse {
+  from {
+    background: rgba(96, 16, 20, 0.62);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.58);
+  }
+
+  to {
+    background: #e10600;
+    box-shadow:
+      inset 0 0 10px rgba(255, 255, 255, 0.14),
+      0 0 18px rgba(225, 6, 0, 0.58);
+  }
+}
+
+.pf-paddock-race {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+}
+
+.pf-paddock-race .sim-canvas-panel,
+.pf-paddock-race .race-telemetry-drawer {
+  padding: 0 !important;
+}
+
+.pf-paddock-race > .sim-canvas-panel,
+.pf-paddock-race > .race-telemetry-drawer {
+  min-height: 100%;
+  height: 100%;
+}
+
+.pf-package-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-top: 0.75rem;
+  padding: 0.72rem 1rem;
+  border-top: 1px solid var(--pf-line);
+  color: var(--pf-muted);
+  font-size: 0.94rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.pf-package-note__badge {
+  flex: 0 0 auto;
+  min-width: 2.45rem;
+  padding: 0.28rem 0.48rem;
+  border: 1px solid var(--pf-line-strong);
+  border-radius: 6px;
+  color: var(--pf-ink);
+  font-family: var(--pf-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.pf-package-note a {
+  color: var(--pf-ink);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.pf-package-note a:hover,
+.pf-package-note a:focus-visible {
+  color: #62d995;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.pf-network-jump {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-block: 1px solid var(--pf-line);
+  color: var(--pf-muted);
+}
+
+.pf-network-jump__copy {
+  max-width: 68rem;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.pf-network-jump__button {
+  min-height: 2.65rem;
+  padding: 0.72rem 0.95rem;
+  border: 1px solid var(--pf-line-strong);
+  border-radius: 6px;
+  color: var(--pf-ink) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.52rem;
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.pf-network-jump__button:hover,
+.pf-network-jump__button:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--pf-ink);
+  background: var(--pf-surface-soft);
+}
+
+@media (max-width: 1024px) {
+  .pf-paddock-race {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    order: -1;
+  }
+
+  .pf-paddock-grid {
+    min-height: clamp(620px, 78vh, 860px);
+  }
+}
+
+@media (max-width: 720px) {
+  .project-race-page .pf-page > .pf-shell {
+    width: min(100% - 1rem, 1580px);
+  }
+
+  .pf-network-jump {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pf-package-note {
+    align-items: center;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .pf-network-jump__button {
+    width: 100%;
+  }
+}
+
+.project-race-page .f1-telemetry-hud,
+.project-race-page .f1-broadcast-ticker {
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--pf-surface) 92%, transparent);
+  border-color: var(--pf-line);
+  color: var(--pf-ink);
+  box-shadow: var(--pf-shadow);
+}
+
+.project-race-page .f1-filter-pill,
+.project-race-page .f1-brain-link {
+  border-radius: 999px;
+  border-color: var(--pf-line);
+  background: transparent;
+  color: var(--pf-muted);
+}
+
+.project-race-page .f1-filter-pill:hover,
+.project-race-page .f1-filter-pill.active,
+.project-race-page .f1-brain-link:hover {
+  background: var(--pf-ink);
+  border-color: var(--pf-ink);
+  color: var(--pf-bg);
+}
