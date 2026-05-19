@@ -9,21 +9,34 @@ describe('PaddockJS project race integration', () => {
   test('uses the package-owned telemetry drawer instead of detached safety controls', () => {
     const source = readFileSync(sourcePath, 'utf8');
 
+    expect(source).toContain('mountRaceTelemetryDrawer(raceRoot, simulator');
     expect(source).toContain('mountRaceTelemetryDrawer');
     expect(source).toContain('raceDataTelemetryDetail');
     expect(source).toContain("enabled: ['project', 'radio']");
+    expect(source).toContain("initial: 'project'");
     expect(source).not.toContain('mountRaceCanvas');
     expect(source).not.toContain('mountSafetyCarControl');
     expect(source).not.toContain('mountTimingTower');
     expect(source).not.toContain('paddock-safety-root');
   });
 
-  test('enables pit stops and stalled off-track DNF rules for the project race', () => {
+  test('uses the custom race rules setup from the package snippet', () => {
     const source = readFileSync(sourcePath, 'utf8');
 
+    expect(source).toContain("ruleset: 'custom'");
     expect(source).toMatch(/pitStops:\s*{\s*enabled:\s*true,\s*}/);
     expect(source).toMatch(/stalledDnf:\s*{\s*enabled:\s*true,\s*}/);
+    expect(source).toMatch(/tireStrategy:\s*{\s*enabled:\s*true,\s*mandatoryDistinctDryCompounds:\s*2,\s*}/);
+    expect(source).toContain("collision: {\n        strictness: 1");
+    expect(source).toContain("trackLimits: {\n        strictness: 1");
     expect(source).toContain('rules: raceRules');
+  });
+
+  test('enables penalty banners and timing badges for stewarded rules', () => {
+    const source = readFileSync(sourcePath, 'utf8');
+
+    expect(source).toContain('penaltyBanners: true');
+    expect(source).toContain('timingPenaltyBadges: true');
   });
 
   test('lets the package drawer controls stay anchored while the race fills the host mount', () => {

@@ -500,34 +500,6 @@
     });
   }
 
-  function setupRaceFilters() {
-    const filters = Array.from(document.querySelectorAll('[data-race-focus]'));
-    if (!filters.length) return;
-
-    const apply = (focus) => {
-      filters.forEach((button) => {
-        const active = button.dataset.raceFocus === focus;
-        button.classList.toggle('active', active);
-        button.setAttribute('aria-pressed', active ? 'true' : 'false');
-      });
-
-      const filterTargets = [
-        ...document.querySelectorAll('.f1-driver-entry'),
-        ...document.querySelectorAll('.f1-car'),
-      ];
-
-      filterTargets.forEach((target) => {
-        const tags = target.dataset.tags || '';
-        const visible = focus === 'all' || tags.split(',').map((tag) => tag.trim()).includes(focus);
-        target.classList.toggle('is-filter-dimmed', !visible);
-      });
-    };
-
-    filters.forEach((button) => {
-      button.addEventListener('click', () => apply(button.dataset.raceFocus || 'all'));
-    });
-  }
-
   function setupPortraitCycle() {
     const image = document.querySelector('[data-portrait-cycle]');
     if (!image) return;
@@ -847,7 +819,6 @@
     setupProjectPreview();
     setupProjectExplorer();
     setupCommandPalette();
-    setupRaceFilters();
     setupPortraitCycle();
     setupCodexAmbassadorLogo();
     setupAiGuideCopy();
