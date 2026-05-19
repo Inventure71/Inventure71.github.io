@@ -1130,107 +1130,6 @@ body.playfolio-page {
   line-height: 1.55;
 }
 
-.pf-race-controls {
-  margin-bottom: 1rem;
-  border: 1px solid var(--pf-line);
-  border-radius: var(--pf-radius);
-  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface));
-  box-shadow: none;
-}
-
-.project-race-page .f1-broadcast-layout {
-  max-width: none;
-  padding: 0;
-  grid-template-columns: minmax(270px, 0.36fr) minmax(0, 1fr);
-  gap: 1px;
-  border: 1px solid var(--pf-line);
-  border-radius: var(--pf-radius);
-  background: var(--pf-line);
-  overflow: hidden;
-}
-
-.project-race-page .f1-leaderboard,
-.project-race-page .f1-track-container,
-.project-race-page .f1-track-info {
-  border: 0;
-  border-radius: 0 !important;
-  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface));
-  box-shadow: none;
-}
-
-.project-race-page .f1-leaderboard {
-  position: relative;
-  top: auto;
-  min-height: 100%;
-}
-
-.project-race-page .f1-track-wrapper {
-  gap: 1px;
-  height: 100%;
-  min-height: 0;
-  background: var(--pf-line);
-}
-
-.project-race-page .f1-leaderboard-title,
-.project-race-page .f1-position,
-.project-race-page .f1-driver-name,
-.project-race-page .f1-placeholder-title,
-.project-race-page .track-name,
-.project-race-page .f1-telemetry-title {
-  color: var(--pf-ink);
-}
-
-.project-race-page .f1-lap-info,
-.project-race-page .f1-driver-code,
-.project-race-page .f1-placeholder-text,
-.project-race-page .track-label,
-.project-race-page .track-meta,
-.project-race-page .track-weather,
-.project-race-page .f1-telemetry-label,
-.project-race-page .f1-telemetry-status {
-  color: var(--pf-muted);
-}
-
-.project-race-page .f1-driver-entry {
-  background: transparent;
-  border: 1px solid var(--pf-line);
-  border-left: 4px solid var(--driver-accent, var(--pf-accent));
-  border-radius: 6px;
-  box-shadow: none;
-}
-
-.project-race-page .f1-driver-entry:hover,
-.project-race-page .f1-driver-entry:focus-visible {
-  background: var(--pf-surface);
-  box-shadow: none;
-  transform: translateX(3px);
-}
-
-.project-race-page .f1-driver-entry.is-filter-dimmed,
-.project-race-page .f1-car.is-filter-dimmed {
-  opacity: 0.22;
-}
-
-.project-race-page .f1-track-glow,
-.project-race-page .f1-track-container::before {
-  opacity: 0.58;
-}
-
-.project-race-page .f1-track-grid {
-  opacity: 0.18;
-}
-
-.project-race-page .f1-track-container {
-  flex: 1 1 auto;
-  min-height: clamp(470px, 58vw, 680px);
-}
-
-.project-race-page .f1-track-info {
-  border-bottom: 1px solid var(--pf-line);
-  margin: 0;
-  padding: 1rem;
-}
-
 .pf-paddock-layout {
   position: relative;
   isolation: isolate;
@@ -1356,6 +1255,49 @@ body.playfolio-page {
   height: 100%;
 }
 
+.pf-package-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-top: 0.75rem;
+  padding: 0.72rem 1rem;
+  border-top: 1px solid var(--pf-line);
+  color: var(--pf-muted);
+  font-size: 0.94rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.pf-package-note__badge {
+  flex: 0 0 auto;
+  min-width: 2.45rem;
+  padding: 0.28rem 0.48rem;
+  border: 1px solid var(--pf-line-strong);
+  border-radius: 6px;
+  color: var(--pf-ink);
+  font-family: var(--pf-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.pf-package-note a {
+  color: var(--pf-ink);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.pf-package-note a:hover,
+.pf-package-note a:focus-visible {
+  color: #62d995;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
 .pf-network-jump {
   display: flex;
   align-items: center;
@@ -1399,22 +1341,6 @@ body.playfolio-page {
 }
 
 @media (max-width: 1024px) {
-  .project-race-page .f1-broadcast-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .project-race-page .f1-leaderboard {
-    min-height: auto;
-  }
-
-  .project-race-page .f1-track-wrapper {
-    height: auto;
-  }
-
-  .project-race-page .f1-track-container {
-    flex: 0 0 auto;
-  }
-
   .pf-paddock-race {
     grid-column: 1 / -1;
     grid-row: 1;
@@ -1437,6 +1363,12 @@ body.playfolio-page {
   .pf-network-jump {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .pf-package-note {
+    align-items: center;
+    flex-direction: column;
+    gap: 0.55rem;
   }
 
   .pf-network-jump__button {

@@ -7,63 +7,70 @@
             title: 'Budget Buddy',
             desc: 'AI-Powered Financial Chatbot',
             url: 'project_details/project-budget-buddy.html',
-            tags: ['Python', 'AI Agents', 'Financial Planning']
+            tags: ['Python', 'AI Agents', 'Financial Planning', 'Data Systems', 'Web/API']
         },
         {
             id: 'neural-noir',
             title: 'Neural Noir',
             desc: 'AI-Driven Interactive Story Game',
             url: 'project_details/project-neural-noir.html',
-            tags: ['AI-Powered', 'Procedural Storytelling', 'Unreal Engine 5']
+            tags: ['Generative AI', 'Procedural Storytelling', 'Unreal Engine', 'Games', 'Python']
         },
         {
             id: 'holovinyl',
             title: 'HoloVinyl',
             desc: 'Touchless Vision Control Deck',
             url: 'project_details/project-holovinyl.html',
-            tags: ['Computer Vision', 'Gesture UI', 'Python']
+            tags: ['Python', 'Computer Vision', 'Gesture UI', 'Interfaces', 'Music']
         },
         {
             id: 'drsorriso',
             title: 'DrSorrisoDonations',
             desc: 'Donation Intelligence Platform',
             url: 'project_details/project-drsorrisodonations.html',
-            tags: ['Python', 'Donor CRM', 'Analytics']
+            tags: ['Python', 'Donor CRM', 'Analytics', 'Data Systems', 'Web/API']
         },
         {
             id: 'victoria',
             title: 'VictorIA',
             desc: 'Multi-Domain AI Sandbox',
             url: 'project_details/project-victoria.html',
-            tags: ['Game AI', 'Computer Vision', 'Robotics']
+            tags: ['Python', 'Game AI', 'Computer Vision', 'Robotics', 'Physical Computing']
         },
         {
             id: 'remainder',
             title: 'ReminderZ',
             desc: 'AI Context Weaving Platform',
             url: 'project_details/project-remainder-v0.html',
-            tags: ['ReminderProject', 'RemainderV0', 'ProjectLoom', 'remainder_app']
+            tags: ['Python', 'AI Agents', 'Knowledge Graph', 'Productivity', 'Web/API']
         },
         {
             id: 'clipclop',
             title: 'ClipClop',
             desc: 'Cross-Device Clipboard Intelligence',
             url: 'project_details/project-clipclop.html',
-            tags: ['Python', 'Android', 'Productivity']
+            tags: ['Python', 'Android', 'macOS', 'Productivity', 'Local-First Tools']
         },
         {
             id: 'evolve',
             title: 'EvolveProject',
             desc: 'AI Card Generation Backend',
             url: 'project_details/project-evolveproject.html',
-            tags: ['Python', 'Generative AI', 'Unreal Engine']
+            tags: ['Python', 'Generative AI', 'Unreal Engine', 'Games', 'Web/API']
         },
         {
             id: 'algorithms-project',
             title: 'Clash Royale In Python',
             desc: 'Algorithmic Strategy Game Engine',
             url: 'project_details/project-algorithms-project.html',
-            tags: ['Python', 'Game Development', 'Pygame', 'BFS Pathfinding', 'Algorithms', 'Complexity Analysis']
+            tags: ['Python', 'Pygame', 'Games', 'Game AI', 'Algorithms', 'Pathfinding']
+        },
+        {
+            id: 'core-conflict',
+            title: 'Core Conflict',
+            desc: 'AI-Assisted Multiplayer Game Prototype',
+            url: 'project_details/project-gengame.html',
+            tags: ['Python', 'AI Agents', 'Generative AI', 'Games', 'Multiplayer', 'Web/API']
         }
     ];
 
@@ -97,9 +104,11 @@
     function nodePalette(node) {
         const label = node.id.toLowerCase();
         if (label.includes('ai') || label.includes('generative') || label.includes('vision')) return '#40b898';
-        if (label.includes('game') || label.includes('unreal') || label.includes('story')) return '#ff7048';
-        if (label.includes('python') || label.includes('algorithm') || label.includes('complexity')) return '#f4f1e8';
-        if (label.includes('android') || label.includes('productivity') || label.includes('reminder')) return '#79a0ff';
+        if (label.includes('game') || label.includes('unreal') || label.includes('story') || label.includes('multiplayer')) return '#ff7048';
+        if (label.includes('python') || label.includes('algorithm') || label.includes('pathfinding')) return '#f4f1e8';
+        if (label.includes('android') || label.includes('macos') || label.includes('productivity') || label.includes('tools')) return '#79a0ff';
+        if (label.includes('data') || label.includes('api') || label.includes('analytics') || label.includes('finance')) return '#f4b84a';
+        if (label.includes('robot') || label.includes('physical') || label.includes('interface') || label.includes('gesture')) return '#8bd7ff';
         return '#d8ded8';
     }
 

@@ -30,8 +30,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/modern.css" rel="stylesheet" />
-    <link href="dist/f1-simulator/f1-simulator.css?v=20260503-paddockjs-030" rel="stylesheet" />
+    <link href="dist/f1-simulator/f1-simulator.css?v=20260519-paddockjs-200-custom-rules" rel="stylesheet" />
     <link href="css/playfolio.css?v=20260503-paddock-layout-2" rel="stylesheet" />
+    <link href="css/project-race-guide.css?v=20260519-component" rel="stylesheet" />
 </head>
 
 <body class="playfolio-page project-race-page d-flex flex-column h-100">
@@ -74,11 +75,7 @@
                     </div>
                 </header>
 
-                <p class="pf-race-note">
-                    Each car represents a project. Hover or select entries to inspect them, use the leaderboard for
-                    direct links, and press the safety car control if you want to neutralize the race and click around
-                    more easily.
-                </p>
+                <project-race-guide></project-race-guide>
 
                 <div class="pf-paddock-layout" data-paddock-shell data-simulator-state="booting"
                     aria-label="PaddockJS project race" aria-busy="true">
@@ -98,6 +95,16 @@
                     <div class="pf-paddock-grid">
                         <div id="paddock-race-root" class="f1-sim-component pf-paddock-race"></div>
                     </div>
+                </div>
+
+                <div class="pf-package-note" aria-label="PaddockJS npm package note">
+                    <span class="pf-package-note__badge">npm</span>
+                    <span>
+                        This race view runs on my own F1-style simulation package for display, model training, and
+                        interactive project showcases:
+                        <a href="https://www.npmjs.com/package/@inventure71/paddockjs" target="_blank"
+                            rel="noopener">@inventure71/paddockjs</a>.
+                    </span>
                 </div>
 
                 <div class="pf-network-jump" aria-label="Open project network view">
@@ -126,7 +133,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/theme.js"></script>
-    <script type="module" src="dist/f1-simulator/f1-simulator.js?v=20260503-paddockjs-030"></script>
+    <script type="module" src="dist/f1-simulator/f1-simulator.js?v=20260519-paddockjs-200-custom-rules"></script>
+    <script type="module" src="js/project-race-guide.js?v=20260519-component"></script>
     <script src="js/playfolio.js?v=2"></script>
 </body>
 

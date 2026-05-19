@@ -1,0 +1,269 @@
+.project-race-experiment-page .pf-page > .pf-shell {
+  width: min(1940px, calc(100% - clamp(2rem, 3vw, 4rem)));
+}
+
+.project-race-experiment-page .pf-section-title {
+  font-size: clamp(5.2rem, 7vw, 8.2rem);
+  letter-spacing: 0;
+  line-height: 0.9;
+}
+
+project-race-guide {
+  display: block;
+}
+
+.pf-race-guide {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(25rem, 0.95fr);
+  gap: clamp(1rem, 2.6vw, 3rem);
+  align-items: center;
+  margin: 0 0 2.2rem;
+  padding: 1.35rem 0 2.2rem;
+  border-top: 1px solid color-mix(in srgb, #62d995 52%, var(--pf-line));
+  border-bottom: 0;
+}
+
+.pf-race-guide::before,
+.pf-race-guide::after {
+  content: none;
+}
+
+.pf-race-guide__copy {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.15rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.pf-race-guide__marker {
+  position: relative;
+  width: 6.35rem;
+  height: 3.75rem;
+  border: 0;
+  border-radius: 0;
+  background:
+    conic-gradient(from 90deg, #f7f4ec 25%, #111310 0 50%, #f7f4ec 0 75%, #111310 0)
+    0 0 / 1.05rem 1.05rem;
+  clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);
+  opacity: 0.96;
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.12));
+}
+
+.pf-race-guide__marker::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1.45rem;
+  width: 0.18rem;
+  height: 100%;
+  background: #62d995;
+  box-shadow: 0 0 18px rgba(98, 217, 149, 0.42);
+  transform: skewX(-7deg);
+}
+
+.pf-race-guide__headline {
+  max-width: 47rem;
+  margin: 0;
+  color: var(--pf-ink) !important;
+  font-size: clamp(1.36rem, 1.55vw, 1.82rem);
+  font-weight: 780;
+  line-height: 1.28;
+  text-wrap: balance;
+}
+
+.pf-race-guide__headline strong {
+  color: #62d995;
+  font-weight: 900;
+}
+
+.pf-race-guide__hints {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: clamp(0.5rem, 0.85vw, 1rem);
+  max-width: 60rem;
+  min-width: 0;
+}
+
+.pf-race-guide__hints span {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 3.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.72rem;
+  justify-content: center;
+  padding: clamp(0.66rem, 0.8vw, 0.78rem) clamp(0.65rem, 1vw, 1.15rem);
+  border: 1px solid var(--pf-line-strong);
+  border-radius: 12px;
+  color: var(--pf-ink);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), transparent),
+    color-mix(in srgb, var(--pf-surface) 54%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+  font-size: clamp(0.86rem, 1vw, 1.22rem);
+  font-weight: 620;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pf-race-guide__hints i {
+  flex: 0 0 auto;
+  font-style: normal;
+  font-size: 1.15em;
+  line-height: 1;
+}
+
+.pf-race-guide__track-cue {
+  position: absolute;
+  left: 50%;
+  bottom: -0.95rem;
+  display: grid;
+  grid-template-columns: minmax(10rem, 1fr) auto minmax(10rem, 1fr);
+  gap: clamp(1rem, 2vw, 2rem);
+  align-items: center;
+  width: min(96rem, 82vw);
+  color: #62d995;
+  font-family: var(--pf-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
+  font-size: 0.92rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+.pf-race-guide__track-cue span {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #62d995);
+}
+
+.pf-race-guide__track-cue span:last-child {
+  background: linear-gradient(90deg, #62d995, transparent);
+}
+
+.pf-race-guide__track-cue span::after {
+  content: "";
+  position: absolute;
+  top: -0.18rem;
+  right: -0.45rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid #62d995;
+  border-bottom: 2px solid #62d995;
+  transform: rotate(45deg);
+}
+
+.pf-race-guide__track-cue span:last-child::after {
+  right: auto;
+  left: -0.45rem;
+}
+
+.pf-race-guide__track-cue b::before,
+.pf-race-guide__track-cue b::after {
+  content: "↓";
+  margin: 0 0.8rem;
+  color: #62d995;
+}
+
+@media (max-width: 1280px) {
+  .pf-race-guide {
+    grid-template-columns: minmax(0, 0.9fr) minmax(24rem, 1.1fr);
+  }
+
+  .pf-race-guide__hints span {
+    gap: 0.35rem;
+    min-height: 3.45rem;
+    padding: 0.58rem 0.5rem;
+    font-size: clamp(0.72rem, 1.08vw, 0.9rem);
+    line-height: 1.14;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 1024px) {
+  .project-race-experiment-page .pf-page > .pf-shell {
+    width: min(100% - 1rem, 1940px);
+  }
+
+  .project-race-experiment-page .pf-section-title {
+    font-size: clamp(2.35rem, 12vw, 4.8rem);
+  }
+
+  .pf-race-guide__marker {
+    width: 5.3rem;
+    height: 3.2rem;
+  }
+
+  .pf-race-guide__headline {
+    font-size: clamp(1.12rem, 2.5vw, 1.42rem);
+  }
+
+  .pf-race-guide__hints {
+    gap: 0.45rem;
+    max-width: none;
+  }
+
+  .pf-race-guide__hints span {
+    min-height: 3.25rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .pf-race-guide {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 1rem;
+  }
+
+  .pf-race-guide__hints {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .pf-race-guide {
+    padding-bottom: 1.15rem;
+  }
+
+  .pf-race-guide__copy {
+    grid-template-columns: 1fr;
+    gap: 0.62rem;
+  }
+
+  .pf-race-guide__marker {
+    width: 4.6rem;
+    height: 2.75rem;
+    margin-top: 0;
+  }
+
+  .pf-race-guide__headline {
+    font-size: 1.22rem;
+  }
+
+  .pf-race-guide__hints {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .pf-race-guide__hints span {
+    width: 100%;
+    min-height: 2.65rem;
+    border-radius: 6px;
+    font-size: 0.92rem;
+  }
+
+  .pf-race-guide__track-cue {
+    width: calc(100% - 1rem);
+    grid-template-columns: 1fr;
+    gap: 0;
+    text-align: center;
+  }
+
+  .pf-race-guide__track-cue span {
+    display: none;
+  }
+}
