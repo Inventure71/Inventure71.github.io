@@ -10,7 +10,7 @@
     "check": "npm run test && npm run build:f1"
   },
   "dependencies": {
-    "@inventure71/paddockjs": "^2.0.0",
+    "@inventure71/paddockjs": "file:../PaddockJS",
     "pixi.js": "8.18.1"
   },
   "devDependencies": {
