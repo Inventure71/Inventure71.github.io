@@ -1,0 +1,130 @@
+/* Footer, reveals, and responsive behavior */
+
+.pf-footer {
+  border-top: 1px solid var(--pf-line);
+  color: var(--pf-muted);
+}
+
+.pf-footer a {
+  color: var(--pf-muted);
+}
+
+.pf-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 520ms ease, transform 520ms ease;
+}
+
+.pf-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-reveal,
+  .pf-button,
+  .playfolio-page .btn,
+  .pf-ambassador-logo,
+  .pf-project-card,
+  .pf-project-row,
+  .pf-node,
+  .pf-preview-media img {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .pf-hero-grid,
+  .pf-section-head,
+  .pf-workbench,
+  .pf-projects-layout,
+  .pf-project-detail,
+  .playfolio-page.project-page .project-hero,
+  .pf-resume-top,
+  .pf-resume-layout,
+  .pf-resume-projects,
+  .pf-resume-skills {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-resume-actions {
+    justify-content: flex-start;
+  }
+
+  .pf-resume-panel {
+    position: static;
+  }
+
+  .pf-hero {
+    min-height: auto;
+  }
+
+  .pf-portrait-stage {
+    min-height: 520px;
+  }
+
+  .pf-project-table {
+    border-right: 0;
+  }
+
+  .pf-inspector {
+    position: static;
+    min-height: auto;
+  }
+
+  .pf-graph {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  body.playfolio-page {
+    background-size: 48px 48px;
+  }
+
+  .playfolio-page .navbar {
+    width: calc(100% - 1rem);
+  }
+
+  .pf-title {
+    font-size: clamp(3.5rem, 22vw, 5rem);
+  }
+
+  .pf-ambassador-lockup {
+    left: 0.9rem;
+    bottom: 0.9rem;
+    max-width: calc(100% - 1.8rem);
+  }
+
+  .pf-ambassador-logo {
+    width: 3.5rem;
+  }
+
+  .pf-principles,
+  .pf-contact-band {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-portrait-stage {
+    min-height: 430px;
+  }
+
+  .pf-project-card,
+  .pf-project-row,
+  .pf-app-row,
+  .pf-contact-row,
+  .pf-resume-line,
+  .pf-resume-block > header {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-project-index,
+  .pf-project-arrow,
+  .pf-row-year {
+    display: none;
+  }
+
+  .pf-graph {
+    grid-template-columns: 1fr;
+  }
+}

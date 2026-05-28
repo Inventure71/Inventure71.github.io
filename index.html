@@ -14,20 +14,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet" />
-    <script>
-        (function () {
-            try {
-                var storageKey = 'mg-color-theme';
-                var storedTheme = localStorage.getItem(storageKey);
-                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                var theme = storedTheme || (prefersDark ? 'dark' : 'light');
-                document.documentElement.dataset.theme = theme;
-                document.documentElement.style.colorScheme = theme;
-            } catch (error) {
-                document.documentElement.dataset.theme = 'light';
-            }
-        })();
-    </script>
+    <script src="/js/theme-boot.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="/css/styles.css" rel="stylesheet" />
     <link href="/css/modern.css" rel="stylesheet" />
@@ -36,38 +23,7 @@
 
 <body class="playfolio-page d-flex flex-column h-100">
     <main class="flex-shrink-0">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container">
-                <div class="pf-brand-group">
-                    <a class="navbar-brand" href="/index.html">MG</a>
-                    <button class="pf-nav-ai-button" type="button" data-ai-guide-copy>Ask AI</button>
-                </div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation"><span
-                        class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
-                        <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start">
-                            <li class="nav-item"><a class="nav-link active" href="/index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/apps.html">Apps</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/resume.html">Resume</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
-                        </ul>
-                        <div class="d-flex gap-2">
-                            <button class="pf-icon-button" type="button" data-command-open aria-label="Open command menu">
-                                <i class="bi bi-command"></i>
-                            </button>
-                            <button class="theme-toggle-btn" type="button" data-theme-toggle
-                                aria-label="Toggle color scheme">
-                                <i class="bi bi-moon"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <nav class="navbar navbar-expand-lg" data-active-page="home"></nav>
 
         <header class="pf-hero">
             <div class="pf-shell pf-hero-grid">
@@ -232,16 +188,7 @@
             </div>
         </section>
     </main>
-    <footer class="pf-footer py-4 mt-auto">
-        <div class="pf-shell d-flex flex-column flex-sm-row justify-content-between gap-2">
-            <div class="small">Copyright &copy; inventure71.github.io 2026</div>
-            <div class="small d-flex gap-3">
-                <a href="https://github.com/Inventure71" target="_blank" rel="noopener">GitHub</a>
-                <a href="https://www.linkedin.com/in/matteo-giorgetti-026172247/" target="_blank" rel="noopener">LinkedIn</a>
-                <a href="/assets/docs/matteo-giorgetti-resume-current.pdf">Resume PDF</a>
-            </div>
-        </div>
-    </footer>
+    <footer class="pf-footer py-4 mt-auto"></footer>
 
     <div class="pf-ai-toast" data-ai-guide-toast hidden>
         <div class="pf-ai-toast-card" role="status" aria-live="polite">
@@ -272,7 +219,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/theme.js"></script>
-    <script src="/js/playfolio.js"></script>
+    <script type="module" src="/js/playfolio.js"></script>
 </body>
 
 </html>

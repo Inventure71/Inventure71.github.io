@@ -1,0 +1,290 @@
+/* Playfolio styling overrides for case-study pages */
+
+.playfolio-page.project-page {
+  --project-accent: var(--pf-accent);
+  background: var(--pf-bg) !important;
+}
+
+.playfolio-page.project-page main > section.py-5 {
+  padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(3rem, 7vw, 5rem) !important;
+}
+
+.playfolio-page.project-page main > section > .container {
+  width: min(var(--pf-max), calc(100% - (var(--pf-pad) * 2)));
+  max-width: none;
+  padding: 0 !important;
+}
+
+.playfolio-page.project-page .project-shell {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  gap: 1.1rem;
+}
+
+.playfolio-page.project-page .project-hero,
+.playfolio-page.project-page .project-media-stage,
+.playfolio-page.project-page .project-sidecard,
+.playfolio-page.project-page .project-section,
+.playfolio-page.project-page .project-keypoints li,
+.playfolio-page.project-page .project-module,
+.playfolio-page.project-page .project-flow-step,
+.playfolio-page.project-page .gallery-card,
+.playfolio-page.project-page .project-data-strip li,
+.playfolio-page.project-page .project-insight-card,
+.playfolio-page.project-page .link-card,
+.playfolio-page.project-page .feature-card,
+.playfolio-page.project-page .project-step,
+.playfolio-page.project-page .gallery-item,
+.playfolio-page.project-page .project-card,
+.playfolio-page.project-page .video-container {
+  border: 1px solid var(--pf-line) !important;
+  border-radius: var(--pf-radius) !important;
+  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface)) !important;
+  box-shadow: none !important;
+}
+
+.playfolio-page.project-page .project-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.58fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.35rem, 4vw, 2.6rem) !important;
+  overflow: hidden;
+}
+
+.playfolio-page.project-page .project-hero::before,
+.playfolio-page.project-page .project-hero::after {
+  display: none !important;
+}
+
+.playfolio-page.project-page .project-section-eyebrow,
+.playfolio-page.project-page .hero-meta-card .label,
+.playfolio-page.project-page .metric-label,
+.playfolio-page.project-page .flow-index {
+  color: var(--pf-muted) !important;
+  font-size: 0.76rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.playfolio-page.project-page .project-hero h1,
+.playfolio-page.project-page .project-title {
+  margin: 0 0 0.9rem;
+  color: var(--pf-ink) !important;
+  font-size: clamp(2.4rem, 6vw, 5.4rem);
+  font-weight: 850;
+  line-height: 0.92;
+}
+
+.playfolio-page.project-page .project-hero .lead,
+.playfolio-page.project-page .project-sidecard p,
+.playfolio-page.project-page .project-section p,
+.playfolio-page.project-page .project-copy,
+.playfolio-page.project-page .flow-body p,
+.playfolio-page.project-page .project-keypoints p,
+.playfolio-page.project-page .project-module p,
+.playfolio-page.project-page .project-insight-card p,
+.playfolio-page.project-page .project-insight-card ul,
+.playfolio-page.project-page .gallery-card figcaption,
+.playfolio-page.project-page .metric-copy,
+.playfolio-page.project-page .sidecard-highlight li {
+  color: var(--pf-muted) !important;
+}
+
+.playfolio-page.project-page .project-pills,
+.playfolio-page.project-page .project-tags,
+.playfolio-page.project-page .project-stack-list {
+  gap: 0.5rem;
+}
+
+.playfolio-page.project-page .project-pill,
+.playfolio-page.project-page .project-tag,
+.playfolio-page.project-page .tech-badge,
+.playfolio-page.project-page .project-stack-list li {
+  border: 1px solid var(--pf-line) !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: var(--pf-muted) !important;
+  padding: 0.5rem 0.7rem !important;
+  font-size: 0.78rem !important;
+  font-weight: 750 !important;
+}
+
+.playfolio-page.project-page .hero-meta {
+  align-self: start;
+  gap: 1px;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--pf-radius);
+  background: var(--pf-line);
+  overflow: hidden;
+}
+
+.playfolio-page.project-page .hero-meta-card {
+  min-height: 6.25rem;
+  padding: 0.95rem !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: color-mix(in srgb, var(--pf-bg) 84%, var(--pf-surface)) !important;
+  color: var(--pf-ink) !important;
+  box-shadow: none !important;
+}
+
+.playfolio-page.project-page .hero-meta-card:hover {
+  border-color: transparent !important;
+}
+
+.playfolio-page.project-page .hero-meta-card .value {
+  color: var(--pf-ink) !important;
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.playfolio-page.project-page .project-media-panel {
+  gap: 1.1rem;
+}
+
+.playfolio-page.project-page .project-media-stage {
+  min-height: 20rem;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.playfolio-page.project-page .project-media-stage img,
+.playfolio-page.project-page .gallery-card img,
+.playfolio-page.project-page .gallery-item img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.playfolio-page.project-page .project-sidecard {
+  padding: clamp(1rem, 3vw, 1.35rem) !important;
+  gap: 1rem;
+}
+
+.playfolio-page.project-page .project-sidecard h3,
+.playfolio-page.project-page .project-section-header h2,
+.playfolio-page.project-page .project-spotlight h3,
+.playfolio-page.project-page .project-keypoints h4,
+.playfolio-page.project-page .project-module h4,
+.playfolio-page.project-page .project-insight-card h4,
+.playfolio-page.project-page .flow-body h5 {
+  color: var(--pf-ink) !important;
+  font-weight: 820;
+  line-height: 1.05;
+}
+
+.playfolio-page.project-page .sidecard-highlight {
+  padding: 0;
+  margin: 0;
+}
+
+.playfolio-page.project-page .sidecard-highlight i {
+  color: var(--pf-accent-2) !important;
+}
+
+.playfolio-page.project-page .sidecard-links a {
+  border: 1px solid var(--pf-line) !important;
+  border-radius: 6px !important;
+  background: transparent;
+  color: var(--pf-ink) !important;
+}
+
+.playfolio-page.project-page .sidecard-links a:hover {
+  border-color: var(--pf-line-strong) !important;
+  transform: translateX(3px);
+}
+
+.playfolio-page.project-page .project-section {
+  padding: clamp(1.2rem, 3vw, 2rem) !important;
+}
+
+.playfolio-page.project-page .project-section + .project-section {
+  margin-top: 0;
+}
+
+.playfolio-page.project-page .project-section-header {
+  margin-bottom: 1.25rem;
+}
+
+.playfolio-page.project-page .project-section-header h2 {
+  margin: 0;
+  font-size: clamp(1.55rem, 4vw, 3.1rem);
+}
+
+.playfolio-page.project-page .project-keypoints,
+.playfolio-page.project-page .project-data-strip,
+.playfolio-page.project-page .project-insight-grid,
+.playfolio-page.project-page .project-module-grid,
+.playfolio-page.project-page .project-gallery {
+  gap: 1px;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--pf-radius);
+  background: var(--pf-line);
+  overflow: hidden;
+}
+
+.playfolio-page.project-page .project-keypoints li,
+.playfolio-page.project-page .project-data-strip li,
+.playfolio-page.project-page .project-insight-card,
+.playfolio-page.project-page .project-module,
+.playfolio-page.project-page .gallery-card {
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.playfolio-page.project-page .project-flow {
+  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface)) !important;
+}
+
+.playfolio-page.project-page .project-flow-steps {
+  gap: 1px;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--pf-radius);
+  background: var(--pf-line);
+  overflow: hidden;
+}
+
+.playfolio-page.project-page .project-flow-step {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: color-mix(in srgb, var(--pf-bg) 84%, var(--pf-surface)) !important;
+}
+
+.playfolio-page.project-page .metric-value {
+  color: var(--pf-accent-2) !important;
+  font-weight: 850;
+}
+
+.playfolio-page.project-page .project-spotlight {
+  border-color: var(--pf-ink) !important;
+  background: var(--pf-ink) !important;
+  color: var(--pf-bg) !important;
+}
+
+.playfolio-page.project-page .project-spotlight h3 {
+  color: inherit !important;
+}
+
+.playfolio-page.project-page .project-spotlight p {
+  color: color-mix(in srgb, var(--pf-bg) 72%, transparent) !important;
+}
+
+.playfolio-page.project-page .project-back-link,
+.playfolio-page.project-page .back-button {
+  border: 1px solid var(--pf-line-strong) !important;
+  border-radius: 6px !important;
+  background: transparent;
+  color: var(--pf-ink) !important;
+  padding: 0.8rem 1rem !important;
+}
+
+.playfolio-page.project-page .project-back-link:hover,
+.playfolio-page.project-page .back-button:hover {
+  border-color: var(--pf-ink) !important;
+  background: var(--pf-surface-soft);
+  transform: translateX(-3px);
+}

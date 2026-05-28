@@ -6,6 +6,7 @@ import {
   mountF1Simulator,
 } from '@inventure71/paddockjs';
 import { setPaddockShellState, syncPaddockShellLayout } from './paddockjs-boot-state.js';
+import { getPaddockTheme, installPaddockThemeSync } from './paddockjs-theme-sync.js';
 
 const root = document.getElementById('f1-simulator-root');
 const raceRoot = document.getElementById('paddock-race-root');
@@ -42,6 +43,8 @@ const portfolioOptions = {
   drivers: DEMO_PROJECT_DRIVERS,
   entries: CHAMPIONSHIP_ENTRY_BLUEPRINTS,
   rules: raceRules,
+  physicsMode: 'arcade',
+  theme: getPaddockTheme(),
   title: 'F1 Simulator Lab',
   kicker: 'Race Control',
   backLinkHref: 'projects.html',
@@ -69,6 +72,7 @@ const projectSimulatorUi = {
 
 async function mountStandaloneSimulator() {
   await mountF1Simulator(root, portfolioOptions);
+  installPaddockThemeSync();
 }
 
 async function mountProjectsSimulator() {
@@ -79,6 +83,7 @@ async function mountProjectsSimulator() {
     ...portfolioOptions,
     showBackLink: false,
     ui: projectSimulatorUi,
+    theme: getPaddockTheme(),
   });
 
   mountRaceTelemetryDrawer(raceRoot, simulator, {
@@ -86,6 +91,7 @@ async function mountProjectsSimulator() {
     raceDataTelemetryDetail: projectSimulatorUi.raceDataTelemetryDetail,
   });
   await simulator.start();
+  installPaddockThemeSync();
   setPaddockShellState(paddockShell, 'ready');
 }
 

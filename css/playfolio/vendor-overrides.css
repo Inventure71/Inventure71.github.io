@@ -1,0 +1,37 @@
+/* Bootstrap and legacy surface overrides */
+
+.playfolio-page .card {
+  border: 1px solid var(--pf-line) !important;
+  border-radius: var(--pf-radius) !important;
+  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface)) !important;
+  box-shadow: none !important;
+}
+
+.playfolio-page .card:hover {
+  border-color: var(--pf-line-strong) !important;
+  transform: translateY(-2px);
+}
+
+.playfolio-page .text-gradient,
+.playfolio-page .text-primary {
+  color: var(--pf-ink) !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+.playfolio-page .text-muted,
+.playfolio-page p {
+  color: var(--pf-muted) !important;
+}
+
+.playfolio-page .feature {
+  border: 1px solid var(--pf-line);
+  border-radius: 6px !important;
+  background: var(--pf-surface-soft) !important;
+  color: var(--pf-ink) !important;
+  box-shadow: none !important;
+}
+
+.playfolio-page .project-wip {
+  display: none;
+}

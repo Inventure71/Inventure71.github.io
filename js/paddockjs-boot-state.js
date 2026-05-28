@@ -24,10 +24,9 @@ export function syncPaddockShellLayout(shell, ui = {}) {
     ? 'auto'
     : 'custom';
 
-  shell.classList.toggle('sim-shell--left-tower-overlay', layoutPreset === 'left-tower-overlay');
-  shell.classList.remove('sim-shell--timing-expand-race-view', 'sim-shell--timing-scroll');
-  shell.classList.add(`sim-shell--timing-${timingFit}`);
-  shell.classList.remove('sim-shell--race-data-auto', 'sim-shell--race-data-custom');
-  shell.classList.add(`sim-shell--race-data-${raceDataSize}`);
+  // The telemetry drawer owns PaddockJS layout classes internally. The host
+  // wrapper only records state so package shell selectors do not leak inward.
   shell.dataset.layoutPreset = layoutPreset;
+  shell.dataset.timingFit = timingFit;
+  shell.dataset.raceDataSize = raceDataSize;
 }

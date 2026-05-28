@@ -1,0 +1,89 @@
+/* Apps and contact directory pages */
+
+.pf-app-list,
+.pf-contact-grid {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--pf-radius);
+  background: var(--pf-line);
+  overflow: hidden;
+}
+
+.pf-app-row,
+.pf-contact-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  min-height: 8rem;
+  padding: clamp(1rem, 3vw, 1.45rem);
+  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface));
+  color: var(--pf-ink);
+  text-decoration: none;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.pf-app-row:hover,
+.pf-contact-row:hover,
+.pf-contact-row:focus-visible {
+  background: var(--pf-surface);
+}
+
+.pf-app-icon,
+.pf-contact-icon {
+  width: 3.1rem;
+  height: 3.1rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--pf-line);
+  border-radius: 6px;
+  background: var(--pf-surface-soft);
+  color: var(--pf-ink);
+  font-size: 1.3rem;
+}
+
+.pf-app-kicker,
+.pf-contact-copy {
+  color: var(--pf-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.pf-app-row h2 {
+  margin: 0.28rem 0 0.38rem;
+  color: var(--pf-ink);
+  font-size: 1.65rem;
+  font-weight: 830;
+  line-height: 1;
+}
+
+.pf-app-row p {
+  max-width: 48rem;
+  margin: 0;
+  color: var(--pf-muted);
+  line-height: 1.55;
+}
+
+.pf-contact-row > span:nth-child(2) {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.pf-contact-label {
+  color: var(--pf-ink);
+  font-size: 1.5rem;
+  font-weight: 830;
+  line-height: 1;
+}
+
+.pf-contact-row > i {
+  color: var(--pf-muted);
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+.pf-contact-row:hover > i,
+.pf-contact-row:focus-visible > i {
+  color: var(--pf-ink);
+  transform: translate(2px, -2px);
+}

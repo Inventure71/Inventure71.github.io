@@ -1,0 +1,155 @@
+/* Tag network page */
+
+.neuron-container {
+  position: relative;
+  width: 100%;
+  min-height: 620px;
+  height: calc(100svh - 6.8rem);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 62% 42%, rgba(64, 184, 152, 0.18), transparent 28%),
+    radial-gradient(circle at 28% 74%, rgba(255, 112, 72, 0.12), transparent 30%),
+    linear-gradient(135deg, #09100f 0%, #0d0d0b 48%, #14130f 100%);
+  border-top: 1px solid var(--pf-line);
+}
+
+#neuron-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.neuron-ui {
+  position: absolute;
+  top: clamp(1rem, 3vw, 2rem);
+  left: clamp(1rem, 3vw, 2rem);
+  z-index: 10;
+  max-width: min(35rem, calc(100% - 2rem));
+  pointer-events: none;
+}
+
+.neuron-title {
+  margin-bottom: 0.75rem;
+  color: #f4f1e8;
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 0.9;
+  text-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.neuron-subtitle {
+  max-width: 30rem;
+  color: rgba(244, 241, 232, 0.66);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.5;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+.neuron-controls {
+  position: absolute;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 10;
+  display: flex;
+  gap: 1rem;
+}
+
+.neuron-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.72rem 1rem;
+  border: 1px solid rgba(244, 241, 232, 0.2);
+  border-radius: 6px;
+  background: rgba(244, 241, 232, 0.1);
+  color: #f4f1e8;
+  font-weight: 750;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.neuron-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(244, 241, 232, 0.18);
+  color: #f4f1e8;
+}
+
+.neuron-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(420px, 100%);
+  height: 100%;
+  padding: 2rem;
+  overflow-y: auto;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(13, 13, 11, 0.94);
+  color: #f4f1e8;
+  backdrop-filter: blur(20px);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 20;
+}
+
+.neuron-overlay.active {
+  transform: translateX(0);
+}
+
+.neuron-overlay-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.neuron-overlay-close:hover {
+  color: #fff;
+}
+
+.tag-project-list {
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.tag-project-item {
+  margin-bottom: 1rem;
+}
+
+.tag-project-link {
+  display: block;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.tag-project-link:hover {
+  transform: translateX(-4px);
+  border-color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tag-project-title {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.tag-project-desc {
+  display: block;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
