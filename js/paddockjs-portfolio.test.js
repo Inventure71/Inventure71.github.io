@@ -12,8 +12,10 @@ describe('PaddockJS project race integration', () => {
   test('uses the package-owned telemetry drawer instead of detached safety controls', () => {
     const source = readFileSync(sourcePath, 'utf8');
 
-    expect(source).toContain('mountRaceTelemetryDrawer(raceRoot, simulator');
+    expect(source).toContain('simulator.mountRaceTelemetryDrawer(raceRoot');
     expect(source).toContain('mountRaceTelemetryDrawer');
+    expect(source).not.toContain('mountRaceTelemetryDrawer,');
+    expect(source).not.toContain('mountRaceTelemetryDrawer(raceRoot, simulator');
     expect(source).toContain('raceDataTelemetryDetail');
     expect(source).toContain("enabled: ['project', 'radio']");
     expect(source).toContain("initial: 'project'");
@@ -48,9 +50,10 @@ describe('PaddockJS project race integration', () => {
 
     expect(source).toContain("physicsMode: 'arcade'");
     expect(source).toContain('theme: getPaddockTheme()');
-    expect(source).toContain('installPaddockThemeSync');
-    expect(themeSync).toContain('data-paddock-theme-mode');
-    expect(themeSync).toContain("attributeFilter: ['data-theme']");
+    expect(source).toContain('installPaddockThemeSync(simulator)');
+    expect(themeSync).toContain('simulator.syncThemeFrom');
+    expect(themeSync).toContain("attribute: 'data-theme'");
+    expect(themeSync).not.toContain('--paddock-');
     expect(source).not.toContain('driverCamera');
     expect(source).not.toContain('initialCameraMode');
     expect(source).not.toContain('expert:');

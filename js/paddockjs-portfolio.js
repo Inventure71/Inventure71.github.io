@@ -2,7 +2,6 @@ import {
   CHAMPIONSHIP_ENTRY_BLUEPRINTS,
   DEMO_PROJECT_DRIVERS,
   createPaddockSimulator,
-  mountRaceTelemetryDrawer,
   mountF1Simulator,
 } from '@inventure71/paddockjs';
 import { setPaddockShellState, syncPaddockShellLayout } from './paddockjs-boot-state.js';
@@ -71,8 +70,8 @@ const projectSimulatorUi = {
 };
 
 async function mountStandaloneSimulator() {
-  await mountF1Simulator(root, portfolioOptions);
-  installPaddockThemeSync();
+  const simulator = await mountF1Simulator(root, portfolioOptions);
+  installPaddockThemeSync(simulator);
 }
 
 async function mountProjectsSimulator() {
@@ -86,12 +85,12 @@ async function mountProjectsSimulator() {
     theme: getPaddockTheme(),
   });
 
-  mountRaceTelemetryDrawer(raceRoot, simulator, {
+  simulator.mountRaceTelemetryDrawer(raceRoot, {
     timingTowerVerticalFit: projectSimulatorUi.timingTowerVerticalFit,
     raceDataTelemetryDetail: projectSimulatorUi.raceDataTelemetryDetail,
   });
   await simulator.start();
-  installPaddockThemeSync();
+  installPaddockThemeSync(simulator);
   setPaddockShellState(paddockShell, 'ready');
 }
 
