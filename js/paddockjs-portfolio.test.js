@@ -12,8 +12,10 @@ describe('PaddockJS project race integration', () => {
   test('uses the package-owned telemetry drawer instead of detached safety controls', () => {
     const source = readFileSync(sourcePath, 'utf8');
 
-    expect(source).toContain('mountRaceTelemetryDrawer(raceRoot, simulator');
+    expect(source).toContain('simulator.mountRaceTelemetryDrawer(raceRoot');
     expect(source).toContain('mountRaceTelemetryDrawer');
+    expect(source).not.toContain('mountRaceTelemetryDrawer,');
+    expect(source).not.toContain('mountRaceTelemetryDrawer(raceRoot, simulator');
     expect(source).toContain('raceDataTelemetryDetail');
     expect(source).toContain("enabled: ['project', 'radio']");
     expect(source).toContain("initial: 'project'");
