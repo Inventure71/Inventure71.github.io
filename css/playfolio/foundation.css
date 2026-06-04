@@ -205,6 +205,15 @@ body.playfolio-page {
   padding-block: var(--pf-section-space) !important;
 }
 
+.playfolio-home .pf-hero {
+  min-height: calc(100svh - 5.5rem);
+  padding-block: clamp(5rem, 10vh, 7.5rem) clamp(7rem, 15vh, 10rem) !important;
+}
+
+.playfolio-home .pf-hero + .pf-home-scroll-section {
+  margin-top: clamp(2rem, 7vh, 4.5rem);
+}
+
 .pf-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.06fr) minmax(330px, 0.94fr);
