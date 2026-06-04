@@ -48,9 +48,10 @@ describe('PaddockJS project race integration', () => {
 
     expect(source).toContain("physicsMode: 'arcade'");
     expect(source).toContain('theme: getPaddockTheme()');
-    expect(source).toContain('installPaddockThemeSync');
-    expect(themeSync).toContain('data-paddock-theme-mode');
-    expect(themeSync).toContain("attributeFilter: ['data-theme']");
+    expect(source).toContain('installPaddockThemeSync(simulator)');
+    expect(themeSync).toContain('simulator.syncThemeFrom');
+    expect(themeSync).toContain("attribute: 'data-theme'");
+    expect(themeSync).not.toContain('--paddock-');
     expect(source).not.toContain('driverCamera');
     expect(source).not.toContain('initialCameraMode');
     expect(source).not.toContain('expert:');

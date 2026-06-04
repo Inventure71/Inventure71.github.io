@@ -71,8 +71,8 @@ const projectSimulatorUi = {
 };
 
 async function mountStandaloneSimulator() {
-  await mountF1Simulator(root, portfolioOptions);
-  installPaddockThemeSync();
+  const simulator = await mountF1Simulator(root, portfolioOptions);
+  installPaddockThemeSync(simulator);
 }
 
 async function mountProjectsSimulator() {
@@ -91,7 +91,7 @@ async function mountProjectsSimulator() {
     raceDataTelemetryDetail: projectSimulatorUi.raceDataTelemetryDetail,
   });
   await simulator.start();
-  installPaddockThemeSync();
+  installPaddockThemeSync(simulator);
   setPaddockShellState(paddockShell, 'ready');
 }
 
