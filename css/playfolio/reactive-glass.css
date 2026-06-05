@@ -15,6 +15,8 @@
   --pf-glass-tone-green: #40b898;
   --pf-glass-tone-mode: #f0c95c;
   --pf-glass-tone-mode-ink: #171717;
+  --pf-glass-tone-mode-preview: #050505;
+  --pf-glass-tone-mode-preview-ink: #f4f1e8;
   --pf-glass-tone-neutral: color-mix(in srgb, var(--pf-ink) 86%, var(--pf-bg));
   --pf-glass-tone-neutral-ink: var(--pf-bg);
   --pf-glass-item-color: var(--pf-accent-2);
@@ -43,6 +45,8 @@
   --pf-glass-tone-brand-ink: #171717;
   --pf-glass-tone-mode: #050505;
   --pf-glass-tone-mode-ink: #f4f1e8;
+  --pf-glass-tone-mode-preview: #f0c95c;
+  --pf-glass-tone-mode-preview-ink: #171717;
   --pf-glass-tone-neutral: color-mix(in srgb, var(--pf-ink) 86%, var(--pf-bg));
   --pf-glass-tone-neutral-ink: var(--pf-bg);
 }
@@ -161,6 +165,15 @@
   border: 1px solid transparent;
 }
 
+.playfolio-page .pf-reactive-glass .navbar-brand {
+  min-height: 2.05rem;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
 .playfolio-page .pf-reactive-glass .pf-icon-button,
 .playfolio-page .pf-reactive-glass .theme-toggle-btn,
 .playfolio-page .pf-reactive-glass .pf-nav-ai-button {
@@ -178,4 +191,53 @@
     inset 0 1px 0 color-mix(in srgb, #fff 16%, transparent),
     0 0 0 1px color-mix(in srgb, var(--pf-glass-item-color) 24%, transparent);
   transform: translateY(-1px);
+}
+
+.playfolio-page .pf-reactive-glass .navbar-brand.is-glass-target,
+.playfolio-page .pf-reactive-glass .theme-toggle-btn.is-glass-target {
+  background:
+    radial-gradient(circle at var(--pf-glass-x) var(--pf-glass-y), color-mix(in srgb, #fff 14%, transparent), transparent 74%),
+    var(--pf-glass-item-color) !important;
+  box-shadow:
+    0 10px 24px color-mix(in srgb, var(--pf-glass-item-color) 18%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #fff 18%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--pf-glass-item-color) 30%, transparent);
+}
+
+.playfolio-page .theme-toggle-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.playfolio-page .theme-toggle-icon {
+  grid-area: 1 / 1;
+  display: inline-grid;
+  place-items: center;
+  transition:
+    opacity 170ms ease,
+    transform 170ms ease;
+}
+
+.playfolio-page .theme-toggle-icon--current {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotate(0deg);
+}
+
+.playfolio-page .theme-toggle-icon--preview {
+  opacity: 0;
+  transform: translateY(0.35rem) scale(0.82) rotate(-14deg);
+}
+
+.playfolio-page .theme-toggle-btn.is-glass-target .theme-toggle-icon--current,
+.playfolio-page .theme-toggle-btn:hover .theme-toggle-icon--current,
+.playfolio-page .theme-toggle-btn:focus-visible .theme-toggle-icon--current {
+  opacity: 0;
+  transform: translateY(-0.35rem) scale(0.82) rotate(14deg);
+}
+
+.playfolio-page .theme-toggle-btn.is-glass-target .theme-toggle-icon--preview,
+.playfolio-page .theme-toggle-btn:hover .theme-toggle-icon--preview,
+.playfolio-page .theme-toggle-btn:focus-visible .theme-toggle-icon--preview {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotate(0deg);
 }

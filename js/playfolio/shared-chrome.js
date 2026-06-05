@@ -46,8 +46,13 @@ export function buildSharedNavbarMarkup(activeKey = 'home') {
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
                 <i class="bi bi-command"></i>
               </button>
-              <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode" aria-label="Toggle color scheme">
-                <i class="bi bi-moon"></i>
+              <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
+                <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
+                  <i class="bi bi-sun" data-theme-current-icon></i>
+                </span>
+                <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
+                  <i class="bi bi-moon" data-theme-preview-icon></i>
+                </span>
               </button>
             </div>
           </div>
@@ -76,7 +81,15 @@ export function renderSharedNavbar(root = document) {
 
   const activeKey = navbar.dataset.activePage || currentNavKey(root.defaultView?.location?.pathname);
   navbar.className = 'navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom';
-  navbar.innerHTML = buildSharedNavbarMarkup(activeKey);
+
+  if (!navbar.querySelector('[data-glass-item]')) {
+    navbar.innerHTML = buildSharedNavbarMarkup(activeKey);
+  } else {
+    navbar.querySelectorAll('.nav-link').forEach((link) => {
+      link.classList.toggle('active', link.getAttribute('href') === `/${activeKey === 'home' ? 'index' : activeKey}.html`);
+    });
+  }
+
   installReactiveGlassSurface(navbar);
 
   if (window.MGTheme) {

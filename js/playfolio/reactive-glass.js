@@ -5,6 +5,7 @@ const DEFAULT_TONES = {
   coral: { color: 'var(--pf-glass-tone-coral)', ink: 'var(--pf-ink)' },
   green: { color: 'var(--pf-glass-tone-green)', ink: 'var(--pf-ink)' },
   mode: { color: 'var(--pf-glass-tone-mode)', ink: 'var(--pf-glass-tone-mode-ink)' },
+  'mode-preview': { color: 'var(--pf-glass-tone-mode-preview)', ink: 'var(--pf-glass-tone-mode-preview-ink)' },
   neutral: { color: 'var(--pf-glass-tone-neutral)', ink: 'var(--pf-glass-tone-neutral-ink)' },
 };
 

@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "build:f1": "vite build --config vite.f1-simulator.config.js",
+    "sync:chrome": "node scripts/sync-shared-chrome.mjs",
+    "check:chrome": "node scripts/sync-shared-chrome.mjs --check",
     "test": "npm run test:f1",
     "test:f1": "vitest run js",
-    "check": "npm run test && npm run build:f1"
+    "check": "npm run check:chrome && npm run test && npm run build:f1"
   },
   "dependencies": {
     "@inventure71/paddockjs": "^4.0.0",

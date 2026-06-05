@@ -128,6 +128,10 @@ body.playfolio-page {
   border-radius: 6px !important;
 }
 
+.playfolio-page .navbar-nav {
+  gap: 5px;
+}
+
 .playfolio-page .nav-link:hover,
 .playfolio-page .nav-link.active {
   color: var(--pf-ink) !important;

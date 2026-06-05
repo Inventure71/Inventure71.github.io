@@ -131,10 +131,10 @@ describe('reactive glass surface', () => {
     vi.useRealTimers();
   });
 
-  test('resolves brand and mode tones through theme-aware CSS variables', () => {
+  test('resolves brand and mode preview tones through theme-aware CSS variables', () => {
     const surface = createSurface();
     const { item: brand } = addItem(surface, 'brand');
-    const { item: mode } = addItem(surface, 'mode');
+    const { item: mode } = addItem(surface, 'mode-preview');
 
     installReactiveGlassSurface(surface);
 
@@ -143,7 +143,7 @@ describe('reactive glass surface', () => {
     expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-item-ink', 'var(--pf-glass-tone-brand-ink)');
 
     surface._listeners.get('pointermove')({ target: mode, clientX: 120, clientY: 45 });
-    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-item-color', 'var(--pf-glass-tone-mode)');
-    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-item-ink', 'var(--pf-glass-tone-mode-ink)');
+    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-item-color', 'var(--pf-glass-tone-mode-preview)');
+    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-item-ink', 'var(--pf-glass-tone-mode-preview-ink)');
   });
 });
