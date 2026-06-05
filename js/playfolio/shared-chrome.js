@@ -4,6 +4,9 @@ import { installReactiveGlassSurface } from './reactive-glass.js';
 
 export { installReactiveGlassSurface } from './reactive-glass.js';
 
+// Shared navbar source of truth. After changing navbar markup, run
+// `npm run sync:chrome`; `npm run check` verifies all static pages are synced.
+
 const NAV_TONES = {
   home: 'blue',
   projects: 'green',
