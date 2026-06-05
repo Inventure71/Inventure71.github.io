@@ -110,6 +110,23 @@ describe('payload optimization contracts', () => {
     expect(readRepoFile('css/playfolio-tags.css')).not.toContain('race.css');
   });
 
+  test('shared command palette styles are available on every Playfolio route', () => {
+    const routeManifests = [
+      'css/playfolio-home.css',
+      'css/playfolio-projects.css',
+      'css/playfolio-project-detail.css',
+      'css/playfolio-tags.css',
+      'css/playfolio-directory.css',
+      'css/playfolio-resume-page.css',
+    ];
+
+    routeManifests.forEach((manifest) => {
+      expect(readRepoFile(manifest)).toContain('command-palette.css');
+    });
+    expect(readRepoFile('css/playfolio/command-palette.css')).toContain('.pf-command-overlay');
+    expect(readRepoFile('css/playfolio/project-browse.css')).not.toContain('.pf-command-overlay');
+  });
+
   test('legacy global stylesheets are not shipped', () => {
     const removedStylesheets = [
       'css/styles.css',

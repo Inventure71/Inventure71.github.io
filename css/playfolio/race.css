@@ -44,7 +44,6 @@
 }
 
 .pf-paddock-layout[data-simulator-state="preview"] .pf-paddock-race,
-.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-race,
 .pf-paddock-layout[data-simulator-state="loading"] .pf-paddock-race,
 .pf-paddock-layout[data-simulator-state="error"] .pf-paddock-race {
   opacity: 0;
