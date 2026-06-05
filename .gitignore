@@ -8,6 +8,14 @@ resume.txt
 # local analysis/interview notes
 Q&A.md
 
+# local agent implementation plans
+docs/superpowers/plans/
+
+# local navbar hover experiments
+topbar-variants.html
+css/topbar-variants.css
+js/topbar-variants.js
+
 # generated local media exports
 prepared_video_uploads/
 

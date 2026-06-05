@@ -6,22 +6,34 @@
   const THEME_KEY = 'mg-color-theme';
   const root = document.documentElement;
   const mediaQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  const themeIconClasses = ['bi-sun', 'bi-moon'];
 
   const getStoredTheme = () => localStorage.getItem(THEME_KEY);
   const storeTheme = (theme) => localStorage.setItem(THEME_KEY, theme);
 
+  const iconForTheme = (theme) => (theme === 'dark' ? 'bi-moon' : 'bi-sun');
+  const labelForTheme = (theme) => (theme === 'dark' ? 'dark mode' : 'light mode');
+
+  const setIconClass = (icon, className) => {
+    if (!icon) return;
+    icon.classList.remove(...themeIconClasses);
+    icon.classList.add(className);
+  };
+
   const updateToggleButtons = (theme) => {
+    const currentTheme = theme === 'dark' ? 'dark' : 'light';
+    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
     document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
-      button.setAttribute('aria-pressed', theme === 'dark');
+      button.dataset.themeCurrent = currentTheme;
+      button.dataset.themePreview = nextTheme;
+      button.setAttribute('aria-pressed', currentTheme === 'dark');
       button.setAttribute(
         'aria-label',
-        theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+        `Switch to ${labelForTheme(nextTheme)}`
       );
-      const icon = button.querySelector('i');
-      if (icon) {
-        icon.classList.remove('bi-sun', 'bi-moon');
-        icon.classList.add(theme === 'dark' ? 'bi-sun' : 'bi-moon');
-      }
+      setIconClass(button.querySelector('[data-theme-current-icon]'), iconForTheme(currentTheme));
+      setIconClass(button.querySelector('[data-theme-preview-icon]'), iconForTheme(nextTheme));
     });
   };
 

@@ -230,18 +230,26 @@ project-race-guide {
   }
 
   .pf-race-guide__copy {
-    grid-template-columns: 1fr;
-    gap: 0.62rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.82rem;
+    align-items: start;
   }
 
   .pf-race-guide__marker {
-    width: 4.6rem;
-    height: 2.75rem;
-    margin-top: 0;
+    width: clamp(3.15rem, 18vw, 3.75rem);
+    height: clamp(1.9rem, 10.5vw, 2.25rem);
+    margin-top: 0.18rem;
+    background-size: 0.72rem 0.72rem;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+  }
+
+  .pf-race-guide__marker::after {
+    right: -0.68rem;
+    width: 0.13rem;
   }
 
   .pf-race-guide__headline {
-    font-size: 1.22rem;
+    font-size: clamp(1.02rem, 5.4vw, 1.18rem);
   }
 
   .pf-race-guide__hints {

@@ -67,15 +67,14 @@ body.playfolio-page {
   top: 0.75rem;
   margin: 0.75rem auto 0;
   padding: 0.45rem 0;
-  border: 1px solid var(--pf-line);
-  border-radius: var(--pf-radius);
-  background: color-mix(in srgb, var(--pf-bg) 88%, transparent) !important;
-  box-shadow: none;
+  position: sticky;
 }
 
 .playfolio-page .navbar .container {
   max-width: none;
   padding-inline: 0.7rem !important;
+  position: relative;
+  z-index: 1;
 }
 
 .playfolio-page .navbar-toggler {
@@ -127,6 +126,10 @@ body.playfolio-page {
   font-size: 0.86rem;
   padding: 0.5rem 0.65rem !important;
   border-radius: 6px !important;
+}
+
+.playfolio-page .navbar-nav {
+  gap: 5px;
 }
 
 .playfolio-page .nav-link:hover,
@@ -203,6 +206,15 @@ body.playfolio-page {
   display: grid;
   align-items: center;
   padding-block: var(--pf-section-space) !important;
+}
+
+.playfolio-home .pf-hero {
+  min-height: calc(100svh - 5.5rem);
+  padding-block: clamp(5rem, 10vh, 7.5rem) clamp(7rem, 15vh, 10rem) !important;
+}
+
+.playfolio-home .pf-hero + .pf-home-scroll-section {
+  margin-top: clamp(2rem, 7vh, 4.5rem);
 }
 
 .pf-hero-grid {
