@@ -292,6 +292,44 @@ describe('reactive glass surface', () => {
     expect(storage.removeItem).toHaveBeenCalled();
   });
 
+  test('clears the current hover state when a same-tab navigation click is handed off', () => {
+    const surface = createSurface();
+    const group = createNode({ dataset: { glassGroup: '' } });
+    const link = createNode({ dataset: { glassItem: '', glassTone: 'green' }, parent: group });
+    link.href = '/apps.html';
+    link.closest = vi.fn((selector) => {
+      if (selector === '[data-glass-item]' || selector === 'a[href]') return link;
+      if (selector === '[data-glass-group]') return group;
+      return null;
+    });
+    surface._children.push(link);
+    const storage = {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    };
+    surface.ownerDocument = {
+      querySelectorAll: vi.fn(() => []),
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => callback()),
+        sessionStorage: storage,
+      },
+    };
+
+    installReactiveGlassSurface(surface);
+    surface._listeners.get('pointermove')({ target: link, clientX: 130, clientY: 45 });
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(true);
+    expect(link.classList.contains('is-glass-target')).toBe(true);
+
+    surface._listeners.get('click')({ target: link, clientX: 130, clientY: 45 });
+
+    expect(storage.setItem).toHaveBeenCalledOnce();
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
+    expect(surface.classList.contains('is-glass-bar-hovering')).toBe(false);
+    expect(link.classList.contains('is-glass-target')).toBe(false);
+  });
+
   test('does not store pointer coordinates for modified link clicks', () => {
     const surface = createSurface();
     const group = createNode({ dataset: { glassGroup: '' } });
@@ -368,6 +406,29 @@ describe('reactive glass surface', () => {
 
     surface.ownerDocument.visibilityState = 'hidden';
     documentListeners.get('visibilitychange')();
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
+    expect(item.classList.contains('is-glass-target')).toBe(false);
+  });
+
+  test('clears hover state when pagehide fires during navigation teardown', () => {
+    const surface = createSurface();
+    const { item } = addItem(surface, 'green');
+    const windowListeners = new Map();
+    surface.ownerDocument = {
+      querySelectorAll: vi.fn(() => []),
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => callback()),
+        addEventListener: vi.fn((eventName, handler) => windowListeners.set(eventName, handler)),
+      },
+    };
+
+    installReactiveGlassSurface(surface);
+    surface._listeners.get('pointermove')({ target: item, clientX: 130, clientY: 45 });
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(true);
+
+    windowListeners.get('pagehide')();
 
     expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
     expect(item.classList.contains('is-glass-target')).toBe(false);

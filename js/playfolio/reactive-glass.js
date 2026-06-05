@@ -306,7 +306,10 @@ export function installReactiveGlassSurface(surface, options = {}) {
     if (isTouchPointer(event) || isModifiedClick(event) || !findSameTabLink(surface, event)) return;
 
     writeStoredPointer(surface, event);
+    applyIdle(surface);
   };
+
+  const surfaceWindow = windowFor(surface);
 
   surface.dataset.reactiveGlassBound = 'true';
   surface.addEventListener('pointerenter', handlePointerMove);
@@ -314,7 +317,8 @@ export function installReactiveGlassSurface(surface, options = {}) {
   surface.addEventListener('click', handleClick);
   surface.addEventListener('pointerleave', handlePointerLeave);
   surface.addEventListener('pointercancel', handlePointerLeave);
-  windowFor(surface).addEventListener?.('blur', handlePointerLeave);
+  surfaceWindow.addEventListener?.('blur', handlePointerLeave);
+  surfaceWindow.addEventListener?.('pagehide', handlePointerLeave);
   surface.ownerDocument?.addEventListener?.('visibilitychange', handleVisibilityChange);
   resetPointerVars(surface);
   scheduleHoverPrime(surface, resolvedOptions);
