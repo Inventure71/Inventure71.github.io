@@ -20,11 +20,16 @@ function createClassList(initial = []) {
   };
 }
 
-function createNode({ dataset = {}, parent = null } = {}) {
+function createNode({
+  dataset = {},
+  parent = null,
+  rect = { left: 80, top: 20, width: 48, height: 28 },
+} = {}) {
   return {
     dataset,
     parent,
     classList: createClassList(),
+    getBoundingClientRect: vi.fn(() => rect),
     closest(selector) {
       if (selector === '[data-glass-item]' && Object.hasOwn(dataset, 'glassItem')) return this;
       if (selector === '[data-glass-group]') {
@@ -47,6 +52,7 @@ function createSurface() {
       removeProperty: vi.fn(),
     },
     addEventListener: vi.fn((eventName, handler) => listeners.set(eventName, handler)),
+    matches: vi.fn(() => false),
     getBoundingClientRect: vi.fn(() => ({
       left: 20,
       top: 10,
@@ -145,5 +151,225 @@ describe('reactive glass surface', () => {
     surface._listeners.get('pointermove')({ target: mode, clientX: 120, clientY: 45 });
     expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-item-color', 'var(--pf-glass-tone-mode-preview)');
     expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-item-ink', 'var(--pf-glass-tone-mode-preview-ink)');
+  });
+
+  test('primes item hover when a page loads under an already-hovered navbar item', () => {
+    let frameCallback = null;
+    const surface = createSurface();
+    const group = createNode({ dataset: { glassGroup: '' } });
+    const item = createNode({
+      dataset: { glassItem: '', glassTone: 'green' },
+      parent: group,
+      rect: { left: 100, top: 30, width: 60, height: 30 },
+    });
+    surface._children.push(item);
+    surface.ownerDocument = {
+      querySelectorAll: vi.fn((selector) => (selector === ':hover' ? [surface, group, item] : [])),
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => {
+          frameCallback = callback;
+          return 1;
+        }),
+      },
+    };
+
+    installReactiveGlassSurface(surface);
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
+
+    frameCallback();
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(true);
+    expect(item.classList.contains('is-glass-target')).toBe(true);
+    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-x', '110.00px');
+    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-y', '35.00px');
+    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-item-color', 'var(--pf-glass-tone-green)');
+  });
+
+  test('restores item hover from stored pointer coordinates after page navigation', () => {
+    let frameCallback = null;
+    const surface = createSurface();
+    const group = createNode({ dataset: { glassGroup: '' } });
+    const item = createNode({
+      dataset: { glassItem: '', glassTone: 'green' },
+      parent: group,
+      rect: { left: 100, top: 30, width: 60, height: 30 },
+    });
+    surface._children.push(item);
+    surface.ownerDocument = {
+      querySelectorAll: vi.fn((selector) => (selector === ':hover' ? [] : [])),
+      elementFromPoint: vi.fn((x, y) => (x === 130 && y === 45 ? item : null)),
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => {
+          frameCallback = callback;
+          return 1;
+        }),
+        sessionStorage: {
+          getItem: vi.fn(() => JSON.stringify({ x: 130, y: 45, time: Date.now() })),
+          setItem: vi.fn(),
+        },
+      },
+    };
+
+    installReactiveGlassSurface(surface);
+    frameCallback();
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(true);
+    expect(item.classList.contains('is-glass-target')).toBe(true);
+    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-x', '110.00px');
+    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-y', '35.00px');
+  });
+
+  test('does not store hover-only pointer movement as a page-navigation handoff', () => {
+    const surface = createSurface();
+    const { item } = addItem(surface, 'green');
+    const storage = {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    };
+    surface.ownerDocument = {
+      querySelectorAll: vi.fn(() => []),
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => callback()),
+        sessionStorage: storage,
+      },
+    };
+
+    installReactiveGlassSurface(surface);
+    surface._listeners.get('pointermove')({ target: item, clientX: 130, clientY: 45 });
+
+    expect(storage.setItem).not.toHaveBeenCalled();
+  });
+
+  test('stores and consumes pointer coordinates only for link clicks that can navigate', () => {
+    let frameCallback = null;
+    let storedPointer = null;
+    const surface = createSurface();
+    const group = createNode({ dataset: { glassGroup: '' } });
+    const link = createNode({
+      dataset: { glassItem: '', glassTone: 'green' },
+      parent: group,
+      rect: { left: 100, top: 30, width: 60, height: 30 },
+    });
+    link.href = '/projects.html';
+    link.closest = vi.fn((selector) => {
+      if (selector === '[data-glass-item]' || selector === 'a[href]') return link;
+      if (selector === '[data-glass-group]') return group;
+      return null;
+    });
+    surface._children.push(link);
+    const storage = {
+      getItem: vi.fn(() => storedPointer),
+      setItem: vi.fn((key, value) => {
+        storedPointer = value;
+      }),
+      removeItem: vi.fn(() => {
+        storedPointer = null;
+      }),
+    };
+    surface.ownerDocument = {
+      querySelectorAll: vi.fn((selector) => (selector === ':hover' ? [surface, group, link] : [])),
+      elementFromPoint: vi.fn((x, y) => (x === 130 && y === 45 ? link : null)),
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => {
+          frameCallback = callback;
+          return 1;
+        }),
+        sessionStorage: storage,
+      },
+    };
+
+    installReactiveGlassSurface(surface);
+    surface._listeners.get('click')({ target: link, clientX: 130, clientY: 45 });
+
+    expect(storage.setItem).toHaveBeenCalledOnce();
+
+    frameCallback();
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(true);
+    expect(link.classList.contains('is-glass-target')).toBe(true);
+    expect(storage.removeItem).toHaveBeenCalled();
+  });
+
+  test('does not store pointer coordinates for modified link clicks', () => {
+    const surface = createSurface();
+    const group = createNode({ dataset: { glassGroup: '' } });
+    const link = createNode({ dataset: { glassItem: '', glassTone: 'green' }, parent: group });
+    link.closest = vi.fn((selector) => {
+      if (selector === '[data-glass-item]' || selector === 'a[href]') return link;
+      if (selector === '[data-glass-group]') return group;
+      return null;
+    });
+    surface._children.push(link);
+    const storage = {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    };
+    surface.ownerDocument = {
+      querySelectorAll: vi.fn(() => []),
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => callback()),
+        sessionStorage: storage,
+      },
+    };
+
+    installReactiveGlassSurface(surface);
+    surface._listeners.get('click')({ target: link, clientX: 130, clientY: 45, metaKey: true });
+    surface._listeners.get('click')({ target: link, clientX: 130, clientY: 45, ctrlKey: true });
+    surface._listeners.get('click')({ target: link, clientX: 130, clientY: 45, shiftKey: true });
+    surface._listeners.get('click')({ target: link, clientX: 130, clientY: 45, altKey: true });
+    surface._listeners.get('click')({ target: link, clientX: 130, clientY: 45, defaultPrevented: true });
+
+    expect(storage.setItem).not.toHaveBeenCalled();
+  });
+
+  test('clears hover state when the window loses focus without pointerleave', () => {
+    const surface = createSurface();
+    const { item } = addItem(surface, 'green');
+    const windowListeners = new Map();
+    surface.ownerDocument = {
+      querySelectorAll: vi.fn(() => []),
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => callback()),
+        addEventListener: vi.fn((eventName, handler) => windowListeners.set(eventName, handler)),
+      },
+    };
+
+    installReactiveGlassSurface(surface);
+    surface._listeners.get('pointermove')({ target: item, clientX: 130, clientY: 45 });
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(true);
+
+    windowListeners.get('blur')();
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
+    expect(item.classList.contains('is-glass-target')).toBe(false);
+  });
+
+  test('clears hover state when the page becomes hidden without pointerleave', () => {
+    const surface = createSurface();
+    const { item } = addItem(surface, 'green');
+    const documentListeners = new Map();
+    surface.ownerDocument = {
+      visibilityState: 'visible',
+      querySelectorAll: vi.fn(() => []),
+      addEventListener: vi.fn((eventName, handler) => documentListeners.set(eventName, handler)),
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => callback()),
+      },
+    };
+
+    installReactiveGlassSurface(surface);
+    surface._listeners.get('pointermove')({ target: item, clientX: 130, clientY: 45 });
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(true);
+
+    surface.ownerDocument.visibilityState = 'hidden';
+    documentListeners.get('visibilitychange')();
+
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
+    expect(item.classList.contains('is-glass-target')).toBe(false);
   });
 });

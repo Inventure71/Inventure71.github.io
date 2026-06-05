@@ -15,6 +15,8 @@ const DEFAULT_OPTIONS = {
   gapDelayMs: 55,
   tones: DEFAULT_TONES,
 };
+const POINTER_STORAGE_KEY = 'pfReactiveGlassPointer';
+const POINTER_STORAGE_TTL_MS = 4000;
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -24,6 +26,50 @@ function isTouchPointer(event) {
   return event.pointerType === 'touch';
 }
 
+function isModifiedClick(event) {
+  return event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+}
+
+function windowFor(surface) {
+  return surface.ownerDocument?.defaultView || globalThis;
+}
+
+function takeStoredPointer(surface) {
+  try {
+    const storage = windowFor(surface).sessionStorage;
+    const value = storage?.getItem?.(POINTER_STORAGE_KEY);
+    if (!value) return null;
+    storage?.removeItem?.(POINTER_STORAGE_KEY);
+
+    const pointer = JSON.parse(value);
+    if (!Number.isFinite(pointer?.x) || !Number.isFinite(pointer?.y)) return null;
+    if (Date.now() - Number(pointer.time || 0) > POINTER_STORAGE_TTL_MS) return null;
+
+    return pointer;
+  } catch {
+    return null;
+  }
+}
+
+function findSameTabLink(surface, event) {
+  const link = event.target?.closest?.('a[href]');
+  if (!link || (typeof surface.contains === 'function' && !surface.contains(link))) return null;
+
+  const target = link.getAttribute?.('target');
+  return !target || target === '_self' ? link : null;
+}
+
+function writeStoredPointer(surface, event) {
+  try {
+    windowFor(surface).sessionStorage?.setItem?.(
+      POINTER_STORAGE_KEY,
+      JSON.stringify({ x: event.clientX, y: event.clientY, time: Date.now() })
+    );
+  } catch {
+    // Storage can be unavailable in strict browser modes; live pointer events still drive the effect.
+  }
+}
+
 function clearTimer(surface) {
   if (surface._reactiveGlassClearTimer) {
     globalThis.clearTimeout(surface._reactiveGlassClearTimer);
@@ -31,12 +77,12 @@ function clearTimer(surface) {
   }
 }
 
-function setPointerVars(surface, event) {
+function setPointerVarsAt(surface, clientX, clientY) {
   const rect = surface.getBoundingClientRect();
   if (!rect.width || !rect.height) return;
 
-  const x = clamp(event.clientX - rect.left, 0, rect.width);
-  const y = clamp(event.clientY - rect.top, 0, rect.height);
+  const x = clamp(clientX - rect.left, 0, rect.width);
+  const y = clamp(clientY - rect.top, 0, rect.height);
   const px = clamp(x / rect.width, 0, 1);
   const py = clamp(y / rect.height, 0, 1);
 
@@ -46,6 +92,17 @@ function setPointerVars(surface, event) {
   surface.style.setProperty('--pf-glass-py', py.toFixed(4));
   surface.style.setProperty('--pf-glass-dx', `${((px - 0.5) * 100).toFixed(2)}px`);
   surface.style.setProperty('--pf-glass-dy', `${((py - 0.5) * 100).toFixed(2)}px`);
+}
+
+function setPointerVars(surface, event) {
+  setPointerVarsAt(surface, event.clientX, event.clientY);
+}
+
+function setPointerVarsFromElementCenter(surface, element) {
+  const rect = element.getBoundingClientRect?.();
+  if (!rect?.width || !rect?.height) return;
+
+  setPointerVarsAt(surface, rect.left + rect.width / 2, rect.top + rect.height / 2);
 }
 
 function resetPointerVars(surface) {
@@ -153,6 +210,67 @@ function applyPhase(surface, target, event, options) {
   applyBarHover(surface);
 }
 
+function findCurrentlyHoveredTarget(surface, options) {
+  const hoveredElements = surface.ownerDocument?.querySelectorAll?.(':hover');
+  if (!hoveredElements) return null;
+
+  for (let index = hoveredElements.length - 1; index >= 0; index -= 1) {
+    const target = hoveredElements[index]?.closest?.(options.itemSelector);
+    if (target && typeof surface.contains === 'function' && surface.contains(target)) {
+      return target;
+    }
+  }
+
+  return null;
+}
+
+function primeStoredPointerState(surface, options) {
+  const pointer = takeStoredPointer(surface);
+  if (!pointer) return false;
+
+  const element = surface.ownerDocument?.elementFromPoint?.(pointer.x, pointer.y);
+  const target = element?.closest?.(options.itemSelector);
+  if (target && typeof surface.contains === 'function' && surface.contains(target)) {
+    setPointerVarsAt(surface, pointer.x, pointer.y);
+    applyTarget(surface, target, options);
+    return true;
+  }
+
+  if (element && typeof surface.contains === 'function' && surface.contains(element)) {
+    setPointerVarsAt(surface, pointer.x, pointer.y);
+    applyBarHover(surface);
+    return true;
+  }
+
+  return false;
+}
+
+function primeCurrentHoverState(surface, options) {
+  if (primeStoredPointerState(surface, options)) return;
+
+  const target = findCurrentlyHoveredTarget(surface, options);
+  if (target) {
+    setPointerVarsFromElementCenter(surface, target);
+    applyTarget(surface, target, options);
+    return;
+  }
+
+  if (surface.matches?.(':hover')) {
+    setPointerVarsFromElementCenter(surface, surface);
+    applyBarHover(surface);
+  }
+}
+
+function scheduleHoverPrime(surface, options) {
+  const scheduler = surface.ownerDocument?.defaultView?.requestAnimationFrame || globalThis.requestAnimationFrame;
+  if (typeof scheduler === 'function') {
+    scheduler(() => primeCurrentHoverState(surface, options));
+    return;
+  }
+
+  primeCurrentHoverState(surface, options);
+}
+
 export function installReactiveGlassSurface(surface, options = {}) {
   if (!surface || surface.dataset.reactiveGlassBound === 'true') return;
 
@@ -178,10 +296,26 @@ export function installReactiveGlassSurface(surface, options = {}) {
     applyIdle(surface);
   };
 
+  const handleVisibilityChange = () => {
+    if (surface.ownerDocument?.visibilityState === 'hidden') {
+      applyIdle(surface);
+    }
+  };
+
+  const handleClick = (event) => {
+    if (isTouchPointer(event) || isModifiedClick(event) || !findSameTabLink(surface, event)) return;
+
+    writeStoredPointer(surface, event);
+  };
+
   surface.dataset.reactiveGlassBound = 'true';
   surface.addEventListener('pointerenter', handlePointerMove);
   surface.addEventListener('pointermove', handlePointerMove);
+  surface.addEventListener('click', handleClick);
   surface.addEventListener('pointerleave', handlePointerLeave);
   surface.addEventListener('pointercancel', handlePointerLeave);
+  windowFor(surface).addEventListener?.('blur', handlePointerLeave);
+  surface.ownerDocument?.addEventListener?.('visibilitychange', handleVisibilityChange);
   resetPointerVars(surface);
+  scheduleHoverPrime(surface, resolvedOptions);
 }

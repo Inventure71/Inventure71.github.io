@@ -87,7 +87,8 @@
   }
 
   .pf-title {
-    font-size: clamp(3.5rem, 22vw, 5rem);
+    max-width: 100%;
+    font-size: clamp(3rem, 18vw, 5rem);
   }
 
   .pf-ambassador-lockup {
