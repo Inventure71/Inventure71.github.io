@@ -96,15 +96,15 @@ export function buildAiGuideToastMarkup() {
           </p>
           <div class="pf-ai-toast-links">
             <a class="pf-ai-link is-chatgpt" href="https://chatgpt.com" target="_blank" rel="noopener">
-              <img src="/assets/brand/icons/ChatGPTIcon.png" alt="" />
+              <img src="/assets/brand/icons/ChatGPTIcon.webp" alt="" />
               <span>ChatGPT</span>
             </a>
             <a class="pf-ai-link is-claude" href="https://claude.ai" target="_blank" rel="noopener">
-              <img src="/assets/brand/icons/ClaudeIcon.png" alt="" />
+              <img src="/assets/brand/icons/ClaudeIcon.webp" alt="" />
               <span>Claude</span>
             </a>
             <a class="pf-ai-link is-deepseek" href="https://chat.deepseek.com" target="_blank" rel="noopener">
-              <img src="/assets/brand/icons/DeepSeek.png" alt="" />
+              <img src="/assets/brand/icons/DeepSeek.webp" alt="" />
               <span>DeepSeek</span>
             </a>
           </div>
@@ -117,22 +117,38 @@ export function setupAiGuideCopy(root = document) {
   let toast = root.querySelector('[data-ai-guide-toast]');
   if (!buttons.length) return;
 
-  if (!toast) {
-    toast = root.createElement('div');
-    toast.className = 'pf-ai-toast';
-    toast.dataset.aiGuideToast = '';
-    toast.hidden = true;
-    toast.innerHTML = buildAiGuideToastMarkup();
-    root.body.appendChild(toast);
-  }
-
-  const toastKicker = toast.querySelector('[data-ai-guide-toast-kicker]');
-  const toastTitle = toast.querySelector('[data-ai-guide-toast-title]');
-  const toastCopy = toast.querySelector('[data-ai-guide-toast-copy]');
-  const closeButton = toast.querySelector('[data-ai-guide-toast-close]');
+  let toastKicker = null;
+  let toastTitle = null;
+  let toastCopy = null;
+  let closeButton = null;
+  let closeBound = false;
   let resetTimer = 0;
 
+  const ensureToast = () => {
+    if (!toast) {
+      toast = root.createElement('div');
+      toast.className = 'pf-ai-toast';
+      toast.dataset.aiGuideToast = '';
+      toast.hidden = true;
+      toast.innerHTML = buildAiGuideToastMarkup();
+      root.body.appendChild(toast);
+    }
+
+    toastKicker = toast.querySelector('[data-ai-guide-toast-kicker]');
+    toastTitle = toast.querySelector('[data-ai-guide-toast-title]');
+    toastCopy = toast.querySelector('[data-ai-guide-toast-copy]');
+    closeButton = toast.querySelector('[data-ai-guide-toast-close]');
+
+    if (closeButton && !closeBound) {
+      closeButton.addEventListener('click', hideToast);
+      closeBound = true;
+    }
+
+    return toast;
+  };
+
   const showToast = ({ kicker, title, copy, state }) => {
+    ensureToast();
     if (toastKicker) toastKicker.textContent = kicker;
     if (toastTitle) toastTitle.textContent = title;
     if (toastCopy) toastCopy.textContent = copy;
@@ -145,6 +161,7 @@ export function setupAiGuideCopy(root = document) {
   };
 
   const hideToast = () => {
+    if (!toast) return;
     window.clearTimeout(resetTimer);
     toast.classList.remove('is-visible');
     window.setTimeout(() => {
@@ -153,8 +170,6 @@ export function setupAiGuideCopy(root = document) {
       }
     }, 220);
   };
-
-  closeButton?.addEventListener('click', hideToast);
 
   buttons.forEach((button) => button.addEventListener('click', async () => {
     hideToast();

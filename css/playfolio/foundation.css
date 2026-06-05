@@ -224,6 +224,10 @@ body.playfolio-page {
   align-items: center;
 }
 
+.pf-hero-grid > * {
+  min-width: 0;
+}
+
 .pf-title {
   max-width: 8.5ch;
   margin: 0 0 1rem;

@@ -2,11 +2,11 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 
-const sourcePath = fileURLToPath(new URL('./paddockjs-portfolio.js', import.meta.url));
-const themeSyncPath = fileURLToPath(new URL('./paddockjs-theme-sync.js', import.meta.url));
-const bootStatePath = fileURLToPath(new URL('./paddockjs-boot-state.js', import.meta.url));
-const cssPath = fileURLToPath(new URL('../css/playfolio.css', import.meta.url));
-const raceCssPath = fileURLToPath(new URL('../css/playfolio/race.css', import.meta.url));
+const sourcePath = fileURLToPath(new URL('../../js/paddockjs-portfolio.js', import.meta.url));
+const themeSyncPath = fileURLToPath(new URL('../../js/paddockjs-theme-sync.js', import.meta.url));
+const bootStatePath = fileURLToPath(new URL('../../js/paddockjs-boot-state.js', import.meta.url));
+const projectsCssPath = fileURLToPath(new URL('../../css/playfolio-projects.css', import.meta.url));
+const raceCssPath = fileURLToPath(new URL('../../css/playfolio/race.css', import.meta.url));
 
 describe('PaddockJS project race integration', () => {
   test('uses the package-owned telemetry drawer instead of detached safety controls', () => {
@@ -60,15 +60,23 @@ describe('PaddockJS project race integration', () => {
   });
 
   test('lets the package drawer controls stay anchored while the race fills the host mount', () => {
-    const css = readFileSync(cssPath, 'utf8');
+    const projectsCss = readFileSync(projectsCssPath, 'utf8');
     const raceCss = readFileSync(raceCssPath, 'utf8');
     const bootState = readFileSync(bootStatePath, 'utf8');
 
-    expect(css).toContain('@import url("./playfolio/race.css");');
+    expect(projectsCss).toContain('@import url("./playfolio/race.css");');
+    expect(raceCss).toContain('.pf-paddock-layout');
+    expect(raceCss).toContain('.pf-paddock-preview');
+    expect(raceCss).toContain('grid-row: 1');
     expect(raceCss).toContain('.pf-paddock-grid');
     expect(raceCss).toContain('display: grid');
     expect(raceCss).toContain('.pf-paddock-race .race-telemetry-drawer');
     expect(raceCss).toContain('padding: 0 !important');
+    expect(raceCss).toContain('.project-race-page .pf-paddock-race .sim-canvas-panel--with-timing-tower > .sim-timing');
+    expect(raceCss).toContain('@media (max-width: 520px)');
+    expect(raceCss).toContain('visibility: hidden');
+    expect(raceCss).toContain('.project-race-page .pf-paddock-race .race-telemetry-drawer.is-telemetry-open .telemetry-drawer');
+    expect(raceCss).toContain('visibility: visible');
     expect(bootState).toContain('dataset.layoutPreset');
     expect(bootState).toContain('dataset.timingFit');
     expect(bootState).toContain('dataset.raceDataSize');

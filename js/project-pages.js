@@ -6,7 +6,7 @@
     modal: '#imageModal',
     modalImage: '#modalImage',
     modalClose: '.image-modal-close',
-    lazyVideo: '.video-container iframe[data-src]',
+    lazyVideo: '.video-container iframe[data-src], .project-video-frame iframe[data-src]',
     wipTape: '[data-component="wip-tape"]',
     wipButton: '.project-wip__tape',
   };

@@ -288,3 +288,10 @@
   background: var(--pf-surface-soft);
   transform: translateX(-3px);
 }
+
+@media (max-width: 640px) {
+  .playfolio-page.project-page .project-media-stage {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+}

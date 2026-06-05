@@ -517,11 +517,15 @@
             </li>
         `).join('');
 
+        overlay.removeAttribute('aria-hidden');
+        overlay.inert = false;
         overlay.classList.add('active');
     }
 
     function closeOverlay() {
         overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.inert = true;
         selectedNode = null;
     }
 

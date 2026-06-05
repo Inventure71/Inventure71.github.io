@@ -218,26 +218,33 @@
     transform 170ms ease;
 }
 
-.playfolio-page .theme-toggle-icon--current {
+.playfolio-page .theme-toggle-icon--current,
+.playfolio-page .theme-toggle-icon--preview {
+  opacity: 0;
+}
+
+:root[data-theme="light"] .playfolio-page .theme-toggle-icon--current,
+:root[data-theme="dark"] .playfolio-page .theme-toggle-icon--preview {
   opacity: 1;
   transform: translateY(0) scale(1) rotate(0deg);
 }
 
-.playfolio-page .theme-toggle-icon--preview {
-  opacity: 0;
+:root[data-theme="light"] .playfolio-page .theme-toggle-icon--preview {
   transform: translateY(0.35rem) scale(0.82) rotate(-14deg);
 }
 
-.playfolio-page .theme-toggle-btn.is-glass-target .theme-toggle-icon--current,
-.playfolio-page .theme-toggle-btn:hover .theme-toggle-icon--current,
-.playfolio-page .theme-toggle-btn:focus-visible .theme-toggle-icon--current {
+:root[data-theme="dark"] .playfolio-page .theme-toggle-icon--current {
+  transform: translateY(0.35rem) scale(0.82) rotate(-14deg);
+}
+
+:root[data-theme="light"] .playfolio-page .theme-toggle-btn:is(.is-glass-target, :hover, :focus-visible) .theme-toggle-icon--current,
+:root[data-theme="dark"] .playfolio-page .theme-toggle-btn:is(.is-glass-target, :hover, :focus-visible) .theme-toggle-icon--preview {
   opacity: 0;
   transform: translateY(-0.35rem) scale(0.82) rotate(14deg);
 }
 
-.playfolio-page .theme-toggle-btn.is-glass-target .theme-toggle-icon--preview,
-.playfolio-page .theme-toggle-btn:hover .theme-toggle-icon--preview,
-.playfolio-page .theme-toggle-btn:focus-visible .theme-toggle-icon--preview {
+:root[data-theme="light"] .playfolio-page .theme-toggle-btn:is(.is-glass-target, :hover, :focus-visible) .theme-toggle-icon--preview,
+:root[data-theme="dark"] .playfolio-page .theme-toggle-btn:is(.is-glass-target, :hover, :focus-visible) .theme-toggle-icon--current {
   opacity: 1;
   transform: translateY(0) scale(1) rotate(0deg);
 }

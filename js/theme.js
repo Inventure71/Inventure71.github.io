@@ -6,19 +6,11 @@
   const THEME_KEY = 'mg-color-theme';
   const root = document.documentElement;
   const mediaQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-  const themeIconClasses = ['bi-sun', 'bi-moon'];
 
   const getStoredTheme = () => localStorage.getItem(THEME_KEY);
   const storeTheme = (theme) => localStorage.setItem(THEME_KEY, theme);
 
-  const iconForTheme = (theme) => (theme === 'dark' ? 'bi-moon' : 'bi-sun');
   const labelForTheme = (theme) => (theme === 'dark' ? 'dark mode' : 'light mode');
-
-  const setIconClass = (icon, className) => {
-    if (!icon) return;
-    icon.classList.remove(...themeIconClasses);
-    icon.classList.add(className);
-  };
 
   const updateToggleButtons = (theme) => {
     const currentTheme = theme === 'dark' ? 'dark' : 'light';
@@ -32,8 +24,6 @@
         'aria-label',
         `Switch to ${labelForTheme(nextTheme)}`
       );
-      setIconClass(button.querySelector('[data-theme-current-icon]'), iconForTheme(currentTheme));
-      setIconClass(button.querySelector('[data-theme-preview-icon]'), iconForTheme(nextTheme));
     });
   };
 

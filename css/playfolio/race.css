@@ -23,12 +23,15 @@
 .pf-paddock-layout {
   position: relative;
   isolation: isolate;
+  display: grid;
   padding: clamp(0.45rem, 1vw, 0.85rem);
   background: transparent;
   overflow: hidden;
 }
 
 .pf-paddock-grid {
+  grid-column: 1 / -1;
+  grid-row: 1;
   display: grid;
   min-height: clamp(700px, 82vh, 980px);
 }
@@ -40,11 +43,38 @@
   transition: opacity 220ms ease, transform 220ms ease;
 }
 
+.pf-paddock-layout[data-simulator-state="preview"] .pf-paddock-race,
 .pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-race,
+.pf-paddock-layout[data-simulator-state="loading"] .pf-paddock-race,
 .pf-paddock-layout[data-simulator-state="error"] .pf-paddock-race {
   opacity: 0;
   transform: scale(0.985);
   pointer-events: none;
+}
+
+.pf-paddock-preview {
+  --paddock-placeholder-background: transparent;
+  --paddock-placeholder-color: rgba(243, 244, 247, 0.72);
+  --paddock-placeholder-light: #e10600;
+  --paddock-placeholder-light-dim: rgba(96, 16, 20, 0.76);
+  --paddock-placeholder-min-height: clamp(24rem, 58vh, 38rem);
+  grid-column: 1 / -1;
+  grid-row: 1;
+  position: relative;
+  z-index: 4;
+  display: grid;
+  gap: 1.1rem;
+  min-height: clamp(24rem, 58vh, 38rem);
+  align-content: center;
+  justify-items: center;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid color-mix(in srgb, var(--pf-line-strong) 82%, transparent);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 52% 18%, rgba(225, 6, 0, 0.15), transparent 34%),
+    linear-gradient(180deg, rgba(8, 10, 14, 0.92), rgba(8, 10, 14, 0.78));
+  color: #f3f4f7;
+  text-align: center;
 }
 
 .pf-paddock-loading,
@@ -66,8 +96,16 @@
   transition: opacity 220ms ease;
 }
 
+.pf-paddock-layout[data-simulator-state="preview"] .pf-paddock-loading,
+.pf-paddock-layout[data-simulator-state="preview"] .pf-paddock-error,
+.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-preview,
+.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-error,
+.pf-paddock-layout[data-simulator-state="loading"] .pf-paddock-error,
 .pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-loading,
-.pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-error {
+.pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-error,
+.pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-preview,
+.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-loading,
+.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-preview {
   opacity: 0;
   pointer-events: none;
 }
@@ -141,6 +179,24 @@
 .pf-paddock-race > .race-telemetry-drawer {
   min-height: 100%;
   height: 100%;
+}
+
+.project-race-page .pf-paddock-race .race-telemetry-drawer .telemetry-drawer {
+  visibility: hidden;
+}
+
+.project-race-page .pf-paddock-race .race-telemetry-drawer.is-telemetry-open .telemetry-drawer {
+  visibility: visible;
+}
+
+@media (max-width: 520px) {
+  .project-race-page .pf-paddock-race .sim-canvas-panel--with-timing-tower > .sim-timing {
+    visibility: hidden;
+  }
+
+  .project-race-page .pf-paddock-race .sim-canvas-panel--with-timing-tower.is-timing-panel-open > .sim-timing {
+    visibility: visible;
+  }
 }
 
 .pf-package-note {

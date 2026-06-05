@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { readFileSync } from 'node:fs';
 
-const css = readFileSync(new URL('../css/project-race-guide.css', import.meta.url), 'utf8');
+const css = readFileSync(new URL('../../css/project-race-guide.css', import.meta.url), 'utf8');
 
 function extractBlock(source, startToken) {
   const start = source.indexOf(startToken);

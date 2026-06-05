@@ -223,9 +223,9 @@
   line-height: 0.95;
 }
 
-.pf-contact-band p {
+.playfolio-page .pf-contact-band p {
   margin-top: 0.7rem;
-  color: color-mix(in srgb, currentColor 72%, var(--pf-ink) 28%);
+  color: inherit !important;
 }
 
 .pf-contact-band .pf-button {
