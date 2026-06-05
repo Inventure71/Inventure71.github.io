@@ -82,6 +82,18 @@ describe('playfolio shared chrome', () => {
     expect(siteCoreCss).toMatch(/html\s*{[\s\S]*overflow-y:\s*scroll/);
   });
 
+  test('theme toggle preview icons only swap on hover-capable pointers', () => {
+    const reactiveGlassCss = readFileSync(path.join(process.cwd(), 'css/playfolio/reactive-glass.css'), 'utf8');
+    const themeIconCss = reactiveGlassCss.slice(reactiveGlassCss.indexOf('.playfolio-page .theme-toggle-icon'));
+
+    expect(themeIconCss).toContain('@media (hover: hover) and (pointer: fine)');
+    expect(themeIconCss).toContain('.theme-toggle-btn.is-theme-switching');
+    expect(themeIconCss).toContain('data-theme-switch-from="light"');
+    expect(themeIconCss).toContain('data-theme-switch-from="dark"');
+    expect(themeIconCss).not.toContain('.theme-toggle-btn:is(.is-glass-target, :hover, :focus-visible)');
+    expect(themeIconCss).not.toContain('.theme-toggle-btn[data-theme-current] .theme-toggle-icon--current');
+  });
+
   test('builds the shared footer with the canonical shared links', () => {
     const markup = buildSharedFooterMarkup();
 

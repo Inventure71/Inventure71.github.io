@@ -68,6 +68,7 @@ describe('PaddockJS project race integration', () => {
     expect(raceCss).toContain('.pf-paddock-layout');
     expect(raceCss).toContain('.pf-paddock-preview');
     expect(raceCss).toContain('grid-row: 1');
+    expect(raceCss).not.toContain('.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-race');
     expect(raceCss).toContain('.pf-paddock-grid');
     expect(raceCss).toContain('display: grid');
     expect(raceCss).toContain('.pf-paddock-race .race-telemetry-drawer');

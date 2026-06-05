@@ -229,22 +229,33 @@
   transform: translateY(0) scale(1) rotate(0deg);
 }
 
-:root[data-theme="light"] .playfolio-page .theme-toggle-icon--preview {
-  transform: translateY(0.35rem) scale(0.82) rotate(-14deg);
-}
-
+:root[data-theme="light"] .playfolio-page .theme-toggle-icon--preview,
 :root[data-theme="dark"] .playfolio-page .theme-toggle-icon--current {
   transform: translateY(0.35rem) scale(0.82) rotate(-14deg);
 }
 
-:root[data-theme="light"] .playfolio-page .theme-toggle-btn:is(.is-glass-target, :hover, :focus-visible) .theme-toggle-icon--current,
-:root[data-theme="dark"] .playfolio-page .theme-toggle-btn:is(.is-glass-target, :hover, :focus-visible) .theme-toggle-icon--preview {
+.playfolio-page .theme-toggle-btn.is-theme-switching[data-theme-switch-from="light"] .theme-toggle-icon--current,
+.playfolio-page .theme-toggle-btn.is-theme-switching[data-theme-switch-from="dark"] .theme-toggle-icon--preview {
   opacity: 0;
   transform: translateY(-0.35rem) scale(0.82) rotate(14deg);
 }
 
-:root[data-theme="light"] .playfolio-page .theme-toggle-btn:is(.is-glass-target, :hover, :focus-visible) .theme-toggle-icon--preview,
-:root[data-theme="dark"] .playfolio-page .theme-toggle-btn:is(.is-glass-target, :hover, :focus-visible) .theme-toggle-icon--current {
+.playfolio-page .theme-toggle-btn.is-theme-switching[data-theme-switch-from="light"] .theme-toggle-icon--preview,
+.playfolio-page .theme-toggle-btn.is-theme-switching[data-theme-switch-from="dark"] .theme-toggle-icon--current {
   opacity: 1;
   transform: translateY(0) scale(1) rotate(0deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root[data-theme="light"] .playfolio-page .theme-toggle-btn:hover .theme-toggle-icon--current,
+  :root[data-theme="dark"] .playfolio-page .theme-toggle-btn:hover .theme-toggle-icon--preview {
+    opacity: 0;
+    transform: translateY(-0.35rem) scale(0.82) rotate(14deg);
+  }
+
+  :root[data-theme="light"] .playfolio-page .theme-toggle-btn:hover .theme-toggle-icon--preview,
+  :root[data-theme="dark"] .playfolio-page .theme-toggle-btn:hover .theme-toggle-icon--current {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
 }

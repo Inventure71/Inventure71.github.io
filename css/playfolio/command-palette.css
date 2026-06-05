@@ -1,0 +1,79 @@
+/* Shared command palette overlay */
+
+.pf-command-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: start center;
+  padding: 12vh 1rem 1rem;
+  background: rgba(0, 0, 0, 0.34);
+}
+
+.pf-command-overlay[hidden] {
+  display: none;
+}
+
+.pf-command {
+  width: min(620px, 100%);
+  max-height: calc(100vh - 14vh - 1rem);
+  max-height: calc(100dvh - 14vh - 1rem);
+  border: 1px solid var(--pf-line-strong);
+  border-radius: var(--pf-radius);
+  background: var(--pf-surface);
+  color: var(--pf-ink);
+  box-shadow: var(--pf-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pf-command-input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--pf-line);
+  padding: 1rem;
+  background: transparent;
+  color: var(--pf-ink);
+  font: inherit;
+  font-size: 1rem;
+  outline: none;
+}
+
+.pf-command-list {
+  flex: 1 1 auto;
+  max-height: min(22rem, calc(100vh - 12vh - 6rem));
+  max-height: min(22rem, calc(100dvh - 12vh - 6rem));
+  overflow: auto;
+  padding: 0.35rem;
+}
+
+.pf-command-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  padding: 0.85rem;
+  background: transparent;
+  color: var(--pf-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.pf-command-item:hover,
+.pf-command-item:focus-visible,
+.pf-command-item.is-selected {
+  background: var(--pf-surface-soft);
+}
+
+.pf-command-item strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.pf-command-item span {
+  color: var(--pf-muted);
+  font-size: 0.78rem;
+}
