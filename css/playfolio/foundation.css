@@ -67,15 +67,14 @@ body.playfolio-page {
   top: 0.75rem;
   margin: 0.75rem auto 0;
   padding: 0.45rem 0;
-  border: 1px solid var(--pf-line);
-  border-radius: var(--pf-radius);
-  background: color-mix(in srgb, var(--pf-bg) 88%, transparent) !important;
-  box-shadow: none;
+  position: sticky;
 }
 
 .playfolio-page .navbar .container {
   max-width: none;
   padding-inline: 0.7rem !important;
+  position: relative;
+  z-index: 1;
 }
 
 .playfolio-page .navbar-toggler {

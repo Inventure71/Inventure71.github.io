@@ -1,5 +1,9 @@
 import { describe, expect, test } from 'vitest';
-import { buildSharedFooterMarkup, buildSharedNavbarMarkup, currentNavKey } from './shared-chrome.js';
+import {
+  buildSharedFooterMarkup,
+  buildSharedNavbarMarkup,
+  currentNavKey,
+} from './shared-chrome.js';
 
 describe('playfolio shared chrome', () => {
   test('maps project-like routes to the projects nav key', () => {
@@ -20,7 +24,12 @@ describe('playfolio shared chrome', () => {
     expect(markup).toContain('Ask AI');
     expect(markup).toContain('data-command-open');
     expect(markup).toContain('data-theme-toggle');
-    expect(markup).toContain('href="/apps.html">Apps</a>');
+    expect(markup).toContain('data-glass-group');
+    expect(markup).toContain('data-glass-item');
+    expect(markup).toContain('data-glass-tone="brand">MG</a>');
+    expect(markup).toContain('data-glass-tone="mode"');
+    expect(markup).not.toContain('pf-glass-mode-bead');
+    expect(markup).toContain('href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>');
     expect(markup).toContain('nav-link active');
   });
 
