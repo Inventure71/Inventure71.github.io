@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { buildProjectRaceGuideMarkup } from './project-race-guide.js';
+import { buildProjectRaceGuideMarkup } from '../../js/project-race-guide.js';
 
 describe('project race guide component', () => {
   test('renders the default project race explanation and hints', () => {

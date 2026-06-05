@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 import { readFileSync } from 'node:fs';
 
-const html = readFileSync(new URL('../tags.html', import.meta.url), 'utf8');
-const css = readFileSync(new URL('../css/tag-network.css', import.meta.url), 'utf8');
-const script = readFileSync(new URL('./neuron-brain.js', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../../tags.html', import.meta.url), 'utf8');
+const css = readFileSync(new URL('../../css/tag-network.css', import.meta.url), 'utf8');
+const script = readFileSync(new URL('../../js/neuron-brain.js', import.meta.url), 'utf8');
 
 function extractBlock(source, startToken) {
   const start = source.indexOf(startToken);
@@ -39,6 +39,8 @@ describe('tag network overlay closed state', () => {
 
     expect(declarationValue(closedRule, 'pointer-events')).toBe('none');
     expect(declarationValue(activeRule, 'pointer-events')).toBe('auto');
+    expect(declarationValue(closedRule, 'visibility')).toBe('hidden');
+    expect(declarationValue(activeRule, 'visibility')).toBe('visible');
   });
 
   test('toggles accessibility state with the visible panel state', () => {

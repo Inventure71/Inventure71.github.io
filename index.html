@@ -16,9 +16,9 @@
         rel="stylesheet" />
     <script src="/js/theme-boot.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/site-core.css" rel="stylesheet" />
     <link href="/css/modern.css" rel="stylesheet" />
-    <link href="/css/playfolio.css" rel="stylesheet" />
+    <link href="/css/playfolio-home.css" rel="stylesheet" />
 </head>
 
 <body class="playfolio-page playfolio-home d-flex flex-column h-100">
@@ -104,9 +104,9 @@
                     <div class="pf-ambassador-lockup" aria-label="OpenAI Codex ambassador">
                         <button class="pf-ambassador-logo" type="button" data-codex-ambassador-logo
                             aria-label="Animate OpenAI Codex ambassador logo">
-                            <video autoplay muted loop playsinline preload="metadata"
+                            <video muted loop playsinline preload="none" data-deferred-video data-load-delay-ms="3500"
                                 poster="/assets/brand/codex/codex-logo-ambassador.png">
-                                <source src="/assets/brand/codex/codex-logo-ambassador-animated-compressed.webm" type="video/webm" />
+                                <source data-src="/assets/brand/codex/codex-logo-ambassador-animated-compressed.webm" type="video/webm" />
                                 <img src="/assets/brand/codex/codex-logo-ambassador.png" alt="" />
                             </video>
                         </button>

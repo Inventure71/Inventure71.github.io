@@ -34,8 +34,39 @@ export function setupCodexAmbassadorLogo(root = document) {
   if (!logo) return;
 
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const video = logo.querySelector('[data-deferred-video]');
+  const videoSource = video?.querySelector('source[data-src]');
+  const shouldSkipVideo = () => reducedMotionQuery.matches || Boolean(navigator.connection?.saveData);
+  let videoLoadQueued = false;
+  let videoLoaded = false;
   let frameId = 0;
   let ball = null;
+
+  const loadAmbassadorVideo = () => {
+    if (!video || !videoSource || videoLoaded || shouldSkipVideo()) return;
+
+    videoLoaded = true;
+    videoSource.src = videoSource.dataset.src;
+    video.load();
+    video.play().catch(() => {
+      // Autoplay can be denied in some browser modes; the poster remains usable.
+    });
+  };
+
+  const queueAmbassadorVideoLoad = () => {
+    if (!video || videoLoadQueued || videoLoaded || shouldSkipVideo()) return;
+
+    videoLoadQueued = true;
+    const delay = Number(video.dataset.loadDelayMs || 3500);
+    window.setTimeout(() => {
+      const load = () => loadAmbassadorVideo();
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(load, { timeout: 1200 });
+      } else {
+        load();
+      }
+    }, delay);
+  };
 
   const stopBall = () => {
     if (frameId) window.cancelAnimationFrame(frameId);
@@ -92,6 +123,7 @@ export function setupCodexAmbassadorLogo(root = document) {
   };
 
   const startBall = () => {
+    loadAmbassadorVideo();
     if (reducedMotionQuery.matches || ball) return;
 
     const stage = logo.closest('.pf-portrait-stage');
@@ -125,7 +157,9 @@ export function setupCodexAmbassadorLogo(root = document) {
     frameId = window.requestAnimationFrame(tickBall);
   };
 
+  queueAmbassadorVideoLoad();
   logo.addEventListener('pointerenter', startBall);
   logo.addEventListener('focus', startBall);
+  logo.addEventListener('click', loadAmbassadorVideo);
   window.addEventListener('resize', stopBall);
 }

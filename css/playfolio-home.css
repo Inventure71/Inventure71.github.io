@@ -1,13 +1,8 @@
-/* Playfolio stylesheet manifest */
+/* Home route Playfolio manifest */
 
 @import url("./playfolio/foundation.css");
 @import url("./playfolio/reactive-glass.css");
 @import url("./playfolio/ai-guide.css");
 @import url("./playfolio/motion.css");
 @import url("./playfolio/project-browse.css");
-@import url("./playfolio/race.css");
-@import url("./playfolio/vendor-overrides.css");
-@import url("./playfolio/directory.css");
-@import url("./playfolio/project-overrides.css");
-@import url("./playfolio/resume.css");
 @import url("./playfolio/utilities.css");

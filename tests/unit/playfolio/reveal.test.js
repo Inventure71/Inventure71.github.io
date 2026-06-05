@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { setupReveals } from './reveal.js';
+import { setupReveals } from '../../../js/playfolio/reveal.js';
 
 describe('playfolio reveal behavior', () => {
   afterEach(() => {

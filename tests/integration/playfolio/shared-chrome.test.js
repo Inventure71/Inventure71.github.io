@@ -1,12 +1,12 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
-import { syncSharedNavbar } from '../../scripts/sync-shared-chrome.mjs';
+import { syncSharedNavbar } from '../../../scripts/sync-shared-chrome.mjs';
 import {
   buildSharedFooterMarkup,
   buildSharedNavbarMarkup,
   currentNavKey,
-} from './shared-chrome.js';
+} from '../../../js/playfolio/shared-chrome.js';
 
 function collectHtmlFiles(dir, root = dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -73,6 +73,13 @@ describe('playfolio shared chrome', () => {
     expect(result.pages.length).toBeGreaterThan(0);
     expect(result.missing).toEqual([]);
     expect(result.changed).toEqual([]);
+  });
+
+  test('site core reserves the vertical scrollbar gutter for stable centered chrome', () => {
+    const siteCoreCss = readFileSync(path.join(process.cwd(), 'css/site-core.css'), 'utf8');
+
+    expect(siteCoreCss).toMatch(/html\s*{[\s\S]*scrollbar-gutter:\s*stable/);
+    expect(siteCoreCss).toMatch(/html\s*{[\s\S]*overflow-y:\s*scroll/);
   });
 
   test('builds the shared footer with the canonical shared links', () => {

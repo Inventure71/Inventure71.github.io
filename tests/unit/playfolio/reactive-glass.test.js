@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
-import { installReactiveGlassSurface } from './reactive-glass.js';
+import { installReactiveGlassSurface } from '../../../js/playfolio/reactive-glass.js';
 
 function createClassList(initial = []) {
   const classes = new Set(initial);

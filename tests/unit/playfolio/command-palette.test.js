@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { buildCommandPaletteMarkup } from './command-palette.js';
+import { buildCommandPaletteMarkup } from '../../../js/playfolio/command-palette.js';
 
 describe('playfolio command palette markup', () => {
   test('escapes labels, hrefs, and keywords before rendering', () => {

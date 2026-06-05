@@ -2,10 +2,10 @@ export function setPaddockShellState(shell, state) {
   if (!shell) return;
 
   shell.dataset.simulatorState = state;
-  shell.setAttribute('aria-busy', state === 'booting' ? 'true' : 'false');
+  shell.setAttribute('aria-busy', state === 'booting' || state === 'loading' ? 'true' : 'false');
 
   const loading = shell.querySelector('[data-paddock-loading]');
-  if (loading) loading.hidden = state !== 'booting';
+  if (loading) loading.hidden = state !== 'booting' && state !== 'loading';
 
   const error = shell.querySelector('[data-paddock-error]');
   if (error) error.hidden = state !== 'error';

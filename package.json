@@ -8,7 +8,7 @@
     "sync:chrome": "node scripts/sync-shared-chrome.mjs",
     "check:chrome": "node scripts/sync-shared-chrome.mjs --check",
     "test": "npm run test:f1",
-    "test:f1": "vitest run js",
+    "test:f1": "vitest run tests",
     "check": "npm run check:chrome && npm run test && npm run build:f1"
   },
   "dependencies": {

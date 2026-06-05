@@ -25,24 +25,30 @@ body.project-page {
     --project-inline-gap: clamp(1.25rem, 3.5vw, 2.75rem);
 }
 
+.project-page code {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
 .project-wip {
     position: fixed;
     top: 0;
     right: 0;
     z-index: 999;
+    width: min(34rem, 100vw);
+    height: clamp(8rem, 15vw, 12rem);
+    overflow: hidden;
     pointer-events: none;
 }
 
 .project-wip__tape {
     pointer-events: auto;
     position: absolute;
-    top: 0;
-    right: 0;
+    inset: 0;
     border: none;
     background: none;
     cursor: pointer;
-    transform-origin: top right;
-    transform: rotate(45deg) translateY(300%) translateX(50%);
+    overflow: hidden;
 }
 
 .project-wip__tape:focus-visible {
@@ -52,8 +58,11 @@ body.project-page {
 
 .project-wip__tape::before {
     content: "";
+    position: absolute;
+    top: clamp(2.9rem, 5vw, 4.2rem);
+    right: clamp(-7.5rem, -9vw, -3.5rem);
     display: block;
-    width: clamp(260px, 34vw, 520px);
+    width: clamp(280px, 34vw, 520px);
     aspect-ratio: 1600 / 220;
     background-image: url("../assets/placeholders/wip-tape-placeholder.svg");
     background-size: contain;
@@ -61,15 +70,20 @@ body.project-page {
     background-position: center;
     box-shadow: 0 22px 55px rgba(15, 23, 42, 0.22);
     border-radius: clamp(0.75rem, 2.5vw, 1.25rem);
+    transform: rotate(42deg);
+    transform-origin: center;
 }
 
 @media (max-width: 640px) {
-    .project-wip__tape {
-        transform: rotate(-38deg) translateY(18%);
+    .project-wip {
+        height: 10rem;
     }
 
     .project-wip__tape::before {
-        width: clamp(220px, 72vw, 360px);
+        top: 5.2rem;
+        right: -4.8rem;
+        width: clamp(230px, 68vw, 310px);
+        transform: rotate(42deg);
     }
 }
 

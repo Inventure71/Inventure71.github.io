@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { setPaddockShellState } from './paddockjs-boot-state.js';
+import { setPaddockShellState } from '../../js/paddockjs-boot-state.js';
 
 function createNode() {
   return { hidden: false };

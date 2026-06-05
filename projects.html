@@ -15,11 +15,9 @@
         rel="stylesheet" />
     <script src="js/theme-boot.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/site-core.css" rel="stylesheet" />
     <link href="css/modern.css" rel="stylesheet" />
-    <link href="dist/f1-simulator/f1-simulator.css?v=20260604-paddockjs-400" rel="stylesheet" />
-    <link href="css/playfolio.css?v=20260503-paddock-layout-2" rel="stylesheet" />
-    <link href="css/project-race-guide.css?v=20260519-component" rel="stylesheet" />
+    <link href="css/playfolio-projects.css?v=20260605-payload" rel="stylesheet" />
 </head>
 
 <body class="playfolio-page project-race-page d-flex flex-column h-100">
@@ -88,8 +86,38 @@
 
                 <project-race-guide></project-race-guide>
 
-                <div class="pf-paddock-layout" data-paddock-shell data-simulator-state="booting"
-                    aria-label="PaddockJS project race" aria-busy="true">
+                <div class="pf-paddock-layout" data-paddock-shell data-simulator-state="preview"
+                    data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=20260604-paddockjs-400"
+                    data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=20260604-paddockjs-400"
+                    data-paddock-auto-start="idle"
+                    data-paddock-auto-delay-ms="900"
+                    aria-label="PaddockJS project race" aria-busy="false">
+                    <div class="pf-paddock-preview" data-paddock-preview>
+                        <div>
+                            <p class="pf-paddock-preview__eyebrow">Auto-loading simulator</p>
+                            <h2>The live project race is warming up.</h2>
+                            <p>
+                                Project links are available immediately while the heavier F1/Pixi runtime loads after
+                                the page has settled.
+                            </p>
+                        </div>
+                        <div class="pf-paddock-preview__actions">
+                            <button class="pf-button" type="button" data-paddock-start>
+                                <i class="bi bi-play-fill" aria-hidden="true"></i>
+                                Start now
+                            </button>
+                            <a class="pf-button is-quiet" href="tags.html">
+                                <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                                Open project map
+                            </a>
+                        </div>
+                        <div class="pf-paddock-preview__links" aria-label="Project quick links">
+                            <a href="/project_details/project-victoria.html">VictorIA</a>
+                            <a href="/project_details/project-holovinyl.html">HoloVinyl</a>
+                            <a href="/project_details/project-neural-noir.html">Neural Noir</a>
+                            <a href="/project_details/project-gengame.html">Core Conflict</a>
+                        </div>
+                    </div>
                     <div class="pf-paddock-loading" data-paddock-loading aria-live="polite">
                         <div class="pf-paddock-loading__label">Race control booting</div>
                         <div class="pf-paddock-loading__lights" aria-hidden="true">
@@ -101,7 +129,8 @@
                         </div>
                     </div>
                     <div class="pf-paddock-error" data-paddock-error hidden>
-                        The project race failed to load. Refresh and try again.
+                        <span>The project race failed to load.</span>
+                        <button class="pf-button is-quiet" type="button" data-paddock-retry>Retry live race</button>
                     </div>
                     <div class="pf-paddock-grid">
                         <div id="paddock-race-root" class="f1-sim-component pf-paddock-race"></div>
@@ -135,8 +164,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/theme.js"></script>
-    <script type="module" src="dist/f1-simulator/f1-simulator.js?v=20260604-paddockjs-400"></script>
     <script type="module" src="js/project-race-guide.js?v=20260519-component"></script>
+    <script type="module" src="js/projects-race-loader.js?v=20260605-payload"></script>
     <script type="module" src="js/playfolio.js?v=2"></script>
 </body>
 

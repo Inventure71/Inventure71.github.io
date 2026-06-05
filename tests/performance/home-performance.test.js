@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 import { readFileSync, statSync } from 'node:fs';
 
-const indexHtml = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-const foundationCss = readFileSync(new URL('../css/playfolio/foundation.css', import.meta.url), 'utf8');
-const utilitiesCss = readFileSync(new URL('../css/playfolio/utilities.css', import.meta.url), 'utf8');
+const indexHtml = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
+const foundationCss = readFileSync(new URL('../../css/playfolio/foundation.css', import.meta.url), 'utf8');
+const utilitiesCss = readFileSync(new URL('../../css/playfolio/utilities.css', import.meta.url), 'utf8');
 
 function extractRule(source, selector) {
   const start = source.indexOf(selector);
@@ -31,7 +31,7 @@ describe('home page loading budget', () => {
     expect(portraitMarkup).not.toContain('/assets/profile.png');
     expect(portraitMarkup).not.toContain('/assets/profile2.png');
 
-    for (const asset of ['../assets/profile.webp', '../assets/profile2.webp']) {
+    for (const asset of ['../../assets/profile.webp', '../../assets/profile2.webp']) {
       const size = statSync(new URL(asset, import.meta.url)).size;
       expect(size).toBeLessThan(700 * 1024);
     }

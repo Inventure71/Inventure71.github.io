@@ -2,10 +2,10 @@ import { describe, expect, test } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 
 const projectOverridesCss = readFileSync(
-  new URL('../css/playfolio/project-overrides.css', import.meta.url),
+  new URL('../../css/playfolio/project-overrides.css', import.meta.url),
   'utf8'
 );
-const projectPagesJs = readFileSync(new URL('./project-pages.js', import.meta.url), 'utf8');
+const projectPagesJs = readFileSync(new URL('../../js/project-pages.js', import.meta.url), 'utf8');
 
 function extractBlock(source, startToken) {
   const start = source.indexOf(startToken);
@@ -33,7 +33,7 @@ function declarationValue(rule, property) {
 }
 
 function projectHtmlFiles() {
-  const root = new URL('../project_details/', import.meta.url);
+  const root = new URL('../../project_details/', import.meta.url);
   return readdirSync(root)
     .filter((file) => file.endsWith('.html'))
     .map((file) => ({
