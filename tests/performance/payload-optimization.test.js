@@ -39,11 +39,24 @@ describe('payload optimization contracts', () => {
 
     expect(html).not.toMatch(/<link[^>]+href="dist\/f1-simulator\/f1-simulator\.css/);
     expect(html).not.toMatch(/<script[^>]+src="dist\/f1-simulator\/f1-simulator\.js/);
-    expect(html).toContain('data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=20260604-paddockjs-400"');
-    expect(html).toContain('data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=20260604-paddockjs-400"');
+    expect(html).toContain('dist/f1-simulator/paddock-placeholder.css?v=20260605-paddockjs-410');
+    expect(html).toContain('data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=20260605-paddockjs-410"');
+    expect(html).toContain('data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=20260605-paddockjs-410"');
     expect(html).toContain('data-paddock-auto-start="idle"');
     expect(html).toContain('data-paddock-auto-delay-ms="900"');
     expect(html).toContain('js/projects-race-loader.js');
+  });
+
+  test('projects page uses the package-owned startup placeholder for the pre-import gap', () => {
+    const html = readRepoFile('projects.html');
+    const css = readRepoFile('css/playfolio/race.css');
+
+    expect(html).toContain('class="pf-paddock-preview paddock-placeholder"');
+    expect(html).toContain('data-paddock-placeholder');
+    expect(html).toContain('paddock-placeholder__lights');
+    expect(html).toContain('paddock-placeholder__label');
+    expect(css).toContain('--paddock-placeholder-min-height');
+    expect(css).not.toContain('pf-paddock-preview__links');
   });
 
   test('projects race auto-starts after page load instead of blocking initial markup', () => {

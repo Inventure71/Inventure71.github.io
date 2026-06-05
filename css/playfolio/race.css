@@ -53,6 +53,11 @@
 }
 
 .pf-paddock-preview {
+  --paddock-placeholder-background: transparent;
+  --paddock-placeholder-color: rgba(243, 244, 247, 0.72);
+  --paddock-placeholder-light: #e10600;
+  --paddock-placeholder-light-dim: rgba(96, 16, 20, 0.76);
+  --paddock-placeholder-min-height: clamp(24rem, 58vh, 38rem);
   grid-column: 1 / -1;
   grid-row: 1;
   position: relative;
@@ -70,55 +75,6 @@
     linear-gradient(180deg, rgba(8, 10, 14, 0.92), rgba(8, 10, 14, 0.78));
   color: #f3f4f7;
   text-align: center;
-}
-
-.pf-paddock-preview h2 {
-  margin: 0;
-  color: #fff;
-  font-family: var(--pf-display);
-  font-size: clamp(1.85rem, 5vw, 4rem);
-  line-height: 0.95;
-}
-
-.pf-paddock-preview p {
-  max-width: 46rem;
-  margin: 0.75rem auto 0;
-  color: rgba(243, 244, 247, 0.72);
-  line-height: 1.55;
-}
-
-.pf-paddock-preview__eyebrow {
-  margin: 0 0 0.6rem !important;
-  color: #62d995 !important;
-  font-family: var(--pf-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
-  font-size: 0.78rem;
-  font-weight: 850;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.pf-paddock-preview__actions,
-.pf-paddock-preview__links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.7rem;
-}
-
-.pf-paddock-preview__links a {
-  padding: 0.48rem 0.72rem;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 6px;
-  color: #f3f4f7;
-  font-weight: 750;
-  text-decoration: none;
-  background: rgba(255, 255, 255, 0.055);
-}
-
-.pf-paddock-preview__links a:hover,
-.pf-paddock-preview__links a:focus-visible {
-  border-color: #62d995;
-  color: #fff;
 }
 
 .pf-paddock-loading,
@@ -144,7 +100,6 @@
 .pf-paddock-layout[data-simulator-state="preview"] .pf-paddock-error,
 .pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-preview,
 .pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-error,
-.pf-paddock-layout[data-simulator-state="loading"] .pf-paddock-preview,
 .pf-paddock-layout[data-simulator-state="loading"] .pf-paddock-error,
 .pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-loading,
 .pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-error,

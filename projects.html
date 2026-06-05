@@ -17,6 +17,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="css/site-core.css" rel="stylesheet" />
     <link href="css/modern.css" rel="stylesheet" />
+    <link href="dist/f1-simulator/paddock-placeholder.css?v=20260605-paddockjs-410" rel="stylesheet" />
     <link href="css/playfolio-projects.css?v=20260605-payload" rel="stylesheet" />
 </head>
 
@@ -87,45 +88,23 @@
                 <project-race-guide></project-race-guide>
 
                 <div class="pf-paddock-layout" data-paddock-shell data-simulator-state="preview"
-                    data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=20260604-paddockjs-400"
-                    data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=20260604-paddockjs-400"
+                    data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=20260605-paddockjs-410"
+                    data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=20260605-paddockjs-410"
                     data-paddock-auto-start="idle"
                     data-paddock-auto-delay-ms="900"
                     aria-label="PaddockJS project race" aria-busy="false">
-                    <div class="pf-paddock-preview" data-paddock-preview>
-                        <div>
-                            <p class="pf-paddock-preview__eyebrow">Auto-loading simulator</p>
-                            <h2>The live project race is warming up.</h2>
-                            <p>
-                                Project links are available immediately while the heavier F1/Pixi runtime loads after
-                                the page has settled.
-                            </p>
-                        </div>
-                        <div class="pf-paddock-preview__actions">
-                            <button class="pf-button" type="button" data-paddock-start>
-                                <i class="bi bi-play-fill" aria-hidden="true"></i>
-                                Start now
-                            </button>
-                            <a class="pf-button is-quiet" href="tags.html">
-                                <i class="bi bi-diagram-3" aria-hidden="true"></i>
-                                Open project map
-                            </a>
-                        </div>
-                        <div class="pf-paddock-preview__links" aria-label="Project quick links">
-                            <a href="/project_details/project-victoria.html">VictorIA</a>
-                            <a href="/project_details/project-holovinyl.html">HoloVinyl</a>
-                            <a href="/project_details/project-neural-noir.html">Neural Noir</a>
-                            <a href="/project_details/project-gengame.html">Core Conflict</a>
-                        </div>
-                    </div>
-                    <div class="pf-paddock-loading" data-paddock-loading aria-live="polite">
-                        <div class="pf-paddock-loading__label">Race control booting</div>
-                        <div class="pf-paddock-loading__lights" aria-hidden="true">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                    <div class="pf-paddock-preview paddock-placeholder" data-paddock-preview data-paddock-placeholder
+                        data-paddock-placeholder-variant="lights" role="status" aria-live="polite" aria-busy="true">
+                        <div class="paddock-placeholder__content">
+                            <div class="paddock-placeholder__lights" aria-hidden="true">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <span class="paddock-placeholder__label">Loading project race</span>
+                            <span class="paddock-placeholder__detail">Preparing race control</span>
                         </div>
                     </div>
                     <div class="pf-paddock-error" data-paddock-error hidden>
