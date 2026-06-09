@@ -59,6 +59,65 @@
   pointer-events: none;
 }
 
+.pf-codex-wall-burst {
+  position: absolute;
+  left: var(--burst-x);
+  top: var(--burst-y);
+  z-index: 24;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  animation: pf-codex-burst-life 560ms ease-out both;
+}
+
+.pf-codex-wall-particle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--particle-size);
+  height: var(--particle-size);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.58) 28%, rgba(111, 134, 255, 0.72) 58%, rgba(63, 78, 255, 0) 72%);
+  box-shadow:
+    0 0 var(--particle-glow) rgba(120, 144, 255, 0.78),
+    0 0 var(--particle-aura) rgba(78, 93, 255, 0.32);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+  animation: pf-codex-wall-particle 560ms cubic-bezier(0.16, 1, 0.3, 1) var(--particle-delay) both;
+}
+
+@keyframes pf-codex-burst-life {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes pf-codex-wall-particle {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.55);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(
+        calc(-50% + var(--particle-tx)),
+        calc(-50% + var(--particle-ty))
+      )
+      scale(0.12);
+  }
+}
+
 .pf-ambassador-k {
   display: block;
   margin-bottom: 0.18rem;
@@ -90,7 +149,8 @@
   box-shadow: var(--pf-shadow);
 }
 
-.pf-portrait-stage::before {
+/* Add is-inner-wall-enabled to .pf-portrait-stage to restore the inset guide. */
+.pf-portrait-stage.is-inner-wall-enabled::before {
   content: "";
   position: absolute;
   inset: 0.85rem;
