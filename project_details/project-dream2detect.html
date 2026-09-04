@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Dream2Detect - a synthetic-to-real computer vision study for package damage classification" />
+    <meta name="author" content="Matteo Giorgetti" />
+    <title>Dream2Detect - M.G.</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <script src="../js/theme-boot.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../css/site-core.css" rel="stylesheet" />
+    <link href="../css/modern.css" rel="stylesheet" />
+        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+</head>
+
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--dream2detect" data-project-family="research">
+    <main class="flex-shrink-0">
+        <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
+      <div class="container">
+        <div class="pf-brand-group" data-glass-group>
+          <a class="navbar-brand" href="/index.html" data-glass-item data-glass-tone="brand">MG</a>
+          <button class="pf-nav-ai-button" type="button" data-ai-guide-copy data-glass-item data-glass-tone="green">Ask AI</button>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
+            <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
+                </li>
+              
+            </ul>
+            <div class="d-flex gap-2" data-glass-group>
+              <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
+                <i class="bi bi-command"></i>
+              </button>
+              <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
+                <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
+                  <i class="bi bi-sun" data-theme-current-icon></i>
+                </span>
+                <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
+                  <i class="bi bi-moon" data-theme-preview-icon></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+        </nav>
+
+        <section class="py-5">
+            <div class="container px-5">
+                <div class="project-shell fade-in">
+                    <header class="project-hero">
+                        <div>
+                            <p class="project-section-eyebrow">Computer vision research</p>
+                            <h1>Dream2Detect</h1>
+                            <p class="lead">Can a model trained entirely on AI-generated package photos learn to judge damage in real ones? I built Dream2Detect to find out — and to find out honestly.</p>
+                            <div class="project-pills">
+                                <span class="project-pill">PyTorch</span>
+                                <span class="project-pill">Synthetic Data</span>
+                                <span class="project-pill">React + Supabase</span>
+                            </div>
+                        </div>
+                        <div class="hero-meta">
+                            <div class="hero-meta-card"><span class="label">Role</span><span class="value">Primary ML · Data Pipeline</span></div>
+                            <div class="hero-meta-card"><span class="label">Timeline</span><span class="value">2026</span></div>
+                            <div class="hero-meta-card"><span class="label">Study set</span><span class="value">899 reviewed synthetic images</span></div>
+                            <div class="hero-meta-card"><span class="label">Status</span><span class="value">Research complete</span></div>
+                        </div>
+                    </header>
+
+                    <section class="project-section project-section--severity">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">Damage scale</p>
+                            <h2>Ten bands, from intact to destroyed</h2>
+                        </div>
+                        <div class="project-severity-ladder" role="region" tabindex="0"
+                            aria-label="Synthetic package damage examples by severity band; scroll horizontally to view all ten bands">
+                            <figure><img src="../assets/project-media/dream2detect/0_10.jpg" alt="Synthetic package with 0 to 10 percent damage" loading="lazy" /><figcaption>0–10</figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/11_20.jpg" alt="Synthetic package with 11 to 20 percent damage" loading="lazy" /><figcaption>11–20</figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/21_30.jpg" alt="Synthetic package with 21 to 30 percent damage" loading="lazy" /><figcaption>21–30</figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/31_35.jpg" alt="Synthetic package with 31 to 35 percent damage" loading="lazy" /><figcaption>31–35</figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/36_45.jpg" alt="Synthetic package with 36 to 45 percent damage" loading="lazy" /><figcaption>36–45</figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/46_55.jpg" alt="Synthetic package with 46 to 55 percent damage" loading="lazy" /><figcaption>46–55</figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/56_65.jpg" alt="Synthetic package with 56 to 65 percent damage" loading="lazy" /><figcaption>56–65</figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/66_75.jpg" alt="Synthetic package with 66 to 75 percent damage" loading="lazy" /><figcaption>66–75</figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/76_85.jpg" alt="Synthetic package with 76 to 85 percent damage" loading="lazy" /><figcaption>76–85</figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/86_100.jpg" alt="Synthetic package with 86 to 100 percent damage" loading="lazy" /><figcaption>86–100</figcaption></figure>
+                        </div>
+                    </section>
+
+                    <section class="project-media-panel project-media-panel--without-media">
+                        <aside class="project-sidecard">
+                            <h2>I didn't just prompt for damaged boxes</h2>
+                            <p>Every image was generated from thirteen structured fields — damage type, box shape, tape, background, camera angle, lighting — deliberately varied so the model couldn't cheat by learning the scenery instead of the damage. Then every single candidate went through human review before it earned a spot in training.</p>
+                            <ul class="sidecard-highlight">
+                                <li><i class="bi bi-check2-circle"></i><span>In one 800-image review pass, 623 were kept as generated and 177 relabeled by hand — the label is what I saw, not what I asked for.</span></li>
+                                <li><i class="bi bi-tags"></i><span>A second generation round deliberately targeted the real-world cases earlier models kept getting wrong.</span></li>
+                            </ul>
+                            <div class="sidecard-links">
+                                <a href="https://github.com/Inventure71/Dream2Detect" target="_blank" rel="noreferrer"><span>View Repository</span><i class="bi bi-arrow-up-right"></i></a>
+                            </div>
+                        </aside>
+                    </section>
+
+                    <section class="project-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">The headline result</p>
+                            <h2>Trained on synthetic, judged on real</h2>
+                        </div>
+                        <ul class="project-data-strip">
+                            <li><span class="metric-value">64%</span><span class="metric-label">Within one band</span><span class="metric-copy">On 385 real photos it never trained on, the model's severity call landed within one band of correct nearly two times out of three.</span></li>
+                            <li><span class="metric-value">1.34</span><span class="metric-label">Bands off, on average</span><span class="metric-copy">Mean error on a ten-band scale — the typical miss is barely more than a single band.</span></li>
+                            <li><span class="metric-value">0</span><span class="metric-label">Real photos in training</span><span class="metric-copy">Every training image was AI-generated. The model met a real photograph for the first time at test time.</span></li>
+                        </ul>
+                    </section>
+
+                    <section class="project-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">The modeling story</p>
+                            <h2>Two ways I tried to crack it</h2>
+                        </div>
+                        <div class="project-insight-grid">
+                            <article class="project-insight-card">
+                                <h3>From scratch, eight times over</h3>
+                                <p>I started with custom CNNs and no pretrained weights, then rebuilt them across eight versions. Each one answered a single question — cleaner labels, higher resolution, stricter splits, ordinal losses — and on identical data the real-photo error fell from 2.66 down to 2.11 bands, landing within one band of correct about 39% of the time.</p>
+                                <ul>
+                                    <li>V1 existed just to prove the synthetic labels were learnable at all.</li>
+                                    <li>I kept the dead-ends, too — longer training and a GroupNorm swap both made things worse.</li>
+                                </ul>
+                            </article>
+                            <article class="project-insight-card">
+                                <h3>Then pretrained backbones won</h3>
+                                <p>The strongest models paired a ConvNeXt backbone with an Earth Mover's Distance loss — one that punishes a guess three bands off far more than a near miss — blended 60/40 with a SAM-cropped variant. On the same synthetic data, they jumped from 39% to 64% within one band on real photos — a 25-point gain from better visual representations alone.</p>
+                                <ul>
+                                    <li>21% were dead-on out of ten bands — about double random chance — but "within one" is what a real severity call actually needs.</li>
+                                    <li>Averaging the two views beat either model on its own.</li>
+                                </ul>
+                            </article>
+                            <article class="project-insight-card">
+                                <h3>Kept honest on purpose</h3>
+                                <p>It's easy to fool yourself here, so the splits were built to stop prompt-family leakage, and I never let a flattering synthetic number stand in for real-photo transfer. The from-scratch and pretrained tracks were reported as two separate answers, not one tidy line.</p>
+                                <ul>
+                                    <li>On synthetic holdout the from-scratch models cleared roughly twice random chance.</li>
+                                    <li>Real transfer stayed the honest bottleneck — and that's the point.</li>
+                                </ul>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="project-section project-spotlight">
+                        <h2>A floor, not a ceiling</h2>
+                        <p>Here's the part I actually care about: every time I tightened the loop — cleaner labels, stricter splits, better losses, pretrained representations — the real-world number climbed, from a from-scratch model barely clearing random to 64% within one band. Synthetic-only transfer was still the honest bottleneck, and I won't pretend otherwise. But nothing here reads like a dead end; it reads like the opposite. With more data and tighter management, this loop keeps closing the gap — 64% is where I stopped, not where it tops out.</p>
+                    </section>
+
+                    <div class="text-center">
+                        <a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left"></i> Back to all projects</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="pf-footer py-4 mt-auto"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script type="module" src="../js/playfolio.js"></script>
+    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+</body>
+
+</html>

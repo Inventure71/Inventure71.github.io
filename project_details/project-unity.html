@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="[ONE-SENTENCE PROJECT DESCRIPTION]" />
+    <meta name="description" content="Project Unity - secure, low-latency input control across macOS and Windows" />
     <meta name="author" content="Matteo Giorgetti" />
     <meta name="theme-color" content="#0d0d0b" />
-    <title>[PROJECT NAME] - M.G.</title>
+    <title>Project Unity - M.G.</title>
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,9 +19,8 @@
     <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--[SLUG]">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--unity" data-project-family="systems">
     <a class="project-skip-link" href="#project-content">Skip to project content</a>
-
     <main class="flex-shrink-0" id="project-content">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -82,108 +81,62 @@
                 <article class="project-shell">
                     <header class="project-hero">
                         <div>
-                            <p class="project-eyebrow">[PROJECT TYPE]</p>
-                            <h1>[PROJECT NAME]</h1>
-                            <p class="lead">[What it does, who or what it serves, and why that matters—in one concise sentence.]</p>
+                            <p class="project-eyebrow">Cross-platform systems prototype</p>
+                            <h1>Project Unity</h1>
+                            <p class="lead">Move the pointer through the edge of a Mac and keep controlling a Windows PC as if both screens belonged to one machine—with the input path encrypted, recoverable, and fast enough to disappear.</p>
                             <div class="project-pills" aria-label="Core technologies">
-                                <span class="project-pill">[TECH 1]</span>
-                                <span class="project-pill">[TECH 2]</span>
-                                <span class="project-pill">[TECH 3]</span>
+                                <span class="project-pill">Swift 6</span>
+                                <span class="project-pill">C++ / Win32</span>
+                                <span class="project-pill">AES-GCM</span>
                             </div>
                         </div>
-
                         <dl class="hero-meta" aria-label="Project facts">
-                            <div class="hero-meta-card">
-                                <dt class="label">Role</dt>
-                                <dd class="value">[OWNERSHIP]</dd>
-                            </div>
-                            <div class="hero-meta-card">
-                                <dt class="label">Year</dt>
-                                <dd class="value">[YEAR]</dd>
-                            </div>
-                            <div class="hero-meta-card">
-                                <dt class="label">State</dt>
-                                <dd class="value">[RELEASED / PROTOTYPE / RESEARCH]</dd>
-                            </div>
-                            <div class="hero-meta-card">
-                                <dt class="label">Proof</dt>
-                                <dd class="value">[STRONGEST VERIFIED RESULT]</dd>
-                            </div>
+                            <div class="hero-meta-card"><dt class="label">Role</dt><dd class="value">Creator · Systems engineer</dd></div>
+                            <div class="hero-meta-card"><dt class="label">Year</dt><dd class="value">2026</dd></div>
+                            <div class="hero-meta-card"><dt class="label">State</dt><dd class="value">Paired development MVP</dd></div>
+                            <div class="hero-meta-card"><dt class="label">Proof</dt><dd class="value">1.107 ms median software path</dd></div>
                         </dl>
                     </header>
 
-                    <!-- Optional: omit this entire block when no real media exists. -->
-                    <section class="project-media-panel project-media-panel--split" aria-label="Primary project proof">
-                        <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/project-media/[SLUG]/[HERO-FILE]" alt="[WHAT THE IMAGE PROVES]" />
-                        </div>
-                        <aside class="project-sidecard" aria-labelledby="summary-title">
-                            <h2 id="summary-title">[THE CHALLENGE OR RESULT]</h2>
-                            <p>[Add context that is not already stated in the hero.]</p>
+                    <section class="project-media-panel project-media-panel--without-media" aria-label="Project Unity summary">
+                        <aside class="project-sidecard" aria-labelledby="unity-summary-title">
+                            <h2 id="unity-summary-title">The cursor crosses because the systems agree</h2>
+                            <p>Project Unity is not screen sharing. Native apps on both computers negotiate who owns input, map their displays in physical space, and move mouse, keyboard, wheel, gesture, and media-key state over a private LAN.</p>
                             <ul class="sidecard-highlight">
-                                <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>[VERIFIED CAPABILITY OR RESULT]</span></li>
-                                <li><i class="bi bi-sliders" aria-hidden="true"></i><span>[IMPORTANT CONSTRAINT OR TECHNICAL DECISION]</span></li>
+                                <li><i class="bi bi-shield-lock" aria-hidden="true"></i><span>Six-digit pairing creates stable device identities; ownership and realtime traffic are authenticated and encrypted.</span></li>
+                                <li><i class="bi bi-arrow-left-right" aria-hidden="true"></i><span>Control works in both directions, with explicit leases and watchdogs that restore local input when the path fails.</span></li>
                             </ul>
-                            <div class="sidecard-links">
-                                <a href="[REPOSITORY URL]" target="_blank" rel="noopener noreferrer">
-                                    <span>View repository</span>
-                                    <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-                                </a>
-                            </div>
                         </aside>
                     </section>
 
-                    <!-- Choose one architecture/process section. Do not duplicate the same story in both. -->
                     <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">How it works</p>
-                            <h2>[ONE CLEAR SECTION TITLE]</h2>
-                        </div>
+                        <div class="project-section-header"><p class="project-section-eyebrow">System boundaries</p><h2>Discovery, ownership, input</h2></div>
                         <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h3>[PART ONE]</h3>
-                                <p>[Specific responsibility and technical choice.]</p>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>[PART TWO]</h3>
-                                <p>[Specific responsibility and technical choice.]</p>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>[PART THREE]</h3>
-                                <p>[Specific responsibility and technical choice.]</p>
-                            </article>
+                            <article class="project-insight-card"><h3>Find and trust</h3><p>DNS-SD discovers peers, manual addressing provides a verified fallback, and concurrent six-digit confirmation prevents pairing with the wrong machine.</p></article>
+                            <article class="project-insight-card"><h3>Own and transport</h3><p>An authenticated TCP lease decides who controls what. Encrypted UDP carries cumulative motion and complete button/key snapshots without turning one lost packet into a stall.</p></article>
+                            <article class="project-insight-card"><h3>Capture and recover</h3><p>Native event capture feeds macOS posting or Windows <code>SendInput</code>. Sequence tracking, transition journals, fail-safe release, and ACK watchdogs make failure return control locally.</p></article>
                         </div>
                     </section>
 
-                    <!-- Optional: use only for concrete metrics or tested scope. -->
                     <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Result</p>
-                            <h2>[WHAT WAS VERIFIED]</h2>
-                        </div>
+                        <div class="project-section-header"><p class="project-section-eyebrow">Measured on the real path</p><h2>Latency without hiding the tail</h2></div>
                         <ul class="project-data-strip">
-                            <li><span class="metric-value">[VALUE]</span><span class="metric-label">[LABEL]</span><span class="metric-copy">[CONTEXT]</span></li>
-                            <li><span class="metric-value">[VALUE]</span><span class="metric-label">[LABEL]</span><span class="metric-copy">[CONTEXT]</span></li>
-                            <li><span class="metric-value">[VALUE]</span><span class="metric-label">[LABEL]</span><span class="metric-copy">[CONTEXT]</span></li>
+                            <li><span class="metric-value">20k</span><span class="metric-label">1,000 Hz samples</span><span class="metric-copy">Same-LAN transport runs completed with zero packet loss.</span></li>
+                            <li><span class="metric-value">2.0 ms</span><span class="metric-label">Median RTT</span><span class="metric-copy">The documented Wi-Fi route reached 6.1–7.0 ms at p99.9.</span></li>
+                            <li><span class="metric-value">1.107 ms</span><span class="metric-label">Median capture-to-injection</span><span class="metric-copy">Measured over 5,001 segmented motion samples; p99.9 was 2.481 ms.</span></li>
                         </ul>
                     </section>
 
                     <section class="project-section project-spotlight" aria-label="Outcome and current limitation">
-                        <h2>[OUTCOME]</h2>
-                        <p>[What worked, what remains limited, and the honest current state.]</p>
+                        <h2>A convincing MVP, not a release claim</h2>
+                        <p>The paired Mac–Windows path is working and instrumented, but the protocol still needs independent security review, the Windows binaries need Authenticode signing, and a true three-device physical matrix remains open. Software timing also cannot replace motion-to-photon testing in a real target application.</p>
                     </section>
 
-                    <nav class="text-center" aria-label="Project navigation">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left" aria-hidden="true"></i>
-                            Back to the project race
-                        </a>
-                    </nav>
+                    <nav class="text-center" aria-label="Project navigation"><a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to the project race</a></nav>
                 </article>
             </div>
         </section>
     </main>
-
     <footer class="pf-footer py-4 mt-auto"></footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme.js"></script>

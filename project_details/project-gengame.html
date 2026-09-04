@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description"
-        content="Core Conflict - A self-evolving multiplayer game framework driven by AI code patches." />
+        content="Core Conflict - a multiplayer battle arena where players write new mechanics in plain English and an AI merges everyone's into one match." />
     <meta name="author" content="Matteo Giorgetti" />
     <title>Core Conflict - M.G.</title>
     <!-- Favicon-->
@@ -24,15 +24,10 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css" rel="stylesheet" />
+        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--gengame">
-    <div class="project-wip" data-component="wip-tape">
-        <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
-            <span class="project-wip__label">Work in progress – click to dismiss</span>
-        </button>
-    </div>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--gengame" data-project-family="game">
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -95,8 +90,10 @@
                     <header class="project-hero">
                         <div>
                             <h1>Core Conflict</h1>
-                            <p class="lead">A self-evolving multiplayer game engine where AI agents diagnose issues,
-                                suggest mechanics, and write real-time code patches.</p>
+                            <p class="lead">A multiplayer battle arena where you don't just pick a loadout — you describe a
+                                new mechanic in plain English, and an AI writes it, tests it, and merges it into the
+                                match. Everyone's ideas get stitched into a build that exists for that one game only.
+                                Also, you're a cow.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Python</span>
                                 <span class="project-pill">GenAI</span>
@@ -115,11 +112,11 @@
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Stack</span>
-                                <span class="value">Python · FastAPI · WebSockets</span>
+                                <span class="value">Python · Pygame · Docker</span>
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">LLMs</span>
-                                <span class="value">Google Gemini · OpenAI</span>
+                                <span class="value">Gemini · OpenAI · Ollama</span>
                             </div>
                         </div>
                     </header>
@@ -131,14 +128,16 @@
                                 loading="lazy" />
                         </div>
                         <aside class="project-sidecard">
-                            <h3>Project Snapshot</h3>
-                            <p>Core Conflict explores adaptive game systems: software that can revise selected runtime
-                                modules in response to player behavior or operational issues.</p>
+                            <h2>The short version</h2>
+                            <p>Core Conflict is a battle royale where the game itself is editable mid-lobby. Players
+                                request features in English; a multi-agent pipeline writes and tests the code, then a
+                                git-like patch system merges everyone's picks into a single, one-off match.</p>
                             <ul class="sidecard-highlight">
-                                <li><i class="bi bi-patch-check"></i><span>Autonomous code patching using LLMs and
-                                        <code>Merge3</code>.</span></li>
-                                <li><i class="bi bi-broadcast"></i><span>Real-time state and code synchronization via
-                                        WebSockets.</span></li>
+                                <li><i class="bi bi-patch-check"></i><span>Every generated feature has to pass
+                                        <code>pytest</code> before it's allowed in — fail, and the agent enters a fix
+                                        loop.</span></li>
+                                <li><i class="bi bi-diagram-3"></i><span>A decentralized patch system merges each player's
+                                        features, with the LLM resolving genuine code conflicts.</span></li>
                             </ul>
                             <div class="sidecard-links">
                                 <a href="https://github.com/Inventure71/GenGame" target="_blank" rel="noreferrer">
@@ -168,74 +167,75 @@
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">Core Pillars</p>
-                            <h2>The Engine of Evolution</h2>
+                            <p class="project-section-eyebrow">How the magic works</p>
+                            <h2>English in, playable code out</h2>
                         </div>
                         <ul class="project-keypoints">
                             <li>
-                                <h4>Adaptive runtime modules</h4>
-                                <p>Core Conflict agents monitor game logs and performance, generating and applying code
-                                    patches
-                                    to the live environment without restarts.</p>
+                                <h3>Describe it in English</h3>
+                                <p>Type what you want — a new ability, a balance tweak — and the agent reads the actual
+                                    game code and writes Python that plugs straight into it.</p>
                             </li>
                             <li>
-                                <h4>Modular Architecture</h4>
-                                <p>Every game mechanic, character ability, and UI element is a decoupled module,
-                                    allowing the AI to modify specific components without touching unrelated systems.</p>
+                                <h3>Tested before it ships</h3>
+                                <p>Nothing reaches the match untested. Generated code runs through <code>pytest</code>,
+                                    and if it fails the agent loops on fixing it until it's green.</p>
                             </li>
                             <li>
-                                <h4>Decentralized Sync</h4>
-                                <p>Integrated <code>Merge3</code> logic ensures that code patches generated on the
-                                    server are merged and executed identically across all clients.</p>
+                                <h3>Everyone's build is different</h3>
+                                <p>On game start the server gathers each player's chosen patches and merges them —
+                                    caching, deterministic rules, and the LLM for real conflicts — into a match that
+                                    exists exactly once.</p>
                             </li>
                         </ul>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h3>Beyond Fixed Mechanics</h3>
+                        <h2>The game is its own developer</h2>
                         <p>
-                            Traditionally, game rules are set in stone at launch. Core Conflict turns the "developer
-                            loop"
-                            into a "runtime loop," where the game itself acts as the developer, tester, and deployer.
+                            Most games freeze their rules at launch. Core Conflict turns the developer loop into a
+                            runtime loop: it writes, tests, and ships its own code while you're still in the lobby. It's
+                            an ambitious, occasionally-held-together-with-tape prototype — but the first time a stranger's
+                            half-baked idea and yours both land in the same match, it genuinely feels like magic. (And
+                            yes, the abilities are all cow puns.)
                         </p>
                     </section>
 
                     <section class="project-section project-flow">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">The Evolution Cycle</p>
-                            <h2>How a Patch is Born</h2>
+                            <p class="project-section-eyebrow">The evolution cycle</p>
+                            <h2>How a patch is born</h2>
                         </div>
                         <div class="project-flow-steps">
                             <div class="project-flow-step">
                                 <span class="flow-index">01</span>
                                 <div class="flow-body">
-                                    <h5>Diagnosis</h5>
-                                    <p>The monitoring agent detects an imbalance or a bug in a specific character
-                                        ability module.</p>
+                                    <h3>Request</h3>
+                                    <p>A player describes the mechanic they want, in plain English, from the lobby.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">02</span>
                                 <div class="flow-body">
-                                    <h5>Generation</h5>
-                                    <p>An LLM agent writes a Python patch, tested against a simulated sandbox
-                                        environment.</p>
+                                    <h3>Build &amp; test</h3>
+                                    <p>A chain of specialized agents — planner, coder, tester — writes the Python and
+                                        runs it through <code>pytest</code>, fixing until it passes.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">03</span>
                                 <div class="flow-body">
-                                    <h5>Synchronization</h5>
-                                    <p>The patch is broadcast to all clients; <code>Merge3</code> applies the changes to
-                                        their local runtime modules.</p>
+                                    <h3>Merge</h3>
+                                    <p>At game start the server collects every player's patches and merges them, calling
+                                        the LLM only for the conflicts it can't resolve on its own.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">04</span>
                                 <div class="flow-body">
-                                    <h5>Hot-Reload</h5>
-                                    <p>The game engine re-imports the modified module, updating mechanics for all
-                                        players mid-session.</p>
+                                    <h3>Hot-reload</h3>
+                                    <p>The unified build syncs to every client and loads in — one match, everyone's
+                                        ideas, running live.</p>
                                 </div>
                             </div>
                         </div>
@@ -243,22 +243,22 @@
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">Runtime Evidence</p>
-                            <h2>From Game State to Agent Loop</h2>
+                            <p class="project-section-eyebrow">Caught in the act</p>
+                            <h2>From a typed request to live gameplay</h2>
                         </div>
                         <div class="project-gallery">
                             <figure class="gallery-card">
                                 <img src="../assets/project-media/core-conflict/feature-prompt-running.jpg"
                                     alt="Core Conflict feature prompt running through the agent control center"
                                     loading="lazy" />
-                                <figcaption>Feature request entered into the agent control center before the test run
-                                    completes.
+                                <figcaption>A feature request typed into the control center while the agent writes and
+                                    tests it.
                                 </figcaption>
                             </figure>
                             <figure class="gallery-card">
                                 <img src="../assets/project-media/core-conflict/patched-gameplay.jpg"
                                     alt="Core Conflict patched gameplay running after a feature test" loading="lazy" />
-                                <figcaption>Patched runtime loaded into the game room after the feature test passes.
+                                <figcaption>The freshly patched build running in the game room once its tests pass.
                                 </figcaption>
                             </figure>
                         </div>
@@ -280,7 +280,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js"></script>
+    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

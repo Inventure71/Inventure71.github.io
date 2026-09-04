@@ -1,288 +1,194 @@
-# Project Pages - Developer Guide
+# Project case-study pages
 
-## 📁 Modular System Overview
+The F1 race in `../projects.html` is the primary way to browse projects. These pages are the focused case studies opened from a car, the command palette, or the project network.
 
-This folder contains project detail pages built with a **modular, component-based system** for easy maintenance and rapid development.
+## Source of truth
 
-### Core Files
+- `_template.html` is the canonical page structure.
+- `../css/project-pages.css` is the only owner of project-detail layout and components.
+- `../css/playfolio-project-detail.css` is the route manifest; do not add a second override stylesheet.
+- `../js/project-pages.js` owns progressive behavior: the media-led intro stage, lazy video loading, gallery and primary-media dialog access, external-link safety, skip navigation, reading progress, restrained reveals, and fine-pointer media depth.
+- `../js/playfolio/shared-chrome.js` owns the shared navbar and footer.
 
-- **`_template.html`** - Copy this to create new project pages
-- **`../css/project-pages.css`** - All reusable component styles
-- **`../js/project-pages.js`** - Common functionality (modals, lazy loading, etc.)
+Cross-page spacing, breakpoints, media geometry, and component styles belong in `project-pages.css`. Do not add page-local layout styles.
 
----
+## Information architecture
 
-## 🚀 Creating a New Project Page
+Every case study should be understandable by scanning only its headings and facts:
 
-### Quick Start
+1. **Intro stage** — project type, name, one concise explanation, up to three technology tags, compact facts, and the primary proof when one exists.
+2. **Primary proof** — one real screenshot, video, artifact, research visual, or live surface. The shared script places it beside the story on desktop and directly after the title on mobile. Omit it when no real media exists.
+3. **Result** — concrete metrics, tested scope, shipped artifact, or verified capabilities when available.
+4. **How it works** — choose either an architecture view or a process view. Do not repeat both unless they explain genuinely different things.
+5. **Outcome and limitation** — what worked, what remains limited, and the honest current state.
+6. **Return** — link back to the project race.
 
-1. **Copy the template:**
-   ```bash
-   cp _template.html project-my-new-project.html
-   ```
+Avoid repeating the hero inside a “short version,” spotlight, and flow section. Each section needs one job.
 
-2. **Replace placeholders:**
-   - Search for `[PROJECT NAME]`
-   - Search for `[PLACEHOLDERS]` in brackets
-   - Remove sections marked as "OPTIONAL" if not needed
+## Required structure
 
-3. **Add assets:**
-   - Create folder: `../assets/my-project-name/`
-   - Add images, videos, etc.
-
-4. **Test:**
-   - Open in browser
-   - Check theme toggle
-   - Test image gallery (click to zoom)
-   - Verify all links
-
----
-
-## 🧩 Available Components
-
-### 1. Hero Section (Required)
 ```html
-<div class="project-hero fade-in">
-    <div class="project-tags">
-        <span class="project-tag">AI-Powered</span>
-        <span class="project-tag">Web Dev</span>
-    </div>
-    <h1 class="display-4 fw-bolder">Project Name</h1>
-    <p class="lead">One-line description</p>
+<body class="playfolio-page project-page project-page--my-project">
+  <a class="project-skip-link" href="#project-content">Skip to project content</a>
+
+  <main id="project-content">
+    <nav class="navbar ..." data-active-page="projects"></nav>
+
+    <section class="py-5">
+      <div class="container px-5">
+        <article class="project-shell">
+          <header class="project-hero">...</header>
+          <!-- optional proof/media -->
+          <section class="project-media-panel">...</section>
+          <!-- one or more evidence-led sections -->
+          <section class="project-section">...</section>
+          <nav class="text-center" aria-label="Project navigation">...</nav>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+```
+
+Keep the existing outer classes so the shared route manifest can neutralize legacy global container and section rules safely.
+`project-pages.js` groups the hero and adjacent primary-proof panel into `project-intro-stage` at runtime. Do not hand-author that generated wrapper.
+
+## Components
+
+### Hero and facts
+
+Use one `h1`. Facts are a semantic definition list:
+
+```html
+<dl class="hero-meta" aria-label="Project facts">
+  <div class="hero-meta-card">
+    <dt class="label">Role</dt>
+    <dd class="value">Creator · Engineer</dd>
+  </div>
+</dl>
+```
+
+Prefer `Role`, `Year`, `State`, and `Proof`. PaddockJS-style release/distribution facts are valid when they are more meaningful.
+
+### Primary proof
+
+```html
+<section class="project-media-panel project-media-panel--split" aria-label="Primary project proof">
+  <div class="project-media-stage project-media-stage--image">
+    <img src="..." alt="Describe what this evidence shows" />
+  </div>
+  <aside class="project-sidecard" aria-labelledby="summary-title">
+    <h2 id="summary-title">The result or challenge</h2>
+    <p>Context that does not repeat the hero.</p>
+  </aside>
+</section>
+```
+
+For a text-first page, omit the media node and use `project-media-panel--without-media`. Do not add placeholders.
+
+Primary media is `16 / 9` on desktop and `16 / 10` on mobile. Videos remain `16 / 9`. Use `project-media-stage--noty` for the existing contained mascot treatment; add another shared modifier only when the asset genuinely needs a different fit.
+
+### Architecture or key points
+
+Use `project-insight-grid`, `project-keypoints`, or `project-module-grid`. Items use `h3`, never `h4` or `h5` beneath a section `h2`.
+
+```html
+<section class="project-section">
+  <div class="project-section-header">
+    <p class="project-section-eyebrow">How it works</p>
+    <h2>Three responsibilities</h2>
+  </div>
+  <div class="project-insight-grid">
+    <article class="project-insight-card">
+      <h3>Capture</h3>
+      <p>One specific responsibility.</p>
+    </article>
+  </div>
+</section>
+```
+
+### Process
+
+Use `project-flow-steps` only when sequence is the important explanation. Flow item headings are `h3`.
+
+### Metrics
+
+Use `project-data-strip` for verified numbers or an explicit tested scope. Do not turn guesses or simulation tuning values into product claims.
+
+### Gallery
+
+Gallery figures are progressively enhanced into a horizontally scrollable filmstrip of keyboard-operable image triggers. Every image needs useful alt text; every caption should explain why the image matters.
+
+```html
+<div class="project-gallery">
+  <figure class="gallery-card">
+    <img src="..." alt="..." loading="lazy" />
+    <figcaption>What this artifact proves.</figcaption>
+  </figure>
 </div>
 ```
 
-### 2. Video Container (Optional)
+### Video
+
+Below-the-fold YouTube videos use the privacy-enhanced host and `data-src` so `project-pages.js` can lazy-load them:
+
 ```html
-<div class="video-container">
-    <iframe src="YOUTUBE_EMBED_URL" ...></iframe>
+<div class="project-video-frame">
+  <iframe
+    data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID"
+    title="Project demo"
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe>
 </div>
 ```
 
-### 3. Links Grid (Optional)
-```html
-<div class="links-grid">
-    <a href="URL" class="link-card">
-        <div class="link-card-icon">
-            <i class="bi bi-github"></i>
-        </div>
-        <div class="link-card-content">
-            <h4>Title</h4>
-            <p>Description</p>
-        </div>
-    </a>
-</div>
+## Page-specific styling
+
+Page modifiers may set one variable only:
+
+```css
+.project-page--my-project {
+  --project-accent: #3977d4;
+}
 ```
 
-### 4. Project Card (Content)
-```html
-<div class="project-card">
-    <p>Main content description...</p>
-    <div class="tech-stack">
-        <span class="tech-badge">React</span>
-        <span class="tech-badge">Node.js</span>
-    </div>
-</div>
-```
+Do not duplicate component rules, tint every surface, or introduce an override cascade.
 
-### 5. Feature Grid (Optional)
-```html
-<div class="feature-grid">
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="bi bi-stars"></i>
-        </div>
-        <h4>Feature Name</h4>
-        <p>Description</p>
-    </div>
-</div>
-```
+## Accessibility and behavior
 
-### 6. Steps/Process (Optional)
-```html
-<div class="steps-grid">
-    <div class="project-step">
-        <div class="project-step-header">
-            <div class="project-step-number">1</div>
-            <h5>Step Title</h5>
-        </div>
-        <p>Step description</p>
-    </div>
-</div>
-```
+- Use `h1 → h2 → h3` without skipped levels.
+- Keep native links for navigation.
+- Give icon-only controls accessible names and decorative icons `aria-hidden="true"`.
+- Use real media or omit the block; never publish placeholder images.
+- Gallery images and the primary proof image open the same dialog. It moves focus inside, traps it, closes with Escape, and restores focus.
+- Motion is one-shot and progressive: sections enter quietly, the reading line reflects actual page progress, and image depth stays within four pixels.
+- Motion is disabled by `prefers-reduced-motion`; pointer depth is also omitted on coarse pointers.
+- Do not animate passive cards or facts on hover. Hover feedback belongs to real links, gallery triggers, and media only.
+- Use a single shared surface for related passive facts instead of boxing every item. Reserve visible rules for real controls, media frames, state, and scrollable evidence.
+- Do not add generated chapter numbers, floating section navigation, ornamental icons, or sticky headings. The story is carried by hierarchy, media, and concise labels.
+- All visible controls need a clear `:focus-visible` state and at least a 44px mobile hit target.
 
-### 7. Image Gallery (Optional)
-```html
-<div class="image-gallery">
-    <figure class="gallery-card">
-        <img src="../assets/project/image.png" alt="Description">
-        <figcaption>Short caption</figcaption>
-    </figure>
-</div>
-```
-*Note: Click-to-zoom is automatic via JS*
+## Adding a project
 
-### 8. Back Button (Required)
-```html
-<a href="../projects.html" class="back-button">
-    <i class="bi bi-arrow-left me-2"></i>
-    Back to Projects
-</a>
-```
+1. Copy `_template.html`.
+2. Replace all bracketed content and add a unique page modifier.
+3. Keep only modules that add new evidence.
+4. Add the project to `../js/portfolio-race-data.js`, `../js/playfolio/catalog.js`, and `../js/neuron-brain.js`.
+5. Run `npm run sync:chrome`.
+6. Verify light/dark themes, keyboard navigation, reduced motion, 390px mobile, 1280px desktop, and an ultra-wide viewport.
+7. Run `npm run check` and `git diff --check`.
 
----
+## Current reference pages
 
-## 🎨 Styling Guidelines
-
-### Colors (from design system)
-- Primary accent: `var(--color-accent)` - #2563eb
-- Text colors: `var(--color-text)`, `var(--color-text-secondary)`
-- Background: `var(--color-bg)`, `var(--color-bg-alt)`
-- Borders: `var(--color-border)`
-
-### Spacing
-- Use spacing variables: `var(--space-2)` through `var(--space-16)`
-- Standard margins: `mb-5` for sections
-- Container: Always use `<div class="container px-5">`
-
-### Border Radius
-- Cards/containers: `var(--radius-2xl)` - 16px
-- Badges/pills: `var(--radius-full)` - 9999px
-- Icons: `var(--radius-xl)` - 16px
-
-### Icons
-Use Bootstrap Icons: https://icons.getbootstrap.com/
-
-**Common choices:**
-- `bi-github` - GitHub links
-- `bi-cloud-download` - Downloads
-- `bi-play-circle` - Live demos
-- `bi-stars` - AI/Special features
-- `bi-building` - Environment/Architecture
-- `bi-people` - Team/Collaboration
-- `bi-code-slash` - Technical/Code
-- `bi-palette` - Design/Creative
-
----
-
-## ⚡ JavaScript Features
-
-The `project-pages.js` module provides:
-
-### 1. Image Modal (Automatic)
-- Click any `.gallery-card` image to enlarge
-- ESC key or click outside to close
-- No configuration needed
-
-### 2. Smooth Scroll (Automatic)
-- All anchor links scroll smoothly
-- Works with section IDs
-
-### 3. External Links (Automatic)
-- Adds `rel="noopener noreferrer"`
-- Opens in new tab
-
-### 4. Video Lazy Load (Optional)
-- Use `data-src` instead of `src` on iframe
-- Video loads when scrolled into view
-- Improves initial page load
-
----
-
-## 📋 Checklist for New Pages
-
-- [ ] Copy `_template.html` and rename
-- [ ] Update `<title>` and meta description
-- [ ] Replace all `[PLACEHOLDERS]`
-- [ ] Add project tags
-- [ ] Write compelling hero description
-- [ ] Add external links (GitHub, Drive, Demo)
-- [ ] Write about section
-- [ ] Add tech stack badges
-- [ ] Create features (if applicable)
-- [ ] Add process steps (if applicable)
-- [ ] Upload and link images
-- [ ] Test in both light and dark themes
-- [ ] Test responsive design (mobile, tablet)
-- [ ] Verify all links work
-- [ ] Check image gallery modal
-- [ ] Update `projects.html` to link to new page
-
----
-
-## 🔧 Customization
-
-### Adding New Component Styles
-Edit `../css/project-pages.css` to add new reusable components.
-
-### Custom Page-Specific Styles
-If a single page needs unique styling:
-```html
-<style>
-    .my-custom-component {
-        /* Your styles */
-    }
-</style>
-```
-
-### Modifying Existing Components
-Edit the CSS class in `project-pages.css` - changes apply to all pages.
-
----
-
-## 📝 Examples
-
-- **Full Featured:** `project-neural-noir.html` (has everything)
-- **Simple:** Other project pages (basic structure)
-- **Template:** `_template.html` (starting point)
-
----
-
-## 🐛 Troubleshooting
-
-**Images not loading?**
-- Check file path: `../assets/folder/image.png`
-- Verify file exists in assets folder
-- Check file name case sensitivity
-
-**Modal not working?**
-- Ensure `project-pages.js` is included
-- Check browser console for errors
-- Verify `.gallery-card` class on the parent figure
-
-**Styling looks wrong?**
-- Verify `project-pages.css` is included
-- Check if conflicting inline styles exist
-- Clear browser cache
-
-**Dark mode issues?**
-- CSS uses design system variables
-- Test with theme toggle button
-- Check if custom colors are hardcoded
-
----
-
-## 💡 Best Practices
-
-1. **Keep it DRY** - Use existing components, don't reinvent
-2. **Semantic HTML** - Use proper heading hierarchy (h1 → h2 → h3)
-3. **Alt text** - Always add descriptive alt text to images
-4. **Loading** - Use `loading="lazy"` on images below fold
-5. **Links** - External links should open in new tab
-6. **Consistency** - Use same structure across all projects
-7. **Mobile first** - Test on mobile devices
-8. **Accessibility** - Ensure keyboard navigation works
-
----
-
-## 📚 Resources
-
-- [Bootstrap Icons](https://icons.getbootstrap.com/)
-- [Bootstrap Docs](https://getbootstrap.com/docs/5.2/)
-- [Design System](../css/modern.css)
-- [Main Site](../index.html)
-
----
-
-**Questions?** Check existing project pages for examples or refer to the template comments.
-
+- `project-victoria.html` — image, video, gallery, architecture, and process.
+- `project-paddockjs.html` — text-first case study with external package links.
+- `project-dream2detect.html` — research metrics and horizontally scrollable evidence ladder.
+- `project-noty.html` — contained illustration treatment.
+- `project-contextkey.html` — concise text-first experimental project.
+- `project-unity.html` — metrics-led cross-platform systems case study.
+- `project-mattyflow.html` — text-first local AI application.
+- `project-mosaic.html` — distributed robotics ownership model.
+- `project-databases-ie.html` — data-model and transaction case study.
+- `project-typecraft.html` — concise native utility with a safety-led flow.

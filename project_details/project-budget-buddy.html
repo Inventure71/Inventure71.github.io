@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Budget Buddy - AI assisted financial wellness companion" />
+    <meta name="description" content="Budget Buddy - a conversational budgeting assistant built at a hackathon" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>Budget Buddy - M.G.</title>
     <!-- Favicon-->
@@ -23,15 +23,10 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css" rel="stylesheet" />
+        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--budget">
-    <div class="project-wip" data-component="wip-tape">
-        <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
-            <span class="project-wip__label">Work in progress – click to dismiss</span>
-        </button>
-    </div>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--budget" data-project-family="app">
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -95,206 +90,140 @@
                         <div>
                             <h1>Budget Buddy</h1>
                             <p class="lead">
-                                A conversational budgeting partner that mixes large language models with bank-safe
-                                guardrails to keep
-                                spending aligned with personal goals.
+                                A hackathon project: a budgeting assistant you actually talk to. Instead of yet another
+                                dashboard of charts, Budget Buddy is a conversation — it looks at your spending and
+                                nudges you toward your goals, minus the guilt trip.
                             </p>
                             <div class="project-pills">
                                 <span class="project-pill">Python</span>
-                                <span class="project-pill">AI Agents</span>
-                                <span class="project-pill">Financial Planning</span>
+                                <span class="project-pill">LLM</span>
+                                <span class="project-pill">Hackathon</span>
                             </div>
                         </div>
                         <div class="hero-meta">
                             <div class="hero-meta-card">
                                 <span class="label">Role</span>
-                                <span class="value">Product Engineer · Research Lead</span>
+                                <span class="value">Hackathon team</span>
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Timeline</span>
-                                <span class="value">2024 &ndash; ongoing</span>
+                                <span class="value">Hackathon build</span>
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Stack</span>
-                                <span class="value">FastAPI · Postgres · Gemini API</span>
+                                <span class="value">Python · LLM</span>
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Status</span>
-                                <span class="value">Closed Pilot</span>
+                                <span class="value">Weekend prototype</span>
                             </div>
                         </div>
                     </header>
 
-                    <section class="project-media-panel project-media-panel--split">
-                        <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/placeholders/debug-placeholder.svg"
-                                alt="Placeholder visual for Budget Buddy conversation dashboard" loading="lazy" />
-                        </div>
+                    <section class="project-media-panel project-media-panel--without-media">
                         <aside class="project-sidecard">
-                            <h3>Project Snapshot</h3>
+                            <h2>The short version</h2>
                             <p>
-                                Budget Buddy stitches transactional data and conversational AI to coach users through
-                                debt payoff, savings
-                                discipline, and mindful spending without judgment.
+                                Budget Buddy pairs your spending with a conversational AI so budgeting feels like talking
+                                to a level-headed friend — one who nudges you toward paying down debt and saving without
+                                making you feel bad about the latte.
                             </p>
                             <ul class="sidecard-highlight">
-                                <li><i class="bi bi-pie-chart"></i><span>Contextual spending breakdowns that follow the
-                                        conversation in real time.</span></li>
-                                <li><i class="bi bi-shield-check"></i><span>Encryption-at-rest vault and policy engine
-                                        to respect bank compliance rules.</span></li>
+                                <li><i class="bi bi-pie-chart"></i><span>Spending breakdowns that follow the conversation,
+                                        not a static dashboard.</span></li>
+                                <li><i class="bi bi-chat-heart"></i><span>Coaches toward your goals by proposing
+                                        trade-offs instead of shame.</span></li>
                             </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71" target="_blank" rel="noreferrer">
-                                    <span>Creator Profile</span>
-                                    <i class="bi bi-arrow-up-right"></i>
-                                </a>
-                                <a href="#!" aria-disabled="true">
-                                    <span>Request Pilot Access</span>
-                                    <i class="bi bi-lock-fill"></i>
-                                </a>
-                            </div>
                         </aside>
                     </section>
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">Pulse</p>
-                            <h2>The signals we monitor for each household</h2>
-                        </div>
-                        <ul class="project-data-strip">
-                            <li>
-                                <span class="metric-label">Accounts linked</span>
-                                <span class="metric-value">6.2</span>
-                                <p class="metric-copy">Average institutions synced per pilot family including credit
-                                    cards.</p>
-                            </li>
-                            <li>
-                                <span class="metric-label">Coach interventions</span>
-                                <span class="metric-value">3</span>
-                                <p class="metric-copy">Target nudges per week before users report alert fatigue.</p>
-                            </li>
-                            <li>
-                                <span class="metric-label">Savings delta</span>
-                                <span class="metric-value">+14%</span>
-                                <p class="metric-copy">Improvement to discretionary budgets after eight conversational
-                                    sessions.</p>
-                            </li>
-                            <li>
-                                <span class="metric-label">Sentiment recovery</span>
-                                <span class="metric-value">90s</span>
-                                <p class="metric-copy">Median time to move a user from stressed to neutral tone inside
-                                    chat.</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Guardrails</p>
-                            <h2>How the coaching brain stays trustworthy</h2>
+                            <p class="project-section-eyebrow">What we built</p>
+                            <h2>The pieces behind the conversation</h2>
                         </div>
                         <div class="project-insight-grid">
                             <article class="project-insight-card">
-                                <h4>Ledger sync core</h4>
-                                <p>Unifies Plaid feeds and CSV uploads into a reconciled ledger with anomaly flags and
-                                    audit notes.</p>
+                                <h3>Sees your spending</h3>
+                                <p>Pulls your transactions into one view and tidies up messy merchant names, so the
+                                    picture it talks about is actually honest.</p>
                                 <ul>
-                                    <li>Automatic category repair when institutions rename merchants.</li>
-                                    <li>Statement variance detection keeps weekly overviews honest.</li>
+                                    <li>Groups spending into categories you can argue with.</li>
+                                    <li>Flags the weeks that don't look like the others.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h4>Conversation memory</h4>
-                                <p>Captures emotion, commitments, and follow-up intents so the copilot mirrors previous
-                                    agreements.</p>
+                                <h3>Remembers the conversation</h3>
+                                <p>Holds onto what you committed to and what you were worried about, so it doesn't turn
+                                    around and contradict itself next time.</p>
                                 <ul>
-                                    <li>Timeline view stitches chat highlights with ledger events.</li>
-                                    <li>Promise tracker reminds the AI before it gives new advice.</li>
+                                    <li>Ties chat moments back to what actually happened in your budget.</li>
+                                    <li>Checks past promises before handing you new advice.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h4>Compliance wrapper</h4>
-                                <p>Policy sandbox masks personally identifiable information before prompts leave the
-                                    secure enclave.</p>
+                                <h3>Keeps it private</h3>
+                                <p>Sensitive details get masked before anything is sent to the model — a hackathon-scale
+                                    take on "don't leak the user's finances."</p>
                                 <ul>
-                                    <li>Prompt and response journaling with immutable hashes.</li>
-                                    <li>Role-based approvals when exporting conversational summaries.</li>
+                                    <li>The raw numbers stay local; only what's needed goes out.</li>
+                                    <li>Built fast, but built to not be creepy.</li>
                                 </ul>
                             </article>
                         </div>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h3>Budget Buddy handles the tough talks</h3>
+                        <h2>It handles the awkward money talk</h2>
                         <p>
-                            The copilot cross-references goals with cash flow and gently reframes the conversation when
-                            the numbers disagree.
-                            Instead of shaming, it proposes trade-offs and schedules future treats once the ledger
-                            supports them.
+                            The whole idea was a money coach that doesn't lecture. When your goals and your cash flow
+                            disagree, it doesn't shame you — it lays out the trade-offs and finds room for the treat
+                            once the numbers can actually take it. For a weekend build, that "talk to it like a person"
+                            feeling was the part worth chasing.
                         </p>
                     </section>
 
                     <section class="project-section project-flow">
                         <div class="project-section-header">
                             <p class="project-section-eyebrow">Flow</p>
-                            <h2>How a user session unfolds</h2>
+                            <h2>How a chat plays out</h2>
                         </div>
                         <div class="project-flow-steps">
                             <div class="project-flow-step">
                                 <span class="flow-index">01</span>
                                 <div class="flow-body">
-                                    <h5>Check-in</h5>
-                                    <p>The user vents about spending guilt; sentiment analysis sets tone and escalates
-                                        urgent flags.</p>
+                                    <h3>Check in</h3>
+                                    <p>You tell it what's on your mind — a big purchase, a rough month, a goal — in plain
+                                        language.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">02</span>
                                 <div class="flow-body">
-                                    <h5>Insight</h5>
-                                    <p>Ledger service assembles visual summaries that match the conversation context.
-                                    </p>
+                                    <h3>Pull the picture</h3>
+                                    <p>It pulls together the spending that's actually relevant to what you asked, not a
+                                        wall of every transaction.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">03</span>
                                 <div class="flow-body">
-                                    <h5>Recommendation</h5>
-                                    <p>Agent proposes budget tweaks, debt moves, or savings nudges with confidence
-                                        metrics.</p>
+                                    <h3>Talk it through</h3>
+                                    <p>It suggests a tweak — a budget shift, a debt move, a savings nudge — and explains
+                                        why, so you can push back.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">04</span>
                                 <div class="flow-body">
-                                    <h5>Follow-up</h5>
-                                    <p>Commitments become reminders; transcripts and highlights sync to the weekly
-                                        digest.</p>
+                                    <h3>Follow up</h3>
+                                    <p>Whatever you agree to sticks around, so the next conversation starts where the
+                                        last one left off.</p>
                                 </div>
                             </div>
                         </div>
                     </section>
 
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Gallery</p>
-                            <h2>Interface drafts</h2>
-                        </div>
-                        <div class="project-gallery">
-                            <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg"
-                                    alt="Draft insight board for Budget Buddy" loading="lazy" />
-                                <figcaption>Insight dashboard draft while final charts are under construction.
-                                </figcaption>
-                            </figure>
-                            <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg"
-                                    alt="Draft chat screen for Budget Buddy" loading="lazy" />
-                                <figcaption>Conversation mock stream showing progress markers for future UI.
-                                </figcaption>
-                            </figure>
-                        </div>
-                    </section>
 
                     <div class="text-center">
                         <a href="../projects.html" class="project-back-link">
@@ -311,7 +240,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js"></script>
+    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

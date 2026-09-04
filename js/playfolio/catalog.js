@@ -67,6 +67,66 @@ export const projectCommandItems = [
     href: '/project_details/project-gengame.html',
     keywords: 'core conflict gengame multiplayer networking ai game',
   },
+  {
+    label: 'Noty',
+    description: 'Local-first attached notes for macOS',
+    href: '/project_details/project-noty.html',
+    keywords: 'noty macos notes markdown appkit swift local first attachments',
+  },
+  {
+    label: 'PaddockJS',
+    description: 'F1 simulation toolkit and headless environment',
+    href: '/project_details/project-paddockjs.html',
+    keywords: 'paddockjs f1 simulator pixijs javascript headless environment npm',
+  },
+  {
+    label: 'Dream2Detect',
+    description: 'Synthetic-to-real package damage research',
+    href: '/project_details/project-dream2detect.html',
+    keywords: 'dream2detect computer vision synthetic data pytorch package damage',
+  },
+  {
+    label: 'VIGIL',
+    description: 'Robot fleet operations and guided recovery',
+    href: '/project_details/project-vigil.html',
+    keywords: 'vigil robotics fleet monitoring ros fastapi recovery',
+  },
+  {
+    label: 'ContextKey',
+    description: 'Experimental local macOS autocomplete',
+    href: '/project_details/project-contextkey.html',
+    keywords: 'contextkey macos autocomplete local mlx accessibility ocr appkit',
+  },
+  {
+    label: 'Project Unity',
+    description: 'Low-latency control across macOS and Windows',
+    href: '/project_details/project-unity.html',
+    keywords: 'project unity macos windows input control networking udp security low latency',
+  },
+  {
+    label: 'MattyFlow',
+    description: 'Local-first macOS dictation and rewriting',
+    href: '/project_details/project-mattyflow.html',
+    keywords: 'mattyflow localflow macos dictation speech mlx gemma swift python local first',
+  },
+  {
+    label: 'Mosaic',
+    description: 'Distributed ROS 2 robot fleet control',
+    href: '/project_details/project-mosaic.html',
+    keywords: 'mosaic swarm ros2 robotics fleet optitrack udp autonomy distributed systems',
+  },
+  {
+    label: 'TCGNET',
+    description: 'PostgreSQL-backed card collection marketplace',
+    href: '/project_details/project-databases-ie.html',
+    keywords: 'tcgnet databases project ie django postgresql cards marketplace inventory sql database',
+  },
+  {
+    label: 'TypeCraft',
+    description: 'Human-paced typing automation for macOS',
+    href: '/project_details/project-typecraft.html',
+    keywords: 'typecraft macos swift accessibility typing automation presets keyboard',
+  },
 ];
 
 export const footerLinks = [
@@ -117,6 +177,6 @@ export const commandItems = [
     label: 'Download TypeCraft',
     description: 'Open TypeCraft release',
     href: 'https://github.com/Inventure71/TypeCraft/releases/tag/Stable',
-    keywords: 'app utility typing practice release download',
+    keywords: 'app utility macos typing automation accessibility release download',
   },
 ];

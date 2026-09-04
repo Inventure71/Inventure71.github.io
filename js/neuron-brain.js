@@ -71,6 +71,76 @@
             desc: 'AI-Assisted Multiplayer Game Prototype',
             url: 'project_details/project-gengame.html',
             tags: ['Python', 'AI Agents', 'Generative AI', 'Games', 'Multiplayer', 'Web/API']
+        },
+        {
+            id: 'noty',
+            title: 'Noty',
+            desc: 'Local-First Attached Notes for macOS',
+            url: 'project_details/project-noty.html',
+            tags: ['Swift', 'macOS', 'AppKit', 'Markdown', 'Local-First Tools', 'Productivity']
+        },
+        {
+            id: 'paddockjs',
+            title: 'PaddockJS',
+            desc: 'F1 Simulation Toolkit and Headless Environment',
+            url: 'project_details/project-paddockjs.html',
+            tags: ['JavaScript', 'PixiJS', 'Simulation', 'Web/API', 'Developer Tools', 'Games']
+        },
+        {
+            id: 'dream2detect',
+            title: 'Dream2Detect',
+            desc: 'Synthetic-to-Real Package Damage Research',
+            url: 'project_details/project-dream2detect.html',
+            tags: ['Python', 'Computer Vision', 'PyTorch', 'Synthetic Data', 'Machine Learning', 'Research']
+        },
+        {
+            id: 'vigil',
+            title: 'VIGIL',
+            desc: 'Robot Fleet Operations and Guided Recovery',
+            url: 'project_details/project-vigil.html',
+            tags: ['Python', 'Robotics', 'ROS', 'FastAPI', 'Operations', 'Web/API']
+        },
+        {
+            id: 'contextkey',
+            title: 'ContextKey',
+            desc: 'Experimental Local macOS Autocomplete',
+            url: 'project_details/project-contextkey.html',
+            tags: ['Swift', 'macOS', 'MLX', 'Accessibility', 'OCR', 'Local-First Tools']
+        },
+        {
+            id: 'project-unity',
+            title: 'Project Unity',
+            desc: 'Low-Latency Cross-Platform Input Fabric',
+            url: 'project_details/project-unity.html',
+            tags: ['Swift', 'C++', 'macOS', 'Windows', 'Networking', 'Security', 'Systems']
+        },
+        {
+            id: 'mattyflow',
+            title: 'MattyFlow',
+            desc: 'Local-First macOS Dictation and Rewriting',
+            url: 'project_details/project-mattyflow.html',
+            tags: ['Swift', 'Python', 'macOS', 'MLX', 'Speech', 'FastAPI', 'Local-First Tools']
+        },
+        {
+            id: 'mosaic',
+            title: 'Mosaic',
+            desc: 'Distributed ROS 2 Robot Fleet Control',
+            url: 'project_details/project-mosaic.html',
+            tags: ['Python', 'ROS', 'Robotics', 'Distributed Systems', 'UDP', 'Autonomy']
+        },
+        {
+            id: 'databases-ie',
+            title: 'TCGNET',
+            desc: 'PostgreSQL Card Collection Marketplace',
+            url: 'project_details/project-databases-ie.html',
+            tags: ['Python', 'Django', 'PostgreSQL', 'Databases', 'Data Systems', 'Web/API']
+        },
+        {
+            id: 'typecraft',
+            title: 'TypeCraft',
+            desc: 'Human-Paced Typing Automation for macOS',
+            url: 'project_details/project-typecraft.html',
+            tags: ['Swift', 'macOS', 'Accessibility', 'Automation', 'Productivity', 'Local-First Tools']
         }
     ];
 

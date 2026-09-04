@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Noty - local-first Markdown notes that attach to macOS windows" />
+    <meta name="author" content="Matteo Giorgetti" />
+    <title>Noty - M.G.</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <script src="../js/theme-boot.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../css/site-core.css" rel="stylesheet" />
+    <link href="../css/modern.css" rel="stylesheet" />
+        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+</head>
+
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--noty" data-project-family="app">
+    <main class="flex-shrink-0">
+        <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
+      <div class="container">
+        <div class="pf-brand-group" data-glass-group>
+          <a class="navbar-brand" href="/index.html" data-glass-item data-glass-tone="brand">MG</a>
+          <button class="pf-nav-ai-button" type="button" data-ai-guide-copy data-glass-item data-glass-tone="green">Ask AI</button>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
+            <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
+                </li>
+              
+            </ul>
+            <div class="d-flex gap-2" data-glass-group>
+              <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
+                <i class="bi bi-command"></i>
+              </button>
+              <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
+                <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
+                  <i class="bi bi-sun" data-theme-current-icon></i>
+                </span>
+                <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
+                  <i class="bi bi-moon" data-theme-preview-icon></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+        </nav>
+
+        <section class="py-5">
+            <div class="container px-5">
+                <div class="project-shell fade-in">
+                    <header class="project-hero">
+                        <div>
+                            <p class="project-section-eyebrow">macOS utility</p>
+                            <h1>Noty</h1>
+                            <p class="lead">Most note apps remember what you wrote but forget where you were. Noty is a local-first Markdown sticky-note app whose notes can latch onto a specific window — your editor, a browser tab, a Finder folder — and follow it around the desktop.</p>
+                            <div class="project-pills">
+                                <span class="project-pill">Swift 6</span>
+                                <span class="project-pill">AppKit</span>
+                                <span class="project-pill">SQLite</span>
+                            </div>
+                        </div>
+                        <div class="hero-meta">
+                            <div class="hero-meta-card"><span class="label">Role</span><span class="value">Creator · macOS Engineer</span></div>
+                            <div class="hero-meta-card"><span class="label">Timeline</span><span class="value">2026</span></div>
+                            <div class="hero-meta-card"><span class="label">Focus</span><span class="value">Window-aware notes</span></div>
+                            <div class="hero-meta-card"><span class="label">Status</span><span class="value">Active development</span></div>
+                        </div>
+                    </header>
+
+                    <section class="project-media-panel project-media-panel--split">
+                        <div class="project-media-stage project-media-stage--image project-media-stage--noty">
+                            <img src="../assets/project-media/noty/noty-mascot.webp" alt="Noty cowboy sticky-note mascot" />
+                        </div>
+                        <aside class="project-sidecard">
+                            <h2>Why it exists</h2>
+                            <p>Notes keep content but lose context. Noty keeps both — a note can float free, or attach to the exact window where the thought belongs, hide when that window goes away, and quietly reappear the moment it comes back.</p>
+                            <ul class="sidecard-highlight">
+                                <li><i class="bi bi-window"></i><span>Attached notes shadow their host window instead of piling up as desktop clutter.</span></li>
+                                <li><i class="bi bi-device-ssd"></i><span>Everything — notes and attachment state — lives locally in SQLite. No cloud, no account.</span></li>
+                            </ul>
+                        </aside>
+                    </section>
+
+                    <section class="project-section">
+                        <div class="project-section-header">
+                            <p class="project-section-eyebrow">The loop</p>
+                            <h2>Write it, pin it, find it again</h2>
+                        </div>
+                        <ul class="project-keypoints">
+                            <li><h3>Markdown that gets out of the way</h3><p>Small, focused note windows with live preview, checklists, and code blocks — light to write in, but still real Markdown underneath.</p></li>
+                            <li><h3>Notes that know their window</h3><p>Instead of storing fragile window IDs, Noty matches on durable app keys — a VS&nbsp;Code workspace, an Arc tab's UUID — so a note finds the right window again even after a restart.</p></li>
+                            <li><h3>A cowboy that wrangles them</h3><p>An animated mascotte rounds up parked notes so you can scout, corral, and recall them — without turning the desktop into a dashboard.</p></li>
+                        </ul>
+                    </section>
+
+                    <section class="project-section project-spotlight">
+                        <h2>Not another cloud notebook</h2>
+                        <p>I wasn't trying to build somewhere else to store notes — I was trying to make notes behave like part of the desktop. Everything stays on the Mac, and most of the real work went into the unglamorous stuff: matching windows reliably, following them without stealing focus, and never losing a note when something goes wrong.</p>
+                    </section>
+
+                    <div class="text-center">
+                        <a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left"></i> Back to all projects</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="pf-footer py-4 mt-auto"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script type="module" src="../js/playfolio.js"></script>
+    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+</body>
+
+</html>

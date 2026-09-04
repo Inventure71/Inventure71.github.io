@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
+import { PORTFOLIO_DRIVERS, PORTFOLIO_ENTRIES } from '../../js/portfolio-race-data.js';
 
 const sourcePath = fileURLToPath(new URL('../../js/paddockjs-portfolio.js', import.meta.url));
 const themeSyncPath = fileURLToPath(new URL('../../js/paddockjs-theme-sync.js', import.meta.url));
@@ -9,6 +10,28 @@ const projectsCssPath = fileURLToPath(new URL('../../css/playfolio-projects.css'
 const raceCssPath = fileURLToPath(new URL('../../css/playfolio/race.css', import.meta.url));
 
 describe('PaddockJS project race integration', () => {
+  test('includes the researched portfolio entries without private Safeway data', () => {
+    const driverIds = PORTFOLIO_DRIVERS.map((driver) => driver.id);
+    const entryIds = PORTFOLIO_ENTRIES.map((entry) => entry.driverId);
+
+    expect(driverIds).toEqual(expect.arrayContaining([
+      'noty',
+      'paddockjs',
+      'dream2detect',
+      'vigil',
+      'contextkey',
+      'project-unity',
+      'mattyflow',
+      'mosaic',
+      'databases-ie',
+      'typecraft',
+    ]));
+    expect(entryIds).toEqual(expect.arrayContaining(driverIds));
+    expect(driverIds).not.toContain('safeway');
+    expect(new Set(PORTFOLIO_ENTRIES.map((entry) => entry.driverNumber)).size)
+      .toBe(PORTFOLIO_ENTRIES.length);
+  });
+
   test('uses the package-owned telemetry drawer instead of detached safety controls', () => {
     const source = readFileSync(sourcePath, 'utf8');
 

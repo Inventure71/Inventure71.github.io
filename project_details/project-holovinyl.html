@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="HoloVinyl - A touchless computer vision interface for music control" />
+    <meta name="description" content="HoloVinyl - a touchless interface that plays the music mapped to a physical object you show the camera" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>HoloVinyl - M.G.</title>
     <!-- Favicon-->
@@ -23,15 +23,10 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css" rel="stylesheet" />
+        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--holo">
-    <div class="project-wip" data-component="wip-tape">
-        <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
-            <span class="project-wip__label">Work in progress – click to dismiss</span>
-        </button>
-    </div>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--holo" data-project-family="app">
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -94,8 +89,9 @@
                     <header class="project-hero">
                         <div>
                             <h1>HoloVinyl</h1>
-                            <p class="lead">Python-native holographic console that turns gestures and tracked objects
-                                into living music controls.</p>
+                            <p class="lead">My attempt at reinventing the vinyl record: point the camera at a physical
+                                object and the music mapped to it starts playing. Put it down and it stops. No screens to
+                                tap, no phone — just objects and a pinch of your fingers.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Computer Vision</span>
                                 <span class="project-pill">Gesture UI</span>
@@ -109,15 +105,15 @@
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Timeline</span>
-                                <span class="value">2024 – Present</span>
+                                <span class="value">2025</span>
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Stack</span>
-                                <span class="value">Python · OpenCV · YOLO</span>
+                                <span class="value">Python · YOLO11 · MediaPipe</span>
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Status</span>
-                                <span class="value">Prototype Interface</span>
+                                <span class="value">Working prototype</span>
                             </div>
                         </div>
                     </header>
@@ -128,14 +124,15 @@
                                 alt="HoloVinyl object tracking UI detecting a vinyl card" loading="lazy" />
                         </div>
                         <aside class="project-sidecard">
-                            <h3>Project Snapshot</h3>
-                            <p>HoloVinyl experiments with touchless interaction by pairing live hand tracking and
-                                lightweight object detection with a modular UI canvas.</p>
+                            <h2>The short version</h2>
+                            <p>Show an object to the webcam; a custom YOLO model recognizes it and plays the Spotify
+                                track, playlist, or album I've mapped to it. A pinch of the fingers acts as a click, so
+                                the whole thing is controllable in mid-air.</p>
                             <ul class="sidecard-highlight">
-                                <li><i class="bi bi-lightning-charge"></i><span>Captures and interprets gestures at ~25
-                                        FPS on consumer hardware.</span></li>
-                                <li><i class="bi bi-ui-radios-grid"></i><span>Builds buttons and submenus dynamically in
-                                        response to tracked tasks.</span></li>
+                                <li><i class="bi bi-lightning-charge"></i><span>Object detection, hand tracking, and the
+                                        UI all run together in one live loop, capped at 30 FPS.</span></li>
+                                <li><i class="bi bi-ui-radios-grid"></i><span>Teach it a new object from just 5 photos —
+                                        background removal turns them into training data, no manual labeling.</span></li>
                             </ul>
                             <div class="sidecard-links">
                                 <a href="https://github.com/Inventure71/HoloVinyl" target="_blank" rel="noreferrer">
@@ -165,70 +162,70 @@
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">Session design</p>
-                            <h2>What makes the hologram feel alive</h2>
+                            <p class="project-section-eyebrow">The core idea</p>
+                            <h2>Objects, not buttons</h2>
                         </div>
                         <ul class="project-keypoints">
                             <li>
-                                <h4>Gesture lab</h4>
-                                <p>Rapidly iterates pinch, swipe, and hold combos with visual debug trails so new moves
-                                    can be tuned in minutes.</p>
+                                <h3>Objects as records</h3>
+                                <p>Each object maps to a Spotify source. Show it and its music joins the mix; take it
+                                    away and it fades out. Several objects can play at once.</p>
                             </li>
                             <li>
-                                <h4>DJ workflows</h4>
-                                <p>Deck, loop, and effects layers snap together as modular scenes that respond to stage
-                                    lighting and camera angle.</p>
+                                <h3>Pinch to click</h3>
+                                <p>Hand tracking watches your fingers — when thumb and index snap together, that's a
+                                    click on whatever on-screen button you're pointing at.</p>
                             </li>
                             <li>
-                                <h4>Installation footprint</h4>
-                                <p>Runs on a single laptop and webcam, with calibration cues that coach performers
-                                    through setup without a crew.</p>
+                                <h3>Teach it in seconds</h3>
+                                <p>Name a new object, snap five photos, hit train. It auto-labels them with background
+                                    removal and fine-tunes YOLO — no dataset wrangling.</p>
                             </li>
                         </ul>
                     </section>
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">Interaction layers</p>
-                            <h2>What makes motion feel like an instrument</h2>
+                            <p class="project-section-eyebrow">Under the hood</p>
+                            <h2>Vision, hands, and a little local AI</h2>
                         </div>
                         <div class="project-insight-grid">
                             <article class="project-insight-card">
-                                <h4>Signature gestures</h4>
-                                <p>Pinch, swipe, and hold combinations orchestrate deck actions while the UI mirrors
-                                    hand rotation.</p>
+                                <h3>Object recognition (YOLO11)</h3>
+                                <p>A fine-tuned YOLO11-nano model reads the objects on the surface, so playback follows
+                                    what's physically in front of the camera.</p>
                                 <ul>
-                                    <li>Context-aware overlays fade in around active fingertips.</li>
-                                    <li>Gesture cooldowns prevent accidental double triggers.</li>
+                                    <li>A class only counts as "active" after a few steady frames, so music doesn't flicker.</li>
+                                    <li>Detections decay when the object leaves, fading its track out.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h4>Perception stack</h4>
-                                <p>Landmark tracking pairs with YOLO detections so props like vinyl sleeves unlock extra
-                                    controls.</p>
+                                <h3>Hands as a mouse</h3>
+                                <p>MediaPipe hand landmarks turn a pinch into a cursor click on buttons you've drawn over
+                                    the camera view.</p>
                                 <ul>
-                                    <li>Light compensation keeps hand masks crisp in dim venues.</li>
-                                    <li>Detection fallbacks swap to generic gestures when objects leave frame.</li>
+                                    <li>An ArUco marker board keeps camera space and UI space aligned.</li>
+                                    <li>The pinch only fires when your fingers close from far to near — no accidental clicks.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h4>Dynamic UI fabric</h4>
-                                <p>Modular overlays draw directly on the video texture, rendering faders, meters, and
-                                    tooltips around the performer.</p>
+                                <h3>A song from anything</h3>
+                                <p>Show it something it has never seen and local models can still turn the object into a
+                                    music query; only Spotify playback needs the network.</p>
                                 <ul>
-                                    <li>UI nodes define their own animation and decay profiles.</li>
-                                    <li>Hooks allow future model drops without changing rendering code.</li>
+                                    <li>A local <code>moondream</code> model describes the object in view.</li>
+                                    <li><code>deepseek</code> turns that into a genre/mood query, and Spotify plays the match.</li>
                                 </ul>
                             </article>
                         </div>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h3>Stage presence with invisible hardware</h3>
+                        <h2>The record player, in reverse</h2>
                         <p>
-                            HoloVinyl lets performers carry a single webcam and laptop yet still project a futuristic
-                            control surface that
-                            audiences can read and react to.
+                            The whole idea is nostalgia flipped inside out: instead of lowering a needle onto vinyl, you
+                            set an object on the table and its music comes to life. The AI inference stays local on small
+                            models, while Spotify connectivity handles the actual playback.
                         </p>
                     </section>
 
@@ -241,33 +238,33 @@
                             <div class="project-flow-step">
                                 <span class="flow-index">01</span>
                                 <div class="flow-body">
-                                    <h5>Calibration</h5>
-                                    <p>Webcam stream initializes, lighting is normalized, and gesture thresholds hydrate
-                                        from config.</p>
+                                    <h3>Calibrate</h3>
+                                    <p>Four ArUco markers define the surface, and the camera feed is warped into a flat,
+                                        top-down view of the table.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">02</span>
                                 <div class="flow-body">
-                                    <h5>Perception Loop</h5>
-                                    <p>Hand landmarks and YOLO detections stream into a shared state store that
-                                        translates poses into intents.</p>
+                                    <h3>Detect</h3>
+                                    <p>YOLO reads the objects on the board while MediaPipe tracks your hand — both
+                                        feeding into one shared loop.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">03</span>
                                 <div class="flow-body">
-                                    <h5>UI Reaction</h5>
-                                    <p>Dynamic buttons and vinyl widgets spawn, animate, and retire based on recognized
-                                        gestures and detected props.</p>
+                                    <h3>React</h3>
+                                    <p>A steady object starts its music; a pinch on a drawn button plays, pauses, or
+                                        skips.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">04</span>
                                 <div class="flow-body">
-                                    <h5>Playback Control</h5>
-                                    <p>Mapped commands fire into the audio layer, logging interactions for future
-                                        gesture analytics.</p>
+                                    <h3>Play</h3>
+                                    <p>Commands fire off to Spotify, which handles the actual playback across whatever
+                                        objects are currently on the table.</p>
                                 </div>
                             </div>
                         </div>
@@ -282,13 +279,13 @@
                             <figure class="gallery-card">
                                 <img src="../assets/project-media/holovinyl/multi-card-tracking.jpg"
                                     alt="HoloVinyl camera view tracking multiple cards" loading="lazy" />
-                                <figcaption>Live camera feed with detection boxes feeding the interaction layer.
+                                <figcaption>The live feed tracking several objects at once — each one its own music source.
                                 </figcaption>
                             </figure>
                             <figure class="gallery-card">
                                 <img src="../assets/project-media/holovinyl/class-mapping-ui.jpg" alt="HoloVinyl class mapping UI"
                                     loading="lazy" />
-                                <figcaption>Class mapping controls used to bind detected objects to interface actions.</figcaption>
+                                <figcaption>The mapping screen where each recognized object gets bound to a Spotify link.</figcaption>
                             </figure>
                         </div>
                     </section>
@@ -309,7 +306,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js"></script>
+    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

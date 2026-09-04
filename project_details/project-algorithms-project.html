@@ -24,10 +24,10 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css" rel="stylesheet" />
+        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--algorithms">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--algorithms" data-project-family="game">
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -91,11 +91,10 @@
                         <div>
                             <h1>Clash Royale In Python</h1>
                             <p class="lead">
-                                A high-performance strategy game engine inspired by Clash Royale, meticulously
-                                engineered in Python.
-                                This project showcases advanced algorithm implementations, including BFS pathfinding and
-                                optimized sorting,
-                                with all complexity cases fully documented using Big-O notation.
+                                A fully playable Clash Royale clone I wrote in Python for an algorithms course — though
+                                the game was really an excuse to hand-build every data structure and algorithm from
+                                scratch (BFS pathfinding, custom queues and linked lists, merge sort) and prove out the
+                                Big-O for each. It just happens to be genuinely fun to play.
                             </p>
                             <div class="project-pills">
                                 <span class="project-pill">Python</span>
@@ -106,7 +105,7 @@
                         <div class="hero-meta">
                             <div class="hero-meta-card">
                                 <span class="label">Role</span>
-                                <span class="value">Developer</span>
+                                <span class="value">Team project · Course work</span>
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Timeline</span>
@@ -129,20 +128,20 @@
                                 allowfullscreen></iframe>
                         </div>
                         <aside class="project-sidecard">
-                            <h3>Algorithmic Core</h3>
+                            <h2>No standard library allowed</h2>
                             <p>
-                                At its center, the game leverages core computer science principles to manage a dynamic
-                                arena.
-                                Every movement and interaction is governed by efficient algorithms with mathematical
-                                rigor.
+                                That was the self-imposed rule. The queue, the linked list, the pathfinder — all
+                                hand-written, and each one's docstring argues why it beats the obvious alternative. Then
+                                there's a greedy AI opponent that scores threats and picks counters, so you actually have
+                                someone to lose to.
                             </p>
                             <ul class="sidecard-highlight">
-                                <li><i class="bi bi-graph-up"></i><span><strong>Documented Complexity:</strong> All
-                                        functions include Big-O analysis in docstrings.</span></li>
-                                <li><i class="bi bi-diagram-3"></i><span><strong>BFS Pathfinding:</strong> Optimized
-                                        traversal for multi-unit navigation.</span></li>
-                                <li><i class="bi bi-sort-alpha-down"></i><span><strong>Merge Sort:</strong> O(n log n)
-                                        implementation for collection management.</span></li>
+                                <li><i class="bi bi-graph-up"></i><span><strong>Big-O on everything:</strong> nearly every
+                                        function documents its time and space complexity.</span></li>
+                                <li><i class="bi bi-diagram-3"></i><span><strong>Size-aware BFS:</strong> pathfinding that
+                                        validates a troop's whole footprint, not just one cell.</span></li>
+                                <li><i class="bi bi-cpu"></i><span><strong>A bot that fights back:</strong> greedy threat
+                                        scoring with a hard-coded counter table.</span></li>
                             </ul>
                             <div class="sidecard-links">
                                 <a href="https://github.com/Inventure71/AlgorithmsProject" target="_blank"
@@ -156,38 +155,36 @@
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">Algorithm Suite</p>
-                            <h2>Engineered for Efficiency</h2>
+                            <p class="project-section-eyebrow">Built by hand</p>
+                            <h2>The pieces under the game</h2>
                         </div>
                         <div class="project-insight-grid">
                             <article class="project-insight-card">
-                                <h4>BFS Pathfinding</h4>
-                                <p>Used in <code>arena/utils/find_path_bfs.py</code> to calculate optimal routes on the
-                                    arena grid.</p>
+                                <h3>BFS Pathfinding</h3>
+                                <p>Lives in <code>arena/utils/find_path_bfs.py</code>. Every troop finds its route on the
+                                    arena grid — and the search checks the troop's full width and height, so big units
+                                    don't clip through gaps they can't fit.</p>
                                 <ul>
-                                    <li><strong>Time Complexity:</strong> O(V + E)</li>
-                                    <li><strong>Space Complexity:</strong> O(V)</li>
-                                    <li>Supports dynamic obstacle avoidance and neighbor validation.</li>
+                                    <li><strong>Time:</strong> O(V + E) · <strong>Space:</strong> O(V)</li>
+                                    <li>Path is rebuilt with a hand-written stack — no recursion to overflow.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h4>Merge Sort</h4>
-                                <p>Custom <code>merge_sort_by_key</code> implementation in <code>core/sorting.py</code>
-                                    for handling troop data.</p>
+                                <h3>Merge Sort</h3>
+                                <p>A custom <code>merge_sort_by_key</code> in <code>core/sorting.py</code> orders troops
+                                    by their position on screen so they draw in the right front-to-back order.</p>
                                 <ul>
-                                    <li><strong>Time Complexity:</strong> O(n log n) (consistent performance).</li>
-                                    <li><strong>Space Complexity:</strong> O(n)</li>
-                                    <li>Ensures stable and predictable data organization.</li>
+                                    <li><strong>Time:</strong> O(n log n) · <strong>Space:</strong> O(n)</li>
+                                    <li>Stable, so ties keep their original order.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h4>Linear Search</h4>
-                                <p>Reliable <code>linear_search</code> in <code>core/linear_search.py</code> for
-                                    targeted element retrieval.</p>
+                                <h3>Custom queue &amp; linked list</h3>
+                                <p>The BFS frontier and path use structures I wrote from scratch — a queue with a tail
+                                    pointer and a linked list — instead of reaching for <code>collections.deque</code>.</p>
                                 <ul>
-                                    <li><strong>Time Complexity:</strong> O(n)</li>
-                                    <li><strong>Space Complexity:</strong> O(1)</li>
-                                    <li>Used for selecting targets in dynamic troop collections.</li>
+                                    <li><strong>Enqueue / dequeue:</strong> O(1)</li>
+                                    <li>Every docstring argues why it beats the array version.</li>
                                 </ul>
                             </article>
                         </div>
@@ -208,7 +205,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js"></script>
+    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

@@ -93,7 +93,7 @@ describe('payload optimization contracts', () => {
     const manifests = {
       'css/playfolio-home.css': ['motion.css', 'project-browse.css'],
       'css/playfolio-projects.css': ['race.css', 'project-race-guide.css'],
-      'css/playfolio-project-detail.css': ['project-pages.css', 'project-overrides.css'],
+      'css/playfolio-project-detail.css': ['project-pages.css'],
       'css/playfolio-tags.css': ['tag-network.css'],
       'css/playfolio-directory.css': ['directory.css'],
       'css/playfolio-resume-page.css': ['resume.css'],
@@ -107,6 +107,7 @@ describe('payload optimization contracts', () => {
 
     expect(readRepoFile('css/playfolio-home.css')).not.toContain('race.css');
     expect(readRepoFile('css/playfolio-projects.css')).not.toContain('project-overrides.css');
+    expect(readRepoFile('css/playfolio-project-detail.css')).not.toContain('project-overrides.css');
     expect(readRepoFile('css/playfolio-tags.css')).not.toContain('race.css');
   });
 

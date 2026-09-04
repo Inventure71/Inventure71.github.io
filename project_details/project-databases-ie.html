@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="TCGNET - a deployed PostgreSQL-backed trading-card collection and marketplace" />
+    <meta name="author" content="Matteo Giorgetti" />
+    <meta name="theme-color" content="#0d0d0b" />
+    <title>TCGNET - M.G.</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <script src="../js/theme-boot.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../css/site-core.css" rel="stylesheet" />
+    <link href="../css/modern.css" rel="stylesheet" />
+    <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+</head>
+
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--databases-ie" data-project-family="systems">
+    <a class="project-skip-link" href="#project-content">Skip to project content</a>
+    <main class="flex-shrink-0" id="project-content">
+        <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
+      <div class="container">
+        <div class="pf-brand-group" data-glass-group>
+          <a class="navbar-brand" href="/index.html" data-glass-item data-glass-tone="brand">MG</a>
+          <button class="pf-nav-ai-button" type="button" data-ai-guide-copy data-glass-item data-glass-tone="green">Ask AI</button>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
+            <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
+                </li>
+              
+            </ul>
+            <div class="d-flex gap-2" data-glass-group>
+              <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
+                <i class="bi bi-command"></i>
+              </button>
+              <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
+                <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
+                  <i class="bi bi-sun" data-theme-current-icon></i>
+                </span>
+                <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
+                  <i class="bi bi-moon" data-theme-preview-icon></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+        </nav>
+
+        <section class="py-5"><div class="container px-5"><article class="project-shell">
+            <header class="project-hero">
+                <div>
+                    <p class="project-eyebrow">Database systems course project</p>
+                    <h1>TCGNET</h1>
+                    <p class="lead">A deployed trading-card catalog, collection manager, and marketplace built to make the database—not just the interface—the product.</p>
+                    <div class="project-pills" aria-label="Core technologies"><span class="project-pill">Django</span><span class="project-pill">PostgreSQL</span><span class="project-pill">Vercel</span></div>
+                </div>
+                <dl class="hero-meta" aria-label="Project facts">
+                    <div class="hero-meta-card"><dt class="label">Role</dt><dd class="value">Lead backend/data engineer · two-person team</dd></div>
+                    <div class="hero-meta-card"><dt class="label">Year</dt><dd class="value">2026</dd></div>
+                    <div class="hero-meta-card"><dt class="label">State</dt><dd class="value">Deployed course MVP</dd></div>
+                    <div class="hero-meta-card"><dt class="label">Proof</dt><dd class="value">Live catalog and marketplace flows</dd></div>
+                </dl>
+            </header>
+
+            <section class="project-media-panel project-media-panel--without-media" aria-label="TCGNET summary">
+                <aside class="project-sidecard" aria-labelledby="tcgnet-summary-title">
+                    <h2 id="tcgnet-summary-title">Every screen can explain its query</h2>
+                    <p>TCGNET lets people browse exact card printings, track a physical collection, list owned cards, and record purchases. Help controls beside query-heavy features reveal the real ORM and database path behind the result.</p>
+                    <ul class="sidecard-highlight">
+                        <li><i class="bi bi-database-check" aria-hidden="true"></i><span>Constraints and row-locked transactions protect stock, listings, purchases, and price history.</span></li>
+                        <li><i class="bi bi-search" aria-hidden="true"></i><span>Trigram search, partial indexes, aggregation, pagination, and <code>DISTINCT ON</code> keep the work in PostgreSQL.</span></li>
+                    </ul>
+                    <div class="sidecard-links">
+                        <a href="https://databases-project-ie.vercel.app/" target="_blank" rel="noopener noreferrer"><span>Open live project</span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+                        <a href="https://github.com/Inventure71/DatabasesProjectIE" target="_blank" rel="noopener noreferrer"><span>View repository</span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+                    </div>
+                </aside>
+            </section>
+
+            <section class="project-section">
+                <div class="project-section-header"><p class="project-section-eyebrow">Data design</p><h2>Exact records, guarded transitions</h2></div>
+                <div class="project-insight-grid">
+                    <article class="project-insight-card"><h3>Normalize the card</h3><p>Games, sets, cards, exact variants, and images are distinct records. Inventory, listings, order lines, and price snapshots all point to the exact variant they describe.</p></article>
+                    <article class="project-insight-card"><h3>Make invalid states difficult</h3><p>Database constraints reject negative quantities, over-reserved stock, duplicate printings, invalid listing amounts, and buyer-equals-seller orders before those states can spread.</p></article>
+                    <article class="project-insight-card"><h3>Move stock atomically</h3><p>Marketplace services use transactions and <code>select_for_update()</code> so creating, cancelling, or purchasing a listing changes inventory and price history as one consistent operation.</p></article>
+                </div>
+            </section>
+
+            <section class="project-section"><div class="project-section-header"><p class="project-section-eyebrow">Verified scope</p><h2>A real deployment with bounded claims</h2></div>
+                <ul class="project-data-strip">
+                    <li><span class="metric-value">132</span><span class="metric-label">Default card variants</span><span class="metric-copy">The repeatable importer loads the documented Base and Jungle scope.</span></li>
+                    <li><span class="metric-value">Live</span><span class="metric-label">Public deployment</span><span class="metric-copy">Catalog, collection, listing, and purchase paths are available as a course MVP.</span></li>
+                    <li><span class="metric-value">SQL-first</span><span class="metric-label">Query design</span><span class="metric-copy">Search, aggregation, existence checks, and pagination execute in PostgreSQL.</span></li>
+                </ul>
+            </section>
+
+            <section class="project-section project-spotlight" aria-label="Outcome and current limitation"><h2>A marketplace model, not a marketplace business</h2><p>The application demonstrates normalized design, safe inventory transitions, and explainable queries. Its default dataset is intentionally narrow, and there is no evidence of payment, shipping, adoption, or production commerce—those are outside the course-project claim.</p></section>
+            <nav class="text-center" aria-label="Project navigation"><a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to the project race</a></nav>
+        </article></div></section>
+    </main>
+    <footer class="pf-footer py-4 mt-auto"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script><script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+</body>
+
+</html>

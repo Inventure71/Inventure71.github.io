@@ -4,6 +4,5 @@
 @import url("./playfolio/reactive-glass.css");
 @import url("./playfolio/ai-guide.css");
 @import url("./playfolio/command-palette.css");
-@import url("./project-pages.css");
-@import url("./playfolio/project-overrides.css");
+@import url("./project-pages.css?v=20260710-feature-stage-v19");
 @import url("./playfolio/utilities.css");

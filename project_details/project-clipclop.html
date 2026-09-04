@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="ClipClop - Cross-device clipboard intelligence suite for desktop and Android" />
+    <meta name="description" content="ClipClop - local-first clipboard sync between macOS and Android, end-to-end encrypted over your own Wi-Fi" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>ClipClop - M.G.</title>
     <!-- Favicon-->
@@ -23,15 +23,10 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css" rel="stylesheet" />
+        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--clipclop">
-    <div class="project-wip" data-component="wip-tape">
-        <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
-            <span class="project-wip__label">Work in progress – click to dismiss</span>
-        </button>
-    </div>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--clipclop" data-project-family="app">
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -94,12 +89,13 @@
                     <header class="project-hero">
                         <div>
                             <h1>ClipClop</h1>
-                            <p class="lead">Desktop menubar + Android companion that turn fleeting copy events into a
-                                synchronized, searchable, and transformable knowledge layer.</p>
+                            <p class="lead">Copy something on my Mac, and a second later it's on my phone. ClipClop is a
+                                local-first clipboard bridge between macOS and Android — no cloud, no account, just two
+                                devices talking over your own Wi-Fi.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Python</span>
                                 <span class="project-pill">Android</span>
-                                <span class="project-pill">Productivity</span>
+                                <span class="project-pill">Local-first</span>
                             </div>
                         </div>
                         <div class="hero-meta">
@@ -113,29 +109,26 @@
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Stack</span>
-                                <span class="value">Python · Java/Kotlin · Clipboard APIs</span>
+                                <span class="value">Python · Java · AES-256-GCM</span>
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Status</span>
-                                <span class="value">Private Beta</span>
+                                <span class="value">Working prototype</span>
                             </div>
                         </div>
                     </header>
 
-                    <section class="project-media-panel project-media-panel--split">
-                        <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/placeholders/debug-placeholder.svg"
-                                alt="Placeholder montage of ClipClop interfaces" loading="lazy" />
-                        </div>
+                    <section class="project-media-panel project-media-panel--without-media">
                         <aside class="project-sidecard">
-                            <h3>Project Snapshot</h3>
-                            <p>ClipClop centralizes clipboard history on macOS and Android, letting me clean, tag, and
-                                resurface snippets instantly across devices.</p>
+                            <h2>The short version</h2>
+                            <p>ClipClop keeps the clipboard in sync between my Mac and my Android phone, entirely over the
+                                local network. Copy a link, a paragraph, or a screenshot on one device and it lands on the
+                                other — encrypted end to end, never touching a server.</p>
                             <ul class="sidecard-highlight">
-                                <li><i class="bi bi-lightning-charge"></i><span>Sub-second clipboard capture with
-                                        normalization and deduplication.</span></li>
-                                <li><i class="bi bi-phone"></i><span>Background Android listener keeps history aligned
-                                        with desktop without cloud bloat.</span></li>
+                                <li><i class="bi bi-lightning-charge"></i><span>The Mac pushes changes the instant they
+                                        happen — it watches a near-free change counter, not the clipboard's contents.</span></li>
+                                <li><i class="bi bi-phone"></i><span>Pairing is a single QR scan, and reconnection is
+                                        automatic even when my phone's IP changes.</span></li>
                             </ul>
                             <div class="sidecard-links">
                                 <a href="https://github.com/Inventure71/ClipClop" target="_blank" rel="noreferrer">
@@ -153,135 +146,116 @@
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">Clipboard rituals</p>
-                            <h2>Where ClipClop earns its keep</h2>
+                            <p class="project-section-eyebrow">Where it earns its keep</p>
+                            <h2>The moments I built it for</h2>
                         </div>
                         <ul class="project-keypoints">
                             <li>
-                                <h4>Research scrapes</h4>
-                                <p>Curates article excerpts, API docs, and design snippets into labeled boards so
-                                    citations stay one copy away.</p>
+                                <h3>Links &amp; snippets</h3>
+                                <p>Copy a URL or a block of code on my laptop and paste it on my phone a second later —
+                                    no AirDrop dance, no emailing things to myself.</p>
                             </li>
                             <li>
-                                <h4>Pair-programming notes</h4>
-                                <p>Combines terminal output, stack traces, and TODOs into digestible cards that are
-                                    ready to drop into issues.</p>
+                                <h3>Screenshots too</h3>
+                                <p>Images ride the same pipe as text, so a screenshot copied on one device is already
+                                    waiting in the clipboard on the other.</p>
                             </li>
                             <li>
-                                <h4>Android quick capture</h4>
-                                <p>Phone companion stashes photos, audio memos, and OTP codes into the same history with
-                                    automatic redaction.</p>
+                                <h3>Café Wi-Fi, no worries</h3>
+                                <p>Every message is AES-256-GCM encrypted with a key that only ever travels by QR code,
+                                    so the traffic stays opaque even on a shared network.</p>
                             </li>
                         </ul>
                     </section>
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">System slices</p>
-                            <h2>What keeps copy history actionable</h2>
+                            <p class="project-section-eyebrow">Under the hood</p>
+                            <h2>Three pieces, talking over your LAN</h2>
                         </div>
                         <div class="project-insight-grid">
                             <article class="project-insight-card">
-                                <h4>Menubar command center</h4>
-                                <p>Lightweight PyObjC shell renders recent snippets with inline transformations and
-                                    pinned favorites.</p>
+                                <h3>A quiet Mac menu-bar app</h3>
+                                <p>No Dock icon — it lives in the menu bar. Instead of reading the clipboard on a timer,
+                                    it watches NSPasteboard's change counter and only does real work when something
+                                    actually changes.</p>
                                 <ul>
-                                    <li>Keyboard palette filters by type, domain, or project tag.</li>
-                                    <li>Snippets open in edit mode for quick cleanup before paste.</li>
+                                    <li>Shows connection status and the last device it paired with.</li>
+                                    <li>Pairing generates a fresh 256-bit key and hands it over as a QR code.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h4>Android collector</h4>
-                                <p>Foreground service listens to system clipboard broadcasts and shares events back to
-                                    desktop over WebSocket.</p>
+                                <h3>An Android foreground service</h3>
+                                <p>A foreground service keeps the TCP connection alive and writes incoming clips
+                                    straight to the system clipboard.</p>
                                 <ul>
-                                    <li>Battery-friendly scheduling keeps sync bursts under 300ms.</li>
-                                    <li>Screenshot watcher offers OCR hooks for future releases.</li>
+                                    <li>Mac → Android is automatic; Android → Mac is one deliberate tap.</li>
+                                    <li>It rediscovers the paired Mac on its own after any network change.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h4>Privacy mesh</h4>
-                                <p>Per-app allowlists and regex blockers quarantine sensitive entries before they hit
-                                    the shared history.</p>
+                                <h3>Encryption &amp; discovery</h3>
+                                <p>Every message is AES-256-GCM with a fresh nonce, and the two devices find each other
+                                    again through a three-tier fallback.</p>
                                 <ul>
-                                    <li>Secure vault for API keys and passwords with auto-expire.</li>
-                                    <li>On-device encryption for any cross-network payload.</li>
+                                    <li>Bonjour/mDNS first, a UDP beacon as backup, manual IP as a last resort.</li>
+                                    <li>Reconnects match the Mac's stable device ID — never a stale IP.</li>
                                 </ul>
                             </article>
                         </div>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h3>Clipboard recall without the cloud</h3>
+                        <h2>No cloud. No account. Just your two devices.</h2>
                         <p>
-                            ClipClop only talks on the local network, so the backlog of snippets and transforms never
-                            leaves my hardware. The
-                            suite is tuned for offline-first hacks, research notes, and late-night debugging when Wi-Fi
-                            is flaky.
+                            Nothing ClipClop moves ever leaves your local network. There's no server to trust, no sync
+                            account to create, and the encryption key is exchanged by scanning a QR code — it never
+                            crosses the wire. It's the clipboard sync I always wished existed: private because of how
+                            it's built, not because of a privacy policy.
                         </p>
                     </section>
 
                     <section class="project-section project-flow">
                         <div class="project-section-header">
                             <p class="project-section-eyebrow">Flow</p>
-                            <h2>How a snippet travels</h2>
+                            <h2>How a clip gets across</h2>
                         </div>
                         <div class="project-flow-steps">
                             <div class="project-flow-step">
                                 <span class="flow-index">01</span>
                                 <div class="flow-body">
-                                    <h5>Capture</h5>
-                                    <p>User copies content on desktop or Android; listeners validate, normalize, and
-                                        persist the entry locally.</p>
+                                    <h3>Pair</h3>
+                                    <p>Scan a QR code from the Mac's menu bar. It carries the encryption key and the
+                                        Mac's identity — that's the entire setup.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">02</span>
                                 <div class="flow-body">
-                                    <h5>Enrich</h5>
-                                    <p>Transformation rules sanitize formatting, classify type (URL, code, text), and
-                                        add quick-action metadata.</p>
+                                    <h3>Copy</h3>
+                                    <p>Copy anything on the Mac. It notices the change instantly and wraps the payload
+                                        in AES-256-GCM.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">03</span>
                                 <div class="flow-body">
-                                    <h5>Sync</h5>
-                                    <p>LAN handshake exchanges deltas, collapsing identical items and aligning
-                                        timestamps across devices.</p>
+                                    <h3>Land</h3>
+                                    <p>The clip travels over an encrypted TCP connection on your LAN and drops straight
+                                        into the other device's clipboard.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
                                 <span class="flow-index">04</span>
                                 <div class="flow-body">
-                                    <h5>Recall</h5>
-                                    <p>Menubar palette or Android history view surfaces entries for instant re-copy,
-                                        share, or transformation.</p>
+                                    <h3>Reconnect</h3>
+                                    <p>Switch networks or let your phone sleep — ClipClop finds the Mac again by its
+                                        device ID and picks up right where it left off.</p>
                                 </div>
                             </div>
                         </div>
                     </section>
 
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Gallery</p>
-                            <h2>Captured moments</h2>
-                        </div>
-                        <div class="project-gallery">
-                            <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg"
-                                    alt="Placeholder view of ClipClop menubar" loading="lazy" />
-                                <figcaption>Desktop menubar dropdown showing recent snippets, search, and quick actions.
-                                </figcaption>
-                            </figure>
-                            <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg"
-                                    alt="Placeholder view of ClipClop Android history" loading="lazy" />
-                                <figcaption>Android companion listing synchronized clipboard history with filters.
-                                </figcaption>
-                            </figure>
-                        </div>
-                    </section>
 
                     <div class="text-center">
                         <a href="../projects.html" class="project-back-link">
@@ -299,7 +273,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js"></script>
+    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>
