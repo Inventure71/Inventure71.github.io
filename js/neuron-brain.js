@@ -136,11 +136,11 @@
             tags: ['Python', 'Django', 'PostgreSQL', 'Databases', 'Data Systems', 'Web/API']
         },
         {
-            id: 'typecraft',
-            title: 'TypeCraft',
-            desc: 'Human-Paced Typing Automation for macOS',
-            url: 'project_details/project-typecraft.html',
-            tags: ['Swift', 'macOS', 'Accessibility', 'Automation', 'Productivity', 'Local-First Tools']
+            id: 'ghoststroke',
+            title: 'Ghoststroke',
+            desc: 'Notarized, Target-Safe Typing Automation for macOS',
+            url: 'project_details/project-ghoststroke.html',
+            tags: ['Swift', 'macOS', 'Accessibility', 'Core Graphics', 'Automation', 'Productivity', 'Local-First Tools']
         }
     ];
 

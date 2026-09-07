@@ -32,7 +32,7 @@
 .project-page--mattyflow { --project-accent: #2f9d73; }
 .project-page--mosaic { --project-accent: #e56d2f; }
 .project-page--databases-ie { --project-accent: #c88a1b; }
-.project-page--typecraft { --project-accent: #d45588; }
+.project-page--ghoststroke { --project-accent: #9b8a73; }
 
 .project-page code {
   overflow-wrap: anywhere;
@@ -339,6 +339,17 @@
   inset: 10%;
   width: 80%;
   height: 80%;
+  object-fit: contain;
+}
+
+.project-media-stage--app-icon {
+  aspect-ratio: 4 / 3;
+}
+
+.project-media-stage--app-icon img {
+  inset: 9%;
+  width: 82%;
+  height: 82%;
   object-fit: contain;
 }
 
@@ -1138,6 +1149,10 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
   }
 
   .project-media-stage--noty {
+    aspect-ratio: 1 / 1;
+  }
+
+  .project-media-stage--app-icon {
     aspect-ratio: 1 / 1;
   }
 

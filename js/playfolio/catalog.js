@@ -122,10 +122,10 @@ export const projectCommandItems = [
     keywords: 'tcgnet databases project ie django postgresql cards marketplace inventory sql database',
   },
   {
-    label: 'TypeCraft',
-    description: 'Human-paced typing automation for macOS',
-    href: '/project_details/project-typecraft.html',
-    keywords: 'typecraft macos swift accessibility typing automation presets keyboard',
+    label: 'Ghoststroke',
+    description: 'Notarized, target-safe typing automation for macOS',
+    href: '/project_details/project-ghoststroke.html',
+    keywords: 'ghoststroke macos swift accessibility typing automation cadence profiles notarized keyboard',
   },
 ];
 
@@ -172,11 +172,5 @@ export const commandItems = [
     description: 'Open latest ClipClop release',
     href: 'https://github.com/Inventure71/ClipClop/releases/tag/beta.2',
     keywords: 'app utility clipboard release download',
-  },
-  {
-    label: 'Download TypeCraft',
-    description: 'Open TypeCraft release',
-    href: 'https://github.com/Inventure71/TypeCraft/releases/tag/Stable',
-    keywords: 'app utility macos typing automation accessibility release download',
   },
 ];

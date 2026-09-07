@@ -124,17 +124,17 @@ const additionalDrivers = [
     raceData: ['PostgreSQL data model', 'Django marketplace', 'Transactional inventory'],
   },
   {
-    id: 'typecraft',
-    code: 'TYP',
-    icon: 'TC',
-    raceName: 'TYPECRAFT',
-    name: 'TypeCraft',
-    color: '#d45588',
+    id: 'ghoststroke',
+    code: 'GST',
+    icon: 'GS',
+    raceName: 'GHOST',
+    name: 'Ghoststroke',
+    color: '#9b8a73',
     tire: 'S',
     pace: 1.02,
     racecraft: 0.82,
-    link: '/project_details/project-typecraft.html',
-    raceData: ['Human-paced typing', 'Swift accessibility', 'Custom presets'],
+    link: '/project_details/project-ghoststroke.html',
+    raceData: ['Target-safe typing', 'Notarized macOS app', 'Cadence profiles'],
   },
 ];
 
@@ -148,7 +148,7 @@ const additionalEntrySpecs = [
   { driverId: 'mattyflow', number: 12, timingName: 'MattyFlow', vehicleId: 'matty-mf12', vehicleName: 'MF-12 Whisper' },
   { driverId: 'mosaic', number: 32, timingName: 'Mosaic', vehicleId: 'mosaic-mo32', vehicleName: 'MO-32 Swarm' },
   { driverId: 'databases-ie', number: 44, timingName: 'TCGNET', vehicleId: 'database-db44', vehicleName: 'DB-44 Ledger' },
-  { driverId: 'typecraft', number: 77, timingName: 'TypeCraft', vehicleId: 'typecraft-tc77', vehicleName: 'TC-77 Rhythm' },
+  { driverId: 'ghoststroke', number: 77, timingName: 'Ghoststroke', vehicleId: 'ghoststroke-gs77', vehicleName: 'GS-77 Cadence' },
 ];
 
 // These ratings tune the race simulation; they are not product-performance claims.

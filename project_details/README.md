@@ -191,4 +191,4 @@ Do not duplicate component rules, tint every surface, or introduce an override c
 - `project-mattyflow.html` — text-first local AI application.
 - `project-mosaic.html` — distributed robotics ownership model.
 - `project-databases-ie.html` — data-model and transaction case study.
-- `project-typecraft.html` — concise native utility with a safety-led flow.
+- `project-ghoststroke.html` — notarized native utility with real identity artwork and a target-safety-led flow.

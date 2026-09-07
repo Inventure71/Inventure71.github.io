@@ -6,6 +6,7 @@ const projectPagesCss = readFileSync(
   'utf8'
 );
 const projectPagesJs = readFileSync(new URL('../../js/project-pages.js', import.meta.url), 'utf8');
+const appsHtml = readFileSync(new URL('../../apps.html', import.meta.url), 'utf8');
 
 function extractBlock(source, startToken) {
   const start = source.indexOf(startToken);
@@ -214,7 +215,7 @@ describe('project detail responsive media', () => {
       'project-mattyflow.html',
       'project-mosaic.html',
       'project-databases-ie.html',
-      'project-typecraft.html',
+      'project-ghoststroke.html',
     ];
 
     newCaseStudies.forEach((file) => {
@@ -229,10 +230,21 @@ describe('project detail responsive media', () => {
     expect(pages.get('project-mattyflow.html')).not.toContain('github.com/Inventure71/LocalFlow');
     expect(pages.get('project-mosaic.html')).toContain('github.com/Inventure71/SwarmProjectV1');
     expect(pages.get('project-databases-ie.html')).toContain('databases-project-ie.vercel.app');
-    expect(pages.get('project-typecraft.html')).toContain('github.com/Inventure71/TypeCraft/releases/tag/Stable');
+    expect(pages.get('project-ghoststroke.html')).toContain('Notarized macOS utility');
+    expect(pages.get('project-ghoststroke.html')).toContain('Gatekeeper');
+    expect(pages.get('project-ghoststroke.html')).not.toContain('github.com/Inventure71/Ghoststroke');
     projectHtmlFiles().forEach(({ html }) => {
       expect(html).not.toContain('Creator Profile');
       expect(html).not.toContain('href="https://github.com/Inventure71"');
     });
+  });
+
+  test('lists Ghoststroke and Noty without exposing private or unavailable downloads', () => {
+    expect(appsHtml).toContain('View Ghoststroke project');
+    expect(appsHtml).toContain('View Noty project');
+    expect(appsHtml).toContain('macOS · Notarized');
+    expect(appsHtml).toContain('macOS · Release candidate');
+    expect(appsHtml).not.toContain('github.com/Inventure71/Ghoststroke');
+    expect(appsHtml).not.toContain('github.com/Inventure71/Noty');
   });
 });

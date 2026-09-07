@@ -24,7 +24,7 @@ describe('PaddockJS project race integration', () => {
       'mattyflow',
       'mosaic',
       'databases-ie',
-      'typecraft',
+      'ghoststroke',
     ]));
     expect(entryIds).toEqual(expect.arrayContaining(driverIds));
     expect(driverIds).not.toContain('safeway');
