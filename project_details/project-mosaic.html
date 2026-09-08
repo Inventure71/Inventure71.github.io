@@ -8,7 +8,7 @@
     <meta name="author" content="Matteo Giorgetti" />
     <meta name="theme-color" content="#0d0d0b" />
     <title>Mosaic - M.G.</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
@@ -16,7 +16,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-    <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--mosaic" data-project-family="robotics">
@@ -81,7 +88,7 @@
                 <div>
                     <p class="project-eyebrow">ROS 2 robotics system</p>
                     <h1>Mosaic</h1>
-                    <p class="lead">A multi-robot demo stack where the operator controls one fleet, while each robot keeps ownership of its own motion, path following, and safety.</p>
+                    <p class="lead">Control a robot fleet from one interface while each robot handles its own movement, path following, and stopping.</p>
                     <div class="project-pills" aria-label="Core technologies"><span class="project-pill">Python / ROS 2</span><span class="project-pill">UDP / JSON</span><span class="project-pill">Tk / Gama</span></div>
                 </div>
                 <dl class="hero-meta" aria-label="Project facts">
@@ -94,8 +101,8 @@
 
             <section class="project-media-panel project-media-panel--without-media" aria-label="Mosaic summary">
                 <aside class="project-sidecard" aria-labelledby="mosaic-summary-title">
-                    <h2 id="mosaic-summary-title">Central visibility, local responsibility</h2>
-                    <p>The operator UI sends high-level commands through one supervisor bridge. It never publishes motor commands directly: each namespaced robot agent decides how to execute and when to stop.</p>
+                    <h2 id="mosaic-summary-title">Commands from the desk, control on the robot</h2>
+                    <p>The operator interface sends high-level commands through a supervisor bridge. Each robot agent decides how to execute them and when to stop.</p>
                     <ul class="sidecard-highlight">
                         <li><i class="bi bi-cpu" aria-hidden="true"></i><span>Path following, manual drive, pose freshness, and <code>cmd_vel</code> remain on the robot.</span></li>
                         <li><i class="bi bi-diagram-3" aria-hidden="true"></i><span>Normalized Mosaic topics isolate the operator tools from vendor-specific ROSbot details.</span></li>
@@ -109,20 +116,20 @@
                 <div class="project-insight-grid">
                     <article class="project-insight-card"><h3>Robot agent</h3><p>One ROS 2 agent per robot consumes local sensors and OptiTrack pose, executes manual or autonomous movement, publishes normalized status, and owns the only motor-command publisher.</p></article>
                     <article class="project-insight-card"><h3>Supervisor bridge</h3><p>The bridge translates UI UDP commands into high-level ROS actions, aggregates each robot's state, and preserves the flattened UDP payload expected by the external Gama visualizer.</p></article>
-                    <article class="project-insight-card"><h3>Shared contract</h3><p>A fleet configuration, public ROS interfaces, launch packages, and parallel deployment scripts keep namespaces, endpoints, device roles, and startup behavior consistent across machines.</p></article>
+                    <article class="project-insight-card"><h3>Shared interfaces</h3><p>A fleet configuration, public ROS interfaces, launch packages, and parallel deployment scripts keep namespaces, endpoints, device roles, and startup behavior consistent across machines.</p></article>
                 </div>
             </section>
 
             <section class="project-section project-spotlight" aria-label="Outcome and current limitation">
-                <h2>The supervisor can disappear without becoming the robot</h2>
-                <p>The ROS 2-first design removes the legacy centralized controller from the intended runtime and keeps stopping responsibility at the edge. Physical validation still depends on the real robots, generated ROS interfaces, OptiTrack, and the lab network; fleet membership also remains configuration-driven rather than dynamic.</p>
+                <h2>Lab validation</h2>
+                <p>Stopping decisions remain on each robot. Physical validation depends on the robots, ROS interfaces, OptiTrack, and the lab network. Fleet membership is configured in advance.</p>
             </section>
 
             <nav class="text-center" aria-label="Project navigation"><a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to the project race</a></nav>
         </article></div></section>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script><script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script><script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

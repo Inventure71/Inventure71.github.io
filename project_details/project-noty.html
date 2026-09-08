@@ -7,7 +7,7 @@
     <meta name="description" content="Noty - local-first Markdown notes that attach to macOS windows" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>Noty - M.G.</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
@@ -15,7 +15,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--noty" data-project-family="app">
@@ -81,7 +88,7 @@
                         <div>
                             <p class="project-section-eyebrow">macOS utility</p>
                             <h1>Noty</h1>
-                            <p class="lead">Most note apps remember what you wrote but forget where you were. Noty is a local-first Markdown sticky-note app whose notes can latch onto a specific window — your editor, a browser tab, a Finder folder — and follow it around the desktop.</p>
+                            <p class="lead">Markdown notes that stay with the window you’re working in, whether it’s an editor, a browser, or Finder.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Swift 6</span>
                                 <span class="project-pill">AppKit</span>
@@ -98,14 +105,14 @@
 
                     <section class="project-media-panel project-media-panel--split">
                         <div class="project-media-stage project-media-stage--image project-media-stage--noty">
-                            <img src="../assets/project-media/noty/noty-mascot.webp" alt="Noty cowboy sticky-note mascot" />
+                            <img width="1254" height="1254" decoding="async" src="../assets/project-media/noty/noty-mascot.webp" alt="Noty cowboy sticky-note mascot" />
                         </div>
                         <aside class="project-sidecard">
-                            <h2>Why it exists</h2>
-                            <p>Notes keep content but lose context. Noty keeps both — a note can float free, or attach to the exact window where the thought belongs, hide when that window goes away, and quietly reappear the moment it comes back.</p>
+                            <h2>Keep a note beside its work</h2>
+                            <p>A note can float on its own or attach to a window. Attached notes hide when their window goes away and return when it reappears.</p>
                             <ul class="sidecard-highlight">
-                                <li><i class="bi bi-window"></i><span>Attached notes shadow their host window instead of piling up as desktop clutter.</span></li>
-                                <li><i class="bi bi-device-ssd"></i><span>Everything — notes and attachment state — lives locally in SQLite. No cloud, no account.</span></li>
+                                <li><i class="bi bi-window"></i><span>Attached notes follow their window as it moves.</span></li>
+                                <li><i class="bi bi-device-ssd"></i><span>Notes are stored on your Mac. No account is required.</span></li>
                             </ul>
                         </aside>
                     </section>
@@ -116,15 +123,15 @@
                             <h2>Write it, pin it, find it again</h2>
                         </div>
                         <ul class="project-keypoints">
-                            <li><h3>Markdown that gets out of the way</h3><p>Small, focused note windows with live preview, checklists, and code blocks — light to write in, but still real Markdown underneath.</p></li>
-                            <li><h3>Notes that know their window</h3><p>Instead of storing fragile window IDs, Noty matches on durable app keys — a VS&nbsp;Code workspace, an Arc tab's UUID — so a note finds the right window again even after a restart.</p></li>
-                            <li><h3>A cowboy that wrangles them</h3><p>An animated mascotte rounds up parked notes so you can scout, corral, and recall them — without turning the desktop into a dashboard.</p></li>
+                            <li><h3>Markdown notes</h3><p>Write with live preview, checklists, and code blocks in a small note window.</p></li>
+                            <li><h3>Notes that know their window</h3><p>Attached notes return to the right window when you reopen an app or workspace.</p></li>
+                            <li><h3>The note keeper</h3><p>An animated cowboy mascot helps you find and reopen parked notes.</p></li>
                         </ul>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h2>Not another cloud notebook</h2>
-                        <p>I wasn't trying to build somewhere else to store notes — I was trying to make notes behave like part of the desktop. Everything stays on the Mac, and most of the real work went into the unglamorous stuff: matching windows reliably, following them without stealing focus, and never losing a note when something goes wrong.</p>
+                        <h2>Built around desktop behavior</h2>
+                        <p>The main engineering work is window matching, following a window without taking focus, and recovering notes when an app closes or restarts.</p>
                     </section>
 
                     <div class="text-center">
@@ -135,7 +142,7 @@
         </section>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

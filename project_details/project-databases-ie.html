@@ -8,7 +8,7 @@
     <meta name="author" content="Matteo Giorgetti" />
     <meta name="theme-color" content="#0d0d0b" />
     <title>TCGNET - M.G.</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
@@ -16,7 +16,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-    <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--databases-ie" data-project-family="systems">
@@ -81,21 +88,21 @@
                 <div>
                     <p class="project-eyebrow">Database systems course project</p>
                     <h1>TCGNET</h1>
-                    <p class="lead">A deployed trading-card catalog, collection manager, and marketplace built to make the database—not just the interface—the product.</p>
+                    <p class="lead">Browse trading cards, manage a collection, and list cards for sale. A database course project built with Django and PostgreSQL.</p>
                     <div class="project-pills" aria-label="Core technologies"><span class="project-pill">Django</span><span class="project-pill">PostgreSQL</span><span class="project-pill">Vercel</span></div>
                 </div>
                 <dl class="hero-meta" aria-label="Project facts">
                     <div class="hero-meta-card"><dt class="label">Role</dt><dd class="value">Lead backend/data engineer · two-person team</dd></div>
                     <div class="hero-meta-card"><dt class="label">Year</dt><dd class="value">2026</dd></div>
                     <div class="hero-meta-card"><dt class="label">State</dt><dd class="value">Deployed course MVP</dd></div>
-                    <div class="hero-meta-card"><dt class="label">Proof</dt><dd class="value">Live catalog and marketplace flows</dd></div>
+                    <div class="hero-meta-card"><dt class="label">Features</dt><dd class="value">Catalog · Collection · Listings</dd></div>
                 </dl>
             </header>
 
             <section class="project-media-panel project-media-panel--without-media" aria-label="TCGNET summary">
                 <aside class="project-sidecard" aria-labelledby="tcgnet-summary-title">
-                    <h2 id="tcgnet-summary-title">Every screen can explain its query</h2>
-                    <p>TCGNET lets people browse exact card printings, track a physical collection, list owned cards, and record purchases. Help controls beside query-heavy features reveal the real ORM and database path behind the result.</p>
+                    <h2 id="tcgnet-summary-title">Explore the data behind each screen</h2>
+                    <p>Browse exact card printings, track owned copies, list cards, and record purchases. Help controls show the ORM queries behind the database features.</p>
                     <ul class="sidecard-highlight">
                         <li><i class="bi bi-database-check" aria-hidden="true"></i><span>Constraints and row-locked transactions protect stock, listings, purchases, and price history.</span></li>
                         <li><i class="bi bi-search" aria-hidden="true"></i><span>Trigram search, partial indexes, aggregation, pagination, and <code>DISTINCT ON</code> keep the work in PostgreSQL.</span></li>
@@ -116,7 +123,7 @@
                 </div>
             </section>
 
-            <section class="project-section"><div class="project-section-header"><p class="project-section-eyebrow">Verified scope</p><h2>A real deployment with bounded claims</h2></div>
+            <section class="project-section"><div class="project-section-header"><p class="project-section-eyebrow">Project scope</p><h2>Catalog and query scope</h2></div>
                 <ul class="project-data-strip">
                     <li><span class="metric-value">132</span><span class="metric-label">Default card variants</span><span class="metric-copy">The repeatable importer loads the documented Base and Jungle scope.</span></li>
                     <li><span class="metric-value">Live</span><span class="metric-label">Public deployment</span><span class="metric-copy">Catalog, collection, listing, and purchase paths are available as a course MVP.</span></li>
@@ -124,12 +131,12 @@
                 </ul>
             </section>
 
-            <section class="project-section project-spotlight" aria-label="Outcome and current limitation"><h2>A marketplace model, not a marketplace business</h2><p>The application demonstrates normalized design, safe inventory transitions, and explainable queries. Its default dataset is intentionally narrow, and there is no evidence of payment, shipping, adoption, or production commerce—those are outside the course-project claim.</p></section>
+            <section class="project-section project-spotlight" aria-label="Outcome and current limitation"><h2>Course project scope</h2><p>The project covers card records, inventory, listings, and purchase records. The default dataset is limited to the documented Base and Jungle sets; payment and shipping are outside its scope.</p></section>
             <nav class="text-center" aria-label="Project navigation"><a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to the project race</a></nav>
         </article></div></section>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script><script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script><script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

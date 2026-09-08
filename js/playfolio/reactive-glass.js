@@ -283,22 +283,45 @@ export function installReactiveGlassSurface(surface, options = {}) {
     },
   };
 
+  const surfaceWindow = windowFor(surface);
+  let pointerFrame = 0;
+  let pendingPointer = null;
+  const renderPointer = () => {
+    pointerFrame = 0;
+    if (!pendingPointer) return;
+    setPointerVars(surface, pendingPointer);
+    pendingPointer = null;
+  };
+  const clearPointerFrame = () => {
+    if (pointerFrame) surfaceWindow.cancelAnimationFrame?.(pointerFrame);
+    pointerFrame = 0;
+    pendingPointer = null;
+  };
+
   const handlePointerMove = (event) => {
     if (isTouchPointer(event)) return;
 
-    setPointerVars(surface, event);
+    pendingPointer = { clientX: event.clientX, clientY: event.clientY };
+    if (!pointerFrame) {
+      if (typeof surfaceWindow.requestAnimationFrame === 'function') {
+        pointerFrame = surfaceWindow.requestAnimationFrame(renderPointer);
+      } else {
+        renderPointer();
+      }
+    }
     surface._reactiveGlassPendingTarget = findGlassTarget(surface, event, resolvedOptions);
     applyPhase(surface, surface._reactiveGlassPendingTarget, event, resolvedOptions);
     surface._reactiveGlassPendingTarget = null;
   };
 
   const handlePointerLeave = () => {
+    clearPointerFrame();
     applyIdle(surface);
   };
 
   const handleVisibilityChange = () => {
     if (surface.ownerDocument?.visibilityState === 'hidden') {
-      applyIdle(surface);
+      handlePointerLeave();
     }
   };
 
@@ -306,10 +329,8 @@ export function installReactiveGlassSurface(surface, options = {}) {
     if (isTouchPointer(event) || isModifiedClick(event) || !findSameTabLink(surface, event)) return;
 
     writeStoredPointer(surface, event);
-    applyIdle(surface);
+    handlePointerLeave();
   };
-
-  const surfaceWindow = windowFor(surface);
 
   surface.dataset.reactiveGlassBound = 'true';
   surface.addEventListener('pointerenter', handlePointerMove);

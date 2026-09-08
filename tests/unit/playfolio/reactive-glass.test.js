@@ -80,6 +80,62 @@ function addItem(surface, tone = 'green') {
 }
 
 describe('reactive glass surface', () => {
+  test('coalesces pointer layout reads into one frame using the latest position', () => {
+    const surface = createSurface();
+    const { item } = addItem(surface, 'blue');
+    const frames = new Map();
+    let nextFrame = 0;
+    surface.ownerDocument = {
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => {
+          frames.set(++nextFrame, callback);
+          return nextFrame;
+        }),
+        cancelAnimationFrame: vi.fn((id) => frames.delete(id)),
+      },
+    };
+    installReactiveGlassSurface(surface);
+    frames.get(1)();
+    frames.clear();
+    surface.getBoundingClientRect.mockClear();
+    const move = surface._listeners.get('pointermove');
+    move({ target: item, clientX: 50, clientY: 30 });
+    move({ target: item, clientX: 70, clientY: 40 });
+    move({ target: item, clientX: 170, clientY: 45 });
+
+    expect(item.classList.contains('is-glass-target')).toBe(true);
+    expect(frames.size).toBe(1);
+    expect(surface.getBoundingClientRect).not.toHaveBeenCalled();
+    frames.values().next().value();
+    expect(surface.getBoundingClientRect).toHaveBeenCalledOnce();
+    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-x', '150.00px');
+    expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-y', '35.00px');
+  });
+
+  test('cancels pending pointer work when the pointer leaves before the next frame', () => {
+    const surface = createSurface();
+    const { item } = addItem(surface);
+    const callbacks = [];
+    surface.ownerDocument = {
+      defaultView: {
+        requestAnimationFrame: vi.fn((callback) => {
+          callbacks.push(callback);
+          return callbacks.length;
+        }),
+        cancelAnimationFrame: vi.fn(),
+      },
+    };
+    installReactiveGlassSurface(surface);
+    surface._listeners.get('pointermove')({ target: item, clientX: 170, clientY: 45 });
+    surface._listeners.get('pointerleave')();
+    callbacks[1]();
+
+    expect(surface.ownerDocument.defaultView.cancelAnimationFrame).toHaveBeenCalledWith(2);
+    expect(surface.getBoundingClientRect).not.toHaveBeenCalled();
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
+    expect(surface.style.setProperty).toHaveBeenLastCalledWith('--pf-glass-dy', '0.00px');
+  });
+
   test('tracks pointer position and item hover state', () => {
     const surface = createSurface();
     const { item } = addItem(surface, 'blue');

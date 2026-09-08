@@ -7,7 +7,7 @@
     <meta name="description" content="VIGIL - continuous verification and guided recovery for robot fleets" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>VIGIL - M.G.</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
@@ -15,7 +15,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--vigil" data-project-family="robotics">
@@ -81,7 +88,7 @@
                         <div>
                             <p class="project-section-eyebrow">Robotics operations</p>
                             <h1>VIGIL</h1>
-                            <p class="lead">Our lab runs a fleet of robots — each named after a Greek hero — that constantly need checking on and reviving. VIGIL is the mission control I built for them: it watches every robot's health, drops me into a live terminal on any one of them, and turns the diagnostics and fixes I kept redoing by hand into repeatable, versioned workflows.</p>
+                            <p class="lead">Monitor a robot fleet, open remote terminals, and run repeatable diagnostics and recovery steps from one dashboard.</p>
                             <div class="project-pills">
                                 <span class="project-pill">FastAPI</span>
                                 <span class="project-pill">Paramiko</span>
@@ -98,14 +105,14 @@
 
                     <section class="project-media-panel project-media-panel--split">
                         <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/project-media/vigil/fleet-dashboard.webp" alt="VIGIL robot fleet dashboard with status cards" />
+                            <img width="960" height="526" decoding="async" src="../assets/project-media/vigil/fleet-dashboard.webp" alt="VIGIL robot fleet dashboard with status cards" />
                         </div>
                         <aside class="project-sidecard">
-                            <h2>Everything in one surface</h2>
-                            <p>Live fleet status, a real terminal into each robot, and versioned test/fix definitions all in one place — so I can go from "something's wrong" to "it's fixed" without leaving the dashboard or losing my train of thought.</p>
+                            <h2>Fleet status and remote tools</h2>
+                            <p>Check each robot’s status, investigate through a browser terminal, and run a saved diagnostic or recovery workflow.</p>
                             <ul class="sidecard-highlight">
                                 <li><i class="bi bi-broadcast"></i><span>Always-on monitoring of connectivity, battery, ROS topics, and runtime activity across all 11 robots.</span></li>
-                                <li><i class="bi bi-wrench-adjustable"></i><span>Checks and fixes are just versioned JSON — reviewable, repeatable, and specific to each robot family.</span></li>
+                                <li><i class="bi bi-wrench-adjustable"></i><span>Checks and fixes are versioned JSON definitions for each robot family.</span></li>
                             </ul>
                         </aside>
                     </section>
@@ -118,13 +125,13 @@
                         <div class="project-flow-steps">
                             <div class="project-flow-step"><span class="flow-index">01</span><div class="flow-body"><h3>Observe</h3><p>Background monitors keep tabs on connectivity, battery, topics, and runtime — and when a robot comes back online, VIGIL auto-runs its connection checks.</p></div></div>
                             <div class="project-flow-step"><span class="flow-index">02</span><div class="flow-body"><h3>Diagnose</h3><p>Run a versioned test, or drop straight into a live SSH terminal on the robot, streamed into the browser.</p></div></div>
-                            <div class="project-flow-step"><span class="flow-index">03</span><div class="flow-body"><h3>Recover</h3><p>A mapped fix runs its steps in order, while a per-robot queue makes sure two jobs never fight over the same machine.</p></div></div>
+                            <div class="project-flow-step"><span class="flow-index">03</span><div class="flow-body"><h3>Recover</h3><p>A saved fix runs its steps in order, with a per-robot queue preventing overlapping jobs.</p></div></div>
                         </div>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h2>The engine knows nothing about robots</h2>
-                        <p>That's on purpose. The core only knows how to open SSH sessions, run commands in order, evaluate the output, and report state — it has never heard of ROS or any specific robot. Everything platform-specific lives in versioned definition files, which means the same engine works for the next robot family without touching a line of its code.</p>
+                        <h2>Reusable execution engine</h2>
+                        <p>The core opens SSH sessions, runs commands, evaluates output, and reports state. Robot-specific checks and fixes live in versioned definition files.</p>
                     </section>
 
                     <div class="text-center">
@@ -135,7 +142,7 @@
         </section>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

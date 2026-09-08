@@ -1,8 +1,36 @@
 /* Footer, reveals, and responsive behavior */
 
-.pf-footer {
+.playfolio-page .pf-footer {
   border-top: 1px solid var(--pf-line);
+  background: var(--pf-bg) !important;
   color: var(--pf-muted);
+}
+
+.pf-footer-inner,
+.pf-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.pf-footer-inner {
+  justify-content: space-between;
+  padding-block: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.pf-footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  text-decoration: none;
+}
+
+.pf-footer-links a:hover {
+  color: var(--pf-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
 }
 
 .pf-footer a {
@@ -10,9 +38,13 @@
 }
 
 .pf-reveal {
+  opacity: 1;
+}
+
+.pf-reveal.is-reveal-ready {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 520ms ease, transform 520ms ease;
+  transform: translateY(12px);
+  transition: opacity 380ms ease, transform 380ms ease;
 }
 
 .pf-reveal.is-visible {
@@ -31,6 +63,16 @@
   .pf-preview-media img {
     transition: none !important;
   }
+
+  .pf-reveal.is-reveal-ready {
+    opacity: 1;
+    transform: none;
+  }
+
+  .pf-text-link i {
+    transition: none;
+    transform: none;
+  }
 }
 
 @media (max-width: 991px) {
@@ -45,6 +87,10 @@
   .pf-resume-projects,
   .pf-resume-skills {
     grid-template-columns: 1fr;
+  }
+
+  .pf-section-link {
+    justify-self: start;
   }
 
   .pf-resume-actions {
@@ -101,7 +147,7 @@
     width: 3.5rem;
   }
 
-  .pf-principles,
+  .pf-about,
   .pf-contact-band {
     grid-template-columns: 1fr;
   }
@@ -112,11 +158,28 @@
 
   .pf-project-card,
   .pf-project-row,
-  .pf-app-row,
-  .pf-contact-row,
   .pf-resume-line,
   .pf-resume-block > header {
     grid-template-columns: 1fr;
+  }
+
+  .pf-app-row,
+  .pf-contact-row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .pf-app-row > .pf-button {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .pf-contact-row > i {
+    display: none;
+  }
+
+  .playfolio-home .pf-hero {
+    min-height: auto;
+    padding-block: 2.5rem !important;
   }
 
   .pf-project-index,

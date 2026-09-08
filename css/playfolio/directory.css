@@ -3,11 +3,7 @@
 .pf-app-list,
 .pf-contact-grid {
   display: grid;
-  gap: 1px;
-  border: 1px solid var(--pf-line);
-  border-radius: var(--pf-radius);
-  background: var(--pf-line);
-  overflow: hidden;
+  border-top: 1px solid var(--pf-line);
 }
 
 .pf-app-row,
@@ -16,9 +12,10 @@
   grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 1rem;
   align-items: center;
-  min-height: 8rem;
+  min-height: 7.5rem;
   padding: clamp(1rem, 3vw, 1.45rem);
-  background: color-mix(in srgb, var(--pf-bg) 88%, var(--pf-surface));
+  border-bottom: 1px solid var(--pf-line);
+  background: transparent;
   color: var(--pf-ink);
   text-decoration: none;
   transition: background 180ms ease, color 180ms ease;
@@ -60,7 +57,8 @@
 .pf-contact-copy {
   color: var(--pf-muted);
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 500;
+  overflow-wrap: anywhere;
 }
 
 .pf-app-row h2 {
@@ -99,4 +97,13 @@
 .pf-contact-row:focus-visible > i {
   color: var(--pf-ink);
   transform: translate(2px, -2px);
+}
+
+.pf-app-row > div:nth-child(2),
+.pf-contact-row > span:nth-child(2) {
+  min-width: 0;
+}
+
+.pf-app-row:focus-within {
+  background: var(--pf-surface);
 }

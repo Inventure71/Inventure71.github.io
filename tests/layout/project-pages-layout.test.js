@@ -230,8 +230,6 @@ describe('project detail responsive media', () => {
     expect(pages.get('project-mattyflow.html')).not.toContain('github.com/Inventure71/LocalFlow');
     expect(pages.get('project-mosaic.html')).toContain('github.com/Inventure71/SwarmProjectV1');
     expect(pages.get('project-databases-ie.html')).toContain('databases-project-ie.vercel.app');
-    expect(pages.get('project-ghoststroke.html')).toContain('Notarized macOS utility');
-    expect(pages.get('project-ghoststroke.html')).toContain('Gatekeeper');
     expect(pages.get('project-ghoststroke.html')).not.toContain('github.com/Inventure71/Ghoststroke');
     projectHtmlFiles().forEach(({ html }) => {
       expect(html).not.toContain('Creator Profile');
@@ -242,8 +240,6 @@ describe('project detail responsive media', () => {
   test('lists Ghoststroke and Noty without exposing private or unavailable downloads', () => {
     expect(appsHtml).toContain('View Ghoststroke project');
     expect(appsHtml).toContain('View Noty project');
-    expect(appsHtml).toContain('macOS · Notarized');
-    expect(appsHtml).toContain('macOS · Release candidate');
     expect(appsHtml).not.toContain('github.com/Inventure71/Ghoststroke');
     expect(appsHtml).not.toContain('github.com/Inventure71/Noty');
   });

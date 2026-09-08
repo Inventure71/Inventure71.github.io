@@ -9,7 +9,7 @@
     <meta name="author" content="Matteo Giorgetti" />
     <title>Core Conflict - M.G.</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,14 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--gengame" data-project-family="game">
@@ -90,10 +97,7 @@
                     <header class="project-hero">
                         <div>
                             <h1>Core Conflict</h1>
-                            <p class="lead">A multiplayer battle arena where you don't just pick a loadout — you describe a
-                                new mechanic in plain English, and an AI writes it, tests it, and merges it into the
-                                match. Everyone's ideas get stitched into a build that exists for that one game only.
-                                Also, you're a cow.</p>
+                            <p class="lead">A multiplayer arena prototype where players describe new mechanics, agents write and test them, and the server combines them into a shared match. The players are cows.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Python</span>
                                 <span class="project-pill">GenAI</span>
@@ -123,15 +127,13 @@
 
                     <section class="project-media-panel project-media-panel--split">
                         <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/project-media/core-conflict/feature-test-passed-hero.jpg"
+                            <img width="1600" height="900" decoding="async" src="../assets/project-media/core-conflict/feature-test-passed-hero.jpg"
                                 alt="Core Conflict agent control center showing a feature prompt with passing tests"
                                 loading="lazy" />
                         </div>
                         <aside class="project-sidecard">
-                            <h2>The short version</h2>
-                            <p>Core Conflict is a battle royale where the game itself is editable mid-lobby. Players
-                                request features in English; a multi-agent pipeline writes and tests the code, then a
-                                git-like patch system merges everyone's picks into a single, one-off match.</p>
+                            <h2>Player-made mechanics</h2>
+                            <p>Players request features from the lobby. A generation pipeline writes and tests the code, then a patch system combines the selected features before the match starts.</p>
                             <ul class="sidecard-highlight">
                                 <li><i class="bi bi-patch-check"></i><span>Every generated feature has to pass
                                         <code>pytest</code> before it's allowed in — fail, and the agent enters a fix
@@ -167,8 +169,8 @@
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">How the magic works</p>
-                            <h2>English in, playable code out</h2>
+                            <p class="project-section-eyebrow">Feature generation</p>
+                            <h2>From a request to a mechanic</h2>
                         </div>
                         <ul class="project-keypoints">
                             <li>
@@ -177,28 +179,20 @@
                                     game code and writes Python that plugs straight into it.</p>
                             </li>
                             <li>
-                                <h3>Tested before it ships</h3>
-                                <p>Nothing reaches the match untested. Generated code runs through <code>pytest</code>,
-                                    and if it fails the agent loops on fixing it until it's green.</p>
+                                <h3>Test and revise</h3>
+                                <p>Generated code runs through <code>pytest</code>, with a repair loop for failing tests.</p>
                             </li>
                             <li>
-                                <h3>Everyone's build is different</h3>
+                                <h3>Combine player features</h3>
                                 <p>On game start the server gathers each player's chosen patches and merges them —
-                                    caching, deterministic rules, and the LLM for real conflicts — into a match that
-                                    exists exactly once.</p>
+                                    caching, deterministic rules, and the LLM for real conflicts — into a shared match build.</p>
                             </li>
                         </ul>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h2>The game is its own developer</h2>
-                        <p>
-                            Most games freeze their rules at launch. Core Conflict turns the developer loop into a
-                            runtime loop: it writes, tests, and ships its own code while you're still in the lobby. It's
-                            an ambitious, occasionally-held-together-with-tape prototype — but the first time a stranger's
-                            half-baked idea and yours both land in the same match, it genuinely feels like magic. (And
-                            yes, the abilities are all cow puns.)
-                        </p>
+                        <h2>Prototype scope</h2>
+                        <p>The experiment brings code generation into the game lobby: player requests become tested patches before a match starts. The generated mechanics and patch-merging workflow remain prototype features.</p>
                     </section>
 
                     <section class="project-section project-flow">
@@ -243,12 +237,12 @@
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">Caught in the act</p>
+                            <p class="project-section-eyebrow">Screenshots</p>
                             <h2>From a typed request to live gameplay</h2>
                         </div>
                         <div class="project-gallery">
                             <figure class="gallery-card">
-                                <img src="../assets/project-media/core-conflict/feature-prompt-running.jpg"
+                                <img width="1600" height="900" decoding="async" src="../assets/project-media/core-conflict/feature-prompt-running.jpg"
                                     alt="Core Conflict feature prompt running through the agent control center"
                                     loading="lazy" />
                                 <figcaption>A feature request typed into the control center while the agent writes and
@@ -256,7 +250,7 @@
                                 </figcaption>
                             </figure>
                             <figure class="gallery-card">
-                                <img src="../assets/project-media/core-conflict/patched-gameplay.jpg"
+                                <img width="1600" height="900" decoding="async" src="../assets/project-media/core-conflict/patched-gameplay.jpg"
                                     alt="Core Conflict patched gameplay running after a feature test" loading="lazy" />
                                 <figcaption>The freshly patched build running in the game room once its tests pass.
                                 </figcaption>
@@ -277,7 +271,7 @@
 
     <!-- Footer-->
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

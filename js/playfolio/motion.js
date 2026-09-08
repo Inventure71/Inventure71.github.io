@@ -1,3 +1,5 @@
+import { observeElementActivity } from './visibility.js';
+
 const WALL_PARTICLE_SPREADS = [-0.82, -0.52, -0.25, 0, 0.25, 0.52, 0.82];
 const CODEX_SPEED_ACCELERATION_PER_SECOND = 0.52;
 const CODEX_MAX_SPEED_MULTIPLIER = 2.45;
@@ -137,23 +139,42 @@ export function setupPortraitCycle(root = document) {
   if (sources.length < 2) return;
 
   let index = Math.max(0, sources.indexOf(image.getAttribute('src')));
-
-  sources.forEach((source) => {
-    const preload = new Image();
-    preload.src = source;
-  });
+  let interval = 0;
+  let switchTimer = 0;
+  let preloaded = false;
+  let active = false;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   image.addEventListener('load', () => {
     image.classList.remove('is-switching');
   });
 
-  window.setInterval(() => {
-    image.classList.add('is-switching');
-    window.setTimeout(() => {
-      index = (index + 1) % sources.length;
-      image.src = sources[index];
-    }, 180);
-  }, 2400);
+  const sync = () => {
+    window.clearInterval(interval);
+    window.clearTimeout(switchTimer);
+    image.classList.remove('is-switching');
+    if (!active || reducedMotion.matches) return;
+
+    if (!preloaded) {
+      sources.forEach((source) => {
+        const preload = new Image();
+        preload.src = source;
+      });
+      preloaded = true;
+    }
+    interval = window.setInterval(() => {
+      image.classList.add('is-switching');
+      switchTimer = window.setTimeout(() => {
+        index = (index + 1) % sources.length;
+        image.src = sources[index];
+      }, 180);
+    }, 2400);
+  };
+  reducedMotion.addEventListener?.('change', sync);
+  observeElementActivity(image, (visible) => {
+    active = visible;
+    sync();
+  });
 }
 
 export function setupCodexAmbassadorLogo(root = document) {
@@ -166,6 +187,8 @@ export function setupCodexAmbassadorLogo(root = document) {
   const shouldSkipVideo = () => reducedMotionQuery.matches || Boolean(navigator.connection?.saveData);
   let videoLoadQueued = false;
   let videoLoaded = false;
+  let videoLoadDue = false;
+  let active = false;
   let frameId = 0;
   let ball = null;
 
@@ -195,7 +218,7 @@ export function setupCodexAmbassadorLogo(root = document) {
   };
 
   const loadAmbassadorVideo = () => {
-    if (!video || !videoSource || videoLoaded || shouldSkipVideo()) return;
+    if (!video || !videoSource || videoLoaded || !active || shouldSkipVideo()) return;
 
     videoLoaded = true;
     videoSource.src = videoSource.dataset.src;
@@ -211,7 +234,10 @@ export function setupCodexAmbassadorLogo(root = document) {
     videoLoadQueued = true;
     const delay = Number(video.dataset.loadDelayMs || 3500);
     window.setTimeout(() => {
-      const load = () => loadAmbassadorVideo();
+      const load = () => {
+        videoLoadDue = true;
+        loadAmbassadorVideo();
+      };
       if (typeof window.requestIdleCallback === 'function') {
         window.requestIdleCallback(load, { timeout: 1200 });
       } else {
@@ -239,10 +265,15 @@ export function setupCodexAmbassadorLogo(root = document) {
   };
 
   const tickBall = (time) => {
-    if (!ball) return;
+    frameId = 0;
+    if (!ball || !active) return;
 
     const dt = Math.min(0.032, (time - ball.lastTime) / 1000 || 0);
     ball.lastTime = time;
+    if (dt <= 0) {
+      frameId = window.requestAnimationFrame(tickBall);
+      return;
+    }
 
     ball.x += ball.vx * dt;
     ball.y += ball.vy * dt;
@@ -285,7 +316,7 @@ export function setupCodexAmbassadorLogo(root = document) {
 
   const startBall = (event) => {
     loadAmbassadorVideo();
-    if (reducedMotionQuery.matches || ball) return;
+    if (!active || reducedMotionQuery.matches || ball) return;
 
     const stage = logo.closest('.pf-portrait-stage');
     if (!stage) return;
@@ -326,6 +357,31 @@ export function setupCodexAmbassadorLogo(root = document) {
     frameId = window.requestAnimationFrame(tickBall);
   };
 
+  const syncActivity = () => {
+    if (!active || shouldSkipVideo()) {
+      video?.pause();
+    } else if (videoLoaded) {
+      video.play().catch(() => {});
+    } else if (videoLoadDue) {
+      loadAmbassadorVideo();
+    }
+
+    if (reducedMotionQuery.matches) {
+      stopBall();
+    } else if (!active) {
+      if (frameId) window.cancelAnimationFrame(frameId);
+      frameId = 0;
+    } else if (ball && !frameId) {
+      ball.lastTime = performance.now();
+      frameId = window.requestAnimationFrame(tickBall);
+    }
+  };
+
+  observeElementActivity(logo.closest('.pf-portrait-stage') || logo, (visible) => {
+    active = visible;
+    syncActivity();
+  });
+  reducedMotionQuery.addEventListener?.('change', syncActivity);
   queueAmbassadorVideoLoad();
   logo.addEventListener('pointerenter', startBall);
   logo.addEventListener('focus', startBall);

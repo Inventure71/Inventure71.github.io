@@ -7,7 +7,7 @@
     <meta name="description" content="ContextKey - an experimental local autocomplete system for macOS" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>ContextKey - M.G.</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
@@ -15,7 +15,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--contextkey" data-project-family="app">
@@ -81,7 +88,7 @@
                         <div>
                             <p class="project-section-eyebrow">Experimental macOS prototype</p>
                             <h1>ContextKey</h1>
-                            <p class="lead">macOS has no universal "what am I typing" API, so nobody's shipped a system-wide autocomplete that respects your privacy. ContextKey is my attempt — it reads the field you're in, asks a model running on your own Mac for a short continuation, and offers it inline. No text ever leaves the machine.</p>
+                            <p class="lead">An experimental macOS autocomplete that reads the field you’re working in and offers a short continuation from a model running on your Mac.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Swift 6</span>
                                 <span class="project-pill">AppKit</span>
@@ -98,11 +105,11 @@
 
                     <section class="project-media-panel project-media-panel--without-media">
                         <aside class="project-sidecard">
-                            <h2>Context, without leaving the app you're in</h2>
-                            <p>It reads the text surface you're focused on, stitches together the context around it, asks a local model for a short continuation, ranks what comes back, and draws it right next to your cursor — all without you switching windows.</p>
+                            <h2>Suggestions beside the cursor</h2>
+                            <p>ContextKey gathers text around the focused field, generates a continuation locally, and displays it beside the cursor for you to accept.</p>
                             <ul class="sidecard-highlight">
                                 <li><i class="bi bi-eye"></i><span>Accessibility APIs and optional Vision OCR cover native apps; a tiny browser extension feeds in structured DOM context.</span></li>
-                                <li><i class="bi bi-laptop"></i><span>The model runs on the Mac via MLX, and a global event tap accepts the suggestion — never hijacking the editor you're already using.</span></li>
+                                <li><i class="bi bi-laptop"></i><span>MLX runs the model locally; Option-Space accepts the displayed suggestion.</span></li>
                             </ul>
                         </aside>
                     </section>
@@ -115,14 +122,14 @@
                         <div class="project-flow-steps">
                             <div class="project-flow-step"><span class="flow-index">01</span><div class="flow-body"><h3>Capture</h3><p>Grab the focused field, the text around it, which app I'm in, and any structure the browser can hand over.</p></div></div>
                             <div class="project-flow-step"><span class="flow-index">02</span><div class="flow-body"><h3>Generate</h3><p>Hand a compact prompt to a language model running locally through MLX.</p></div></div>
-                            <div class="project-flow-step"><span class="flow-index">03</span><div class="flow-body"><h3>Rank</h3><p>Throw out anything low-quality, unsafe, repetitive, or poorly grounded — which, most of the time, means suggesting nothing.</p></div></div>
+                            <div class="project-flow-step"><span class="flow-index">03</span><div class="flow-body"><h3>Rank</h3><p>Filter irrelevant, repetitive, or unsafe candidates; show nothing if none pass.</p></div></div>
                             <div class="project-flow-step"><span class="flow-index">04</span><div class="flow-body"><h3>Overlay</h3><p>Draw a faint inline suggestion, and only insert it when you actually accept with Option-Space.</p></div></div>
                         </div>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h2>The hard part was teaching it to stay quiet</h2>
-                        <p>Most of the engineering here isn't generating text — it's refusing to. A suggestion that says nothing when it's unsure feels far smarter than one that confidently guesses wrong, so the ranker discards anything that just repeats what you typed, narrates itself, or looks unsafe. It's still a research prototype — the context capture and localhost transport need a stricter security model before I'd trust it in production — but that restraint is the part I'm proud of.</p>
+                        <h2>When to suggest nothing</h2>
+                        <p>The ranker filters repeated text, irrelevant continuations, and unsafe suggestions. Context capture and the local transport still need further security work before the prototype is ready for wider use.</p>
                     </section>
 
                     <div class="text-center">
@@ -133,7 +140,7 @@
         </section>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

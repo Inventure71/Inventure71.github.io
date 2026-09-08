@@ -8,7 +8,7 @@
     <meta name="author" content="Matteo Giorgetti" />
     <meta name="theme-color" content="#0d0d0b" />
     <title>Project Unity - M.G.</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
@@ -16,7 +16,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-    <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--unity" data-project-family="systems">
@@ -83,7 +90,7 @@
                         <div>
                             <p class="project-eyebrow">Cross-platform systems prototype</p>
                             <h1>Project Unity</h1>
-                            <p class="lead">Move the pointer through the edge of a Mac and keep controlling a Windows PC as if both screens belonged to one machine—with the input path encrypted, recoverable, and fast enough to disappear.</p>
+                            <p class="lead">Use one keyboard and mouse across your Mac and Windows PC. Move the pointer across a screen edge to switch computers.</p>
                             <div class="project-pills" aria-label="Core technologies">
                                 <span class="project-pill">Swift 6</span>
                                 <span class="project-pill">C++ / Win32</span>
@@ -94,14 +101,14 @@
                             <div class="hero-meta-card"><dt class="label">Role</dt><dd class="value">Creator · Systems engineer</dd></div>
                             <div class="hero-meta-card"><dt class="label">Year</dt><dd class="value">2026</dd></div>
                             <div class="hero-meta-card"><dt class="label">State</dt><dd class="value">Paired development MVP</dd></div>
-                            <div class="hero-meta-card"><dt class="label">Proof</dt><dd class="value">1.107 ms median software path</dd></div>
+
                         </dl>
                     </header>
 
                     <section class="project-media-panel project-media-panel--without-media" aria-label="Project Unity summary">
                         <aside class="project-sidecard" aria-labelledby="unity-summary-title">
-                            <h2 id="unity-summary-title">The cursor crosses because the systems agree</h2>
-                            <p>Project Unity is not screen sharing. Native apps on both computers negotiate who owns input, map their displays in physical space, and move mouse, keyboard, wheel, gesture, and media-key state over a private LAN.</p>
+                            <h2 id="unity-summary-title">Two computers, shared input</h2>
+                            <p>Native apps map the displays and transfer mouse, keyboard, wheel, gesture, and media-key input over the local network.</p>
                             <ul class="sidecard-highlight">
                                 <li><i class="bi bi-shield-lock" aria-hidden="true"></i><span>Six-digit pairing creates stable device identities; ownership and realtime traffic are authenticated and encrypted.</span></li>
                                 <li><i class="bi bi-arrow-left-right" aria-hidden="true"></i><span>Control works in both directions, with explicit leases and watchdogs that restore local input when the path fails.</span></li>
@@ -112,14 +119,14 @@
                     <section class="project-section">
                         <div class="project-section-header"><p class="project-section-eyebrow">System boundaries</p><h2>Discovery, ownership, input</h2></div>
                         <div class="project-insight-grid">
-                            <article class="project-insight-card"><h3>Find and trust</h3><p>DNS-SD discovers peers, manual addressing provides a verified fallback, and concurrent six-digit confirmation prevents pairing with the wrong machine.</p></article>
-                            <article class="project-insight-card"><h3>Own and transport</h3><p>An authenticated TCP lease decides who controls what. Encrypted UDP carries cumulative motion and complete button/key snapshots without turning one lost packet into a stall.</p></article>
+                            <article class="project-insight-card"><h3>Discovery and pairing</h3><p>DNS-SD discovers peers, manual addressing provides a fallback, and both computers display a six-digit pairing confirmation.</p></article>
+                            <article class="project-insight-card"><h3>Input ownership and transport</h3><p>An authenticated TCP lease decides who controls what. Encrypted UDP carries cumulative motion and complete button/key snapshots without turning one lost packet into a stall.</p></article>
                             <article class="project-insight-card"><h3>Capture and recover</h3><p>Native event capture feeds macOS posting or Windows <code>SendInput</code>. Sequence tracking, transition journals, fail-safe release, and ACK watchdogs make failure return control locally.</p></article>
                         </div>
                     </section>
 
                     <section class="project-section">
-                        <div class="project-section-header"><p class="project-section-eyebrow">Measured on the real path</p><h2>Latency without hiding the tail</h2></div>
+                        <div class="project-section-header"><p class="project-section-eyebrow">Measurements</p><h2>Input and network timing</h2></div>
                         <ul class="project-data-strip">
                             <li><span class="metric-value">20k</span><span class="metric-label">1,000 Hz samples</span><span class="metric-copy">Same-LAN transport runs completed with zero packet loss.</span></li>
                             <li><span class="metric-value">2.0 ms</span><span class="metric-label">Median RTT</span><span class="metric-copy">The documented Wi-Fi route reached 6.1–7.0 ms at p99.9.</span></li>
@@ -128,8 +135,8 @@
                     </section>
 
                     <section class="project-section project-spotlight" aria-label="Outcome and current limitation">
-                        <h2>A convincing MVP, not a release claim</h2>
-                        <p>The paired Mac–Windows path is working and instrumented, but the protocol still needs independent security review, the Windows binaries need Authenticode signing, and a true three-device physical matrix remains open. Software timing also cannot replace motion-to-photon testing in a real target application.</p>
+                        <h2>Prototype limits</h2>
+                        <p>The Mac–Windows prototype still needs independent protocol review and testing across three physical devices. The software timings above measure input processing and transport, not the delay until a target app draws the result.</p>
                     </section>
 
                     <nav class="text-center" aria-label="Project navigation"><a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to the project race</a></nav>
@@ -138,7 +145,7 @@
         </section>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

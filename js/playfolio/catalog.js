@@ -21,39 +21,39 @@ export const projectCommandItems = [
   },
   {
     label: 'HoloVinyl',
-    description: 'Touchless vision control deck',
+    description: 'Music controlled with gestures',
     href: '/project_details/project-holovinyl.html',
     keywords: 'holovinyl computer vision gesture music python interaction',
   },
   {
-    label: 'DrSorrisoDonations',
-    description: 'Donation intelligence platform',
+    label: 'Dr Sorriso Donations',
+    description: 'Donation record classification',
     href: '/project_details/project-drsorrisodonations.html',
     keywords: 'dr sorriso donations donor crm analytics python',
   },
   {
     label: 'VictorIA',
-    description: 'Multi-domain AI sandbox',
+    description: 'A robot that plays Connect Four',
     href: '/project_details/project-victoria.html',
     keywords: 'victoria ai game computer vision robotics sandbox',
   },
   {
     label: 'ReminderZ / Project Loom',
-    description: 'AI context weaving platform',
+    description: 'Connected notes and reminders',
     href: '/project_details/project-remainder-v0.html',
     keywords: 'reminderz reminderproject remainder project loom context weaving knowledge workflow',
   },
   {
     label: 'ClipClop',
-    description: 'Cross-device clipboard intelligence',
+    description: 'Shared clipboard for Mac and Android',
     href: '/project_details/project-clipclop.html',
     keywords: 'clipclop clipboard android macos productivity',
   },
   {
-    label: 'EvolveProject',
-    description: 'AI card generation backend',
+    label: 'Evolve Project',
+    description: 'Agent that writes and loads its own tools',
     href: '/project_details/project-evolveproject.html',
-    keywords: 'evolveproject generative ai unreal engine card generation',
+    keywords: 'evolveproject python gemini ollama agents dynamic tools shell',
   },
   {
     label: 'Clash Royale In Python',
@@ -69,7 +69,7 @@ export const projectCommandItems = [
   },
   {
     label: 'Noty',
-    description: 'Local-first attached notes for macOS',
+    description: 'Notes attached to your Mac windows',
     href: '/project_details/project-noty.html',
     keywords: 'noty macos notes markdown appkit swift local first attachments',
   },
@@ -105,7 +105,7 @@ export const projectCommandItems = [
   },
   {
     label: 'MattyFlow',
-    description: 'Local-first macOS dictation and rewriting',
+    description: 'Dictation and rewriting on your Mac',
     href: '/project_details/project-mattyflow.html',
     keywords: 'mattyflow localflow macos dictation speech mlx gemma swift python local first',
   },
@@ -123,9 +123,9 @@ export const projectCommandItems = [
   },
   {
     label: 'Ghoststroke',
-    description: 'Notarized, target-safe typing automation for macOS',
+    description: 'Prepared text typed at your own pace',
     href: '/project_details/project-ghoststroke.html',
-    keywords: 'ghoststroke macos swift accessibility typing automation cadence profiles notarized keyboard',
+    keywords: 'ghoststroke macos swift accessibility typing automation cadence profiles keyboard',
   },
 ];
 
@@ -170,7 +170,7 @@ export const commandItems = [
   {
     label: 'Download ClipClop',
     description: 'Open latest ClipClop release',
-    href: 'https://github.com/Inventure71/ClipClop/releases/tag/beta.2',
+    href: 'https://github.com/Inventure71/ClipClop/releases/latest',
     keywords: 'app utility clipboard release download',
   },
 ];

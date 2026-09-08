@@ -8,7 +8,7 @@
     <meta name="author" content="Matteo Giorgetti" />
     <title>ClipClop - M.G.</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +23,14 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--clipclop" data-project-family="app">
@@ -89,9 +96,7 @@
                     <header class="project-hero">
                         <div>
                             <h1>ClipClop</h1>
-                            <p class="lead">Copy something on my Mac, and a second later it's on my phone. ClipClop is a
-                                local-first clipboard bridge between macOS and Android — no cloud, no account, just two
-                                devices talking over your own Wi-Fi.</p>
+                            <p class="lead">Share text and images between a Mac and an Android phone over your local Wi-Fi.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Python</span>
                                 <span class="project-pill">Android</span>
@@ -120,13 +125,10 @@
 
                     <section class="project-media-panel project-media-panel--without-media">
                         <aside class="project-sidecard">
-                            <h2>The short version</h2>
-                            <p>ClipClop keeps the clipboard in sync between my Mac and my Android phone, entirely over the
-                                local network. Copy a link, a paragraph, or a screenshot on one device and it lands on the
-                                other — encrypted end to end, never touching a server.</p>
+                            <h2>Pair once, copy across devices</h2>
+                            <p>Scan the Mac’s QR code to pair the Android companion. ClipClop transfers text and images over the local network and reconnects when device addresses change.</p>
                             <ul class="sidecard-highlight">
-                                <li><i class="bi bi-lightning-charge"></i><span>The Mac pushes changes the instant they
-                                        happen — it watches a near-free change counter, not the clipboard's contents.</span></li>
+                                <li><i class="bi bi-lightning-charge"></i><span>The Mac checks the clipboard change counter before reading and sending new content.</span></li>
                                 <li><i class="bi bi-phone"></i><span>Pairing is a single QR scan, and reconnection is
                                         automatic even when my phone's IP changes.</span></li>
                             </ul>
@@ -135,9 +137,9 @@
                                     <span>Desktop Repository</span>
                                     <i class="bi bi-arrow-up-right"></i>
                                 </a>
-                                <a href="https://github.com/Inventure71/ClipboardManagerAndroid" target="_blank"
+                                <a href="https://github.com/Inventure71/ClipClop/releases/latest" target="_blank"
                                     rel="noreferrer">
-                                    <span>Android Companion</span>
+                                    <span>Download Mac + Android</span>
                                     <i class="bi bi-arrow-up-right"></i>
                                 </a>
                             </div>
@@ -146,14 +148,13 @@
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">Where it earns its keep</p>
-                            <h2>The moments I built it for</h2>
+                            <p class="project-section-eyebrow">Uses</p>
+                            <h2>Text, links, and images</h2>
                         </div>
                         <ul class="project-keypoints">
                             <li>
                                 <h3>Links &amp; snippets</h3>
-                                <p>Copy a URL or a block of code on my laptop and paste it on my phone a second later —
-                                    no AirDrop dance, no emailing things to myself.</p>
+                                <p>Copy a URL or code snippet on the Mac and paste it on the phone.</p>
                             </li>
                             <li>
                                 <h3>Screenshots too</h3>
@@ -161,9 +162,8 @@
                                     waiting in the clipboard on the other.</p>
                             </li>
                             <li>
-                                <h3>Café Wi-Fi, no worries</h3>
-                                <p>Every message is AES-256-GCM encrypted with a key that only ever travels by QR code,
-                                    so the traffic stays opaque even on a shared network.</p>
+                                <h3>Encrypted transfers</h3>
+                                <p>Messages use AES-256-GCM encryption with a key exchanged during QR pairing.</p>
                             </li>
                         </ul>
                     </section>
@@ -206,13 +206,8 @@
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h2>No cloud. No account. Just your two devices.</h2>
-                        <p>
-                            Nothing ClipClop moves ever leaves your local network. There's no server to trust, no sync
-                            account to create, and the encryption key is exchanged by scanning a QR code — it never
-                            crosses the wire. It's the clipboard sync I always wished existed: private because of how
-                            it's built, not because of a privacy policy.
-                        </p>
+                        <h2>Transfer direction</h2>
+                        <p>Mac-to-Android transfers happen automatically. Sending a clip from Android to the Mac takes one tap. Both devices need to be on the same local network.</p>
                     </section>
 
                     <section class="project-section project-flow">
@@ -233,8 +228,7 @@
                                 <span class="flow-index">02</span>
                                 <div class="flow-body">
                                     <h3>Copy</h3>
-                                    <p>Copy anything on the Mac. It notices the change instantly and wraps the payload
-                                        in AES-256-GCM.</p>
+                                    <p>Copy text or an image on the Mac. ClipClop detects the change and encrypts the payload.</p>
                                 </div>
                             </div>
                             <div class="project-flow-step">
@@ -249,8 +243,7 @@
                                 <span class="flow-index">04</span>
                                 <div class="flow-body">
                                     <h3>Reconnect</h3>
-                                    <p>Switch networks or let your phone sleep — ClipClop finds the Mac again by its
-                                        device ID and picks up right where it left off.</p>
+                                    <p>After a network change, ClipClop looks for the paired Mac using its device ID.</p>
                                 </div>
                             </div>
                         </div>
@@ -270,7 +263,7 @@
 
     <!-- Footer-->
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

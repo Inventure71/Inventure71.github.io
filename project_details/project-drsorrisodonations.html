@@ -8,7 +8,7 @@
     <meta name="author" content="Matteo Giorgetti" />
     <title>DrSorrisoDonations - M.G.</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +23,14 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--drsorriso" data-project-family="systems">
@@ -88,11 +95,8 @@
                 <div class="project-shell fade-in">
                     <header class="project-hero">
                         <div>
-                            <h1>DrSorrisoDonations</h1>
-                            <p class="lead">Every donation to the Fondazione Dottor Sorriso arrives as a cryptic
-                                bank-transfer memo, with the donor's name buried somewhere in the noise. This bot reads
-                                those lines, figures out who actually gave, and files each donation into the charity's
-                                platform automatically — the tedious job no volunteer should have to do by hand.</p>
+                            <h1>Dr Sorriso Donations</h1>
+                            <p class="lead">An internal tool for Fondazione Dottor Sorriso that extracts donor names from bank-transfer descriptions and records donations in the charity’s platform.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Python</span>
                                 <span class="project-pill">Selenium</span>
@@ -114,37 +118,27 @@
                             </div>
                             <div class="hero-meta-card">
                                 <span class="label">Status</span>
-                                <span class="value">Internal tool · in use</span>
+                                <span class="value">Internal tool</span>
                             </div>
                         </div>
                     </header>
 
                     <section class="project-media-panel project-media-panel--without-media">
                         <aside class="project-sidecard">
-                            <h2>The short version</h2>
-                            <p>It logs into the charity's donation platform, reads each incoming transfer's raw
-                                description, pulls the donor out of the noise, and enters the donation — matching it to a
-                                campaign code or an existing contact, creating one when needed.</p>
+                            <h2>From a transfer to a donation record</h2>
+                            <p>The tool reads transfer descriptions, identifies donor names or campaign codes, and matches entries to existing contacts or creates a contact when needed.</p>
                             <ul class="sidecard-highlight">
                                 <li><i class="bi bi-people"></i><span>A multi-call LLM consensus — it asks GPT-4o-mini a
                                         few times at different temperatures, then votes on the donor's name.</span></li>
-                                <li><i class="bi bi-card-list"></i><span>A hand-built Italian name dictionary — 200k+
-                                        first names, 800k+ surnames — tells real donors apart from bank codes.</span></li>
+                                <li><i class="bi bi-card-list"></i><span>Italian first-name and surname dictionaries help distinguish donor names from bank codes.</span></li>
                             </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71/DrSorrisoDonations" target="_blank"
-                                    rel="noreferrer">
-                                    <span>View Repository</span>
-                                    <i class="bi bi-arrow-up-right"></i>
-                                </a>
-                            </div>
                         </aside>
                     </section>
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">What it actually does</p>
-                            <h2>From bank noise to a filed donation</h2>
+                            <p class="project-section-eyebrow">Donation processing</p>
+                            <h2>Identify, match, and record</h2>
                         </div>
                         <ul class="project-keypoints">
                             <li>
@@ -153,14 +147,13 @@
                                     bot detects which, and routes each down the right path.</p>
                             </li>
                             <li>
-                                <h3>Names out of noise</h3>
+                                <h3>Donor extraction</h3>
                                 <p>It strips transaction boilerplate, dedups repeated tokens, and cross-checks against a
                                     dictionary of Italian names to pull the real donor out.</p>
                             </li>
                             <li>
-                                <h3>It remembers</h3>
-                                <p>Every parsed donation is cached, so recurring donors are recognized instantly instead
-                                    of re-running the language model.</p>
+                                <h3>Cached results</h3>
+                                <p>Parsed results are cached to avoid repeating language-model calls for descriptions already processed.</p>
                             </li>
                         </ul>
                     </section>
@@ -186,7 +179,7 @@
                                     are Italian, and never two surnames in a row.</p>
                                 <ul>
                                     <li>A few calls at different temperatures, then a consensus vote.</li>
-                                    <li>A second pass double-checks the result before it's trusted.</li>
+                                    <li>A second pass checks the extracted name.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
@@ -195,21 +188,15 @@
                                     creating new ones, and confirming each entry.</p>
                                 <ul>
                                     <li>Handles error popups, alerts, and a self-migrating local cache.</li>
-                                    <li>Skips any donor it has already parsed before.</li>
+                                    <li>Reuses cached donor-parsing results.</li>
                                 </ul>
                             </article>
                         </div>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h2>So a volunteer doesn't hand-copy hundreds of donors</h2>
-                        <p>
-                            This is the least glamorous problem I've ever solved, and one of my favorites. Behind every
-                            garbled bank line is a real person — someone who sent a small gift to a foundation that brings
-                            joy to hospitalized children. The bot's whole job is to read past the "BONIFICO SEPA … TRN …"
-                            and find that person, so the people running the charity can spend their time on the kids
-                            instead of on spreadsheets.
-                        </p>
+                        <h2>Built for the foundation</h2>
+                        <p>The tool supports donation administration at Fondazione Dottor Sorriso by automating donor lookup and entry from bank-transfer descriptions.</p>
                     </section>
 
                     <section class="project-section project-flow">
@@ -267,7 +254,7 @@
 
     <!-- Footer-->
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

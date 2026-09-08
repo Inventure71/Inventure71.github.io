@@ -7,7 +7,7 @@
     <meta name="description" content="PaddockJS - an installable F1-style simulation toolkit for the browser and headless controllers" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>PaddockJS - M.G.</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
@@ -15,7 +15,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--paddockjs" data-project-family="systems">
@@ -81,7 +88,7 @@
                         <div>
                             <p class="project-section-eyebrow">Open-source simulation toolkit</p>
                             <h1>PaddockJS</h1>
-                            <p class="lead">This whole site presents my projects as Formula 1 cars on a grid — PaddockJS is the engine that makes them race. It started as that portfolio toy and grew into a real npm package: a PixiJS renderer for the browser, with a deterministic headless environment underneath.</p>
+                            <p class="lead">The JavaScript racing simulator behind this site’s project race, available as a browser component and a headless environment.</p>
                             <div class="project-pills">
                                 <span class="project-pill">JavaScript ESM</span>
                                 <span class="project-pill">PixiJS 8</span>
@@ -98,8 +105,8 @@
 
                     <section class="project-media-panel project-media-panel--without-media">
                         <aside class="project-sidecard">
-                            <h2>A package, not a one-off animation</h2>
-                            <p>PaddockJS owns the entire simulation — renderer, assets, race runtime, mount APIs, data contracts, and rules. A host site just hands it project data and decides where things go. It even grew a Gym-style headless environment, so you can train a driving model on the exact physics you watch in the browser.</p>
+                            <h2>Browser and headless APIs</h2>
+                            <p>Use a complete race view or place the track, controls, timing, and telemetry separately. A headless API runs the same simulation for experiments and training.</p>
                             <ul class="sidecard-highlight">
                                 <li><i class="bi bi-grid-3x3-gap"></i><span>One controller drives both the all-in-one race and individually placed surfaces — timing tower, telemetry, controls.</span></li>
                                 <li><i class="bi bi-cpu"></i><span>A CSS-free headless subpath steps the same deterministic sim, with no PixiJS and no browser.</span></li>
@@ -119,14 +126,14 @@
                         </div>
                         <div class="project-insight-grid">
                             <article class="project-insight-card"><h3>Drop-in race</h3><p>One call puts a full race into a page — cars, track, timing tower, telemetry — with loading and failure handling already wired up.</p></article>
-                            <article class="project-insight-card"><h3>Composable surfaces</h3><p>Or scatter the controls, canvas, timing, and telemetry across your own layout, all sharing a single simulator behind them.</p></article>
+                            <article class="project-insight-card"><h3>Separate components</h3><p>Place controls, canvas, timing, and telemetry in your own layout, connected to a shared simulator.</p></article>
                             <article class="project-insight-card"><h3>Headless environment</h3><p>Training code steps the identical deterministic sim through a Gym-style reset/step API — no rendering, no CSS, fully reproducible from a seed.</p></article>
                         </div>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h2>And then it actually learned to drive</h2>
-                        <p>What began as a UI toy turned into a genuine reinforcement-learning playground. I cloned the sim's built-in AI into a small PyTorch network, repaired its failure cases with DAgger, and picked the best three-model committee by real driving score across 80+ procedurally generated tracks it had never seen. It now races right here in the browser with zero ML dependencies — the whole "brain" is just JSON weights run through a tanh MLP.</p>
+                        <h2>Testing custom drivers</h2>
+                        <p>The headless environment exposes observations, actions, and repeatable scenarios for testing driving policies. A custom controller can also run in browser playback, where you can inspect its braking, track limits, and recovery.</p>
                     </section>
 
                     <div class="text-center">
@@ -137,7 +144,7 @@
         </section>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

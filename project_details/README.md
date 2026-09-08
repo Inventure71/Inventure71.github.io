@@ -175,8 +175,8 @@ Do not duplicate component rules, tint every surface, or introduce an override c
 1. Copy `_template.html`.
 2. Replace all bracketed content and add a unique page modifier.
 3. Keep only modules that add new evidence.
-4. Add the project to `../js/portfolio-race-data.js`, `../js/playfolio/catalog.js`, and `../js/neuron-brain.js`.
-5. Run `npm run sync:chrome`.
+4. Add the project to `../js/portfolio-race-data.js`, `../js/playfolio/catalog.js`, and `../js/project-map-data.js`.
+5. Run `npm run sync:chrome` and `npm run sync:styles`.
 6. Verify light/dark themes, keyboard navigation, reduced motion, 390px mobile, 1280px desktop, and an ultra-wide viewport.
 7. Run `npm run check` and `git diff --check`.
 
@@ -191,4 +191,4 @@ Do not duplicate component rules, tint every surface, or introduce an override c
 - `project-mattyflow.html` — text-first local AI application.
 - `project-mosaic.html` — distributed robotics ownership model.
 - `project-databases-ie.html` — data-model and transaction case study.
-- `project-ghoststroke.html` — notarized native utility with real identity artwork and a target-safety-led flow.
+- `project-ghoststroke.html` — native typing app with real identity artwork and a cursor-selection flow.

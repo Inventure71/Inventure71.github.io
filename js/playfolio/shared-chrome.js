@@ -66,9 +66,9 @@ export function buildSharedNavbarMarkup(activeKey = 'home') {
 
 export function buildSharedFooterMarkup() {
   return `
-      <div class="pf-shell d-flex flex-column flex-sm-row justify-content-between gap-2">
-        <div class="small">Copyright &copy; inventure71.github.io 2026</div>
-        <div class="small d-flex gap-3">
+      <div class="pf-shell pf-footer-inner">
+        <div class="small">&copy; 2026 Matteo Giorgetti</div>
+        <div class="pf-footer-links">
           ${footerLinks.map((link) => {
             const rel = link.external ? ' target="_blank" rel="noopener"' : '';
             return `<a href="${escapeHtml(link.href)}"${rel}>${escapeHtml(link.label)}</a>`;

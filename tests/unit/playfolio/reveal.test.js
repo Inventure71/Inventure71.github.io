@@ -8,10 +8,10 @@ describe('playfolio reveal behavior', () => {
     delete global.IntersectionObserver;
   });
 
-  test('toggles reveal visibility in both scroll directions', () => {
+  test('reveals a section once and leaves it visible when it leaves the viewport', () => {
     const item = {
       classList: {
-        toggle: vi.fn(),
+        add: vi.fn(),
       },
     };
     const root = {
@@ -35,8 +35,26 @@ describe('playfolio reveal behavior', () => {
       { target: item, isIntersecting: false },
     ]);
 
-    expect(item.classList.toggle).toHaveBeenNthCalledWith(1, 'is-visible', true);
-    expect(item.classList.toggle).toHaveBeenNthCalledWith(2, 'is-visible', false);
-    expect(unobserve).not.toHaveBeenCalled();
+    expect(item.classList.add).toHaveBeenCalledWith('is-reveal-ready');
+    expect(item.classList.add).toHaveBeenCalledWith('is-visible');
+    expect(unobserve).toHaveBeenCalledOnce();
+    expect(unobserve).toHaveBeenCalledWith(item);
+  });
+
+  test.each([false, true])('shows content immediately when reduced motion is %s and observation is unavailable', (reduce) => {
+    const item = { classList: { add: vi.fn() } };
+    global.window = { matchMedia: () => ({ matches: reduce }) };
+    setupReveals({ querySelectorAll: () => [item] });
+    expect(item.classList.add).toHaveBeenCalledWith('is-visible');
+    expect(item.classList.add).not.toHaveBeenCalledWith('is-reveal-ready');
+  });
+
+  test('does not create an observer when reduced motion is requested', () => {
+    const item = { classList: { add: vi.fn() } };
+    global.window = { IntersectionObserver: true, matchMedia: () => ({ matches: true }) };
+    global.IntersectionObserver = vi.fn();
+    setupReveals({ querySelectorAll: () => [item] });
+    expect(item.classList.add).toHaveBeenCalledWith('is-visible');
+    expect(global.IntersectionObserver).not.toHaveBeenCalled();
   });
 });

@@ -9,7 +9,7 @@
     <meta name="author" content="Matteo Giorgetti" />
     <title>Clash Royale In Python - M.G.</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,14 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--algorithms" data-project-family="game">
@@ -90,12 +97,7 @@
                     <header class="project-hero">
                         <div>
                             <h1>Clash Royale In Python</h1>
-                            <p class="lead">
-                                A fully playable Clash Royale clone I wrote in Python for an algorithms course — though
-                                the game was really an excuse to hand-build every data structure and algorithm from
-                                scratch (BFS pathfinding, custom queues and linked lists, merge sort) and prove out the
-                                Big-O for each. It just happens to be genuinely fun to play.
-                            </p>
+                            <p class="lead">A playable Clash Royale-inspired game built for an algorithms course, with hand-written pathfinding, sorting, queues, and linked lists.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Python</span>
                                 <span class="project-pill">Pygame</span>
@@ -124,29 +126,24 @@
 
                     <section class="project-media-panel project-media-panel--split">
                         <div class="ratio ratio-16x9">
-                            <iframe src="https://www.youtube-nocookie.com/embed/35BMyos7Oa8" title="Algorithms Project Video"
+                            <iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/35BMyos7Oa8" title="Algorithms Project Video"
                                 allowfullscreen></iframe>
                         </div>
                         <aside class="project-sidecard">
-                            <h2>No standard library allowed</h2>
-                            <p>
-                                That was the self-imposed rule. The queue, the linked list, the pathfinder — all
-                                hand-written, and each one's docstring argues why it beats the obvious alternative. Then
-                                there's a greedy AI opponent that scores threats and picks counters, so you actually have
-                                someone to lose to.
-                            </p>
+                            <h2>Hand-built algorithms</h2>
+                            <p>The queue, linked list, and pathfinder are written from scratch, with time and space complexity documented alongside them. A greedy opponent scores threats and chooses counters.</p>
                             <ul class="sidecard-highlight">
                                 <li><i class="bi bi-graph-up"></i><span><strong>Big-O on everything:</strong> nearly every
                                         function documents its time and space complexity.</span></li>
                                 <li><i class="bi bi-diagram-3"></i><span><strong>Size-aware BFS:</strong> pathfinding that
                                         validates a troop's whole footprint, not just one cell.</span></li>
-                                <li><i class="bi bi-cpu"></i><span><strong>A bot that fights back:</strong> greedy threat
+                                <li><i class="bi bi-cpu"></i><span><strong>Opponent logic:</strong> greedy threat
                                         scoring with a hard-coded counter table.</span></li>
                             </ul>
                             <div class="sidecard-links">
                                 <a href="https://github.com/Inventure71/AlgorithmsProject" target="_blank"
                                     rel="noreferrer">
-                                    <span>Explore Logic on GitHub</span>
+                                    <span>View repository</span>
                                     <i class="bi bi-github"></i>
                                 </a>
                             </div>
@@ -156,7 +153,7 @@
                     <section class="project-section">
                         <div class="project-section-header">
                             <p class="project-section-eyebrow">Built by hand</p>
-                            <h2>The pieces under the game</h2>
+                            <h2>Algorithms in the game</h2>
                         </div>
                         <div class="project-insight-grid">
                             <article class="project-insight-card">
@@ -184,7 +181,7 @@
                                     pointer and a linked list — instead of reaching for <code>collections.deque</code>.</p>
                                 <ul>
                                     <li><strong>Enqueue / dequeue:</strong> O(1)</li>
-                                    <li>Every docstring argues why it beats the array version.</li>
+                                    <li>The implementation documents its complexity and compares it with an array-backed approach.</li>
                                 </ul>
                             </article>
                         </div>
@@ -202,7 +199,7 @@
     </main>
     <!-- Footer-->
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

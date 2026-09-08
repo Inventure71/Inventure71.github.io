@@ -7,7 +7,7 @@
     <meta name="description" content="Dream2Detect - a synthetic-to-real computer vision study for package damage classification" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>Dream2Detect - M.G.</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
@@ -15,7 +15,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--dream2detect" data-project-family="research">
@@ -81,7 +88,7 @@
                         <div>
                             <p class="project-section-eyebrow">Computer vision research</p>
                             <h1>Dream2Detect</h1>
-                            <p class="lead">Can a model trained entirely on AI-generated package photos learn to judge damage in real ones? I built Dream2Detect to find out — and to find out honestly.</p>
+                            <p class="lead">A computer vision study testing whether models trained on generated package images can assess damage in real photographs.</p>
                             <div class="project-pills">
                                 <span class="project-pill">PyTorch</span>
                                 <span class="project-pill">Synthetic Data</span>
@@ -103,25 +110,25 @@
                         </div>
                         <div class="project-severity-ladder" role="region" tabindex="0"
                             aria-label="Synthetic package damage examples by severity band; scroll horizontally to view all ten bands">
-                            <figure><img src="../assets/project-media/dream2detect/0_10.jpg" alt="Synthetic package with 0 to 10 percent damage" loading="lazy" /><figcaption>0–10</figcaption></figure>
-                            <figure><img src="../assets/project-media/dream2detect/11_20.jpg" alt="Synthetic package with 11 to 20 percent damage" loading="lazy" /><figcaption>11–20</figcaption></figure>
-                            <figure><img src="../assets/project-media/dream2detect/21_30.jpg" alt="Synthetic package with 21 to 30 percent damage" loading="lazy" /><figcaption>21–30</figcaption></figure>
-                            <figure><img src="../assets/project-media/dream2detect/31_35.jpg" alt="Synthetic package with 31 to 35 percent damage" loading="lazy" /><figcaption>31–35</figcaption></figure>
-                            <figure><img src="../assets/project-media/dream2detect/36_45.jpg" alt="Synthetic package with 36 to 45 percent damage" loading="lazy" /><figcaption>36–45</figcaption></figure>
-                            <figure><img src="../assets/project-media/dream2detect/46_55.jpg" alt="Synthetic package with 46 to 55 percent damage" loading="lazy" /><figcaption>46–55</figcaption></figure>
-                            <figure><img src="../assets/project-media/dream2detect/56_65.jpg" alt="Synthetic package with 56 to 65 percent damage" loading="lazy" /><figcaption>56–65</figcaption></figure>
-                            <figure><img src="../assets/project-media/dream2detect/66_75.jpg" alt="Synthetic package with 66 to 75 percent damage" loading="lazy" /><figcaption>66–75</figcaption></figure>
-                            <figure><img src="../assets/project-media/dream2detect/76_85.jpg" alt="Synthetic package with 76 to 85 percent damage" loading="lazy" /><figcaption>76–85</figcaption></figure>
-                            <figure><img src="../assets/project-media/dream2detect/86_100.jpg" alt="Synthetic package with 86 to 100 percent damage" loading="lazy" /><figcaption>86–100</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/0_10.jpg" alt="Synthetic package with 0 to 10 percent damage" loading="lazy" /><figcaption>0–10</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/11_20.jpg" alt="Synthetic package with 11 to 20 percent damage" loading="lazy" /><figcaption>11–20</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/21_30.jpg" alt="Synthetic package with 21 to 30 percent damage" loading="lazy" /><figcaption>21–30</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/31_35.jpg" alt="Synthetic package with 31 to 35 percent damage" loading="lazy" /><figcaption>31–35</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/36_45.jpg" alt="Synthetic package with 36 to 45 percent damage" loading="lazy" /><figcaption>36–45</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/46_55.jpg" alt="Synthetic package with 46 to 55 percent damage" loading="lazy" /><figcaption>46–55</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/56_65.jpg" alt="Synthetic package with 56 to 65 percent damage" loading="lazy" /><figcaption>56–65</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/66_75.jpg" alt="Synthetic package with 66 to 75 percent damage" loading="lazy" /><figcaption>66–75</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/76_85.jpg" alt="Synthetic package with 76 to 85 percent damage" loading="lazy" /><figcaption>76–85</figcaption></figure>
+                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/86_100.jpg" alt="Synthetic package with 86 to 100 percent damage" loading="lazy" /><figcaption>86–100</figcaption></figure>
                         </div>
                     </section>
 
                     <section class="project-media-panel project-media-panel--without-media">
                         <aside class="project-sidecard">
-                            <h2>I didn't just prompt for damaged boxes</h2>
-                            <p>Every image was generated from thirteen structured fields — damage type, box shape, tape, background, camera angle, lighting — deliberately varied so the model couldn't cheat by learning the scenery instead of the damage. Then every single candidate went through human review before it earned a spot in training.</p>
+                            <h2>Building the training set</h2>
+                            <p>Images were generated from thirteen fields covering damage, box shape, tape, background, camera angle, and lighting. Each candidate was reviewed before inclusion in the training set.</p>
                             <ul class="sidecard-highlight">
-                                <li><i class="bi bi-check2-circle"></i><span>In one 800-image review pass, 623 were kept as generated and 177 relabeled by hand — the label is what I saw, not what I asked for.</span></li>
+                                <li><i class="bi bi-check2-circle"></i><span>In an 800-image review pass, 623 kept their generated labels and 177 were relabeled by hand.</span></li>
                                 <li><i class="bi bi-tags"></i><span>A second generation round deliberately targeted the real-world cases earlier models kept getting wrong.</span></li>
                             </ul>
                             <div class="sidecard-links">
@@ -132,52 +139,52 @@
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">The headline result</p>
+                            <p class="project-section-eyebrow">Results</p>
                             <h2>Trained on synthetic, judged on real</h2>
                         </div>
                         <ul class="project-data-strip">
-                            <li><span class="metric-value">64%</span><span class="metric-label">Within one band</span><span class="metric-copy">On 385 real photos it never trained on, the model's severity call landed within one band of correct nearly two times out of three.</span></li>
-                            <li><span class="metric-value">1.34</span><span class="metric-label">Bands off, on average</span><span class="metric-copy">Mean error on a ten-band scale — the typical miss is barely more than a single band.</span></li>
-                            <li><span class="metric-value">0</span><span class="metric-label">Real photos in training</span><span class="metric-copy">Every training image was AI-generated. The model met a real photograph for the first time at test time.</span></li>
+                            <li><span class="metric-value">64%</span><span class="metric-label">Within one band</span><span class="metric-copy">Predictions were within one severity band of the label on 64% of 385 real test photographs.</span></li>
+                            <li><span class="metric-value">1.34</span><span class="metric-label">Bands off, on average</span><span class="metric-copy">Mean absolute error on the ten-band severity scale.</span></li>
+                            <li><span class="metric-value">0</span><span class="metric-label">Real package photos in training</span><span class="metric-copy">Package-damage training used generated images; evaluation used real package photographs.</span></li>
                         </ul>
                     </section>
 
                     <section class="project-section">
                         <div class="project-section-header">
-                            <p class="project-section-eyebrow">The modeling story</p>
-                            <h2>Two ways I tried to crack it</h2>
+                            <p class="project-section-eyebrow">Model comparison</p>
+                            <h2>Custom CNNs and pretrained backbones</h2>
                         </div>
                         <div class="project-insight-grid">
                             <article class="project-insight-card">
-                                <h3>From scratch, eight times over</h3>
+                                <h3>Eight custom CNN versions</h3>
                                 <p>I started with custom CNNs and no pretrained weights, then rebuilt them across eight versions. Each one answered a single question — cleaner labels, higher resolution, stricter splits, ordinal losses — and on identical data the real-photo error fell from 2.66 down to 2.11 bands, landing within one band of correct about 39% of the time.</p>
                                 <ul>
                                     <li>V1 existed just to prove the synthetic labels were learnable at all.</li>
-                                    <li>I kept the dead-ends, too — longer training and a GroupNorm swap both made things worse.</li>
+                                    <li>Longer training and a GroupNorm variant reduced performance.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h3>Then pretrained backbones won</h3>
-                                <p>The strongest models paired a ConvNeXt backbone with an Earth Mover's Distance loss — one that punishes a guess three bands off far more than a near miss — blended 60/40 with a SAM-cropped variant. On the same synthetic data, they jumped from 39% to 64% within one band on real photos — a 25-point gain from better visual representations alone.</p>
+                                <h3>Pretrained ConvNeXt ensemble</h3>
+                                <p>The strongest models paired a ConvNeXt backbone with an Earth Mover's Distance loss — one that punishes a guess three bands off far more than a near miss — blended 60/40 with a SAM-cropped variant. On the same generated dataset, within-one-band accuracy on real photographs increased from 39% to 64%.</p>
                                 <ul>
-                                    <li>21% were dead-on out of ten bands — about double random chance — but "within one" is what a real severity call actually needs.</li>
+                                    <li>Exact-band accuracy was 21% on the ten-band test set.</li>
                                     <li>Averaging the two views beat either model on its own.</li>
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h3>Kept honest on purpose</h3>
-                                <p>It's easy to fool yourself here, so the splits were built to stop prompt-family leakage, and I never let a flattering synthetic number stand in for real-photo transfer. The from-scratch and pretrained tracks were reported as two separate answers, not one tidy line.</p>
+                                <h3>Evaluation design</h3>
+                                <p>Splits separated prompt families to reduce leakage. Results on generated and real photographs were reported separately, as were the custom CNN and pretrained model experiments.</p>
                                 <ul>
                                     <li>On synthetic holdout the from-scratch models cleared roughly twice random chance.</li>
-                                    <li>Real transfer stayed the honest bottleneck — and that's the point.</li>
+                                    <li>Performance on real photographs remained the main limitation.</li>
                                 </ul>
                             </article>
                         </div>
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h2>A floor, not a ceiling</h2>
-                        <p>Here's the part I actually care about: every time I tightened the loop — cleaner labels, stricter splits, better losses, pretrained representations — the real-world number climbed, from a from-scratch model barely clearing random to 64% within one band. Synthetic-only transfer was still the honest bottleneck, and I won't pretend otherwise. But nothing here reads like a dead end; it reads like the opposite. With more data and tighter management, this loop keeps closing the gap — 64% is where I stopped, not where it tops out.</p>
+                        <h2>What the experiment showed</h2>
+                        <p>The strongest model reached 64% within one severity band on 385 real photographs. Transfer from generated images remained a limitation: exact-band accuracy was 21%, and the experiment does not establish how performance would scale with more training data.</p>
                     </section>
 
                     <div class="text-center">
@@ -188,7 +195,7 @@
         </section>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

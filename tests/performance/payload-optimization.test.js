@@ -39,9 +39,9 @@ describe('payload optimization contracts', () => {
 
     expect(html).not.toMatch(/<link[^>]+href="dist\/f1-simulator\/f1-simulator\.css/);
     expect(html).not.toMatch(/<script[^>]+src="dist\/f1-simulator\/f1-simulator\.js/);
-    expect(html).toContain('dist/f1-simulator/paddock-placeholder.css?v=20260605-paddockjs-410');
-    expect(html).toContain('data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=20260605-paddockjs-410"');
-    expect(html).toContain('data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=20260605-paddockjs-410"');
+    expect(html).toContain('dist/f1-simulator/paddock-placeholder.css?v=20260908-project-catalog');
+    expect(html).toContain('data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=20260908-project-catalog"');
+    expect(html).toContain('data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=20260908-project-catalog"');
     expect(html).toContain('data-paddock-auto-start="idle"');
     expect(html).toContain('data-paddock-auto-delay-ms="900"');
     expect(html).toContain('js/projects-race-loader.js');

@@ -4,6 +4,15 @@ import {
   DriverData,
   VehicleData,
 } from '@inventure71/paddockjs/data';
+import { projectCommandItems } from './playfolio/catalog.js';
+
+// Package demo descriptions are examples; portfolio facts belong to this site.
+const portfolioDemoCopy = {
+  vinyl: ['Objects select music', 'Computer vision', 'Gesture playback controls'],
+  victoria: ['Connect Four robot', 'Board recognition', 'Minimax move selection'],
+  reminderz: ['Notes and reminders', 'Conversation history', 'Project organization'],
+  evolve: ['Dynamic Python tools', 'Gemini + Ollama', 'Agent runtime'],
+};
 
 const additionalDrivers = [
   {
@@ -134,7 +143,7 @@ const additionalDrivers = [
     pace: 1.02,
     racecraft: 0.82,
     link: '/project_details/project-ghoststroke.html',
-    raceData: ['Target-safe typing', 'Notarized macOS app', 'Cadence profiles'],
+    raceData: ['Prepared text typing', 'Custom cadence', 'Test Bench preview'],
   },
 ];
 
@@ -179,7 +188,17 @@ function createBalancedEntry({ driverId, number, timingName, vehicleId, vehicleN
   };
 }
 
-export const PORTFOLIO_DRIVERS = [...DEMO_PROJECT_DRIVERS, ...additionalDrivers];
+const catalogByHref = new Map(projectCommandItems.map((project) => [project.href, project]));
+
+export const PORTFOLIO_DRIVERS = [...DEMO_PROJECT_DRIVERS, ...additionalDrivers].map((driver) => {
+  const project = catalogByHref.get(driver.link);
+  if (!project) throw new Error(`Race entry missing from project catalog: ${driver.link}`);
+  return {
+    ...driver,
+    name: project.label,
+    raceData: portfolioDemoCopy[driver.id] || driver.raceData,
+  };
+});
 
 export const PORTFOLIO_ENTRIES = [
   ...CHAMPIONSHIP_ENTRY_BLUEPRINTS,

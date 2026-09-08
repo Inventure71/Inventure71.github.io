@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description"
-        content="ReminderZ and Project Loom - two related experiments: an AI second brain for your own messages, and a visual block-to-Python programming tool" />
+        content="ReminderZ and Project Loom - two related experiments: a message organizer, and a visual block-to-Python programming tool" />
     <meta name="author" content="Matteo Giorgetti" />
-    <title>ReminderZ · Project Loom · AI Context Weaving - M.G.</title>
+    <title>ReminderZ · Project Loom - M.G.</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,14 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-detail.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 project-page project-page--remainder" data-project-family="systems">
@@ -90,10 +97,7 @@
                     <header class="project-hero">
                         <div>
                             <h1>ReminderZ / Project Loom</h1>
-                            <p class="lead">Two experiments that share a bloodline. ReminderZ turns the messages I fire
-                                off to myself into an organized second brain; Project Loom, which grew straight out of
-                                its codebase, is a visual way to build programs by wiring blocks together. Same instinct,
-                                two forms: take something loose and messy and give it a structure you can see.</p>
+                            <p class="lead">Two related prototypes: ReminderZ organizes messages into notes and reminders; Project Loom turns visual block diagrams into Python programs.</p>
                             <div class="project-pills">
                                 <span class="project-pill">Python</span>
                                 <span class="project-pill">Gemini</span>
@@ -123,8 +127,8 @@
 
                     <section class="project-media-panel project-media-panel--without-media">
                         <aside class="project-sidecard">
-                            <h2>Two projects, one lineage</h2>
-                            <p>Not one grand system — two prototypes that happen to share an environment (and a name).</p>
+                            <h2>Two related prototypes</h2>
+                            <p>ReminderZ organizes messages. Project Loom provides a visual programming editor; the two share a development environment.</p>
                             <ul class="sidecard-highlight">
                                 <li><i class="bi bi-chat-square-text"></i><span><strong>ReminderZ:</strong> a desktop app
                                         that pulls in my Telegram/WhatsApp notes-to-self and uses Gemini to sort them into
@@ -132,8 +136,7 @@
                                 <li><i class="bi bi-diagram-3"></i><span><strong>Project Loom:</strong> a later, separate
                                         tool — a node editor that compiles a visual block graph into runnable Python, with
                                         a local RAG engine.</span></li>
-                                <li><i class="bi bi-link-45deg"></i><span>Loom boots through ReminderZ's own conda
-                                        environment — which is exactly why the two ended up bundled together here.</span></li>
+                                <li><i class="bi bi-link-45deg"></i><span>Loom uses ReminderZ’s conda environment.</span></li>
                             </ul>
                         </aside>
                     </section>
@@ -141,14 +144,10 @@
                     <section class="project-section">
                         <div class="project-section-header">
                             <p class="project-section-eyebrow">ReminderZ</p>
-                            <h2>A second brain for your own messages</h2>
+                            <h2>Organize messages and reminders</h2>
                         </div>
                         <p class="project-copy">
-                            ReminderZ started with a real, dumb problem: I use Telegram and WhatsApp as a dumping ground
-                            for notes to myself, and they vanish into the scroll. So I built a desktop app that ingests
-                            those messages and hands them to Gemini, which sorts each one into a project, decides whether
-                            it's a reminder, and gives it a due date and an importance score. Ask it a question and it
-                            answers from your own messages — and tells you exactly which ones it used.
+                            ReminderZ imports notes sent through Telegram and WhatsApp. Gemini groups them into projects and proposes reminders with dates and importance scores. Answers to questions reference the source messages.
                         </p>
                         <ul class="project-keypoints">
                             <li>
@@ -162,7 +161,7 @@
                                     importance 1–10 — no manual tagging.</p>
                             </li>
                             <li>
-                                <h3>Answers with receipts</h3>
+                                <h3>Answers with sources</h3>
                                 <p>Chat over your messages and it cites the exact message IDs behind its answer, like
                                     <code>[1,14,33]</code>.</p>
                             </li>
@@ -193,9 +192,8 @@
                                 </ul>
                             </article>
                             <article class="project-insight-card">
-                                <h3>Local, LLM-free search</h3>
-                                <p>A FAISS + Ollama vector store with EmbeddingGemma does semantic search entirely
-                                    offline — retrieval only, no model in the loop.</p>
+                                <h3>Local semantic search</h3>
+                                <p>A FAISS index and local EmbeddingGemma embeddings provide offline semantic retrieval without generating an answer.</p>
                                 <ul>
                                     <li>Add, replace, and delete documents with a persistent id map.</li>
                                 </ul>
@@ -255,7 +253,7 @@
                                     <div class="project-timeline-dot"></div>
                                 </div>
                                 <div class="project-timeline-content">
-                                    <h3>Loom gains a brain</h3>
+                                    <h3>Search and UI generation</h3>
                                     <p>A local FAISS + Ollama RAG engine and a draw-to-UI shape recognizer join the node
                                         editor.</p>
                                 </div>
@@ -264,13 +262,8 @@
                     </section>
 
                     <section class="project-section project-spotlight">
-                        <h2>Same instinct, different clothes</h2>
-                        <p>
-                            I'm not going to pretend these are one polished platform — they're two prototypes that share
-                            a bloodline. But that's the honest and, I think, interesting part: whether it's my scattered
-                            notes or a tangle of code, the itch is the same. Take something loose and messy and give it a
-                            structure you can actually see and steer.
-                        </p>
+                        <h2>How they relate</h2>
+                        <p>Project Loom grew from the ReminderZ codebase and shares its Python environment. They remain separate prototypes with different interfaces and workflows.</p>
                     </section>
 
                     <section class="project-section">
@@ -357,13 +350,13 @@
                     <section class="project-section">
                         <div class="project-section-header">
                             <p class="project-section-eyebrow">Status</p>
-                            <h2>Where things actually stand</h2>
+                            <h2>Prototype status</h2>
                         </div>
                         <ul class="project-status-list">
-                            <li>Both are working prototypes, not products — informal commits, and not much in the way of tests.</li>
-                            <li>ReminderZ reliably ingests and organizes messages; its token-counting is still a rough placeholder for Gemini's real tokenizer.</li>
-                            <li>Project Loom compiles simple graphs to Python and has a working local RAG, though its docs oversell a young codebase.</li>
-                            <li>They share an environment, not a real integration — genuinely tying the two together would be the next honest step.</li>
+                            <li>Both are prototypes with limited automated test coverage.</li>
+                            <li>ReminderZ ingests and organizes messages; its token counting uses a placeholder rather than Gemini’s tokenizer.</li>
+                            <li>Project Loom compiles simple graphs to Python and supports local semantic retrieval.</li>
+                            <li>The prototypes share an environment but are not integrated into one application.</li>
                         </ul>
                     </section>
 
@@ -380,7 +373,7 @@
 
     <!-- Footer-->
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
     <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>

@@ -18,7 +18,7 @@ export function setupProjectPreview(root = document) {
     cards.forEach((item) => {
       const active = item === card;
       item.classList.toggle('is-active', active);
-      item.setAttribute('aria-selected', active ? 'true' : 'false');
+      item.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
 
     const data = readProjectData(card);
