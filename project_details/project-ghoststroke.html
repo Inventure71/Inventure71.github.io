@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Ghoststroke - customizable typing automation for macOS" />
+    <meta name="description" content="Ghostyper - customizable typing automation for macOS" />
     <meta name="author" content="Matteo Giorgetti" />
     <meta name="theme-color" content="#0d0d0b" />
-    <title>Ghoststroke - M.G.</title>
+    <title>Ghostyper - M.G.</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,18 +16,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-    <!-- route-styles: /css/playfolio-project-detail.css -->
+    <!-- route-styles: /css/playfolio-project-ghoststroke.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/ghoststroke.css" rel="stylesheet" />
     <!-- /route-styles -->
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--ghoststroke" data-project-family="app">
-    <a class="project-skip-link" href="#project-content">Skip to project content</a>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--ghoststroke project-story story-ghoststroke" data-project-family="app">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0" id="project-content">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -83,61 +85,73 @@
       </div>
         </nav>
 
-        <section class="py-5"><div class="container px-5"><article class="project-shell">
-            <header class="project-hero">
-                <div>
-                    <p class="project-eyebrow">Typing for macOS</p>
-                    <h1>Ghoststroke</h1>
-                    <p class="lead">Turn prepared text into typing, with your own pace, pauses, and corrections. Choose a destination field and start from a compact macOS panel.</p>
-                    <div class="project-pills" aria-label="Core technologies"><span class="project-pill">Swift 5.9</span><span class="project-pill">SwiftUI / AppKit</span><span class="project-pill">Accessibility + Core Graphics</span></div>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="gs-hero">
+                <div class="story-shell">
+                    <div class="gs-heading-row">
+                        <p class="story-kicker">Typing for macOS</p>
+                        <img class="gs-app-icon" src="../assets/project-media/ghoststroke/ghoststroke-icon.webp" alt="" width="44" height="44" decoding="async" />
+                    </div>
+                    <h1 class="story-title">Ghostyper</h1>
+                    <p class="story-lede">Type prepared text into the field you choose, with your own pace, pauses, and locally generated alternative phrases.</p>
+
+                    <div class="gs-demo" data-gs-demo data-playing="false" role="group" aria-label="Ghostyper browser typing demo">
+                        <div class="gs-source"><span class="gs-small-label">Your original text</span><p data-gs-original>I’ll send the first version on Friday. We can review it together and decide what needs another pass.</p></div>
+                        <div class="gs-demo-label"><span>Typing into the destination</span><span data-gs-status>Original text</span></div>
+                        <div class="gs-typing-canvas" aria-hidden="true"><p class="gs-typing-text" data-gs-text>I’ll send the first version on Friday. We can review it together and decide what needs another pass.</p></div>
+                        <p class="story-sr-only" data-gs-description>An alternative phrase is typed after the first sentence, held for reading, and erased before the original text continues.</p>
+                        <div class="gs-explanation"><span class="gs-phase-dot" aria-hidden="true"></span><p data-gs-explanation>Watch an alternative appear, get erased, and give way to your original wording.</p></div>
+                        <div class="gs-alternative-reference" data-gs-alternative-reference><span class="gs-small-label">Example alternative</span><p data-gs-alternative>Maybe we should wait until every detail is finished.</p></div>
+                        <div class="gs-timeline" data-gs-timeline aria-hidden="true"><svg viewBox="0 0 1000 80" preserveAspectRatio="none" data-gs-wave></svg><div class="gs-wave-unplayed"></div><div class="gs-playhead"></div></div>
+                        <div class="gs-timeline-caption" aria-hidden="true"><div class="gs-timeline-key"><span>Original</span><span>Alternative / erase</span><span>Pause</span></div><span data-gs-time>0.0 s</span></div>
+                        <p class="gs-wave-caption">Typing activity · taller marks mean faster keystrokes</p>
+                        <p class="gs-demo-footnote">In the app, a local model prepares alternative phrases. This browser demo uses a fixed example to show how they are typed and erased.</p>
+                        <noscript><p class="gs-demo-footnote">The animated example needs JavaScript.</p></noscript>
+                    </div>
                 </div>
-                <dl class="hero-meta" aria-label="Project facts">
-                    <div class="hero-meta-card"><dt class="label">Role</dt><dd class="value">Creator · macOS engineer</dd></div>
-                    <div class="hero-meta-card"><dt class="label">Platform</dt><dd class="value">Apple silicon · macOS 14+</dd></div>
-                </dl>
             </header>
 
-            <section class="project-media-panel project-media-panel--split" aria-label="Ghoststroke summary">
-                <div class="project-media-stage project-media-stage--image project-media-stage--app-icon">
-                    <img width="640" height="640" decoding="async" src="../assets/project-media/ghoststroke/ghoststroke-icon.webp" alt="Ghoststroke app icon, an ivory ghost on charcoal" />
+            <section class="story-shell story-section gs-overview" aria-labelledby="gs-quick-type">
+                <div>
+                    <p class="story-kicker">Quick Type</p>
+                    <h2 class="story-section-heading" id="gs-quick-type">Choose where to type.</h2>
+                    <p class="story-lede">Prepare the text, choose a profile, and select a destination.</p>
                 </div>
-                <aside class="project-sidecard" aria-labelledby="ghoststroke-summary-title">
-                    <h2 id="ghoststroke-summary-title">Quick Type</h2>
-                    <p>Paste or write your text, choose a saved cadence, and press <strong>Start</strong>. Shift-Option-click selects the destination field.</p>
-                    <ul class="sidecard-highlight">
-                        <li><i class="bi bi-bullseye" aria-hidden="true"></i><span>Select the destination before typing starts.</span></li>
-                        <li><i class="bi bi-pause-circle" aria-hidden="true"></i><span>Pause, resume, or stop from the panel, menu bar, or shortcut.</span></li>
-                    </ul>
-                </aside>
+                <ol class="gs-workflow">
+                    <li><div><h3>Prepare your text</h3><p>Write or paste into Quick Type, then choose a saved typing profile.</p></div></li>
+                    <li><div><h3>Choose the destination</h3><p>Press Start, then <span class="gs-key-chord"><kbd>⇧ Shift</kbd> <kbd>⌥ Option</kbd></span>-click the field where it should go.</p></div></li>
+                    <li><div><h3>Keep control</h3><p>Your keyboard or mouse input pauses typing. Resume by choosing where to continue, or stop from the panel, menu bar, or shortcut.</p></div></li>
+                </ol>
             </section>
 
-            <section class="project-section">
-                <div class="project-section-header"><p class="project-section-eyebrow">Quick Type</p><h2>From text to typing</h2></div>
-                <div class="project-flow-steps">
-                    <article class="project-flow-step"><span class="flow-index">01</span><div><h3>Prepare in Quick Type</h3><p>Enter the exact source, select a built-in or saved profile, and decide whether line breaks become spaces, Return, or Shift-Return.</p></div></article>
-                    <article class="project-flow-step"><span class="flow-index">02</span><div><h3>Choose a field</h3><p>Start target selection, then Shift-Option-click the destination. Typing starts at the cursor you select, including in canvas-based editors. Recognized password fields are rejected.</p></div></article>
-                    <article class="project-flow-step"><span class="flow-index">03</span><div><h3>Start typing</h3><p>The typing sequence can include pauses and temporary mistakes that are corrected back to your prepared text.</p></div></article>
-                    <article class="project-flow-step"><span class="flow-index">04</span><div><h3>Pause without starting over</h3><p>Continue from where you paused, or choose another destination. Stop from the panel, menu bar, or shortcut.</p></div></article>
+            <section class="story-shell story-section gs-studio" aria-labelledby="gs-studio-title">
+                <div class="gs-studio-top">
+                    <div><p class="story-kicker">Studio</p><h2 class="story-section-heading" id="gs-studio-title">Tune the typing profile</h2></div>
+                    <p>Fine-tune speed, thinking pauses, and mistakes. Save a profile and try it before sending text to another app.</p>
+                </div>
+                <div class="gs-studio-details">
+                    <div class="gs-studio-detail"><h3>See what comes next</h3><p>Test Bench pairs a typing canvas with a timeline of upcoming pauses and corrections. Replay individual phrases as you adjust the profile.</p></div>
+                    <div class="gs-studio-detail"><h3>Local alternative phrases</h3><p>Optional local generation prepares false starts that are typed and erased before your original text.</p></div>
                 </div>
             </section>
 
-            <section class="project-section">
-                <div class="project-section-header"><p class="project-section-eyebrow">Studio</p><h2>Adjust the typing rhythm</h2></div>
-                <ul class="project-keypoints">
-                    <li><h3>Pace and corrections</h3><p>Adjust speed, pauses, and how often typing mistakes occur. Preview the sequence before sending it to another app.</p></li>
-                    <li><h3>Generated false starts</h3><p>An optional local model prepares temporary phrases that are typed, erased, and followed by your original text. It unloads after preparation.</p></li>
-                    <li><h3>Test Bench</h3><p>Try a profile in a typing canvas, see upcoming pauses and corrections, and replay a phrase.</p></li>
-                    <li><h3>Profiles, drafts, recovery</h3><p>Save custom profiles and keep composer drafts between sessions. Built-in profiles remain available.</p></li>
-                    <li><h3>Setup</h3><p>Configure Accessibility access, shortcuts, line breaks, and whether the app appears in the Dock.</p></li>
-                </ul>
+            <section class="story-shell story-end gs-availability" aria-labelledby="gs-availability-title">
+                <div>
+                    <p class="story-kicker">Made by Matteo Giorgetti</p>
+                    <h2 class="story-section-heading" id="gs-availability-title">Ghostyper for Mac</h2>
+                    <p class="story-lede">For Apple silicon, with optional on-device phrase generation.</p>
+                    <ul class="story-meta"><li>macOS 14+</li><li>Requires Accessibility access. Some apps reject simulated typing.</li></ul>
+                </div>
+                <div class="story-actions">
+                    <a class="story-button" href="https://downloads.mgiorgetti.com/ghostyper/1.0.0-1/Ghostyper-1.0.0-1-app.dmg">Download Ghostyper <span aria-hidden="true">↓</span></a>
+                    <a class="story-button is-secondary" href="../apps.html">Explore the other apps <span aria-hidden="true">↗</span></a>
+                </div>
             </section>
-
-            <section class="project-section project-spotlight" aria-label="Release status and compatibility boundary"><h2>Availability and compatibility</h2><p>A public download is not available yet. Ghoststroke requires Accessibility permission; some apps reject simulated typing.</p></section>
-            <nav class="text-center" aria-label="Project navigation"><a href="../apps.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to apps</a></nav>
-        </article></div></section>
+        </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script><script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script>
+    <script type="module" src="../js/project-demos/ghoststroke.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,20 @@
+/* Mosaic's device boundaries; collection layout is shared. */
+.robotics-system { margin: 0; }
+.robotics-system-top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: clamp(1rem, 4vw, 3rem); }
+.robotics-system-node { padding-block: 1rem; }
+.robotics-node-label { display: block; margin-bottom: .65rem; font-family: var(--project-mono); font-size: .7rem; color: var(--pf-muted); }
+.robotics-system strong { display: block; font-size: clamp(1.1rem, 2.6vw, 1.7rem); font-weight: 600; letter-spacing: -.035em; }
+.robotics-system p { margin: .6rem 0 0; font-size: .82rem; line-height: 1.7; color: var(--pf-muted); }
+.robotics-system-connection { display: flex; align-items: center; flex-direction: column; gap: .3rem; color: var(--pf-muted); font-family: var(--project-mono); font-size: .7rem; }
+.robotics-system-connection > span:last-child { font-size: 1.8rem; }
+.robotics-system-bus { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 1.5rem; padding-block: 1.5rem; margin-top: 1rem; border-block: 1px solid var(--pf-line); font-family: var(--project-mono); color: var(--pf-muted); font-size: .73rem; }
+.robotics-system-agents { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); padding-block: 2rem; }
+.robotics-agent-ownership { align-self: center; padding-left: 1.3rem; border-left: 2px solid var(--project-accent); }
+.robotics-agent-ownership strong { font-size: 1rem; }
+.robotics-agent-ownership > span { display: block; margin-top: .6rem; font-size: .82rem; line-height: 1.7; color: var(--pf-muted); }
+@media (max-width: 640px) {
+  .robotics-system-top { grid-template-columns: 1fr; gap: .5rem; }
+  .robotics-system-connection { flex-direction: row; gap: 1rem; justify-self: start; }
+  .robotics-system-connection > span:last-child { transform: rotate(90deg); }
+  .robotics-system-agents { grid-template-columns: 1fr; }
+}

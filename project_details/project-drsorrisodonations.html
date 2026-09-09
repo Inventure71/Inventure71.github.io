@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="DrSorrisoDonations - a bot that reads messy bank-transfer memos and files charity donations automatically, so volunteers don't have to" />
+    <meta name="description" content="Dr Sorriso Donations — an internal tool for parsing transfer descriptions and entering charity donations" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>DrSorrisoDonations - M.G.</title>
     <!-- Favicon-->
@@ -23,17 +23,21 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="../css/project-stories/data-tools.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--drsorriso" data-project-family="systems">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--drsorriso project-story story-collection" data-project-family="systems">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -89,167 +93,19 @@
       </div>
         </nav>
 
-        <!-- Project Details Section-->
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <h1>Dr Sorriso Donations</h1>
-                            <p class="lead">An internal tool for Fondazione Dottor Sorriso that extracts donor names from bank-transfer descriptions and records donations in the charity’s platform.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Python</span>
-                                <span class="project-pill">Selenium</span>
-                                <span class="project-pill">GPT-4o-mini</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card">
-                                <span class="label">Role</span>
-                                <span class="value">Solo builder</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Timeline</span>
-                                <span class="value">2024 – 2025</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Stack</span>
-                                <span class="value">Python · Selenium · GPT-4o-mini</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Status</span>
-                                <span class="value">Internal tool</span>
-                            </div>
-                        </div>
-                    </header>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+<header class="story-shell story-hero"><p class="story-kicker">Fondazione Dottor Sorriso · Internal tool</p><h1 class="story-title">Dr Sorriso Donations</h1><p class="story-lede">Match bank transfers to donors and enter donations in the foundation’s existing platform.</p><ul class="story-meta"><li>Solo project</li><li>2024–2025</li><li>Python · Selenium</li></ul></header>
+<figure class="story-shell story-diagram donation-route">
+ <p class="story-kicker">Donation processing</p>
+ <div class="donation-input">Bank-transfer description</div>
+ <div class="donation-branches"><div><strong>Campaign code present</strong><span>Extract the code</span><span>Match the campaign</span></div><div><strong>Name in the description</strong><span>Remove banking boilerplate</span><span>Extract &amp; check the donor</span></div></div>
+ <div class="donation-output">Match the contact <span aria-hidden="true">→</span> Record the donation</div>
+ <figcaption class="story-caption">Campaign codes and donor names lead to the same donation record.</figcaption>
+</figure>
+            <section class="story-shell story-section"><h2 class="story-section-heading">Identifying the donor</h2><dl class="story-notes"><div><dt>Clean the description</dt><dd>Rules remove SEPA boilerplate, banking identifiers, and repeated tokens. Italian name dictionaries help distinguish names from codes.</dd></div><div><dt>Resolve the donor</dt><dd>GPT-4o-mini proposes names across several calls. Agreement and a second pass check the result; a cache avoids parsing the same description again.</dd></div><div><dt>Enter the record</dt><dd>Selenium selects the campaign, finds or creates the contact, and enters the donation in the existing platform.</dd></div></dl></section>
 
-                    <section class="project-media-panel project-media-panel--without-media">
-                        <aside class="project-sidecard">
-                            <h2>From a transfer to a donation record</h2>
-                            <p>The tool reads transfer descriptions, identifies donor names or campaign codes, and matches entries to existing contacts or creates a contact when needed.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-people"></i><span>A multi-call LLM consensus — it asks GPT-4o-mini a
-                                        few times at different temperatures, then votes on the donor's name.</span></li>
-                                <li><i class="bi bi-card-list"></i><span>Italian first-name and surname dictionaries help distinguish donor names from bank codes.</span></li>
-                            </ul>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Donation processing</p>
-                            <h2>Identify, match, and record</h2>
-                        </div>
-                        <ul class="project-keypoints">
-                            <li>
-                                <h3>Two kinds of donation</h3>
-                                <p>Some transfers carry a campaign code buried in the text; others just have a name. The
-                                    bot detects which, and routes each down the right path.</p>
-                            </li>
-                            <li>
-                                <h3>Donor extraction</h3>
-                                <p>It strips transaction boilerplate, dedups repeated tokens, and cross-checks against a
-                                    dictionary of Italian names to pull the real donor out.</p>
-                            </li>
-                            <li>
-                                <h3>Cached results</h3>
-                                <p>Parsed results are cached to avoid repeating language-model calls for descriptions already processed.</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Under the hood</p>
-                            <h2>Reading, naming, filing</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h3>Reading the memo</h3>
-                                <p>Italian SEPA transfers are full of noise — TRN codes, "EROGAZIONE LIBERALE", bank BIC
-                                    codes. A hand-built blacklist and regex strip it back to the essentials.</p>
-                                <ul>
-                                    <li>Four fallback regex patterns pull out campaign and donor codes.</li>
-                                    <li>Whatever's left goes to the language model.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Naming the donor</h3>
-                                <p>GPT-4o-mini identifies the first and last names, with domain rules baked in — names
-                                    are Italian, and never two surnames in a row.</p>
-                                <ul>
-                                    <li>A few calls at different temperatures, then a consensus vote.</li>
-                                    <li>A second pass checks the extracted name.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Filing it away</h3>
-                                <p>Selenium drives the real donation platform — selecting campaigns, matching contacts,
-                                    creating new ones, and confirming each entry.</p>
-                                <ul>
-                                    <li>Handles error popups, alerts, and a self-migrating local cache.</li>
-                                    <li>Reuses cached donor-parsing results.</li>
-                                </ul>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>Built for the foundation</h2>
-                        <p>The tool supports donation administration at Fondazione Dottor Sorriso by automating donor lookup and entry from bank-transfer descriptions.</p>
-                    </section>
-
-                    <section class="project-section project-flow">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Flow</p>
-                            <h2>How one donation gets filed</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step">
-                                <span class="flow-index">01</span>
-                                <div class="flow-body">
-                                    <h3>Read</h3>
-                                    <p>Log into the donation platform and pull the next transfer's raw bank
-                                        description.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">02</span>
-                                <div class="flow-body">
-                                    <h3>Decide</h3>
-                                    <p>Is there a campaign code hidden in the text, or just a name? Route it down the
-                                        right path.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">03</span>
-                                <div class="flow-body">
-                                    <h3>Extract</h3>
-                                    <p>Regex pulls the code, or the LLM — with a consensus vote — pulls the donor's name
-                                        out of the noise.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">04</span>
-                                <div class="flow-body">
-                                    <h3>File</h3>
-                                    <p>Match the campaign or contact, create one if it's missing, confirm the entry, and
-                                        cache the result.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to all projects
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+</article>
     </main>
 
     <!-- Footer-->
@@ -257,7 +113,7 @@
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+
 </body>
 
 </html>

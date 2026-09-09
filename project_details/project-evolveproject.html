@@ -24,17 +24,21 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="../css/project-stories/data-tools.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--evolve" data-project-family="systems">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--evolve project-story story-collection" data-project-family="systems">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -90,175 +94,18 @@
       </div>
         </nav>
 
-        <!-- Project Details Section-->
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <h1>Evolve Project</h1>
-                            <p class="lead">An experimental agent that can run shell commands, write new Python tools, and load them during a task.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Python</span>
-                                <span class="project-pill">Gemini</span>
-                                <span class="project-pill">Autonomous agents</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card">
-                                <span class="label">Role</span>
-                                <span class="value">Solo builder · Prompt architect</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Timeline</span>
-                                <span class="value">2025</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Stack</span>
-                                <span class="value">Python · Gemini · Ollama</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Status</span>
-                                <span class="value">Research prototype</span>
-                            </div>
-                        </div>
-                    </header>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+<header class="story-shell story-hero"><p class="story-kicker">Agent experiment · 2025</p><h1 class="story-title">Evolve Project</h1><p class="story-lede">An agent that writes new Python tools and loads them while a task is still running.</p><ul class="story-meta"><li>Solo project</li><li>Python · Gemini · Ollama</li></ul><div class="story-actions"><a class="story-button" href="https://github.com/Inventure71/EvolveProject" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a></div></header>
+<figure class="story-shell story-diagram evolve-loop">
+ <p class="story-kicker">Tool execution and reloading</p>
+ <ol class="evolve-turn"><li><span>Task &amp; context</span></li><li><strong>Model</strong><span>Choose a tool</span></li><li><strong>Execute</strong><span>Return its output</span></li></ol>
+ <div class="evolve-extension"><code>tools/new_tool.py</code><span aria-hidden="true">→</span><code>importlib.reload()</code><span aria-hidden="true">→</span><strong>Available next turn</strong></div>
+ <figcaption class="story-caption">New functions become available without restarting the process.</figcaption>
+</figure>
+            <section class="story-shell story-section"><h2 class="story-section-heading">Execution loop</h2><dl class="story-notes"><div><dt>Conversation</dt><dd>The model receives context, chooses a function, and uses its output in the next turn.</dd></div><div><dt>Discovery</dt><dd>The registry imports functions from <code>tools/</code>, starting with shell execution and a log reader.</dd></div><div><dt>Backends</dt><dd>The original loop uses Gemini. An experimental Ollama backend builds local-model tool schemas from Python docstrings.</dd></div></dl></section>
 
-                    <section class="project-media-panel project-media-panel--without-media">
-                        <aside class="project-sidecard">
-                            <h2>Tools that change during a run</h2>
-                            <p>An agent loop sends context to the model, executes tool calls, and returns their output. New Python tools written during the task become available on the next turn.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-infinity"></i><span>Dynamic tools — the agent writes Python into
-                                        <code>tools/</code> and <code>importlib</code> reloads it, no restart.</span></li>
-                                <li><i class="bi bi-terminal"></i><span>It has real shell access, and can read back its
-                                        own terminal output as just another tool.</span></li>
-                            </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71/EvolveProject" target="_blank" rel="noreferrer">
-                                    <span>View Repository</span>
-                                    <i class="bi bi-arrow-up-right"></i>
-                                </a>
-                            </div>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">The ideas behind it</p>
-                            <h2>Agent behavior</h2>
-                        </div>
-                        <ul class="project-keypoints">
-                            <li>
-                                <h3>Repeated tool calls</h3>
-                                <p>Each turn it sends its context to Gemini, runs whatever tool calls come back, feeds
-                                    the output in, and repeats — until it decides it's done and emits a stop token.</p>
-                            </li>
-                            <li>
-                                <h3>Tools it writes itself</h3>
-                                <p>New abilities aren't hard-coded. The agent drops a Python file into <code>tools/</code>
-                                    and the handler discovers and reloads it, so its toolbox grows while it runs.</p>
-                            </li>
-                            <li>
-                                <h3>Prompt experiment</h3>
-                                <p>The experimental prompt encourages the agent to create external memory and break tasks into steps.</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Under the hood</p>
-                            <h2>How it's put together</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h3>The agent loop</h3>
-                                <p>A handler runs the conversation, executes the model's function calls, keeps a rolling
-                                    window of recent responses, and halts on a sentinel token.</p>
-                                <ul>
-                                    <li>Retry logic tells a 503 "overloaded" from a 429 "quota" and honors the API's own
-                                        suggested delay.</li>
-                                    <li>Rate-limited to stay inside Gemini's request budget.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Self-written tooling</h3>
-                                <p>A reflection-based registry imports every function it finds in <code>tools/</code> and
-                                    hands them to the model — including files the agent just created.</p>
-                                <ul>
-                                    <li><code>importlib.reload</code> means no restart to pick up new tools.</li>
-                                    <li>Ships with shell execution and a log reader out of the box.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Gemini and Ollama backends</h3>
-                                <p>Besides Gemini, an experimental backend routes the same loop through local models via
-                                    Ollama, hand-rolling docstring-to-JSON-schema conversion.</p>
-                                <ul>
-                                    <li>Tried against llama&nbsp;3.1, mistral-nemo, and phi3.</li>
-                                    <li>A planned review agent has not been integrated.</li>
-                                </ul>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>The research question</h2>
-                        <p>This prototype explores how an agent manages an open-ended task when it can extend its own tools. The experiment focuses on tool creation, context management, and the points where the loop needs intervention.</p>
-                    </section>
-
-                    <section class="project-section project-flow">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Flow</p>
-                            <h2>How a single turn works</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step">
-                                <span class="flow-index">01</span>
-                                <div class="flow-body">
-                                    <h3>Prompt</h3>
-                                    <p>The agent gathers its task and current context and sends the whole thing to
-                                        Gemini.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">02</span>
-                                <div class="flow-body">
-                                    <h3>Act</h3>
-                                    <p>Gemini answers with tool calls — run a command, read the log, or write an entirely
-                                        new tool.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">03</span>
-                                <div class="flow-body">
-                                    <h3>Reload</h3>
-                                    <p>If it wrote a new tool, the handler hot-reloads <code>tools/</code> so it's
-                                        callable on the very next turn.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">04</span>
-                                <div class="flow-body">
-                                    <h3>Loop</h3>
-                                    <p>The results feed back in and the cycle repeats — until the agent decides it's
-                                        finished.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to all projects
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+</article>
     </main>
 
     <!-- Footer-->
@@ -266,7 +113,7 @@
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+
 </body>
 
 </html>

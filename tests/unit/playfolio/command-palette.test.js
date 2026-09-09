@@ -66,7 +66,7 @@ function createHarness({ scrollbarGap = 0, bodyPadding = '0px' } = {}) {
   const opener = node('BUTTON');
   const outside = node('A');
   const empty = node('P');
-  const items = ['Noty', 'Ghoststroke', 'Projects'].map((label) => {
+  const items = ['Noty', 'Ghostyper', 'Projects'].map((label) => {
     const item = node('BUTTON');
     item.textContent = label;
     item.dataset = { href: `/${label.toLowerCase()}.html`, keywords: label === 'Noty' ? 'notes macos' : '' };
@@ -162,7 +162,7 @@ describe('playfolio command palette interaction', () => {
     h.root.dispatch('keydown', { key: 'k', metaKey: true });
     h.input.dispatch('keydown', { key: 'ArrowDown' });
     h.input.dispatch('keydown', { key: 'Enter' });
-    expect(window.location.href).toBe('/ghoststroke.html');
+    expect(window.location.href).toBe('/ghostyper.html');
     h.root.dispatch('keydown', { key: 'Escape' });
     expect(h.root.activeElement).toBe(h.outside);
   });

@@ -16,18 +16,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-    <!-- route-styles: /css/playfolio-project-detail.css -->
+    <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--[SLUG]">
-    <a class="project-skip-link" href="#project-content">Skip to project content</a>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--[SLUG] project-story story-collection">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
 
     <main class="flex-shrink-0" id="project-content">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
@@ -83,119 +85,36 @@
         </div>
       </div>
         </nav>
-
-        <section class="py-5">
-            <div class="container px-5">
-                <article class="project-shell">
-                    <header class="project-hero">
-                        <div>
-                            <p class="project-eyebrow">[PROJECT TYPE]</p>
-                            <h1>[PROJECT NAME]</h1>
-                            <p class="lead">[What it does, who or what it serves, and why that matters—in one concise sentence.]</p>
-                            <div class="project-pills" aria-label="Core technologies">
-                                <span class="project-pill">[TECH 1]</span>
-                                <span class="project-pill">[TECH 2]</span>
-                                <span class="project-pill">[TECH 3]</span>
-                            </div>
-                        </div>
-
-                        <dl class="hero-meta" aria-label="Project facts">
-                            <div class="hero-meta-card">
-                                <dt class="label">Role</dt>
-                                <dd class="value">[OWNERSHIP]</dd>
-                            </div>
-                            <div class="hero-meta-card">
-                                <dt class="label">Year</dt>
-                                <dd class="value">[YEAR]</dd>
-                            </div>
-                            <div class="hero-meta-card">
-                                <dt class="label">State</dt>
-                                <dd class="value">[RELEASED / PROTOTYPE / RESEARCH]</dd>
-                            </div>
-                            <div class="hero-meta-card">
-                                <dt class="label">Proof</dt>
-                                <dd class="value">[STRONGEST VERIFIED RESULT]</dd>
-                            </div>
-                        </dl>
-                    </header>
-
-                    <!-- Optional: omit this entire block when no real media exists. -->
-                    <section class="project-media-panel project-media-panel--split" aria-label="Primary project proof">
-                        <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/project-media/[SLUG]/[HERO-FILE]" alt="[WHAT THE IMAGE PROVES]" />
-                        </div>
-                        <aside class="project-sidecard" aria-labelledby="summary-title">
-                            <h2 id="summary-title">[THE CHALLENGE OR RESULT]</h2>
-                            <p>[Add context that is not already stated in the hero.]</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>[VERIFIED CAPABILITY OR RESULT]</span></li>
-                                <li><i class="bi bi-sliders" aria-hidden="true"></i><span>[IMPORTANT CONSTRAINT OR TECHNICAL DECISION]</span></li>
-                            </ul>
-                            <div class="sidecard-links">
-                                <a href="[REPOSITORY URL]" target="_blank" rel="noopener noreferrer">
-                                    <span>View repository</span>
-                                    <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </aside>
-                    </section>
-
-                    <!-- Choose one architecture/process section. Do not duplicate the same story in both. -->
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">How it works</p>
-                            <h2>[ONE CLEAR SECTION TITLE]</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h3>[PART ONE]</h3>
-                                <p>[Specific responsibility and technical choice.]</p>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>[PART TWO]</h3>
-                                <p>[Specific responsibility and technical choice.]</p>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>[PART THREE]</h3>
-                                <p>[Specific responsibility and technical choice.]</p>
-                            </article>
-                        </div>
-                    </section>
-
-                    <!-- Optional: use only for concrete metrics or tested scope. -->
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Result</p>
-                            <h2>[WHAT WAS VERIFIED]</h2>
-                        </div>
-                        <ul class="project-data-strip">
-                            <li><span class="metric-value">[VALUE]</span><span class="metric-label">[LABEL]</span><span class="metric-copy">[CONTEXT]</span></li>
-                            <li><span class="metric-value">[VALUE]</span><span class="metric-label">[LABEL]</span><span class="metric-copy">[CONTEXT]</span></li>
-                            <li><span class="metric-value">[VALUE]</span><span class="metric-label">[LABEL]</span><span class="metric-copy">[CONTEXT]</span></li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section project-spotlight" aria-label="Outcome and current limitation">
-                        <h2>[OUTCOME]</h2>
-                        <p>[What worked, what remains limited, and what is available.]</p>
-                    </section>
-
-                    <nav class="text-center" aria-label="Project navigation">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left" aria-hidden="true"></i>
-                            Back to the project race
-                        </a>
-                    </nav>
-                </article>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">[PROJECT TYPE]</p>
+                <h1 class="story-title">[PROJECT NAME]</h1>
+                <p class="story-lede">[What the project does in one concise sentence.]</p>
+                <ul class="story-meta"><li>[YOUR CONTRIBUTION]</li><li>[RELEVANT TECHNOLOGY OR SCOPE]</li></ul>
+                <div class="story-actions"><a class="story-button" href="[PUBLIC PROJECT URL]">Explore the project <span aria-hidden="true">↗</span></a></div>
+            </header>
+            <!-- Optional: real media or a clearly labelled explanatory diagram. Omit when neither helps. -->
+            <div class="story-shell">
+                <figure class="story-feature">
+                    <img src="../assets/project-media/[SLUG]/[IMAGE]" width="1600" height="900" decoding="async" alt="[WHAT THE IMAGE SHOWS]" />
+                    <figcaption class="story-caption">[Why this evidence matters.]</figcaption>
+                </figure>
             </div>
-        </section>
+            <section class="story-shell story-section">
+                <h2 class="story-section-heading">[THE INTERESTING TECHNICAL DECISION]</h2>
+                <dl class="story-notes">
+                    <div><dt>[RESPONSIBILITY]</dt><dd>[What this part does and why.]</dd></div>
+                    <div><dt>[CONSTRAINT]</dt><dd>[A verified limitation or tradeoff.]</dd></div>
+                </dl>
+            </section>
+            <nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+        </article>
     </main>
 
     <footer class="pf-footer py-4 mt-auto"></footer>
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

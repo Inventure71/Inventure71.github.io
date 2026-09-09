@@ -175,7 +175,7 @@
 }
 
 .project-hero .lead {
-  max-width: 47ch;
+  max-width: 72ch;
   margin: 0 0 1.4rem;
   color: var(--pf-muted) !important;
   font-size: clamp(1rem, 1.45vw, 1.18rem);
@@ -537,7 +537,7 @@
 }
 
 .project-section-header h2 {
-  max-width: 14ch;
+  max-width: 100%;
   margin: 0;
   color: var(--pf-ink) !important;
   font-size: clamp(2rem, 3.6vw, 3.25rem);
@@ -566,7 +566,7 @@
 
 /* A full-width heading can breathe wider than the cramped 14ch sidebar version. */
 .playfolio-page.project-page .project-shell > .project-section:has(> .project-keypoints, > .project-insight-grid, > .project-module-grid, > .project-data-strip, > .project-flow-steps, > .project-timeline, > .project-gallery, > .project-severity-ladder, > .project-status-list) > .project-section-header h2 {
-  max-width: 22ch;
+  max-width: 100%;
 }
 
 .project-copy,
@@ -858,7 +858,7 @@
 .playfolio-page.project-page .project-shell > .project-spotlight > h2,
 .playfolio-page.project-page .project-shell > .project-spotlight > h3 {
   grid-column: 1 / span 5;
-  max-width: 16ch;
+  max-width: 100%;
   margin: 0;
   color: inherit !important;
   font-size: clamp(1.65rem, 3.1vw, 2.65rem);
@@ -1122,7 +1122,7 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
   }
 
   .project-section-header h2 {
-    max-width: 18ch;
+    max-width: 100%;
   }
 
   .playfolio-page.project-page .project-shell > .project-spotlight > h2,

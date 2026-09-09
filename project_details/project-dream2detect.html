@@ -15,17 +15,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-dream2detect.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/dream2detect.css" rel="stylesheet" />
     <!-- /route-styles -->
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--dream2detect" data-project-family="research">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--dream2detect project-story story-dream2detect" data-project-family="research">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -81,124 +84,82 @@
       </div>
         </nav>
 
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <p class="project-section-eyebrow">Computer vision research</p>
-                            <h1>Dream2Detect</h1>
-                            <p class="lead">A computer vision study testing whether models trained on generated package images can assess damage in real photographs.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">PyTorch</span>
-                                <span class="project-pill">Synthetic Data</span>
-                                <span class="project-pill">React + Supabase</span>
-                            </div>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell d2d-hero">
+                <div class="d2d-heading-line"><p class="story-kicker">Computer vision · 2026</p><span class="d2d-role">ML &amp; data pipeline</span></div>
+                <h1 class="story-title d2d-title">Dream2Detect</h1>
+                <div class="d2d-introduction">
+                    <p class="story-lede">Can a model learn from generated package images and recognise damage in real photographs?</p>
+                    <a class="story-button" href="https://github.com/Inventure71/Dream2Detect" target="_blank" rel="noreferrer">Explore the code <span aria-hidden="true">↗</span></a>
+                </div>
+                <div class="d2d-walkthrough" data-experiment-walkthrough>
+                    <h2 class="d2d-walkthrough-heading">How the experiment works</h2>
+                    <div class="d2d-step-controls" data-step-controls hidden aria-label="Experiment steps">
+                        <button type="button" id="experiment-tab-generate" data-step="generate" aria-controls="experiment-generate"><span>01</span> Generate images</button>
+                        <button type="button" id="experiment-tab-review" data-step="review" aria-controls="experiment-review"><span>02</span> Review labels</button>
+                        <button type="button" id="experiment-tab-evaluate" data-step="evaluate" aria-controls="experiment-evaluate"><span>03</span> Test on real photos</button>
+                    </div>
+                    <div class="d2d-step" id="experiment-generate" data-step-panel="generate">
+                        <div class="d2d-step-intro"><h3>Generate the training images</h3><p>An image generator produces packages with different damage, shapes, backgrounds, and lighting. These generated images form the task-specific training data.</p></div>
+                        <div class="d2d-training-examples">
+                            <figure><img src="../assets/project-media/dream2detect/0_10.jpg" width="360" height="240" alt="Generated package reference in damage band 0 to 10" decoding="async" fetchpriority="high" /><figcaption>Band 0–10 <span>Least damage</span></figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/46_55.jpg" width="360" height="240" alt="Generated package reference in damage band 46 to 55" decoding="async" /><figcaption>Band 46–55 <span>Middle of the scale</span></figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/86_100.jpg" width="360" height="240" alt="Generated package reference in damage band 86 to 100" decoding="async" /><figcaption>Band 86–100 <span>Most damage</span></figcaption></figure>
                         </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card"><span class="label">Role</span><span class="value">Primary ML · Data Pipeline</span></div>
-                            <div class="hero-meta-card"><span class="label">Timeline</span><span class="value">2026</span></div>
-                            <div class="hero-meta-card"><span class="label">Study set</span><span class="value">899 reviewed synthetic images</span></div>
-                            <div class="hero-meta-card"><span class="label">Status</span><span class="value">Research complete</span></div>
+                        <p class="d2d-step-note">Three synthetic reference images from the labeling guide. The study groups damage into ten ordered bands, from least to most damaged.</p>
+                    </div>
+                    <div class="d2d-step" id="experiment-review" data-step-panel="review">
+                        <div class="d2d-step-intro"><h3>Review what was generated</h3><p>Asking for a damaged box does not guarantee the generated image shows that damage. A person reviews each image and corrects its label before it enters the training set.</p></div>
+                        <div class="d2d-review-evidence">
+                            <p class="d2d-evidence-label">First review pass · 800 generated images</p>
+                            <div class="d2d-review-bar" role="img" aria-label="Of 800 generated images reviewed, 623 kept their original label and 177 were relabeled."><span></span><span></span></div>
+                            <dl class="d2d-review-counts"><div><dt>Original label kept</dt><dd>623</dd></div><div><dt>Label corrected</dt><dd>177</dd></div></dl>
                         </div>
-                    </header>
+                        <p class="d2d-step-note">The expanded pool contained 899 reviewed synthetic images. Models learned from the reviewed labels rather than assuming every prompt produced the intended damage.</p>
+                    </div>
+                    <div class="d2d-step" id="experiment-evaluate" data-step-panel="evaluate">
+                        <div class="d2d-step-intro"><h3>Evaluate on real photographs</h3><p>The trained models assess 385 real package photographs excluded from task-specific training. Each predicted band is compared with the photograph's human-reviewed label.</p></div>
+                        <div class="d2d-evaluation-flow" aria-label="Evaluation process">
+                            <div><span class="d2d-evidence-label">Input</span><strong>Real package photo</strong><p>Unseen during damage training</p></div>
+                            <span class="d2d-flow-arrow" aria-hidden="true">→</span>
+                            <div><span class="d2d-evidence-label">Model</span><strong>Predicted damage band</strong><p>Learned from synthetic examples</p></div>
+                            <span class="d2d-flow-arrow" aria-hidden="true">→</span>
+                            <div><span class="d2d-evidence-label">Check</span><strong>Distance from the label</strong><p>How many bands away?</p></div>
+                        </div>
+                        <div class="d2d-scoring-key"><p><strong>Exact match</strong> means the model chose the reviewed band.</p><p><strong>Within one band</strong> also includes either neighboring band.</p></div>
+                        <p class="d2d-step-note">The strongest model used a pretrained visual backbone. “Synthetic training” refers to its package-damage training, not its earlier pretraining.</p>
+                    </div>
+                    <div class="d2d-step-footer" data-step-footer hidden><span data-step-position>Step 1 of 3</span><button type="button" data-step-next>Next: Review labels <span aria-hidden="true">→</span></button><a href="#results-title" data-step-results hidden>See the results <span aria-hidden="true">↓</span></a></div>
+                </div>
+            </header>
 
-                    <section class="project-section project-section--severity">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Damage scale</p>
-                            <h2>Ten bands, from intact to destroyed</h2>
-                        </div>
-                        <div class="project-severity-ladder" role="region" tabindex="0"
-                            aria-label="Synthetic package damage examples by severity band; scroll horizontally to view all ten bands">
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/0_10.jpg" alt="Synthetic package with 0 to 10 percent damage" loading="lazy" /><figcaption>0–10</figcaption></figure>
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/11_20.jpg" alt="Synthetic package with 11 to 20 percent damage" loading="lazy" /><figcaption>11–20</figcaption></figure>
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/21_30.jpg" alt="Synthetic package with 21 to 30 percent damage" loading="lazy" /><figcaption>21–30</figcaption></figure>
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/31_35.jpg" alt="Synthetic package with 31 to 35 percent damage" loading="lazy" /><figcaption>31–35</figcaption></figure>
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/36_45.jpg" alt="Synthetic package with 36 to 45 percent damage" loading="lazy" /><figcaption>36–45</figcaption></figure>
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/46_55.jpg" alt="Synthetic package with 46 to 55 percent damage" loading="lazy" /><figcaption>46–55</figcaption></figure>
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/56_65.jpg" alt="Synthetic package with 56 to 65 percent damage" loading="lazy" /><figcaption>56–65</figcaption></figure>
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/66_75.jpg" alt="Synthetic package with 66 to 75 percent damage" loading="lazy" /><figcaption>66–75</figcaption></figure>
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/76_85.jpg" alt="Synthetic package with 76 to 85 percent damage" loading="lazy" /><figcaption>76–85</figcaption></figure>
-                            <figure><img width="360" height="240" decoding="async" src="../assets/project-media/dream2detect/86_100.jpg" alt="Synthetic package with 86 to 100 percent damage" loading="lazy" /><figcaption>86–100</figcaption></figure>
-                        </div>
-                    </section>
-
-                    <section class="project-media-panel project-media-panel--without-media">
-                        <aside class="project-sidecard">
-                            <h2>Building the training set</h2>
-                            <p>Images were generated from thirteen fields covering damage, box shape, tape, background, camera angle, and lighting. Each candidate was reviewed before inclusion in the training set.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-check2-circle"></i><span>In an 800-image review pass, 623 kept their generated labels and 177 were relabeled by hand.</span></li>
-                                <li><i class="bi bi-tags"></i><span>A second generation round deliberately targeted the real-world cases earlier models kept getting wrong.</span></li>
-                            </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71/Dream2Detect" target="_blank" rel="noreferrer"><span>View Repository</span><i class="bi bi-arrow-up-right"></i></a>
-                            </div>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Results</p>
-                            <h2>Trained on synthetic, judged on real</h2>
-                        </div>
-                        <ul class="project-data-strip">
-                            <li><span class="metric-value">64%</span><span class="metric-label">Within one band</span><span class="metric-copy">Predictions were within one severity band of the label on 64% of 385 real test photographs.</span></li>
-                            <li><span class="metric-value">1.34</span><span class="metric-label">Bands off, on average</span><span class="metric-copy">Mean absolute error on the ten-band severity scale.</span></li>
-                            <li><span class="metric-value">0</span><span class="metric-label">Real package photos in training</span><span class="metric-copy">Package-damage training used generated images; evaluation used real package photographs.</span></li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Model comparison</p>
-                            <h2>Custom CNNs and pretrained backbones</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h3>Eight custom CNN versions</h3>
-                                <p>I started with custom CNNs and no pretrained weights, then rebuilt them across eight versions. Each one answered a single question — cleaner labels, higher resolution, stricter splits, ordinal losses — and on identical data the real-photo error fell from 2.66 down to 2.11 bands, landing within one band of correct about 39% of the time.</p>
-                                <ul>
-                                    <li>V1 existed just to prove the synthetic labels were learnable at all.</li>
-                                    <li>Longer training and a GroupNorm variant reduced performance.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Pretrained ConvNeXt ensemble</h3>
-                                <p>The strongest models paired a ConvNeXt backbone with an Earth Mover's Distance loss — one that punishes a guess three bands off far more than a near miss — blended 60/40 with a SAM-cropped variant. On the same generated dataset, within-one-band accuracy on real photographs increased from 39% to 64%.</p>
-                                <ul>
-                                    <li>Exact-band accuracy was 21% on the ten-band test set.</li>
-                                    <li>Averaging the two views beat either model on its own.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Evaluation design</h3>
-                                <p>Splits separated prompt families to reduce leakage. Results on generated and real photographs were reported separately, as were the custom CNN and pretrained model experiments.</p>
-                                <ul>
-                                    <li>On synthetic holdout the from-scratch models cleared roughly twice random chance.</li>
-                                    <li>Performance on real photographs remained the main limitation.</li>
-                                </ul>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>What the experiment showed</h2>
-                        <p>The strongest model reached 64% within one severity band on 385 real photographs. Transfer from generated images remained a limitation: exact-band accuracy was 21%, and the experiment does not establish how performance would scale with more training data.</p>
-                    </section>
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left"></i> Back to all projects</a>
+            <section class="story-shell story-section d2d-results" aria-labelledby="results-title">
+                <div class="d2d-results-heading"><div><p class="story-kicker">The result</p><h2 class="story-section-heading" id="results-title">Results on 385 real photographs</h2></div><p class="d2d-result-context">Both models were evaluated on the same real photographs.</p></div>
+                <div class="d2d-results-layout">
+                    <div class="d2d-primary-result"><p class="d2d-result-value">64.16<span>%</span></p><p>within one damage band</p><p class="d2d-result-caption">ConvNeXt ensemble · EMD60 + SAM40</p></div>
+                    <div class="d2d-comparison" role="img" aria-label="Within-one-band accuracy on 385 real photos: from-scratch V5-B model 39.48 percent, pretrained EMD60 plus SAM40 ensemble 64.16 percent.">
+                        <div class="d2d-chart-scale" aria-hidden="true"><span>0</span><span>50</span><span>100%</span></div>
+                        <div class="d2d-chart-row"><div class="d2d-chart-label"><span>From-scratch CNN</span><strong>39.48%</strong></div><div class="d2d-chart-track"><span style="--result: 39.48%"></span></div></div>
+                        <div class="d2d-chart-row d2d-chart-row--ensemble"><div class="d2d-chart-label"><span>Pretrained ensemble</span><strong>64.16%</strong></div><div class="d2d-chart-track"><span style="--result: 64.16%"></span></div></div>
+                        <p class="d2d-chart-caption">Within-one-band accuracy ↑</p>
                     </div>
                 </div>
-            </div>
-        </section>
+                <div class="d2d-result-detail"><dl><div><dt>Exact-band accuracy</dt><dd>21.04<span>%</span></dd></div><div><dt>Mean band error</dt><dd>1.3351</dd></div></dl><p>Near misses were common. The pretrained ensemble transferred better than the custom CNN, but assigning the exact damage band remained difficult.</p></div>
+            </section>
+
+            <section class="story-shell story-section d2d-findings" aria-labelledby="findings-title">
+                <div><p class="story-kicker">What it means</p><h2 class="story-section-heading" id="findings-title">What transferred</h2></div>
+                <div class="d2d-findings-copy"><p>The strongest model combined two views: the full image and a crop around the package. Its training also accounted for distance between bands, so a large error cost more than a near miss.</p><p class="d2d-finding-limit">The study shows useful transfer on this evaluation set. It does not establish reliable exact-band grading or how results would scale to a larger dataset.</p></div>
+            </section>
+
+            <div class="story-shell story-end d2d-end"><a href="https://github.com/Inventure71/Dream2Detect" target="_blank" rel="noreferrer">Explore Dream2Detect <span aria-hidden="true">↗</span></a><a href="../projects.html">All projects <span aria-hidden="true">→</span></a></div>
+        </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+    <script type="module" src="../js/project-demos/dream2detect.js"></script>
 </body>
 
 </html>

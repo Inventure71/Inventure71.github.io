@@ -24,17 +24,21 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="../css/project-stories/apps.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--remainder" data-project-family="systems">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--remainder project-story story-collection" data-project-family="systems">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -90,285 +94,31 @@
       </div>
         </nav>
 
-        <!-- Project Details Section-->
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <h1>ReminderZ / Project Loom</h1>
-                            <p class="lead">Two related prototypes: ReminderZ organizes messages into notes and reminders; Project Loom turns visual block diagrams into Python programs.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Python</span>
-                                <span class="project-pill">Gemini</span>
-                                <span class="project-pill">Electron</span>
-                                <span class="project-pill">FAISS RAG</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card">
-                                <span class="label">Role</span>
-                                <span class="value">Solo builder</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Timeline</span>
-                                <span class="value">2025</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Stack</span>
-                                <span class="value">Python · Gemini · Electron · FAISS</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Status</span>
-                                <span class="value">Two prototypes</span>
-                            </div>
-                        </div>
-                    </header>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">Desktop experiments · 2025</p>
+                <h1 class="story-title">ReminderZ &amp; Project Loom</h1>
+                <p class="story-lede">Two prototypes for organizing messages and building Python programs visually.</p>
+                <ul class="story-meta"><li>Python · Gemini · Electron · FAISS</li><li>Solo development</li></ul>
+            </header>
+            <section class="story-shell story-section story-split" aria-labelledby="reminderz-title">
+                <div><p class="story-kicker">01 / ReminderZ</p><h2 class="story-section-heading" id="reminderz-title">Message organization</h2><p class="story-copy">Gemini organizes Telegram and WhatsApp notes-to-self into projects and reminders. Answers link back to their source messages.</p></div>
+                <figure class="story-diagram reminderz-route"><ol class="story-process"><li><strong>Import</strong><span>Telegram / WhatsApp messages</span></li><li><strong>Organize</strong><span>Schema-constrained Gemini output</span></li><li><strong>Recall</strong><span>Projects, reminders, and source references</span></li></ol><figcaption class="story-caption">Message processing flow</figcaption></figure>
+            </section>
+            <section class="story-shell story-section story-split" aria-labelledby="loom-title">
+                <div><p class="story-kicker">02 / Project Loom</p><h2 class="story-section-heading" id="loom-title">Visual programming</h2><p class="story-copy">Connect execution and value pins in an Electron editor. The compiler walks the graph from BeginPlay to generate Python, with function blocks drawn from existing modules.</p></div>
+                <figure class="story-diagram loom-route"><div class="loom-block-chain"><span>BeginPlay</span><span aria-hidden="true">→</span><span>Function</span><span aria-hidden="true">→</span><span>Python</span></div><div class="loom-value-path"><span>Variable / value inputs</span><span aria-hidden="true">↑</span></div><figcaption class="story-caption">Execution connections determine order; value connections supply inputs.</figcaption></figure>
+            </section>
+            <section class="story-shell story-section story-split" aria-labelledby="reminderz-scope">
+                <h2 class="story-section-heading" id="reminderz-scope">Search and UI generation</h2>
+                <dl class="story-notes">
 
-                    <section class="project-media-panel project-media-panel--without-media">
-                        <aside class="project-sidecard">
-                            <h2>Two related prototypes</h2>
-                            <p>ReminderZ organizes messages. Project Loom provides a visual programming editor; the two share a development environment.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-chat-square-text"></i><span><strong>ReminderZ:</strong> a desktop app
-                                        that pulls in my Telegram/WhatsApp notes-to-self and uses Gemini to sort them into
-                                        projects and reminders.</span></li>
-                                <li><i class="bi bi-diagram-3"></i><span><strong>Project Loom:</strong> a later, separate
-                                        tool — a node editor that compiles a visual block graph into runnable Python, with
-                                        a local RAG engine.</span></li>
-                                <li><i class="bi bi-link-45deg"></i><span>Loom uses ReminderZ’s conda environment.</span></li>
-                            </ul>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">ReminderZ</p>
-                            <h2>Organize messages and reminders</h2>
-                        </div>
-                        <p class="project-copy">
-                            ReminderZ imports notes sent through Telegram and WhatsApp. Gemini groups them into projects and proposes reminders with dates and importance scores. Answers to questions reference the source messages.
-                        </p>
-                        <ul class="project-keypoints">
-                            <li>
-                                <h3>Auto-organizing</h3>
-                                <p>Batches of unprocessed messages go to Gemini, which files each into a project — or
-                                    invents a new project when a cluster of loose notes calls for one.</p>
-                            </li>
-                            <li>
-                                <h3>Reminders it infers</h3>
-                                <p>For every message it decides whether it's a reminder, sets a time, and rates
-                                    importance 1–10 — no manual tagging.</p>
-                            </li>
-                            <li>
-                                <h3>Answers with sources</h3>
-                                <p>Chat over your messages and it cites the exact message IDs behind its answer, like
-                                    <code>[1,14,33]</code>.</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Project Loom</p>
-                            <h2>Building programs by wiring blocks</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h3>A blueprint-style editor</h3>
-                                <p>An infinite canvas of typed blocks — Executor, Function, Variable, Conditional,
-                                    Operator — where exec pins flow one way and value pins fan out.</p>
-                                <ul>
-                                    <li>A graph-walker compiles it into real Python, starting from BeginPlay.</li>
-                                    <li>It scans your modules to auto-generate function blocks.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Draw your UI</h3>
-                                <p>Sketch shapes on a canvas and Loom recognizes them — rectangles become buttons and
-                                    inputs, circles become toggles — then emits the matching UI code.</p>
-                                <ul>
-                                    <li>Simple aspect-ratio rules decide what each shape turns into.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Local semantic search</h3>
-                                <p>A FAISS index and local EmbeddingGemma embeddings provide offline semantic retrieval without generating an answer.</p>
-                                <ul>
-                                    <li>Add, replace, and delete documents with a persistent id map.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Electron on top of Python</h3>
-                                <p>The renderer is Electron and vanilla JS; the compile-and-run backend is Python, spawned
-                                    through the shared conda environment.</p>
-                                <ul>
-                                    <li>An optional debugpy server hooks into the generated code.</li>
-                                </ul>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-timeline-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Timeline</p>
-                            <h2>How the two came to be</h2>
-                        </div>
-                        <div class="project-timeline">
-                            <div class="project-timeline-item">
-                                <div class="project-timeline-marker">
-                                    <div class="project-timeline-dot"></div>
-                                    <div class="project-timeline-line"></div>
-                                </div>
-                                <div class="project-timeline-content">
-                                    <h3>ReminderZ takes shape · spring 2025</h3>
-                                    <p>A desktop app that ingests Telegram and WhatsApp messages and uses Gemini to sort
-                                        them into projects and reminders.</p>
-                                </div>
-                            </div>
-                            <div class="project-timeline-item">
-                                <div class="project-timeline-marker">
-                                    <div class="project-timeline-dot"></div>
-                                    <div class="project-timeline-line"></div>
-                                </div>
-                                <div class="project-timeline-content">
-                                    <h3>From Tkinter to pywebview</h3>
-                                    <p>The UI moves to a pywebview shell with a JS bridge, and structured Gemini JSON
-                                        schemas firm up the organizing logic.</p>
-                                </div>
-                            </div>
-                            <div class="project-timeline-item">
-                                <div class="project-timeline-marker">
-                                    <div class="project-timeline-dot"></div>
-                                    <div class="project-timeline-line"></div>
-                                </div>
-                                <div class="project-timeline-content">
-                                    <h3>Project Loom begins · autumn 2025</h3>
-                                    <p>A separate experiment: a Blueprint-style node editor that compiles a visual graph
-                                        into Python, booting through ReminderZ's environment.</p>
-                                </div>
-                            </div>
-                            <div class="project-timeline-item">
-                                <div class="project-timeline-marker">
-                                    <div class="project-timeline-dot"></div>
-                                </div>
-                                <div class="project-timeline-content">
-                                    <h3>Search and UI generation</h3>
-                                    <p>A local FAISS + Ollama RAG engine and a draw-to-UI shape recognizer join the node
-                                        editor.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>How they relate</h2>
-                        <p>Project Loom grew from the ReminderZ codebase and shares its Python environment. They remain separate prototypes with different interfaces and workflows.</p>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Under the hood</p>
-                            <h2>The pieces on each side</h2>
-                        </div>
-                        <div class="project-module-grid">
-                            <article class="project-module">
-                                <h3>Message ingestion · ReminderZ</h3>
-                                <p>A Telegram bot fetcher (offline-safe, saves attachments) and a WhatsApp Web scraper
-                                    feed messages into SQLite.</p>
-                            </article>
-                            <article class="project-module">
-                                <h3>Gemini organizer · ReminderZ</h3>
-                                <p>Batches messages to Gemini 2.5 Flash with JSON schemas for three tasks: assign
-                                    projects, extract reminders, and invent new projects.</p>
-                            </article>
-                            <article class="project-module">
-                                <h3>Local store · ReminderZ</h3>
-                                <p>Messages and projects persist in SQLite, each row tracking content, project, reminder
-                                    time, importance, and done state.</p>
-                            </article>
-                            <article class="project-module">
-                                <h3>Node editor · Loom</h3>
-                                <p>An infinite canvas of typed blocks, described by a JSON contract of pins and
-                                    connections.</p>
-                            </article>
-                            <article class="project-module">
-                                <h3>Python code-gen · Loom</h3>
-                                <p>A graph-walker turns the block graph into Python, generating stub modules on the fly
-                                    from BeginPlay outward.</p>
-                            </article>
-                            <article class="project-module">
-                                <h3>Local RAG · Loom</h3>
-                                <p>FAISS + Ollama EmbeddingGemma for offline semantic search, with a persistent index and
-                                    an id map for add/replace/delete.</p>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-flow">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Flow · ReminderZ</p>
-                            <h2>How a message becomes structure</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step">
-                                <span class="flow-index">01</span>
-                                <div class="flow-body">
-                                    <h3>Capture</h3>
-                                    <p>Your Telegram and WhatsApp messages get pulled in and land in a local
-                                        database.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">02</span>
-                                <div class="flow-body">
-                                    <h3>Batch</h3>
-                                    <p>Unprocessed messages are grouped and sent to Gemini in schema-constrained
-                                        chunks.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">03</span>
-                                <div class="flow-body">
-                                    <h3>Organize</h3>
-                                    <p>Gemini files each message into a project, flags reminders with a time and
-                                        importance, and spins up new projects when needed.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">04</span>
-                                <div class="flow-body">
-                                    <h3>Recall</h3>
-                                    <p>Ask a question later and it answers straight from your messages, citing the ones
-                                        it leaned on.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Status</p>
-                            <h2>Prototype status</h2>
-                        </div>
-                        <ul class="project-status-list">
-                            <li>Both are prototypes with limited automated test coverage.</li>
-                            <li>ReminderZ ingests and organizes messages; its token counting uses a placeholder rather than Gemini’s tokenizer.</li>
-                            <li>Project Loom compiles simple graphs to Python and supports local semantic retrieval.</li>
-                            <li>The prototypes share an environment but are not integrated into one application.</li>
-                        </ul>
-                    </section>
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to all projects
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+                    <div><dt>Local retrieval</dt><dd>Loom uses FAISS and local EmbeddingGemma embeddings to retrieve documents by meaning.</dd></div>
+                    <div><dt>UI generation</dt><dd>Shape and aspect-ratio rules turn drawn rectangles and circles into UI components.</dd></div>
+                </dl>
+            </section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+</article>
     </main>
 
     <!-- Footer-->
@@ -376,7 +126,6 @@
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

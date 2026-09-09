@@ -16,18 +16,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-    <!-- route-styles: /css/playfolio-project-detail.css -->
+    <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="/css/project-stories/robotics.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--mosaic" data-project-family="robotics">
-    <a class="project-skip-link" href="#project-content">Skip to project content</a>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-story story-collection story-mosaic project-page--mosaic" data-project-family="robotics">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0" id="project-content">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -83,53 +86,17 @@
       </div>
         </nav>
 
-        <section class="py-5"><div class="container px-5"><article class="project-shell">
-            <header class="project-hero">
-                <div>
-                    <p class="project-eyebrow">ROS 2 robotics system</p>
-                    <h1>Mosaic</h1>
-                    <p class="lead">Control a robot fleet from one interface while each robot handles its own movement, path following, and stopping.</p>
-                    <div class="project-pills" aria-label="Core technologies"><span class="project-pill">Python / ROS 2</span><span class="project-pill">UDP / JSON</span><span class="project-pill">Tk / Gama</span></div>
-                </div>
-                <dl class="hero-meta" aria-label="Project facts">
-                    <div class="hero-meta-card"><dt class="label">Role</dt><dd class="value">Robotics systems engineer</dd></div>
-                    <div class="hero-meta-card"><dt class="label">Timeline</dt><dd class="value">2025–2026</dd></div>
-                    <div class="hero-meta-card"><dt class="label">State</dt><dd class="value">Active lab prototype</dd></div>
-                    <div class="hero-meta-card"><dt class="label">Model</dt><dd class="value">Robot-local control</dd></div>
-                </dl>
-            </header>
-
-            <section class="project-media-panel project-media-panel--without-media" aria-label="Mosaic summary">
-                <aside class="project-sidecard" aria-labelledby="mosaic-summary-title">
-                    <h2 id="mosaic-summary-title">Commands from the desk, control on the robot</h2>
-                    <p>The operator interface sends high-level commands through a supervisor bridge. Each robot agent decides how to execute them and when to stop.</p>
-                    <ul class="sidecard-highlight">
-                        <li><i class="bi bi-cpu" aria-hidden="true"></i><span>Path following, manual drive, pose freshness, and <code>cmd_vel</code> remain on the robot.</span></li>
-                        <li><i class="bi bi-diagram-3" aria-hidden="true"></i><span>Normalized Mosaic topics isolate the operator tools from vendor-specific ROSbot details.</span></li>
-                    </ul>
-                    <div class="sidecard-links"><a href="https://github.com/Inventure71/SwarmProjectV1" target="_blank" rel="noopener noreferrer"><span>View repository</span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
-                </aside>
-            </section>
-
-            <section class="project-section">
-                <div class="project-section-header"><p class="project-section-eyebrow">System ownership</p><h2>Robot, bridge, operator</h2></div>
-                <div class="project-insight-grid">
-                    <article class="project-insight-card"><h3>Robot agent</h3><p>One ROS 2 agent per robot consumes local sensors and OptiTrack pose, executes manual or autonomous movement, publishes normalized status, and owns the only motor-command publisher.</p></article>
-                    <article class="project-insight-card"><h3>Supervisor bridge</h3><p>The bridge translates UI UDP commands into high-level ROS actions, aggregates each robot's state, and preserves the flattened UDP payload expected by the external Gama visualizer.</p></article>
-                    <article class="project-insight-card"><h3>Shared interfaces</h3><p>A fleet configuration, public ROS interfaces, launch packages, and parallel deployment scripts keep namespaces, endpoints, device roles, and startup behavior consistent across machines.</p></article>
-                </div>
-            </section>
-
-            <section class="project-section project-spotlight" aria-label="Outcome and current limitation">
-                <h2>Lab validation</h2>
-                <p>Stopping decisions remain on each robot. Physical validation depends on the robots, ROS interfaces, OptiTrack, and the lab network. Fleet membership is configured in advance.</p>
-            </section>
-
-            <nav class="text-center" aria-label="Project navigation"><a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to the project race</a></nav>
-        </article></div></section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+<header class="story-shell story-hero"><p class="story-kicker">Robot fleet control · 2025–2026</p><h1 class="story-title">Mosaic</h1><p class="story-lede">A ROS 2 fleet controller with an operator interface and movement control running on each robot.</p><ul class="story-meta"><li>Robotics systems engineering</li><li>Python · ROS 2 · UDP</li><li>Lab prototype</li></ul><div class="story-actions"><a class="story-button" href="https://github.com/Inventure71/SwarmProjectV1" target="_blank" rel="noreferrer">View repository <span aria-hidden="true">↗</span></a></div></header>
+            <div class="story-shell"><figure class="story-diagram robotics-system"><div class="robotics-system-top"><div class="robotics-system-node"><span class="robotics-node-label">Operator</span><strong>Tk interface</strong><p>Paths and manual commands</p></div><div class="robotics-system-connection"><span>UDP</span><span aria-hidden="true">↔</span></div><div class="robotics-system-node"><span class="robotics-node-label">Supervisor</span><strong>ROS 2 bridge</strong><p>Commands in · fleet state out</p></div></div><div class="robotics-system-bus"><span>High-level commands ↓</span><span>↑ Robot status</span></div><div class="robotics-system-agents"><div><span class="robotics-node-label">Each robot</span><strong>Local agent</strong><p>Sensors &amp; pose → path following → motor commands</p></div><div class="robotics-agent-ownership"><strong>Robot-local execution</strong><span>The robot owns path execution, manual drive, and stopping decisions.</span></div></div><figcaption class="story-caption">High-level commands travel through the supervisor; motor commands are published by each robot agent.</figcaption></figure></div>
+<section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Ownership</p><h2 class="story-section-heading">Control responsibilities</h2><p class="story-copy">The supervisor handles coordination. Each robot reads its own sensors and OptiTrack pose, executes movement, and checks whether that pose is still current.</p></div><dl class="story-notes"><div><dt>Robot agent</dt><dd>Owns path following, manual drive, stopping decisions, and the only local <code>cmd_vel</code> publisher.</dd></div><div><dt>Supervisor bridge</dt><dd>Translates UDP commands into ROS 2 actions and aggregates normalized robot state.</dd></div><div><dt>Operator tools</dt><dd>The Tk interface issues commands. Gama receives fleet state through a separate UDP export.</dd></div></dl></div></section>
+<section class="story-shell story-section"><p class="story-kicker">Interfaces</p><h2 class="story-section-heading">Shared topics and fleet configuration</h2><div class="story-columns"><div><h3>Normalized ROS topics</h3><p class="story-copy">Agents publish Mosaic status, pose, diagnostics, and path progress. The supervisor consumes these interfaces instead of depending on vendor-specific robot topics.</p></div><div><h3>Shared fleet configuration</h3><p class="story-copy">A common configuration defines robot namespaces, endpoints, and device roles. Launch packages and deployment scripts keep startup consistent across machines.</p></div></div></section>
+<section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Lab validation</p><h2 class="story-section-heading">Physical validation requirements</h2></div><p class="story-copy">Fleet membership is configured in advance. Physical validation depends on the robots, their ROS interfaces, OptiTrack, and the lab network.</p></div></section>
+            <div class="story-shell story-end"><a href="https://github.com/Inventure71/SwarmProjectV1" target="_blank" rel="noreferrer">View source <span aria-hidden="true">↗</span></a><a href="../projects.html">All projects <span aria-hidden="true">→</span></a></div>
+        </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script><script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script>
 </body>
 
 </html>

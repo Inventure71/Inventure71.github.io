@@ -1,194 +1,49 @@
-# Project case-study pages
+# Project stories
 
-The F1 race in `../projects.html` is the primary way to browse projects. These pages are the focused case studies opened from a car, the command palette, or the project network.
+The project race, command menu, and project network open these pages. All 20 projects use the V8 story system; existing URLs remain stable (including Ghostyper’s `project-ghoststroke.html`).
 
-## Source of truth
+## Ownership
 
-- `_template.html` is the canonical page structure.
-- `../css/project-pages.css` is the only owner of project-detail layout and components.
-- `../css/playfolio-project-detail.css` is the route manifest; do not add a second override stylesheet.
-- `../js/project-pages.js` owns progressive behavior: the media-led intro stage, lazy video loading, gallery and primary-media dialog access, external-link safety, skip navigation, reading progress, restrained reveals, and fine-pointer media depth.
-- `../js/playfolio/shared-chrome.js` owns the shared navbar and footer.
+- `css/project-stories.css`: base widths, typography, actions, accessibility and reduced motion.
+- `css/project-stories/collection.css`: shared collection spacing, responsive columns, media, technical notes and process layouts.
+- `css/playfolio-project-story.css`: collection route manifest. The three custom pilots retain their own manifests.
+- `css/project-stories/apps.css`, `games.css`, `robotics.css`, `data-tools.css`: only diagrams specific to those projects; loaded by relevant pages.
+- HTML owns readable content and static fallbacks. Independent modules in `js/project-demos/` own the two pilot demos.
+- `js/playfolio/shared-chrome.js` owns the navbar/footer. Do not hand-edit shared chrome.
 
-Cross-page spacing, breakpoints, media geometry, and component styles belong in `project-pages.css`. Do not add page-local layout styles.
+## Start with the project
 
-## Information architecture
+Copy `_template.html`, then choose only the components that explain the work. A page normally needs a short introduction, real evidence or an explanatory diagram, and a few meaningful technical decisions. It does not need a standard number of sections.
 
-Every case study should be understandable by scanning only its headings and facts:
+Use one `h1`, followed by `h2` and `h3` in order. Keep copy wide enough to wrap naturally; avoid forced line breaks, narrow heading measures, repeated technology badges, and repeated summaries. State the project’s actual scope. A prototype can have a short page.
 
-1. **Intro stage** — project type, name, one concise explanation, up to three technology tags, compact facts, and the primary proof when one exists.
-2. **Primary proof** — one real screenshot, video, artifact, research visual, or live surface. The shared script places it beside the story on desktop and directly after the title on mobile. Omit it when no real media exists.
-3. **Result** — concrete metrics, tested scope, shipped artifact, or verified capabilities when available.
-4. **How it works** — choose either an architecture view or a process view. Do not repeat both unless they explain genuinely different things.
-5. **Outcome and limitation** — what worked, what remains limited, and the honest current state.
-6. **Return** — link back to the project race.
+Use real captures and footage when available. Label conceptual diagrams as diagrams; never fabricate interface captures, terminal output, research results, or performance metrics. Record asset provenance alongside new media. Noty links to its separate product website and focuses on technical implementation here.
 
-Avoid repeating the hero inside a “short version,” spotlight, and flow section. Each section needs one job.
+## Structure and components
 
-## Required structure
+Place `article.project-story-content#project-story` directly after the navbar inside `main`. Use the static `.story-skip-link` and `tabindex="-1"` on its target. Do not use the retired `.project-shell` wrapper: it enables the legacy script’s layout transforms and reveals.
 
-```html
-<body class="playfolio-page project-page project-page--my-project">
-  <a class="project-skip-link" href="#project-content">Skip to project content</a>
+- `.story-shell`: centered maximum width. May wrap a figure or be placed on it directly.
+- `.story-hero`, `.story-kicker`, `.story-title`, `.story-lede`, `.story-meta`: introduction and compact facts.
+- `.story-actions`, `.story-button`, `.is-secondary`: real navigation/actions only.
+- `.story-feature`: natural-aspect image and caption. Include actual image dimensions, descriptive alt text, and lazy loading below the fold.
+- `.story-section`, `.story-section-heading`, `.story-copy`: story sections and text.
+- `.story-split`, `.story-columns`: two-column compositions that stack on smaller screens.
+- `.story-notes`: definition list with a `div` containing each `dt`/`dd` pair.
+- `.story-process`: ordered list; each item uses `strong` and `span`.
+- `.story-diagram`: restrained surface for a semantic HTML or SVG explanation.
+- `.story-gallery`: two-column evidence gallery.
+- `.story-code`: code or command sample with local horizontal scrolling.
+- `.story-end`: return or related-project navigation.
 
-  <main id="project-content">
-    <nav class="navbar ..." data-active-page="projects"></nav>
+For zoomable images, add `.gallery-card` to a `.story-feature` figure and load `js/project-pages.js`. Its dialog handles keyboard activation, focus trapping, Escape, and focus restoration. That script also loads `.project-video-frame iframe[data-src]` lazily. Use `https://www.youtube-nocookie.com/embed/…`, an accessible title, and a normal YouTube fallback link. Pages without either feature omit this script.
 
-    <section class="py-5">
-      <div class="container px-5">
-        <article class="project-shell">
-          <header class="project-hero">...</header>
-          <!-- optional proof/media -->
-          <section class="project-media-panel">...</section>
-          <!-- one or more evidence-led sections -->
-          <section class="project-section">...</section>
-          <nav class="text-center" aria-label="Project navigation">...</nav>
-        </article>
-      </div>
-    </section>
-  </main>
-</body>
-```
+Keep motion limited to meaningful demos and actual controls. Respect reduced motion. Shared geometry belongs in shared CSS; group stylesheets draw project-specific diagrams and must not alter navbar dimensions.
 
-Keep the existing outer classes so the shared route manifest can neutralize legacy global container and section rules safely.
-`project-pages.js` groups the hero and adjacent primary-proof panel into `project-intro-stage` at runtime. Do not hand-author that generated wrapper.
+## Validation
 
-## Components
-
-### Hero and facts
-
-Use one `h1`. Facts are a semantic definition list:
-
-```html
-<dl class="hero-meta" aria-label="Project facts">
-  <div class="hero-meta-card">
-    <dt class="label">Role</dt>
-    <dd class="value">Creator · Engineer</dd>
-  </div>
-</dl>
-```
-
-Prefer `Role`, `Year`, `State`, and `Proof`. PaddockJS-style release/distribution facts are valid when they are more meaningful.
-
-### Primary proof
-
-```html
-<section class="project-media-panel project-media-panel--split" aria-label="Primary project proof">
-  <div class="project-media-stage project-media-stage--image">
-    <img src="..." alt="Describe what this evidence shows" />
-  </div>
-  <aside class="project-sidecard" aria-labelledby="summary-title">
-    <h2 id="summary-title">The result or challenge</h2>
-    <p>Context that does not repeat the hero.</p>
-  </aside>
-</section>
-```
-
-For a text-first page, omit the media node and use `project-media-panel--without-media`. Do not add placeholders.
-
-Primary media is `16 / 9` on desktop and `16 / 10` on mobile. Videos remain `16 / 9`. Use `project-media-stage--noty` for the existing contained mascot treatment; add another shared modifier only when the asset genuinely needs a different fit.
-
-### Architecture or key points
-
-Use `project-insight-grid`, `project-keypoints`, or `project-module-grid`. Items use `h3`, never `h4` or `h5` beneath a section `h2`.
-
-```html
-<section class="project-section">
-  <div class="project-section-header">
-    <p class="project-section-eyebrow">How it works</p>
-    <h2>Three responsibilities</h2>
-  </div>
-  <div class="project-insight-grid">
-    <article class="project-insight-card">
-      <h3>Capture</h3>
-      <p>One specific responsibility.</p>
-    </article>
-  </div>
-</section>
-```
-
-### Process
-
-Use `project-flow-steps` only when sequence is the important explanation. Flow item headings are `h3`.
-
-### Metrics
-
-Use `project-data-strip` for verified numbers or an explicit tested scope. Do not turn guesses or simulation tuning values into product claims.
-
-### Gallery
-
-Gallery figures are progressively enhanced into a horizontally scrollable filmstrip of keyboard-operable image triggers. Every image needs useful alt text; every caption should explain why the image matters.
-
-```html
-<div class="project-gallery">
-  <figure class="gallery-card">
-    <img src="..." alt="..." loading="lazy" />
-    <figcaption>What this artifact proves.</figcaption>
-  </figure>
-</div>
-```
-
-### Video
-
-Below-the-fold YouTube videos use the privacy-enhanced host and `data-src` so `project-pages.js` can lazy-load them:
-
-```html
-<div class="project-video-frame">
-  <iframe
-    data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID"
-    title="Project demo"
-    loading="lazy"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen></iframe>
-</div>
-```
-
-## Page-specific styling
-
-Page modifiers may set one variable only:
-
-```css
-.project-page--my-project {
-  --project-accent: #3977d4;
-}
-```
-
-Do not duplicate component rules, tint every surface, or introduce an override cascade.
-
-## Accessibility and behavior
-
-- Use `h1 → h2 → h3` without skipped levels.
-- Keep native links for navigation.
-- Give icon-only controls accessible names and decorative icons `aria-hidden="true"`.
-- Use real media or omit the block; never publish placeholder images.
-- Gallery images and the primary proof image open the same dialog. It moves focus inside, traps it, closes with Escape, and restores focus.
-- Motion is one-shot and progressive: sections enter quietly, the reading line reflects actual page progress, and image depth stays within four pixels.
-- Motion is disabled by `prefers-reduced-motion`; pointer depth is also omitted on coarse pointers.
-- Do not animate passive cards or facts on hover. Hover feedback belongs to real links, gallery triggers, and media only.
-- Use a single shared surface for related passive facts instead of boxing every item. Reserve visible rules for real controls, media frames, state, and scrollable evidence.
-- Do not add generated chapter numbers, floating section navigation, ornamental icons, or sticky headings. The story is carried by hierarchy, media, and concise labels.
-- All visible controls need a clear `:focus-visible` state and at least a 44px mobile hit target.
-
-## Adding a project
-
-1. Copy `_template.html`.
-2. Replace all bracketed content and add a unique page modifier.
-3. Keep only modules that add new evidence.
-4. Add the project to `../js/portfolio-race-data.js`, `../js/playfolio/catalog.js`, and `../js/project-map-data.js`.
-5. Run `npm run sync:chrome` and `npm run sync:styles`.
-6. Verify light/dark themes, keyboard navigation, reduced motion, 390px mobile, 1280px desktop, and an ultra-wide viewport.
-7. Run `npm run check` and `git diff --check`.
-
-## Current reference pages
-
-- `project-victoria.html` — image, video, gallery, architecture, and process.
-- `project-paddockjs.html` — text-first case study with external package links.
-- `project-dream2detect.html` — research metrics and horizontally scrollable evidence ladder.
-- `project-noty.html` — contained illustration treatment.
-- `project-contextkey.html` — concise text-first experimental project.
-- `project-unity.html` — metrics-led cross-platform systems case study.
-- `project-mattyflow.html` — text-first local AI application.
-- `project-mosaic.html` — distributed robotics ownership model.
-- `project-databases-ie.html` — data-model and transaction case study.
-- `project-ghoststroke.html` — native typing app with real identity artwork and a cursor-selection flow.
+1. Register new projects in the catalog, race data and project map when applicable.
+2. Run `npm run sync:styles` after route-manifest changes; `npm run sync:chrome` only when intentionally updating shared chrome.
+3. Check real pages at mobile, desktop and wide widths; inspect light/dark, keyboard navigation, image/video behavior and reduced motion.
+4. Check Home, Projects, Apps, Resume and Contact for shared-layout regressions.
+5. Run `npm run check` and `git diff --check`. Git mutations require separate approval.

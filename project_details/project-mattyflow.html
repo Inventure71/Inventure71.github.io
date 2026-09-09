@@ -16,19 +16,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-    <!-- route-styles: /css/playfolio-project-detail.css -->
+    <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="../css/project-stories/apps.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--mattyflow" data-project-family="app">
-    <a class="project-skip-link" href="#project-content">Skip to project content</a>
-    <main class="flex-shrink-0" id="project-content">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--mattyflow project-story story-collection" data-project-family="app">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
+    <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
         <div class="pf-brand-group" data-glass-group>
@@ -83,52 +86,38 @@
       </div>
         </nav>
 
-        <section class="py-5"><div class="container px-5"><article class="project-shell">
-            <header class="project-hero">
-                <div>
-                    <p class="project-eyebrow">Dictation for macOS</p>
-                    <h1>MattyFlow</h1>
-                    <p class="lead">Hold Fn to dictate into your current app. MattyFlow transcribes your speech and can rewrite the result using models running on your Mac.</p>
-                    <div class="project-pills" aria-label="Core technologies"><span class="project-pill">Swift / AppKit</span><span class="project-pill">Python / FastAPI</span><span class="project-pill">MLX / Gemma</span></div>
-                </div>
-                <dl class="hero-meta" aria-label="Project facts">
-                    <div class="hero-meta-card"><dt class="label">Role</dt><dd class="value">Creator · macOS &amp; ML engineer</dd></div>
-                    <div class="hero-meta-card"><dt class="label">Year</dt><dd class="value">2026</dd></div>
-                    <div class="hero-meta-card"><dt class="label">State</dt><dd class="value">Active macOS prototype</dd></div>
-
-                </dl>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">Local dictation · 2026</p>
+                <h1 class="story-title">MattyFlow</h1>
+                <p class="story-lede">Hold Fn to dictate into your current app, with local transcription and optional rewriting.</p>
+                <ul class="story-meta"><li>Swift / AppKit · Python / FastAPI · MLX</li><li>macOS prototype</li></ul>
             </header>
-
-            <section class="project-media-panel project-media-panel--without-media" aria-label="MattyFlow summary">
-                <aside class="project-sidecard" aria-labelledby="matty-summary-title">
-                    <h2 id="matty-summary-title">From microphone to text</h2>
-                    <p>The menu-bar app records speech and returns the result to the previously focused app. A local service handles transcription and optional rewriting.</p>
-                    <ul class="sidecard-highlight">
-                        <li><i class="bi bi-cloud-slash" aria-hidden="true"></i><span>Speech recognition and rewriting stay on the Mac by default; OpenAI is an explicit optional provider.</span></li>
-                        <li><i class="bi bi-memory" aria-hidden="true"></i><span>Choose and download local models; idle models can be unloaded to release memory.</span></li>
-                    </ul>
-                </aside>
+            <figure class="story-shell story-diagram matty-pipeline">
+                <div class="matty-lane"><span class="app-diagram-label">Native app</span><strong><kbd>Fn</kbd> Record audio</strong><span>Remember the destination</span></div>
+                <span class="matty-transfer" aria-hidden="true">→</span>
+                <div class="matty-lane matty-lane--model"><span class="app-diagram-label">Local service</span><strong>Transcribe</strong><span>Optional rewrite</span></div>
+                <span class="matty-transfer" aria-hidden="true">→</span>
+                <div class="matty-lane"><span class="app-diagram-label">Native app</span><strong>Insert the result</strong><span>Newest request only</span></div>
+                <figcaption class="story-caption">Recording and insertion stay in the native app; Python runs the models.</figcaption>
+            </figure>
+            <section class="story-shell story-section story-split" aria-labelledby="matty-boundaries">
+                <h2 class="story-section-heading" id="matty-boundaries">Recording and insertion</h2>
+                <dl class="story-notes">
+                    <div><dt>Capture &amp; return</dt><dd>The app remembers which application was focused when recording began. Only the newest completed request is pasted there.</dd></div>
+                    <div><dt>Model service</dt><dd>FastAPI prepares the recording for the selected speech model and, when enabled, sends its transcript through a rewrite prompt.</dd></div>
+                    <div><dt>Model lifecycle</dt><dd>Models download separately and can unload when idle. Loading them again adds time to the next request.</dd></div>
+                </dl>
             </section>
-
-            <section class="project-section">
-                <div class="project-section-header"><p class="project-section-eyebrow">Dictation pipeline</p><h2>Capture, understand, insert</h2></div>
-                <div class="project-insight-grid">
-                    <article class="project-insight-card"><h3>Recording and insertion</h3><p>A native menu-bar app monitors Fn, records audio, preserves the previously focused application, supervises the backend, and pastes only the newest completed request.</p></article>
-                    <article class="project-insight-card"><h3>Local transcription</h3><p>FastAPI normalizes the recording and routes it through the selected local speech model. The model catalog lists installation and activation options.</p></article>
-                    <article class="project-insight-card"><h3>Optional rewriting</h3><p>The transcript can pass through local rewrite or advanced-rewrite prompts before insertion. Direct text requests use a separate agent endpoint so dictation and assistant behavior stay distinct.</p></article>
-                </div>
+            <section class="story-shell story-section story-split" aria-labelledby="matty-runtime">
+                <h2 class="story-section-heading" id="matty-runtime">Models and permissions</h2>
+                <div><p class="story-copy">Models run on the Mac by default. OpenAI is also available as an optional provider.</p><p class="story-copy">Requires Apple silicon and Microphone, Input Monitoring, and Accessibility permissions.</p></div>
             </section>
-
-            <section class="project-section project-spotlight" aria-label="Outcome and current limitation">
-                <h2>Requirements</h2>
-                <p>The prototype requires Apple silicon and Microphone, Input Monitoring, and Accessibility permissions. Models download separately, and the first request can take longer while they load. A public release is not available yet.</p>
-            </section>
-
-            <nav class="text-center" aria-label="Project navigation"><a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to the project race</a></nav>
-        </article></div></section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+        </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script><script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script>
 </body>
 
 </html>

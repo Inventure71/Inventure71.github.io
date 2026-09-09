@@ -147,14 +147,16 @@ describe('project detail responsive media', () => {
     expect(offenders).toEqual([]);
   });
 
-  test('keeps the canonical template wired to project behavior and reduced motion', () => {
+  test('keeps the canonical template on the progressive story contract', () => {
     const template = projectHtmlFiles().find(({ file }) => file === '_template.html')?.html ?? '';
 
-    expect(template).toContain('project-pages.js');
-    expect(template).toContain('<dl class="hero-meta"');
-    expect(template).toContain('project-skip-link');
-    expect(projectPagesCss).toContain('@media (prefers-reduced-motion: reduce)');
-    expect(projectPagesJs).toContain("matchMedia?.('(prefers-reduced-motion: reduce)')");
+    expect(template).toContain('playfolio-project-story.css');
+    expect(template).toContain('<dl class="story-notes"');
+    expect(template).toContain('story-skip-link');
+    expect(template).toContain('id="project-story" tabindex="-1"');
+    expect(template).not.toContain('class="project-shell');
+    const storyStyles = readFileSync(new URL('../../css/project-stories.css', import.meta.url), 'utf8');
+    expect(storyStyles).toContain('@media (prefers-reduced-motion: reduce)');
   });
 
   test('uses purposeful motion without turning passive content into false controls', () => {
@@ -231,14 +233,17 @@ describe('project detail responsive media', () => {
     expect(pages.get('project-mosaic.html')).toContain('github.com/Inventure71/SwarmProjectV1');
     expect(pages.get('project-databases-ie.html')).toContain('databases-project-ie.vercel.app');
     expect(pages.get('project-ghoststroke.html')).not.toContain('github.com/Inventure71/Ghoststroke');
+    expect(pages.get('project-ghoststroke.html')).toContain(
+      'downloads.mgiorgetti.com/ghostyper/1.0.0-1/Ghostyper-1.0.0-1-app.dmg',
+    );
     projectHtmlFiles().forEach(({ html }) => {
       expect(html).not.toContain('Creator Profile');
       expect(html).not.toContain('href="https://github.com/Inventure71"');
     });
   });
 
-  test('lists Ghoststroke and Noty without exposing private or unavailable downloads', () => {
-    expect(appsHtml).toContain('View Ghoststroke project');
+  test('lists Ghostyper and Noty without exposing private source repositories', () => {
+    expect(appsHtml).toContain('View Ghostyper details and download');
     expect(appsHtml).toContain('View Noty project');
     expect(appsHtml).not.toContain('github.com/Inventure71/Ghoststroke');
     expect(appsHtml).not.toContain('github.com/Inventure71/Noty');

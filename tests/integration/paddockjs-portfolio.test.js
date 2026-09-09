@@ -10,6 +10,17 @@ const projectsCssPath = fileURLToPath(new URL('../../css/playfolio-projects.css'
 const raceCssPath = fileURLToPath(new URL('../../css/playfolio/race.css', import.meta.url));
 
 describe('PaddockJS project race integration', () => {
+  test('starts in the curated project order with matching vehicle entries', () => {
+    const expectedOrder = [
+      'core', 'victoria', 'ghoststroke', 'dream2detect', 'noir', 'vinyl',
+      'mosaic', 'vigil', 'noty', 'paddockjs', 'project-unity', 'clipclop',
+      'contextkey', 'mattyflow', 'clash', 'drsorriso', 'reminderz', 'evolve',
+      'databases-ie', 'budget',
+    ];
+    expect(PORTFOLIO_DRIVERS.map((driver) => driver.id)).toEqual(expectedOrder);
+    expect(PORTFOLIO_ENTRIES.map((entry) => entry.driverId)).toEqual(expectedOrder);
+  });
+
   test('includes the researched portfolio entries without private Safeway data', () => {
     const driverIds = PORTFOLIO_DRIVERS.map((driver) => driver.id);
     const entryIds = PORTFOLIO_ENTRIES.map((entry) => entry.driverId);

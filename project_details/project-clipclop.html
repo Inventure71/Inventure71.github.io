@@ -23,17 +23,21 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="../css/project-stories/apps.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--clipclop" data-project-family="app">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--clipclop project-story story-collection" data-project-family="app">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -89,176 +93,34 @@
       </div>
         </nav>
 
-        <!-- Project Details Section-->
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <h1>ClipClop</h1>
-                            <p class="lead">Share text and images between a Mac and an Android phone over your local Wi-Fi.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Python</span>
-                                <span class="project-pill">Android</span>
-                                <span class="project-pill">Local-first</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card">
-                                <span class="label">Role</span>
-                                <span class="value">Solo Builder · Systems Designer</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Timeline</span>
-                                <span class="value">2024</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Stack</span>
-                                <span class="value">Python · Java · AES-256-GCM</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Status</span>
-                                <span class="value">Working prototype</span>
-                            </div>
-                        </div>
-                    </header>
-
-                    <section class="project-media-panel project-media-panel--without-media">
-                        <aside class="project-sidecard">
-                            <h2>Pair once, copy across devices</h2>
-                            <p>Scan the Mac’s QR code to pair the Android companion. ClipClop transfers text and images over the local network and reconnects when device addresses change.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-lightning-charge"></i><span>The Mac checks the clipboard change counter before reading and sending new content.</span></li>
-                                <li><i class="bi bi-phone"></i><span>Pairing is a single QR scan, and reconnection is
-                                        automatic even when my phone's IP changes.</span></li>
-                            </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71/ClipClop" target="_blank" rel="noreferrer">
-                                    <span>Desktop Repository</span>
-                                    <i class="bi bi-arrow-up-right"></i>
-                                </a>
-                                <a href="https://github.com/Inventure71/ClipClop/releases/latest" target="_blank"
-                                    rel="noreferrer">
-                                    <span>Download Mac + Android</span>
-                                    <i class="bi bi-arrow-up-right"></i>
-                                </a>
-                            </div>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Uses</p>
-                            <h2>Text, links, and images</h2>
-                        </div>
-                        <ul class="project-keypoints">
-                            <li>
-                                <h3>Links &amp; snippets</h3>
-                                <p>Copy a URL or code snippet on the Mac and paste it on the phone.</p>
-                            </li>
-                            <li>
-                                <h3>Screenshots too</h3>
-                                <p>Images ride the same pipe as text, so a screenshot copied on one device is already
-                                    waiting in the clipboard on the other.</p>
-                            </li>
-                            <li>
-                                <h3>Encrypted transfers</h3>
-                                <p>Messages use AES-256-GCM encryption with a key exchanged during QR pairing.</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Under the hood</p>
-                            <h2>Three pieces, talking over your LAN</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h3>A quiet Mac menu-bar app</h3>
-                                <p>No Dock icon — it lives in the menu bar. Instead of reading the clipboard on a timer,
-                                    it watches NSPasteboard's change counter and only does real work when something
-                                    actually changes.</p>
-                                <ul>
-                                    <li>Shows connection status and the last device it paired with.</li>
-                                    <li>Pairing generates a fresh 256-bit key and hands it over as a QR code.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>An Android foreground service</h3>
-                                <p>A foreground service keeps the TCP connection alive and writes incoming clips
-                                    straight to the system clipboard.</p>
-                                <ul>
-                                    <li>Mac → Android is automatic; Android → Mac is one deliberate tap.</li>
-                                    <li>It rediscovers the paired Mac on its own after any network change.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Encryption &amp; discovery</h3>
-                                <p>Every message is AES-256-GCM with a fresh nonce, and the two devices find each other
-                                    again through a three-tier fallback.</p>
-                                <ul>
-                                    <li>Bonjour/mDNS first, a UDP beacon as backup, manual IP as a last resort.</li>
-                                    <li>Reconnects match the Mac's stable device ID — never a stale IP.</li>
-                                </ul>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>Transfer direction</h2>
-                        <p>Mac-to-Android transfers happen automatically. Sending a clip from Android to the Mac takes one tap. Both devices need to be on the same local network.</p>
-                    </section>
-
-                    <section class="project-section project-flow">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Flow</p>
-                            <h2>How a clip gets across</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step">
-                                <span class="flow-index">01</span>
-                                <div class="flow-body">
-                                    <h3>Pair</h3>
-                                    <p>Scan a QR code from the Mac's menu bar. It carries the encryption key and the
-                                        Mac's identity — that's the entire setup.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">02</span>
-                                <div class="flow-body">
-                                    <h3>Copy</h3>
-                                    <p>Copy text or an image on the Mac. ClipClop detects the change and encrypts the payload.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">03</span>
-                                <div class="flow-body">
-                                    <h3>Land</h3>
-                                    <p>The clip travels over an encrypted TCP connection on your LAN and drops straight
-                                        into the other device's clipboard.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">04</span>
-                                <div class="flow-body">
-                                    <h3>Reconnect</h3>
-                                    <p>After a network change, ClipClop looks for the paired Mac using its device ID.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to all projects
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">Cross-device clipboard · 2024</p>
+                <h1 class="story-title">ClipClop</h1>
+                <p class="story-lede">Share text and images between a Mac and Android phone over local Wi-Fi.</p>
+                <div class="story-actions"><a class="story-button" href="https://github.com/Inventure71/ClipClop/releases/latest" target="_blank" rel="noopener noreferrer">Download Mac + Android <span aria-hidden="true">↗</span></a><a class="story-button is-secondary" href="https://github.com/Inventure71/ClipClop" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a></div>
+                <ul class="story-meta"><li>Python · Java</li><li>Working prototype</li></ul>
+            </header>
+            <figure class="story-shell story-diagram clipclop-map">
+                <div class="clipclop-device"><span class="app-diagram-label">Mac</span><strong>Clipboard</strong><span>Text &amp; images</span></div>
+                <div class="clipclop-routes"><div><span>Automatic</span><span class="app-diagram-arrow" aria-hidden="true">→</span></div><div><span class="app-diagram-arrow" aria-hidden="true">←</span><span>One tap to send</span></div></div>
+                <div class="clipclop-device"><span class="app-diagram-label">Android</span><strong>Clipboard</strong><span>Text &amp; images</span></div>
+                <figcaption class="story-caption">Mac-to-Android transfers are automatic. Sending from Android takes one tap.</figcaption>
+            </figure>
+            <section class="story-shell story-section story-split" aria-labelledby="clipclop-transfer">
+                <h2 class="story-section-heading" id="clipclop-transfer">Pairing and reconnection</h2>
+                <dl class="story-notes">
+                    <div><dt>Pairing</dt><dd>Scan the Mac’s QR code to share its device identity and a fresh encryption key with Android.</dd></div>
+                    <div><dt>Encrypted transport</dt><dd>Text and images travel over TCP. Each message uses AES-256-GCM with a fresh nonce.</dd></div>
+                    <div><dt>Rediscovery</dt><dd>Bonjour/mDNS, a UDP beacon, and manual IP provide discovery options. The saved device ID lets the phone find its Mac after an IP address change.</dd></div>
+                </dl>
+            </section>
+            <section class="story-shell story-section story-split" aria-labelledby="clipclop-platforms">
+                <h2 class="story-section-heading" id="clipclop-platforms">Clipboard access</h2>
+                <div><p class="story-copy">The Mac app checks NSPasteboard’s change counter and reads content only when it changes.</p><p class="story-copy">An Android foreground service receives clips and maintains the connection. Sending is user-triggered because Android restricts background clipboard reads.</p></div>
+            </section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+        </article>
     </main>
 
     <!-- Footer-->
@@ -266,7 +128,6 @@
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

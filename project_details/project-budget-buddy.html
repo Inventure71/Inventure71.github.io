@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Budget Buddy - a conversational budgeting assistant built at a hackathon" />
+    <meta name="description" content="Budget Buddy — a hackathon prototype connecting spending questions, transaction history and savings goals" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>Budget Buddy - M.G.</title>
     <!-- Favicon-->
@@ -23,17 +23,21 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="../css/project-stories/data-tools.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--budget" data-project-family="app">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--budget project-story story-collection" data-project-family="app">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -89,143 +93,26 @@
       </div>
         </nav>
 
-        <!-- Project Details Section-->
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <h1>Budget Buddy</h1>
-                            <p class="lead">A hackathon prototype for discussing spending, savings goals, and budget changes in a conversation.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Python</span>
-                                <span class="project-pill">LLM</span>
-                                <span class="project-pill">Hackathon</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card">
-                                <span class="label">Role</span>
-                                <span class="value">Hackathon team</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Timeline</span>
-                                <span class="value">Hackathon build</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Stack</span>
-                                <span class="value">Python · LLM</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Status</span>
-                                <span class="value">Weekend prototype</span>
-                            </div>
-                        </div>
-                    </header>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+<header class="story-shell story-hero"><p class="story-kicker">Hackathon prototype</p><h1 class="story-title">Budget Buddy</h1><p class="story-lede">A budget assistant that uses transaction history and savings goals to answer spending questions.</p><ul class="story-meta"><li>Team project</li><li>Python</li></ul></header>
+<figure class="story-shell story-diagram budget-conversation">
+ <p class="story-kicker">Interaction sketch</p>
+ <blockquote>“What would I need to change to save a little more each month?”</blockquote>
+ <div class="budget-context"><div><strong>Spending</strong><span>Categories &amp; recent transactions</span></div><span class="budget-plus" aria-hidden="true">+</span><div><strong>Context</strong><span>Goals &amp; earlier decisions</span></div></div>
+ <p class="budget-return">Review the suggestion and adjust the goal.</p>
+ <figcaption class="story-caption">Example question and the context used to answer it.</figcaption>
+</figure>
+            <section class="story-shell story-section"><h2 class="story-section-heading">Spending and goals</h2><dl class="story-notes"><div><dt>Transactions</dt><dd>Merchant names and transaction categories provide a summary of spending.</dd></div><div><dt>Follow-up</dt><dd>Earlier goals and decisions provide context for follow-up questions.</dd></div></dl></section>
 
-                    <section class="project-media-panel project-media-panel--without-media">
-                        <aside class="project-sidecard">
-                            <h2>Spending and goals</h2>
-                            <p>The assistant uses transaction categories and previous conversations to discuss budget changes and savings goals.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-pie-chart"></i><span>Breaks down the spending relevant to your question.</span></li>
-                                <li><i class="bi bi-chat-heart"></i><span>Compares proposed changes with your savings goals.</span></li>
-                            </ul>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">What we built</p>
-                            <h2>Transaction data and conversation history</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h3>Transaction categories</h3>
-                                <p>Combines transactions and standardizes merchant names for the spending summary.</p>
-                                <ul>
-                                    <li>Groups spending into categories.</li>
-                                    <li>Flags unusual weekly spending.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Conversation history</h3>
-                                <p>Keeps earlier goals and decisions available for follow-up conversations.</p>
-                                <ul>
-                                    <li>Connects earlier decisions with transaction history.</li>
-                                    <li>Uses previous goals when proposing a change.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Model inputs</h3>
-                                <p>The prototype masks sensitive details before sending model requests.</p>
-                                <ul>
-                                    <li>The raw numbers stay local; only what's needed goes out.</li>
-                                </ul>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>The hackathon focus</h2>
-                        <p>The prototype explored how a conversation could help someone compare a purchase or savings goal against their spending. The focus was the interaction: explaining a suggested budget change and keeping track of the decisions made.</p>
-                    </section>
-
-                    <section class="project-section project-flow">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Flow</p>
-                            <h2>How a chat plays out</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step">
-                                <span class="flow-index">01</span>
-                                <div class="flow-body">
-                                    <h3>Check in</h3>
-                                    <p>You tell it what's on your mind — a big purchase, a rough month, a goal — in plain
-                                        language.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">02</span>
-                                <div class="flow-body">
-                                    <h3>Review spending</h3>
-                                    <p>It retrieves spending related to your question.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">03</span>
-                                <div class="flow-body">
-                                    <h3>Talk it through</h3>
-                                    <p>It proposes a budget change and explains how it relates to your goal.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">04</span>
-                                <div class="flow-body">
-                                    <h3>Follow up</h3>
-                                    <p>The next conversation can refer to your earlier decisions.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to all projects
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+</article>
     </main>
     <!-- Footer-->
     <footer class="pf-footer py-4 mt-auto"></footer>
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+
 </body>
 
 </html>

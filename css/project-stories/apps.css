@@ -1,0 +1,47 @@
+/* Native-app diagrams: protocol lanes, acceptance gates, and compilation paths. */
+.app-diagram-label { font: .7rem var(--project-mono); color: var(--pf-muted); text-transform: uppercase; letter-spacing: .07em !important; }
+.app-diagram-arrow { display: block; font-size: 2rem; line-height: 1; color: var(--project-accent-text); }
+.unity-link-map, .clipclop-map { display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: clamp(1rem, 3vw, 3rem); align-items: center; }
+.unity-host, .clipclop-device { display: grid; gap: .6rem; padding: 1.5rem; border: 1px solid var(--pf-line-strong); border-radius: 5px; }
+.unity-host strong, .clipclop-device strong, .matty-lane strong { font-size: clamp(1.05rem, 2vw, 1.5rem); letter-spacing: -.035em !important; }
+.unity-host > span:last-child, .clipclop-device > span:last-child { color: var(--pf-muted); font-size: .8rem; }
+.unity-connections { display: grid; gap: 1.5rem; }
+.unity-connections > div { border-bottom: 1px solid var(--pf-line-strong); text-align: center; padding-bottom: .6rem; }
+.unity-connections > div > span:first-child { display: block; font: .73rem var(--project-mono); margin-bottom: .65rem; }
+.context-sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.context-sources > span { padding: 1rem; border-bottom: 1px solid var(--pf-line-strong); text-align: center; font: .8rem var(--project-mono); }
+.context-join { font-size: 2rem; text-align: center; margin: .7rem; }
+.context-destination { text-align: center; display: grid; gap: .6rem; }
+.context-destination strong { font-size: clamp(1rem, 2.2vw, 1.7rem); }
+.context-destination > span { font-size: .8rem; color: var(--pf-muted); }
+.context-accept { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; font-size: .8rem; }
+.context-accept kbd, .matty-lane kbd { padding: .4rem .6rem; border: 1px solid var(--pf-line-strong); border-radius: 4px; background: var(--pf-surface); color: var(--pf-ink); font: .75rem var(--project-mono); }
+.context-map > .story-caption { text-align: center; margin-top: 2rem; }
+.matty-pipeline { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 1.5rem; }
+.matty-lane { display: grid; gap: .85rem; }
+.matty-lane strong { display: flex; gap: .7rem; align-items: center; flex-wrap: wrap; }
+.matty-lane > span:last-child { font-size: .8rem; color: var(--pf-muted); }
+.matty-lane--model { border-inline: 1px solid var(--pf-line-strong); padding-inline: 1.5rem; }
+.matty-transfer { font-size: 1.8rem; color: var(--project-accent-text); }
+.matty-pipeline > .story-caption, .clipclop-map > .story-caption { grid-column: 1 / -1; }
+.clipclop-routes { display: grid; gap: .7rem; }
+.clipclop-routes > div { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-size: .8rem; padding-block: .7rem; border-bottom: 1px solid var(--pf-line-strong); }
+.loom-block-chain { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+.loom-block-chain > span:not([aria-hidden]) { padding: .8rem; border: 1px solid var(--pf-line-strong); font: .73rem var(--project-mono); border-radius: 3px; }
+.loom-value-path { display: flex; align-items: center; justify-content: center; gap: .7rem; padding-top: 1.5rem; font-size: .75rem; color: var(--pf-muted); }
+.project-page--remainder .story-title { font-size: clamp(2.5rem, 5.5vw, 5rem); }
+@media (max-width: 900px) {
+  .unity-link-map, .clipclop-map, .matty-pipeline { grid-template-columns: 1fr; gap: 1.5rem; }
+  .unity-host, .clipclop-device { padding: 1.2rem; }
+  .unity-connections { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .unity-connections .app-diagram-arrow { transform: rotate(90deg); }
+  .unity-connections > div > span:first-child { font-size: .65rem; }
+  .clipclop-routes { padding-inline: 1rem; }
+  .clipclop-routes .app-diagram-arrow { transform: rotate(90deg); }
+  .context-sources { grid-template-columns: 1fr; gap: .4rem; }
+  .context-sources > span { padding: .65rem; }
+  .context-accept { gap: .7rem; }
+  .matty-lane--model { border-inline: none; border-block: 1px solid var(--pf-line-strong); padding: 1rem 0; }
+  .matty-transfer { transform: rotate(90deg); justify-self: start; margin-left: .35rem; }
+  .loom-block-chain { justify-content: flex-start; }
+}

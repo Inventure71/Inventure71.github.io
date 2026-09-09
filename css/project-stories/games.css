@@ -1,0 +1,31 @@
+/* Explanatory diagrams for the algorithms and simulation stories. */
+.game-clearance-examples { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 3vw, 2rem); }
+.game-clearance-examples > div { min-width: 0; }
+.game-clearance-examples strong, .game-clearance-examples > div > span { display: block; }
+.game-clearance-examples strong { margin-top: 1rem; font-size: .9rem; }
+.game-clearance-examples > div > span { margin-top: .35rem; color: var(--pf-muted); font-size: .8rem; line-height: 1.6; }
+.game-clearance-grid { position: relative; aspect-ratio: 1; border: 1px solid var(--pf-line-strong); background-image: linear-gradient(to right, var(--pf-line) 1px, transparent 1px), linear-gradient(to bottom, var(--pf-line) 1px, transparent 1px); background-size: 20% 20%; }
+.game-clearance-obstacle { position: absolute; inset: 0 0 0 auto; width: 40%; background: color-mix(in srgb, var(--pf-ink) 16%, transparent); border-left: 1px solid var(--pf-line-strong); }
+.game-clearance-unit { position: absolute; top: 40%; left: 40%; background: color-mix(in srgb, #479260 42%, transparent); border: 2px solid #479260; }
+.game-clearance-unit.is-small { width: 20%; height: 20%; }
+.game-clearance-unit.is-large { width: 40%; height: 40%; border-color: #ba7453; background: repeating-linear-gradient(135deg, transparent 0 7px, color-mix(in srgb, #ba7453 25%, transparent) 7px 10px); }
+.game-simulation { text-align: center; }
+.game-simulation .story-kicker { margin-bottom: .6rem; }
+.game-simulation-input strong { font-weight: 550; font-size: clamp(1rem, 2vw, 1.3rem); }
+.game-simulation-connector { display: block; margin: 1rem auto; font-size: 1.7rem; color: var(--pf-muted); }
+.game-simulation-core { max-width: 34rem; margin-inline: auto; padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid var(--pf-line-strong); background: var(--pf-bg); }
+.game-simulation-core strong { display: block; font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 650; letter-spacing: -.04em; }
+.game-simulation-core > span:last-child { display: block; color: var(--pf-muted); margin-top: .55rem; font-size: .85rem; }
+.game-simulation-mark { display: block; width: 52px; height: 12px; margin: 0 auto 1.2rem; background: conic-gradient(var(--pf-ink) 25%, transparent 0 50%, var(--pf-ink) 0 75%, transparent 0); background-size: 12px 12px; }
+.game-simulation-outputs { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3rem; max-width: 46rem; margin: 0 auto; }
+.game-simulation-outputs > div { position: relative; padding-top: 3.5rem; }
+.game-simulation-outputs > div::before { content: ''; position: absolute; top: 0; left: 50%; height: 2.5rem; border-left: 1px solid var(--pf-line-strong); }
+.game-simulation-outputs strong { display: block; font-weight: 600; font-size: clamp(1rem, 2vw, 1.3rem); }
+.game-simulation-outputs > div > span { display: block; margin-top: .6rem; color: var(--pf-muted); font-size: .8rem; line-height: 1.65; }
+.game-simulation figcaption { margin-top: 2rem; }
+@media (max-width: 540px) {
+  .game-simulation-outputs { gap: 1rem; }
+  .game-simulation-core { padding-inline: 1rem; }
+  .game-simulation-outputs .story-kicker { font-size: .6rem; }
+  .game-clearance-examples { gap: 1rem; }
+}

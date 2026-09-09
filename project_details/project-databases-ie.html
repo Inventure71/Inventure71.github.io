@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="TCGNET - a deployed PostgreSQL-backed trading-card collection and marketplace" />
+    <meta name="description" content="TCGNET — a Django and PostgreSQL trading-card collection and marketplace course project" />
     <meta name="author" content="Matteo Giorgetti" />
     <meta name="theme-color" content="#0d0d0b" />
     <title>TCGNET - M.G.</title>
@@ -16,18 +16,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-    <!-- route-styles: /css/playfolio-project-detail.css -->
+    <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="../css/project-stories/data-tools.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--databases-ie" data-project-family="systems">
-    <a class="project-skip-link" href="#project-content">Skip to project content</a>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--databases-ie project-story story-collection" data-project-family="systems">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0" id="project-content">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -83,60 +86,21 @@
       </div>
         </nav>
 
-        <section class="py-5"><div class="container px-5"><article class="project-shell">
-            <header class="project-hero">
-                <div>
-                    <p class="project-eyebrow">Database systems course project</p>
-                    <h1>TCGNET</h1>
-                    <p class="lead">Browse trading cards, manage a collection, and list cards for sale. A database course project built with Django and PostgreSQL.</p>
-                    <div class="project-pills" aria-label="Core technologies"><span class="project-pill">Django</span><span class="project-pill">PostgreSQL</span><span class="project-pill">Vercel</span></div>
-                </div>
-                <dl class="hero-meta" aria-label="Project facts">
-                    <div class="hero-meta-card"><dt class="label">Role</dt><dd class="value">Lead backend/data engineer · two-person team</dd></div>
-                    <div class="hero-meta-card"><dt class="label">Year</dt><dd class="value">2026</dd></div>
-                    <div class="hero-meta-card"><dt class="label">State</dt><dd class="value">Deployed course MVP</dd></div>
-                    <div class="hero-meta-card"><dt class="label">Features</dt><dd class="value">Catalog · Collection · Listings</dd></div>
-                </dl>
-            </header>
-
-            <section class="project-media-panel project-media-panel--without-media" aria-label="TCGNET summary">
-                <aside class="project-sidecard" aria-labelledby="tcgnet-summary-title">
-                    <h2 id="tcgnet-summary-title">Explore the data behind each screen</h2>
-                    <p>Browse exact card printings, track owned copies, list cards, and record purchases. Help controls show the ORM queries behind the database features.</p>
-                    <ul class="sidecard-highlight">
-                        <li><i class="bi bi-database-check" aria-hidden="true"></i><span>Constraints and row-locked transactions protect stock, listings, purchases, and price history.</span></li>
-                        <li><i class="bi bi-search" aria-hidden="true"></i><span>Trigram search, partial indexes, aggregation, pagination, and <code>DISTINCT ON</code> keep the work in PostgreSQL.</span></li>
-                    </ul>
-                    <div class="sidecard-links">
-                        <a href="https://databases-project-ie.vercel.app/" target="_blank" rel="noopener noreferrer"><span>Open live project</span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
-                        <a href="https://github.com/Inventure71/DatabasesProjectIE" target="_blank" rel="noopener noreferrer"><span>View repository</span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
-                    </div>
-                </aside>
-            </section>
-
-            <section class="project-section">
-                <div class="project-section-header"><p class="project-section-eyebrow">Data design</p><h2>Exact records, guarded transitions</h2></div>
-                <div class="project-insight-grid">
-                    <article class="project-insight-card"><h3>Normalize the card</h3><p>Games, sets, cards, exact variants, and images are distinct records. Inventory, listings, order lines, and price snapshots all point to the exact variant they describe.</p></article>
-                    <article class="project-insight-card"><h3>Make invalid states difficult</h3><p>Database constraints reject negative quantities, over-reserved stock, duplicate printings, invalid listing amounts, and buyer-equals-seller orders before those states can spread.</p></article>
-                    <article class="project-insight-card"><h3>Move stock atomically</h3><p>Marketplace services use transactions and <code>select_for_update()</code> so creating, cancelling, or purchasing a listing changes inventory and price history as one consistent operation.</p></article>
-                </div>
-            </section>
-
-            <section class="project-section"><div class="project-section-header"><p class="project-section-eyebrow">Project scope</p><h2>Catalog and query scope</h2></div>
-                <ul class="project-data-strip">
-                    <li><span class="metric-value">132</span><span class="metric-label">Default card variants</span><span class="metric-copy">The repeatable importer loads the documented Base and Jungle scope.</span></li>
-                    <li><span class="metric-value">Live</span><span class="metric-label">Public deployment</span><span class="metric-copy">Catalog, collection, listing, and purchase paths are available as a course MVP.</span></li>
-                    <li><span class="metric-value">SQL-first</span><span class="metric-label">Query design</span><span class="metric-copy">Search, aggregation, existence checks, and pagination execute in PostgreSQL.</span></li>
-                </ul>
-            </section>
-
-            <section class="project-section project-spotlight" aria-label="Outcome and current limitation"><h2>Course project scope</h2><p>The project covers card records, inventory, listings, and purchase records. The default dataset is limited to the documented Base and Jungle sets; payment and shipping are outside its scope.</p></section>
-            <nav class="text-center" aria-label="Project navigation"><a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to the project race</a></nav>
-        </article></div></section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+<header class="story-shell story-hero"><p class="story-kicker">Database systems · Course project</p><h1 class="story-title">TCGNET</h1><p class="story-lede">Track exact card printings, manage a collection, and list copies for sale.</p><ul class="story-meta"><li>Lead backend &amp; data engineer</li><li>Two-person team</li><li>Django · PostgreSQL</li></ul><div class="story-actions"><a class="story-button" href="https://databases-project-ie.vercel.app/" target="_blank" rel="noopener noreferrer">Open project <span aria-hidden="true">↗</span></a><a class="story-button is-secondary" href="https://github.com/Inventure71/DatabasesProjectIE" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a></div></header>
+<figure class="story-shell story-diagram tcg-schema">
+ <p class="story-kicker">The data model</p>
+ <div class="tcg-catalog"><span>Game</span><span aria-hidden="true">→</span><span>Card + Set</span><span aria-hidden="true">→</span><strong>Exact variant</strong></div>
+ <div class="tcg-relations"><div><strong>Inventory</strong><span>Owned &amp; reserved copies</span></div><div><strong>Listing</strong><span>Quantity &amp; asking price</span></div><div><strong>Order line</strong><span>The purchased printing</span></div><div><strong>Price history</strong><span>Snapshots over time</span></div></div>
+ <figcaption class="story-caption">A variant joins a card to its set. Inventory, listings, orders, and prices refer to that exact printing.</figcaption>
+</figure>
+            <section class="story-shell story-section"><h2 class="story-section-heading">Purchases update stock in one transaction</h2><dl class="story-notes"><div><dt>Lock</dt><dd>Marketplace services use <code>select_for_update()</code> inside a transaction to coordinate changes to stock.</dd></div><div><dt>Validate</dt><dd>Database constraints reject negative quantities, over-reserved inventory, duplicate printings, and buyer-equals-seller orders.</dd></div><div><dt>Commit</dt><dd>Stock changes, purchase records, and price history are handled together. The same service boundary covers creating and cancelling listings.</dd></div></dl></section>
+            <section class="story-shell story-section"><h2 class="story-section-heading">PostgreSQL queries and data imports</h2><div class="story-columns"><p class="story-copy">Search and collection queries use PostgreSQL trigram matching, partial indexes, aggregation, pagination, and <code>DISTINCT ON</code>. Help controls show the ORM queries behind these features.</p><p class="story-copy">The repeatable importer covers 132 default variants from the documented Base and Jungle sets. The course MVP records listings and purchases; payment and shipping are outside its scope.</p></div></section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+        </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script><script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script>
 </body>
 
 </html>

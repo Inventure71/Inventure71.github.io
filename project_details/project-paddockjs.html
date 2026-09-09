@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="PaddockJS - an installable F1-style simulation toolkit for the browser and headless controllers" />
+    <meta name="description" content="PaddockJS is a JavaScript racing simulator with browser components and a headless environment." />
     <meta name="author" content="Matteo Giorgetti" />
     <title>PaddockJS - M.G.</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
@@ -15,17 +15,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="/css/project-stories/games.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--paddockjs" data-project-family="systems">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--paddockjs project-story story-collection" data-project-family="systems">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -81,73 +85,23 @@
       </div>
         </nav>
 
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <p class="project-section-eyebrow">Open-source simulation toolkit</p>
-                            <h1>PaddockJS</h1>
-                            <p class="lead">The JavaScript racing simulator behind this site’s project race, available as a browser component and a headless environment.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">JavaScript ESM</span>
-                                <span class="project-pill">PixiJS 8</span>
-                                <span class="project-pill">Vitest</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card"><span class="label">Role</span><span class="value">Creator · Maintainer</span></div>
-                            <div class="hero-meta-card"><span class="label">Release</span><span class="value">v4.2.0</span></div>
-                            <div class="hero-meta-card"><span class="label">Distribution</span><span class="value">npm · Apache-2.0</span></div>
-                            <div class="hero-meta-card"><span class="label">Used here</span><span class="value">Live Projects race</span></div>
-                        </div>
-                    </header>
-
-                    <section class="project-media-panel project-media-panel--without-media">
-                        <aside class="project-sidecard">
-                            <h2>Browser and headless APIs</h2>
-                            <p>Use a complete race view or place the track, controls, timing, and telemetry separately. A headless API runs the same simulation for experiments and training.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-grid-3x3-gap"></i><span>One controller drives both the all-in-one race and individually placed surfaces — timing tower, telemetry, controls.</span></li>
-                                <li><i class="bi bi-cpu"></i><span>A CSS-free headless subpath steps the same deterministic sim, with no PixiJS and no browser.</span></li>
-                            </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71/PaddockJS" target="_blank" rel="noreferrer"><span>View Repository</span><i class="bi bi-arrow-up-right"></i></a>
-                                <a href="https://www.npmjs.com/package/@inventure71/paddockjs" target="_blank" rel="noreferrer"><span>Open npm Package</span><i class="bi bi-arrow-up-right"></i></a>
-                                <a href="../projects.html"><span>Run the Portfolio Race</span><i class="bi bi-arrow-right"></i></a>
-                            </div>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">System boundaries</p>
-                            <h2>One simulation, several ways to use it</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card"><h3>Drop-in race</h3><p>One call puts a full race into a page — cars, track, timing tower, telemetry — with loading and failure handling already wired up.</p></article>
-                            <article class="project-insight-card"><h3>Separate components</h3><p>Place controls, canvas, timing, and telemetry in your own layout, connected to a shared simulator.</p></article>
-                            <article class="project-insight-card"><h3>Headless environment</h3><p>Training code steps the identical deterministic sim through a Gym-style reset/step API — no rendering, no CSS, fully reproducible from a seed.</p></article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>Testing custom drivers</h2>
-                        <p>The headless environment exposes observations, actions, and repeatable scenarios for testing driving policies. A custom controller can also run in browser playback, where you can inspect its braking, track limits, and recovery.</p>
-                    </section>
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left"></i> Back to all projects</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">Open-source simulation toolkit</p>
+                <h1 class="story-title">PaddockJS</h1>
+                <p class="story-lede">The racing simulator behind this site’s project race. Use the full race view, arrange its components yourself, or run the simulation without a browser.</p>
+                <ul class="story-meta"><li>Creator &amp; maintainer</li><li>JavaScript · PixiJS 8</li><li>Apache-2.0</li></ul>
+                <div class="story-actions"><a class="story-button" href="../projects.html">Open the project race <span aria-hidden="true">↗</span></a><a class="story-button is-secondary" href="https://github.com/Inventure71/PaddockJS" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a></div>
+            </header>
+            <div class="story-shell"><figure class="story-diagram game-simulation"><div class="game-simulation-input"><p class="story-kicker">Host supplies</p><strong>Drivers · tracks · rules</strong></div><span class="game-simulation-connector" aria-hidden="true">↓</span><div class="game-simulation-core"><span class="game-simulation-mark" aria-hidden="true"></span><strong>Simulation core</strong><span>Race state, physics, and control</span></div><div class="game-simulation-outputs"><div><p class="story-kicker">Browser</p><strong>Watch the race</strong><span>Canvas, controls, timing, telemetry</span></div><div><p class="story-kicker">Headless</p><strong>Step the environment</strong><span>Observations, actions, repeatable scenarios</span></div></div><figcaption class="story-caption">Both interfaces use the same simulation. Rendering belongs to the browser side.</figcaption></figure></div><section class="story-shell story-section" aria-labelledby="paddock-components"><h2 class="story-section-heading" id="paddock-components">Full race view or individual components</h2><div class="story-columns"><div class="story-copy"><h3>A complete race</h3><p>The complete browser view includes the track, cars, controls, and timing. On this site, selecting a driver opens its project.</p></div><div class="story-copy"><h3>Individual components</h3><p>Mount the race canvas, timing, controls, and telemetry into separate parts of a page. A shared controller keeps each view connected to the same race.</p></div></div></section>
+            <section class="story-shell story-section" aria-labelledby="paddock-headless"><h2 class="story-section-heading" id="paddock-headless">Headless control and browser playback</h2><div class="story-split"><div class="story-copy"><p>The headless environment exposes reset and step operations for custom controllers. It runs without PixiJS or a browser, with observations and actions for testing driving policies.</p><p>Bring the controller back to browser playback to inspect its braking, track limits, and recovery.</p></div><div><p class="story-kicker">Install from npm</p><pre class="story-code"><code>npm install @inventure71/paddockjs</code></pre><div class="story-actions"><a class="story-button is-secondary" href="https://www.npmjs.com/package/@inventure71/paddockjs" target="_blank" rel="noopener noreferrer">Open npm package <span aria-hidden="true">↗</span></a></div></div></div></section>
+            <div class="story-shell story-end"><a href="project-neural-noir.html">Next: Neural Noir <span aria-hidden="true">→</span></a><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></div>
+        </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

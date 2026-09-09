@@ -24,17 +24,21 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="/css/project-stories/robotics.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--victoria" data-project-family="robotics">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-story story-collection story-victoria project-page--victoria" data-project-family="robotics">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -91,215 +95,14 @@
         </nav>
 
         <!-- Project Details Section-->
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <h1>VictorIA</h1>
-                            <p class="lead">A robot arm that plays Connect 4 on a physical board. A webcam reads the grid, minimax chooses a move, and the arm places the disc.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Computer Vision</span>
-                                <span class="project-pill">Robotics</span>
-                                <span class="project-pill">Minimax</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card">
-                                <span class="label">Role</span>
-                                <span class="value">Robotics lab project</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Timeline</span>
-                                <span class="value">2025</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Stack</span>
-                                <span class="value">Python · OpenCV · SAM 2</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Status</span>
-                                <span class="value">Working prototype</span>
-                            </div>
-                        </div>
-                    </header>
-
-                    <section class="project-media-panel project-media-panel--split">
-                        <div class="project-media-stage project-media-stage--image">
-                            <img width="1600" height="900" decoding="async" src="../assets/project-media/victoria/robot-board-hero.jpg"
-                                alt="VictorIA robot arm positioned beside a physical Connect 4 board" loading="lazy" />
-                        </div>
-                        <aside class="project-sidecard">
-                            <h2>Playing against the arm</h2>
-                            <p>Calibrate the board from a few clicks, then play normally. The camera tracks the board state and the arm places the computer’s discs.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-camera-video"></i><span>SAM 2 segments the board once; a lightweight
-                                        classifier reads each cell every frame.</span></li>
-                                <li><i class="bi bi-hdd-network"></i><span>Vision and AI run on my Mac; the arm runs on a
-                                        separate ROS machine, talking over HTTP.</span></li>
-                            </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71/VictorIA" target="_blank" rel="noreferrer">
-                                    <span>View Repository</span>
-                                    <i class="bi bi-arrow-up-right"></i>
-                                </a>
-                                <a href="https://youtu.be/D_wXBm4Uxi0" target="_blank" rel="noreferrer">
-                                    <span>Watch Demo</span>
-                                    <i class="bi bi-play-circle"></i>
-                                </a>
-                            </div>
-                        </aside>
-                    </section>
-
-                    <section class="project-section project-video-section" aria-labelledby="victoria-video-title">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Demo video</p>
-                            <h2 id="victoria-video-title">VictorIA in motion</h2>
-                        </div>
-                        <div class="project-video-frame">
-                            <iframe data-src="https://www.youtube-nocookie.com/embed/D_wXBm4Uxi0"
-                                title="VictorIA project demo video" loading="lazy"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        </div>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Gameplay</p>
-                            <h2>See the board, think, then move</h2>
-                        </div>
-                        <ul class="project-keypoints">
-                            <li>
-                                <h3>See the board</h3>
-                                <p>Click a few points, SAM 2 masks the board, and a perspective warp flattens the webcam
-                                    feed into a clean, top-down grid.</p>
-                            </li>
-                            <li>
-                                <h3>Read every move</h3>
-                                <p>A classifier tags each of the 42 cells as empty, mine, or yours — and only re-checks
-                                    the cells where a new disc could actually have landed.</p>
-                            </li>
-                            <li>
-                                <h3>Pick and place</h3>
-                                <p>Minimax with alpha-beta pruning chooses the column, and the Interbotix arm lifts a
-                                    disc from its tower and drops it in.</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Under the hood</p>
-                            <h2>Two vision models and two machines</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h3>Finding the board (SAM 2)</h3>
-                                <p>Segment Anything 2 localizes the board once from a few clicked points; line-fitting the
-                                    mask edges gives four corners for the warp.</p>
-                                <ul>
-                                    <li>Calibration estimates the board position from the current camera view.</li>
-                                    <li>I confirm the calibration before the game starts.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Reading the cells</h3>
-                                <p>A Teachable Machine classifier reads each 224×224 cell as green, red, or empty, then
-                                    assembles a 6×7 matrix.</p>
-                                <ul>
-                                    <li>Only cells reachable by the next drop get re-classified each frame.</li>
-                                    <li>Single-core and multithreaded paths both exist.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h3>Two machines, one game</h3>
-                                <p>Vision and AI run on the Mac; the physical arm runs on a separate ROS box, coordinated
-                                    over a single HTTP move endpoint.</p>
-                                <ul>
-                                    <li>Minimax searches five plies deep with alpha-beta pruning.</li>
-                                    <li>The arm knows column spacing, a disc "tower", and safe travel poses.</li>
-                                </ul>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>One-time calibration, continuous tracking</h2>
-                        <p>SAM 2 handles the initial board segmentation. A smaller classifier then reads the cells during play, separating the more expensive setup from the repeated work on each turn.</p>
-                    </section>
-
-                    <section class="project-section project-flow">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Flow</p>
-                            <h2>How one turn plays out</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step">
-                                <span class="flow-index">01</span>
-                                <div class="flow-body">
-                                    <h3>Calibrate</h3>
-                                    <p>Click the board's corners; SAM 2 masks it and a perspective warp gives a clean
-                                        top-down view.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">02</span>
-                                <div class="flow-body">
-                                    <h3>Read</h3>
-                                    <p>Each frame, the classifier reads the 6×7 grid and diffs it against the last to
-                                        spot the move you just made.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">03</span>
-                                <div class="flow-body">
-                                    <h3>Decide</h3>
-                                    <p>Minimax with alpha-beta pruning searches five moves ahead and settles on a
-                                        column.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">04</span>
-                                <div class="flow-body">
-                                    <h3>Move</h3>
-                                    <p>That column is POSTed to the arm's ROS machine, which picks up a disc and drops it
-                                        into place.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Gallery</p>
-                            <h2>The physical prototype</h2>
-                        </div>
-                        <div class="project-gallery">
-                            <figure class="gallery-card">
-                                <img width="1600" height="900" decoding="async" src="../assets/project-media/victoria/robot-player-move.jpg"
-                                    alt="VictorIA hardware rig during a player move" loading="lazy" />
-                                <figcaption>The physical rig — webcam overhead, arm to the side, real board in the
-                                    middle.</figcaption>
-                            </figure>
-                            <figure class="gallery-card">
-                                <img width="1600" height="900" decoding="async" src="../assets/project-media/victoria/robot-arm-board.jpg"
-                                    alt="VictorIA robot arm hovering over the Connect 4 board" loading="lazy" />
-                                <figcaption>The arm lining up over the board before it commits to a column.
-                                </figcaption>
-                            </figure>
-                        </div>
-                    </section>
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to all projects
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+<header class="story-shell story-hero"><p class="story-kicker">Robotics · 2025</p><h1 class="story-title">VictorIA</h1><p class="story-lede">A robot arm that plays Connect 4 on a real board.</p><ul class="story-meta"><li>Robotics lab project</li><li>Python · OpenCV · SAM 2</li><li>Working prototype</li></ul><div class="story-actions"><a class="story-button" href="https://github.com/Inventure71/VictorIA" target="_blank" rel="noreferrer">View repository <span aria-hidden="true">↗</span></a><a class="story-button is-secondary" href="https://youtu.be/D_wXBm4Uxi0" target="_blank" rel="noreferrer">Watch demo <span aria-hidden="true">↗</span></a></div></header>
+            <div class="story-shell"><figure class="story-feature gallery-card"><img src="../assets/project-media/victoria/robot-board-hero.jpg" width="1600" height="900" alt="VictorIA robot arm beside the physical Connect 4 board" decoding="async" fetchpriority="high" /><figcaption class="story-caption">A webcam reads the board; the arm picks up and places the robot’s discs.</figcaption></figure></div><section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">One turn</p><h2 class="story-section-heading">Reading the board and choosing a move</h2><p class="story-copy">Calibration locates the board before play. The repeated work on each turn uses a smaller cell classifier.</p></div><ol class="story-process"><li><strong>Find the board</strong><span>SAM 2 segments it from a few clicked points. A perspective warp converts the camera view into a flat grid.</span></li><li><strong>Read the move</strong><span>A cell classifier assembles the 6 × 7 board state, checking where a new disc could have landed.</span></li><li><strong>Choose a column</strong><span>Minimax searches five plies with alpha-beta pruning to select the next move.</span></li><li><strong>Place the disc</strong><span>The selected column is sent over HTTP to the arm's ROS machine, which picks up a disc and drops it into place.</span></li></ol></div></section>
+            <section class="story-shell story-section" aria-labelledby="victoria-video-title"><p class="story-kicker">The prototype</p><h2 class="story-section-heading" id="victoria-video-title">A full match against VictorIA</h2><div class="project-video-frame"><iframe data-src="https://www.youtube-nocookie.com/embed/D_wXBm4Uxi0" title="A full match against VictorIA" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><p class="story-caption"><a href="https://youtu.be/D_wXBm4Uxi0" target="_blank" rel="noreferrer">Watch on YouTube ↗</a></p></section>
+            <section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Hardware &amp; software</p><h2 class="story-section-heading">Vision on the Mac, movement on ROS</h2></div><dl class="story-notes"><div><dt>On the Mac</dt><dd>Board calibration, cell recognition, game state, and move selection.</dd></div><div><dt>On the arm's machine</dt><dd>ROS control, disc pickup, column positioning, and travel poses.</dd></div><div><dt>Between them</dt><dd>An HTTP move endpoint carries the chosen column.</dd></div></dl></div><div class="story-gallery"><figure class="story-feature gallery-card"><img src="../assets/project-media/victoria/robot-player-move.jpg" width="1600" height="900" alt="VictorIA physical rig during a player move" decoding="async" loading="lazy" /><figcaption class="story-caption">A player adds a disc while the camera observes the board.</figcaption></figure>
+            <figure class="story-feature gallery-card"><img src="../assets/project-media/victoria/robot-arm-board.jpg" width="1600" height="900" alt="VictorIA arm positioned above the Connect 4 board" decoding="async" loading="lazy" /><figcaption class="story-caption">The arm aligns with the selected column.</figcaption></figure></div></section>
+            <div class="story-shell story-end"><a href="https://github.com/Inventure71/VictorIA" target="_blank" rel="noreferrer">View source <span aria-hidden="true">↗</span></a><a href="../projects.html">All projects <span aria-hidden="true">→</span></a></div>
+        </article>
     </main>
 
     <!-- Footer-->
@@ -307,7 +110,7 @@
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
+    <script src="../js/project-pages.js?v=20260908-story-focus"></script>
 </body>
 
 </html>

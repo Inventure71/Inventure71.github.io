@@ -15,17 +15,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="/css/project-stories/robotics.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--vigil" data-project-family="robotics">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-story story-collection story-vigil project-page--vigil" data-project-family="robotics">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -81,71 +85,17 @@
       </div>
         </nav>
 
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <p class="project-section-eyebrow">Robotics operations</p>
-                            <h1>VIGIL</h1>
-                            <p class="lead">Monitor a robot fleet, open remote terminals, and run repeatable diagnostics and recovery steps from one dashboard.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">FastAPI</span>
-                                <span class="project-pill">Paramiko</span>
-                                <span class="project-pill">ROS</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card"><span class="label">Role</span><span class="value">Full-stack Engineer</span></div>
-                            <div class="hero-meta-card"><span class="label">Timeline</span><span class="value">2026</span></div>
-                            <div class="hero-meta-card"><span class="label">Focus</span><span class="value">Fleet uptime · Recovery</span></div>
-                            <div class="hero-meta-card"><span class="label">Status</span><span class="value">Internal platform</span></div>
-                        </div>
-                    </header>
-
-                    <section class="project-media-panel project-media-panel--split">
-                        <div class="project-media-stage project-media-stage--image">
-                            <img width="960" height="526" decoding="async" src="../assets/project-media/vigil/fleet-dashboard.webp" alt="VIGIL robot fleet dashboard with status cards" />
-                        </div>
-                        <aside class="project-sidecard">
-                            <h2>Fleet status and remote tools</h2>
-                            <p>Check each robot’s status, investigate through a browser terminal, and run a saved diagnostic or recovery workflow.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-broadcast"></i><span>Always-on monitoring of connectivity, battery, ROS topics, and runtime activity across all 11 robots.</span></li>
-                                <li><i class="bi bi-wrench-adjustable"></i><span>Checks and fixes are versioned JSON definitions for each robot family.</span></li>
-                            </ul>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Control loop</p>
-                            <h2>From fleet signal to guided recovery</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step"><span class="flow-index">01</span><div class="flow-body"><h3>Observe</h3><p>Background monitors keep tabs on connectivity, battery, topics, and runtime — and when a robot comes back online, VIGIL auto-runs its connection checks.</p></div></div>
-                            <div class="project-flow-step"><span class="flow-index">02</span><div class="flow-body"><h3>Diagnose</h3><p>Run a versioned test, or drop straight into a live SSH terminal on the robot, streamed into the browser.</p></div></div>
-                            <div class="project-flow-step"><span class="flow-index">03</span><div class="flow-body"><h3>Recover</h3><p>A saved fix runs its steps in order, with a per-robot queue preventing overlapping jobs.</p></div></div>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>Reusable execution engine</h2>
-                        <p>The core opens SSH sessions, runs commands, evaluates output, and reports state. Robot-specific checks and fixes live in versioned definition files.</p>
-                    </section>
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left"></i> Back to all projects</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+<header class="story-shell story-hero"><p class="story-kicker">Robotics operations · 2026</p><h1 class="story-title">VIGIL</h1><p class="story-lede">Monitor robots, open remote terminals, and run saved diagnostic and recovery workflows.</p><ul class="story-meta"><li>Full-stack engineering</li><li>FastAPI · Paramiko · ROS</li><li>Internal platform</li></ul></header>
+            <div class="story-shell"><figure class="story-feature"><img src="../assets/project-media/vigil/fleet-dashboard.webp" width="960" height="526" alt="VIGIL dashboard showing online and offline robots, fleet health and selected robot controls" decoding="async" fetchpriority="high" /><figcaption class="story-caption">Online and offline robots, selected for diagnostics from the fleet dashboard.</figcaption></figure></div><section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Fleet operations</p><h2 class="story-section-heading">Monitor, diagnose, and recover</h2><p class="story-copy">Monitoring covers connectivity, battery, ROS topics, and runtime activity. Saved workflows make checks and fixes repeatable.</p></div><ol class="story-process"><li><strong>Observe</strong><span>Background monitors collect robot status and detect changes in connectivity.</span></li><li><strong>Diagnose</strong><span>Run a saved check or investigate through a live SSH terminal in the browser.</span></li><li><strong>Recover</strong><span>Execute an ordered fix. Per-robot coordination prevents conflicting jobs from running together.</span></li></ol></div></section>
+            <section class="story-shell story-section"><p class="story-kicker">System design</p><h2 class="story-section-heading">Shared execution, robot-specific checks</h2><div class="story-columns"><div><h3>Shared runtime</h3><p class="story-copy">The backend opens SSH sessions, runs commands, evaluates output, and reports state. WebSocket streaming keeps the browser terminal interactive.</p></div><div><h3>Versioned checks and fixes</h3><p class="story-copy">Versioned JSON definitions describe each robot family’s commands and workflows, keeping platform details out of the execution engine.</p></div></div><dl class="story-notes"><div><dt>Terminal sessions</dt><dd>Scoped to a robot and browser page session, including interactive input and terminal resizing.</dd></div><div><dt>Workflow isolation</dt><dd>Monitoring coordinates with active diagnostics and recovery work.</dd></div><div><dt>Definition validation</dt><dd>References and command tokens are checked on startup and reload.</dd></div></dl></section>
+            <div class="story-shell story-end"><p>Built for the robotics lab.</p><a href="../projects.html">All projects <span aria-hidden="true">→</span></a></div>
+        </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

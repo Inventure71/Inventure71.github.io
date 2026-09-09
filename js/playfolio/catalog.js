@@ -122,10 +122,10 @@ export const projectCommandItems = [
     keywords: 'tcgnet databases project ie django postgresql cards marketplace inventory sql database',
   },
   {
-    label: 'Ghoststroke',
+    label: 'Ghostyper',
     description: 'Prepared text typed at your own pace',
     href: '/project_details/project-ghoststroke.html',
-    keywords: 'ghoststroke macos swift accessibility typing automation cadence profiles keyboard',
+    keywords: 'ghostyper ghoststroke macos swift accessibility typing automation cadence profiles keyboard',
   },
 ];
 

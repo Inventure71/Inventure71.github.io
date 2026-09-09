@@ -164,6 +164,7 @@
           behavior: reducedMotion?.matches ? 'auto' : 'smooth',
           block: 'start',
         });
+        if (link.matches('.story-skip-link')) target.focus({ preventScroll: true });
       } catch (error) {
         // Invalid fragment selectors keep normal browser navigation.
       }

@@ -137,7 +137,7 @@ const additionalDrivers = [
     code: 'GST',
     icon: 'GS',
     raceName: 'GHOST',
-    name: 'Ghoststroke',
+    name: 'Ghostyper',
     color: '#9b8a73',
     tire: 'S',
     pace: 1.02,
@@ -157,7 +157,7 @@ const additionalEntrySpecs = [
   { driverId: 'mattyflow', number: 12, timingName: 'MattyFlow', vehicleId: 'matty-mf12', vehicleName: 'MF-12 Whisper' },
   { driverId: 'mosaic', number: 32, timingName: 'Mosaic', vehicleId: 'mosaic-mo32', vehicleName: 'MO-32 Swarm' },
   { driverId: 'databases-ie', number: 44, timingName: 'TCGNET', vehicleId: 'database-db44', vehicleName: 'DB-44 Ledger' },
-  { driverId: 'ghoststroke', number: 77, timingName: 'Ghoststroke', vehicleId: 'ghoststroke-gs77', vehicleName: 'GS-77 Cadence' },
+  { driverId: 'ghoststroke', number: 77, timingName: 'Ghostyper', vehicleId: 'ghoststroke-gs77', vehicleName: 'GS-77 Cadence' },
 ];
 
 // These ratings tune the race simulation; they are not product-performance claims.
@@ -190,7 +190,37 @@ function createBalancedEntry({ driverId, number, timingName, vehicleId, vehicleN
 
 const catalogByHref = new Map(projectCommandItems.map((project) => [project.href, project]));
 
-export const PORTFOLIO_DRIVERS = [...DEMO_PROJECT_DRIVERS, ...additionalDrivers].map((driver) => {
+// Editorial starting grid. The simulation can change positions once racing starts.
+const projectGridOrder = [
+  'core',
+  'victoria',
+  'ghoststroke',
+  'dream2detect',
+  'noir',
+  'vinyl',
+  'mosaic',
+  'vigil',
+  'noty',
+  'paddockjs',
+  'project-unity',
+  'clipclop',
+  'contextkey',
+  'mattyflow',
+  'clash',
+  'drsorriso',
+  'reminderz',
+  'evolve',
+  'databases-ie',
+  'budget',
+];
+const driversById = new Map([...DEMO_PROJECT_DRIVERS, ...additionalDrivers].map((driver) => [driver.id, driver]));
+if (projectGridOrder.length !== driversById.size || new Set(projectGridOrder).size !== driversById.size) {
+  throw new Error('Project starting grid must include every driver exactly once');
+}
+
+export const PORTFOLIO_DRIVERS = projectGridOrder.map((id) => {
+  const driver = driversById.get(id);
+  if (!driver) throw new Error(`Unknown project in starting grid: ${id}`);
   const project = catalogByHref.get(driver.link);
   if (!project) throw new Error(`Race entry missing from project catalog: ${driver.link}`);
   return {
@@ -200,7 +230,13 @@ export const PORTFOLIO_DRIVERS = [...DEMO_PROJECT_DRIVERS, ...additionalDrivers]
   };
 });
 
-export const PORTFOLIO_ENTRIES = [
+const entriesById = new Map([
   ...CHAMPIONSHIP_ENTRY_BLUEPRINTS,
   ...additionalEntrySpecs.map(createBalancedEntry),
-];
+].map((entry) => [entry.driverId, entry]));
+
+export const PORTFOLIO_ENTRIES = PORTFOLIO_DRIVERS.map(({ id }) => {
+  const entry = entriesById.get(id);
+  if (!entry) throw new Error(`Race entry missing for project: ${id}`);
+  return entry;
+});

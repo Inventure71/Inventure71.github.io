@@ -15,17 +15,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-        <!-- route-styles: /css/playfolio-project-detail.css -->
+        <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="../css/project-stories/apps.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--contextkey" data-project-family="app">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--contextkey project-story story-collection" data-project-family="app">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -81,69 +85,39 @@
       </div>
         </nav>
 
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <p class="project-section-eyebrow">Experimental macOS prototype</p>
-                            <h1>ContextKey</h1>
-                            <p class="lead">An experimental macOS autocomplete that reads the field you’re working in and offers a short continuation from a model running on your Mac.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Swift 6</span>
-                                <span class="project-pill">AppKit</span>
-                                <span class="project-pill">MLX</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card"><span class="label">Role</span><span class="value">Creator · Prototype Engineer</span></div>
-                            <div class="hero-meta-card"><span class="label">Timeline</span><span class="value">2026</span></div>
-                            <div class="hero-meta-card"><span class="label">Interaction</span><span class="value">Inline suggestion · Option-Space</span></div>
-                            <div class="hero-meta-card"><span class="label">Status</span><span class="value">Local MVP</span></div>
-                        </div>
-                    </header>
-
-                    <section class="project-media-panel project-media-panel--without-media">
-                        <aside class="project-sidecard">
-                            <h2>Suggestions beside the cursor</h2>
-                            <p>ContextKey gathers text around the focused field, generates a continuation locally, and displays it beside the cursor for you to accept.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-eye"></i><span>Accessibility APIs and optional Vision OCR cover native apps; a tiny browser extension feeds in structured DOM context.</span></li>
-                                <li><i class="bi bi-laptop"></i><span>MLX runs the model locally; Option-Space accepts the displayed suggestion.</span></li>
-                            </ul>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Prototype pipeline</p>
-                            <h2>Capture, generate, filter, overlay</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step"><span class="flow-index">01</span><div class="flow-body"><h3>Capture</h3><p>Grab the focused field, the text around it, which app I'm in, and any structure the browser can hand over.</p></div></div>
-                            <div class="project-flow-step"><span class="flow-index">02</span><div class="flow-body"><h3>Generate</h3><p>Hand a compact prompt to a language model running locally through MLX.</p></div></div>
-                            <div class="project-flow-step"><span class="flow-index">03</span><div class="flow-body"><h3>Rank</h3><p>Filter irrelevant, repetitive, or unsafe candidates; show nothing if none pass.</p></div></div>
-                            <div class="project-flow-step"><span class="flow-index">04</span><div class="flow-body"><h3>Overlay</h3><p>Draw a faint inline suggestion, and only insert it when you actually accept with Option-Space.</p></div></div>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h2>When to suggest nothing</h2>
-                        <p>The ranker filters repeated text, irrelevant continuations, and unsafe suggestions. Context capture and the local transport still need further security work before the prototype is ready for wider use.</p>
-                    </section>
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left"></i> Back to all projects</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">macOS autocomplete · 2026</p>
+                <h1 class="story-title">ContextKey</h1>
+                <p class="story-lede">Autocomplete beside your cursor, using the current field and a model running on your Mac.</p>
+                <ul class="story-meta"><li>Swift · AppKit · MLX</li><li>Experimental prototype</li></ul>
+            </header>
+            <figure class="story-shell story-diagram context-map">
+                <div class="context-sources"><span>Browser DOM</span><span>Accessibility text</span><span>Optional window OCR</span></div>
+                <div class="context-join" aria-hidden="true">↓</div>
+                <div class="context-destination"><strong>Context → MLX → candidate filter</strong><span>Show a suggestion only if it passes the filter</span></div>
+                <div class="context-accept"><span>Visible suggestion</span><span aria-hidden="true">→</span><kbd>Option–Space</kbd><span aria-hidden="true">→</span><span>Insert text</span></div>
+                <figcaption class="story-caption">Option–Space inserts the displayed suggestion.</figcaption>
+            </figure>
+            <section class="story-shell story-section story-split" aria-labelledby="context-capture">
+                <h2 class="story-section-heading" id="context-capture">Reading the current field</h2>
+                <dl class="story-notes">
+                    <div><dt>Native applications</dt><dd>Accessibility reads the focused field, surrounding text, and nearby labels. Optional Vision OCR adds text from the active window when needed.</dd></div>
+                    <div><dt>Browser editors</dt><dd>A Chromium extension supplies DOM context for web editors that expose little text through Accessibility.</dd></div>
+                    <div><dt>Local inference</dt><dd>MLX generates candidates locally. A filter rejects irrelevant or repeated continuations.</dd></div>
+                </dl>
+            </section>
+            <section class="story-shell story-section story-split" aria-labelledby="context-insertion">
+                <h2 class="story-section-heading" id="context-insertion">Displaying suggestions</h2>
+                <div><p class="story-copy">An AppKit overlay shows the suggestion without taking focus. Acceptance is handled only while a suggestion is visible, and insertion preserves the clipboard.</p></div>
+            </section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+        </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>

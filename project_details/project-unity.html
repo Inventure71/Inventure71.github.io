@@ -16,19 +16,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/site-core.css" rel="stylesheet" />
     <link href="../css/modern.css" rel="stylesheet" />
-    <!-- route-styles: /css/playfolio-project-detail.css -->
+    <!-- route-styles: /css/playfolio-project-story.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <link href="../css/project-stories/apps.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--unity" data-project-family="systems">
-    <a class="project-skip-link" href="#project-content">Skip to project content</a>
-    <main class="flex-shrink-0" id="project-content">
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--unity project-story story-collection" data-project-family="systems">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
+    <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
         <div class="pf-brand-group" data-glass-group>
@@ -83,72 +86,44 @@
       </div>
         </nav>
 
-        <section class="py-5">
-            <div class="container px-5">
-                <article class="project-shell">
-                    <header class="project-hero">
-                        <div>
-                            <p class="project-eyebrow">Cross-platform systems prototype</p>
-                            <h1>Project Unity</h1>
-                            <p class="lead">Use one keyboard and mouse across your Mac and Windows PC. Move the pointer across a screen edge to switch computers.</p>
-                            <div class="project-pills" aria-label="Core technologies">
-                                <span class="project-pill">Swift 6</span>
-                                <span class="project-pill">C++ / Win32</span>
-                                <span class="project-pill">AES-GCM</span>
-                            </div>
-                        </div>
-                        <dl class="hero-meta" aria-label="Project facts">
-                            <div class="hero-meta-card"><dt class="label">Role</dt><dd class="value">Creator · Systems engineer</dd></div>
-                            <div class="hero-meta-card"><dt class="label">Year</dt><dd class="value">2026</dd></div>
-                            <div class="hero-meta-card"><dt class="label">State</dt><dd class="value">Paired development MVP</dd></div>
-
-                        </dl>
-                    </header>
-
-                    <section class="project-media-panel project-media-panel--without-media" aria-label="Project Unity summary">
-                        <aside class="project-sidecard" aria-labelledby="unity-summary-title">
-                            <h2 id="unity-summary-title">Two computers, shared input</h2>
-                            <p>Native apps map the displays and transfer mouse, keyboard, wheel, gesture, and media-key input over the local network.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-shield-lock" aria-hidden="true"></i><span>Six-digit pairing creates stable device identities; ownership and realtime traffic are authenticated and encrypted.</span></li>
-                                <li><i class="bi bi-arrow-left-right" aria-hidden="true"></i><span>Control works in both directions, with explicit leases and watchdogs that restore local input when the path fails.</span></li>
-                            </ul>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header"><p class="project-section-eyebrow">System boundaries</p><h2>Discovery, ownership, input</h2></div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card"><h3>Discovery and pairing</h3><p>DNS-SD discovers peers, manual addressing provides a fallback, and both computers display a six-digit pairing confirmation.</p></article>
-                            <article class="project-insight-card"><h3>Input ownership and transport</h3><p>An authenticated TCP lease decides who controls what. Encrypted UDP carries cumulative motion and complete button/key snapshots without turning one lost packet into a stall.</p></article>
-                            <article class="project-insight-card"><h3>Capture and recover</h3><p>Native event capture feeds macOS posting or Windows <code>SendInput</code>. Sequence tracking, transition journals, fail-safe release, and ACK watchdogs make failure return control locally.</p></article>
-                        </div>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header"><p class="project-section-eyebrow">Measurements</p><h2>Input and network timing</h2></div>
-                        <ul class="project-data-strip">
-                            <li><span class="metric-value">20k</span><span class="metric-label">1,000 Hz samples</span><span class="metric-copy">Same-LAN transport runs completed with zero packet loss.</span></li>
-                            <li><span class="metric-value">2.0 ms</span><span class="metric-label">Median RTT</span><span class="metric-copy">The documented Wi-Fi route reached 6.1–7.0 ms at p99.9.</span></li>
-                            <li><span class="metric-value">1.107 ms</span><span class="metric-label">Median capture-to-injection</span><span class="metric-copy">Measured over 5,001 segmented motion samples; p99.9 was 2.481 ms.</span></li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section project-spotlight" aria-label="Outcome and current limitation">
-                        <h2>Prototype limits</h2>
-                        <p>The Mac–Windows prototype still needs independent protocol review and testing across three physical devices. The software timings above measure input processing and transport, not the delay until a target app draws the result.</p>
-                    </section>
-
-                    <nav class="text-center" aria-label="Project navigation"><a href="../projects.html" class="project-back-link"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to the project race</a></nav>
-                </article>
-            </div>
-        </section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">Cross-platform systems · 2026</p>
+                <h1 class="story-title">Project Unity</h1>
+                <p class="story-lede">One keyboard and mouse across a Mac and Windows PC. Cross a screen edge to change computers.</p>
+                <ul class="story-meta"><li>Swift · C++ / Win32</li><li>Mac–Windows prototype</li></ul>
+            </header>
+            <figure class="story-shell story-diagram">
+                <div class="unity-link-map">
+                    <div class="unity-host"><span class="app-diagram-label">macOS</span><strong>Capture &amp; inject</strong><span>Core Graphics</span></div>
+                    <div class="unity-connections"><div><span>TCP · input ownership</span><span class="app-diagram-arrow" aria-hidden="true">↔</span></div><div><span>UDP · realtime events</span><span class="app-diagram-arrow" aria-hidden="true">↔</span></div></div>
+                    <div class="unity-host"><span class="app-diagram-label">Windows</span><strong>Capture &amp; inject</strong><span>Win32 / SendInput</span></div>
+                </div>
+                <figcaption class="story-caption">Control works in both directions, with one remote destination at a time.</figcaption>
+            </figure>
+            <section class="story-shell story-section story-split" aria-labelledby="unity-control">
+                <h2 class="story-section-heading" id="unity-control">Pairing and input control</h2>
+                <dl class="story-notes">
+                    <div><dt>Pairing</dt><dd>DNS-SD discovers nearby computers. A six-digit confirmation pairs them; manual addressing is available if discovery fails.</dd></div>
+                    <div><dt>Transport</dt><dd>Authenticated TCP assigns input ownership. Encrypted UDP carries cumulative motion and key/button snapshots so a lost packet need not stall movement.</dd></div>
+                    <div><dt>Recovery</dt><dd>Acknowledgements track key and button changes. Watchdogs release remote input if the connection fails.</dd></div>
+                </dl>
+            </section>
+            <section class="story-shell story-section story-split" aria-labelledby="unity-measurements">
+                <div><h2 class="story-section-heading" id="unity-measurements">Input latency</h2><p class="story-copy">Measurements cover transport and input injection. Application rendering time is excluded.</p></div>
+                <dl class="story-notes">
+                    <div><dt>Same-LAN transport</dt><dd>20,000 samples at 1,000 Hz with no recorded packet loss. The Wi-Fi tests measured a 2.0 ms median round trip and 6.1–7.0 ms at p99.9.</dd></div>
+                    <div><dt>Capture to injection</dt><dd>1.107 ms median and 2.481 ms p99.9 across 5,001 segmented motion samples.</dd></div>
+                    <div><dt>Remaining work</dt><dd>Protocol review and physical testing across three devices remain open.</dd></div>
+                </dl>
+            </section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+        </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
     <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js?v=20260710-feature-stage-v19"></script>
 </body>
 
 </html>
