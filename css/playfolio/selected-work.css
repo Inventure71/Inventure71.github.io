@@ -1,0 +1,144 @@
+/* Homepage gallery: direct links with project-specific evidence. */
+.pf-selected-work {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.pf-work {
+  display: block;
+  min-width: 0;
+  color: var(--pf-ink);
+  text-decoration: none;
+}
+
+.pf-work:hover { color: var(--pf-ink); }
+
+.pf-work-visual {
+  position: relative;
+  display: grid;
+  align-items: center;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--pf-surface-soft);
+  border-radius: 3px;
+}
+
+.pf-work-visual > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 350ms ease;
+}
+
+.pf-work--core .pf-work-visual { aspect-ratio: 1552 / 630; }
+/* Original capture: 1600 × 900. Retain only game pixels x=48…1600,
+   y=32…662; cropping in layout preserves the original sprites and HUD. */
+.pf-work-game-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1552 / 630;
+  overflow: hidden;
+}
+.pf-work-game-viewport > img {
+  position: absolute;
+  display: block;
+  width: calc(100% * 1600 / 1552);
+  max-width: none;
+  height: auto;
+  left: calc(-100% * 48 / 1552);
+  top: calc(-100% * 32 / 630);
+  border-radius: 0;
+}
+.pf-work:is(:hover, :focus-visible) .pf-work-visual > img { transform: scale(1.025); }
+
+.pf-work-caption { padding-top: 1.1rem; }
+.pf-work-meta {
+  display: flex;
+  gap: .75rem;
+  color: var(--pf-muted);
+  font-size: .75rem;
+  line-height: 1.5;
+}
+.pf-work-meta > span { border-left: 1px solid var(--pf-line); padding-left: .75rem; }
+.playfolio-home .pf-work h3 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: .5rem 0;
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -.045em;
+  line-height: 1.2;
+}
+.pf-work h3 i {
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  transition: transform 180ms ease;
+}
+.pf-work:is(:hover, :focus-visible) h3 i { transform: translate(3px, -3px); }
+.playfolio-home .pf-work p {
+  margin: 0;
+  color: var(--pf-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: none;
+}
+
+.pf-work--ghostyper .pf-work-visual { background: #25261f; color: #f0eee4; }
+.pf-work-typing {
+  width: 100%;
+  padding: clamp(1.3rem, 3vw, 2.5rem);
+}
+.pf-work-typing > img { display: block; width: 2.7rem; height: 2.7rem; margin-bottom: 1.5rem; }
+.pf-work-typed {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: clamp(1.4rem, 2.5vw, 2.25rem);
+  line-height: 1.3;
+  letter-spacing: -.035em;
+}
+.pf-work-typed s { color: #a5a79a; text-decoration-thickness: 1px; }
+.pf-work-caret { display: inline-block; height: .85em; border-right: 2px solid #ced59f; margin-left: .08em; }
+.pf-work-rhythm {
+  display: block;
+  height: 1.1rem;
+  margin-top: 1.75rem;
+  opacity: .7;
+  background: repeating-linear-gradient(90deg, #ced59f 0 1px, transparent 1px 7px);
+  mask-image: linear-gradient(90deg, #000, transparent 35%, #000 55%, transparent 70%, #000);
+}
+
+.pf-work--dream .pf-work-visual { background: #ded8ce; color: #413e37; }
+.pf-work-samples {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .5rem;
+  padding: clamp(1rem, 2.3vw, 2rem);
+  align-items: center;
+}
+.pf-work-samples img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+.pf-work-samples > span {
+  grid-column: 1 / -1;
+  margin-top: .5rem;
+  font-family: monospace;
+  font-size: clamp(.65rem, 1vw, .8rem);
+}
+
+@media (max-width: 640px) {
+  .pf-selected-work { grid-template-columns: minmax(0, 1fr); }
+  .pf-work-typed { font-size: clamp(1.4rem, 6vw, 2.25rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-work-visual > img,
+  .pf-work h3 i { transition: none; transform: none !important; }
+}

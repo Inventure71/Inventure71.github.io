@@ -57,10 +57,8 @@
   .pf-button,
   .playfolio-page .btn,
   .pf-ambassador-logo,
-  .pf-project-card,
   .pf-project-row,
-  .pf-node,
-  .pf-preview-media img {
+  .pf-node {
     transition: none !important;
   }
 
@@ -78,7 +76,6 @@
 @media (max-width: 991px) {
   .pf-hero-grid,
   .pf-section-head,
-  .pf-workbench,
   .pf-projects-layout,
   .pf-project-detail,
   .playfolio-page.project-page .project-hero,
@@ -156,7 +153,6 @@
     min-height: 430px;
   }
 
-  .pf-project-card,
   .pf-project-row,
   .pf-resume-line,
   .pf-resume-block > header {
@@ -182,8 +178,6 @@
     padding-block: 2.5rem !important;
   }
 
-  .pf-project-index,
-  .pf-project-arrow,
   .pf-row-year {
     display: none;
   }

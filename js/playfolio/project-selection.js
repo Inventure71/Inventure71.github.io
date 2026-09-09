@@ -1,44 +1,5 @@
 import { readProjectData, setImage } from './dom.js';
 
-export function setupProjectPreview(root = document) {
-  const cards = Array.from(root.querySelectorAll('[data-project-card]'));
-  const preview = root.querySelector('[data-project-preview]');
-  if (!cards.length || !preview) return;
-
-  const fields = {
-    kicker: preview.querySelector('[data-preview-kicker]'),
-    title: preview.querySelector('[data-preview-title]'),
-    summary: preview.querySelector('[data-preview-summary]'),
-    stack: preview.querySelector('[data-preview-stack]'),
-    link: preview.querySelector('[data-preview-link]'),
-    media: preview.querySelector('[data-preview-media]'),
-  };
-
-  const activate = (card) => {
-    cards.forEach((item) => {
-      const active = item === card;
-      item.classList.toggle('is-active', active);
-      item.setAttribute('aria-pressed', active ? 'true' : 'false');
-    });
-
-    const data = readProjectData(card);
-    if (fields.kicker) fields.kicker.textContent = data.type || data.status || 'Selected project';
-    if (fields.title) fields.title.textContent = data.title;
-    if (fields.summary) fields.summary.textContent = data.summary;
-    if (fields.stack) fields.stack.textContent = data.stack;
-    if (fields.link) fields.link.href = data.href;
-    setImage(fields.media, data.image, data.fallback || data.title);
-  };
-
-  cards.forEach((card) => {
-    card.addEventListener('pointerenter', () => activate(card));
-    card.addEventListener('focus', () => activate(card));
-    card.addEventListener('click', () => activate(card));
-  });
-
-  activate(cards.find((card) => card.classList.contains('is-active')) || cards[0]);
-}
-
 export function setupProjectExplorer(root = document) {
   const rows = Array.from(root.querySelectorAll('[data-project-row]'));
   const filters = Array.from(root.querySelectorAll('[data-project-filter]'));
