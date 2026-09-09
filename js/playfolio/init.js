@@ -10,9 +10,8 @@ export function initializePlayfolio(root = document) {
   setupCommandPalette(root);
   setupAiGuideCopy(root);
 
-  if (root.querySelector('[data-project-preview], [data-project-inspector]')) {
-    import('./project-selection.js').then(({ setupProjectPreview, setupProjectExplorer }) => {
-      setupProjectPreview(root);
+  if (root.querySelector('[data-project-inspector]')) {
+    import('./project-selection.js').then(({ setupProjectExplorer }) => {
       setupProjectExplorer(root);
     });
   }

@@ -25,6 +25,7 @@
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/playfolio/motion.css" rel="stylesheet" />
     <link href="/css/playfolio/project-browse.css" rel="stylesheet" />
+    <link href="/css/playfolio/selected-work.css" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
     <!-- /route-styles -->
 </head>
@@ -121,76 +122,73 @@
             </div>
         </header>
 
-        <section class="pf-section pf-home-scroll-section">
+        <section class="pf-section pf-home-scroll-section" id="selected-work" aria-labelledby="selected-work-title">
             <div class="pf-shell">
                 <div class="pf-section-head pf-reveal">
-                    <h2 class="pf-section-title">Selected work</h2>
+                    <h2 class="pf-section-title" id="selected-work-title">Selected work</h2>
                     <a class="pf-text-link pf-section-link" href="/projects.html">All projects <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
                 </div>
 
-                <div class="pf-workbench pf-reveal">
-                    <div class="pf-project-list" role="group" aria-label="Preview a featured project">
-                        <button class="pf-project-card is-active" type="button" data-project-card data-title="VictorIA"
-                            data-type="Computer vision &amp; robotics"
-                            data-summary="A robotic arm that sees the board, chooses a move, and plays Connect Four."
-                            data-stack="Python, OpenCV, NumPy, robotics" data-status="Featured"
-                            data-href="/project_details/project-victoria.html"
-                            data-image="/assets/project-media/victoria/robot-board-hero.jpg" data-fallback="VictorIA">
-                            <span class="pf-project-index">01</span>
-                            <span>
-                                <span class="pf-project-name">VictorIA</span>
-                                <span class="pf-project-tags">AI / robotics / vision</span>
-                            </span>
-                            <i class="bi bi-arrow-up-right pf-project-arrow"></i>
-                        </button>
-                        <button class="pf-project-card" type="button" data-project-card data-title="HoloVinyl"
-                            data-type="Gesture interface"
-                            data-summary="Control music with hand gestures and objects tracked by a camera."
-                            data-stack="Python, computer vision, gesture UI" data-status="Featured"
-                            data-href="/project_details/project-holovinyl.html"
-                            data-image="/assets/project-media/holovinyl/object-tracking-hero.jpg"
-                            data-fallback="HoloVinyl">
-                            <span class="pf-project-index">02</span>
-                            <span>
-                                <span class="pf-project-name">HoloVinyl</span>
-                                <span class="pf-project-tags">vision / music / interaction</span>
-                            </span>
-                            <i class="bi bi-arrow-up-right pf-project-arrow"></i>
-                        </button>
-                        <button class="pf-project-card" type="button" data-project-card
-                            data-title="Core Conflict" data-type="Self-evolving game engine"
-                            data-summary="A multiplayer game that lets AI agents propose mechanics and patch its code during play."
-                            data-stack="Python, FastAPI, WebSockets, OpenAI, Gemini" data-status="Featured"
-                            data-href="/project_details/project-gengame.html"
-                            data-image="/assets/project-media/core-conflict/feature-test-passed-hero.jpg"
-                            data-fallback="Core Conflict">
-                            <span class="pf-project-index">03</span>
-                            <span>
-                                <span class="pf-project-name">Core Conflict</span>
-                                <span class="pf-project-tags">AI agents / games / systems</span>
-                            </span>
-                            <i class="bi bi-arrow-up-right pf-project-arrow"></i>
-                        </button>
-                    </div>
-
-                    <article class="pf-project-preview" data-project-preview aria-live="polite">
-                        <div class="pf-preview-media has-image" data-preview-media data-fallback="VictorIA">
-                            <img width="1600" height="900" decoding="async" alt="VictorIA preview" loading="lazy"
-                                src="/assets/project-media/victoria/robot-board-hero.jpg" />
+                <div class="pf-selected-work">
+                    <a class="pf-work pf-work--core pf-reveal" href="/project_details/project-gengame.html"
+                        aria-labelledby="work-core-title" aria-describedby="work-core-summary"
+                        data-project-card data-title="Core Conflict" data-summary="A multiplayer game whose code can change while you play." data-href="/project_details/project-gengame.html">
+                        <div class="pf-work-visual">
+                            <div class="pf-work-game-viewport">
+                                <img src="/assets/project-media/core-conflict/patched-gameplay.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="Core Conflict gameplay after a live code patch" />
+                            </div>
                         </div>
-                        <div class="pf-preview-body">
-                            <span class="pf-preview-kicker" data-preview-kicker>Computer vision &amp; robotics</span>
-                            <h3 class="pf-preview-title" data-preview-title>VictorIA</h3>
-                            <p class="pf-preview-summary" data-preview-summary>
-                                A robotic arm that sees the board, chooses a move, and plays Connect Four.
-                            </p>
+                        <div class="pf-work-caption">
+                            <span class="pf-work-meta">01 <span>Games &amp; systems</span></span>
+                            <h3 id="work-core-title">Core Conflict <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3>
+                            <p id="work-core-summary">A multiplayer game whose code can change while you play.</p>
                         </div>
-                        <div class="pf-preview-footer">
-                            <span class="pf-stack" data-preview-stack>Python, OpenCV, NumPy, robotics</span>
-                            <a class="pf-button is-quiet" href="/project_details/project-victoria.html"
-                            data-preview-link>View project <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </a>
+                    <a class="pf-work pf-work--victoria pf-reveal" href="/project_details/project-victoria.html"
+                        aria-labelledby="work-victoria-title" aria-describedby="work-victoria-summary"
+                        data-project-card data-title="VictorIA" data-summary="A robotic arm that reads the board and plays Connect Four." data-href="/project_details/project-victoria.html">
+                        <div class="pf-work-visual">
+                            <img src="/assets/project-media/victoria/robot-board-hero.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="VictorIA robotic arm positioned beside its Connect Four board" />
                         </div>
-                    </article>
+                        <div class="pf-work-caption">
+                            <span class="pf-work-meta">02 <span>Robotics</span></span>
+                            <h3 id="work-victoria-title">VictorIA <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3>
+                            <p id="work-victoria-summary">A robotic arm that reads the board and plays Connect Four.</p>
+                        </div>
+                    </a>
+                    <a class="pf-work pf-work--ghostyper pf-reveal" href="/project_details/project-ghoststroke.html"
+                        aria-labelledby="work-ghostyper-title" aria-describedby="work-ghostyper-summary"
+                        data-project-card data-title="Ghostyper" data-summary="Text that types itself, with pauses, corrections, and a pace of its own." data-href="/project_details/project-ghoststroke.html">
+                        <div class="pf-work-visual">
+                            <div class="pf-work-typing" aria-hidden="true">
+                                    <img src="/assets/project-media/ghoststroke/ghoststroke-icon.webp" width="128" height="128" loading="lazy" decoding="async" alt="" />
+                                    <span class="pf-work-typed">Let’s make room for<br /><s>another</s> a better idea<span class="pf-work-caret"></span></span>
+                                    <span class="pf-work-rhythm"></span>
+                                </div>
+                        </div>
+                        <div class="pf-work-caption">
+                            <span class="pf-work-meta">03 <span>Mac app</span></span>
+                            <h3 id="work-ghostyper-title">Ghostyper <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3>
+                            <p id="work-ghostyper-summary">Text that types itself, with pauses, corrections, and a pace of its own.</p>
+                        </div>
+                    </a>
+                    <a class="pf-work pf-work--dream pf-reveal" href="/project_details/project-dream2detect.html"
+                        aria-labelledby="work-dream-title" aria-describedby="work-dream-summary"
+                        data-project-card data-title="Dream2Detect" data-summary="Learning to estimate package damage from synthetic images, then testing on real photos." data-href="/project_details/project-dream2detect.html">
+                        <div class="pf-work-visual">
+                            <div class="pf-work-samples">
+                                    <img src="/assets/project-media/dream2detect/0_10.jpg" width="360" height="240" loading="lazy" decoding="async" alt="Synthetic reference: package with little damage" />
+                                    <img src="/assets/project-media/dream2detect/46_55.jpg" width="360" height="240" loading="lazy" decoding="async" alt="Synthetic reference: package with moderate damage" />
+                                    <img src="/assets/project-media/dream2detect/86_100.jpg" width="360" height="240" loading="lazy" decoding="async" alt="Synthetic reference: package with severe damage" />
+                                    <span>Synthetic training references</span>
+                                </div>
+                        </div>
+                        <div class="pf-work-caption">
+                            <span class="pf-work-meta">04 <span>Machine learning</span></span>
+                            <h3 id="work-dream-title">Dream2Detect <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3>
+                            <p id="work-dream-summary">Learning to estimate package damage from synthetic images, then testing on real photos.</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </section>

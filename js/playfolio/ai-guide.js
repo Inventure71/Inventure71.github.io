@@ -8,7 +8,6 @@ export function buildAiGuide(root = document) {
     || root.querySelector('meta[name="description"]')?.getAttribute('content')?.trim()
     || '';
   const featuredProjects = Array.from(root.querySelectorAll('[data-project-card]'))
-    .slice(0, 3)
     .map((card) => {
       const data = readProjectData(card);
       return `- ${data.title} — ${data.summary} (${new URL(data.href, origin).href})`;

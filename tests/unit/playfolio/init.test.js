@@ -5,7 +5,6 @@ const setup = vi.hoisted(() => ({
   selectionModule: vi.fn(),
   portrait: vi.fn(),
   codex: vi.fn(),
-  preview: vi.fn(),
   explorer: vi.fn(),
   navbar: vi.fn(),
 }));
@@ -15,7 +14,7 @@ vi.mock('../../../js/playfolio/motion.js', () => {
 });
 vi.mock('../../../js/playfolio/project-selection.js', () => {
   setup.selectionModule();
-  return { setupProjectPreview: setup.preview, setupProjectExplorer: setup.explorer };
+  return { setupProjectExplorer: setup.explorer };
 });
 vi.mock('../../../js/playfolio/shared-chrome.js', () => ({
   renderSharedNavbar: setup.navbar,
@@ -42,7 +41,7 @@ describe('page-specific initialization', () => {
     expect(setup.selectionModule).not.toHaveBeenCalled();
   });
 
-  test('loads and initializes the homepage components when present', async () => {
+  test('loads and initializes optional components when present', async () => {
     const { initializePlayfolio } = await import('../../../js/playfolio/init.js');
     const root = { querySelector: () => ({}) };
     initializePlayfolio(root);
@@ -50,7 +49,6 @@ describe('page-specific initialization', () => {
 
     expect(setup.portrait).toHaveBeenCalledWith(root);
     expect(setup.codex).toHaveBeenCalledWith(root);
-    expect(setup.preview).toHaveBeenCalledWith(root);
     expect(setup.explorer).toHaveBeenCalledWith(root);
   });
 });
