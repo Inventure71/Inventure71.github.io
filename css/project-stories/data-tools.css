@@ -1,0 +1,27 @@
+/* Explanatory diagrams for projects without public interface captures. */
+.budget-conversation blockquote { margin: 1rem 0 2.5rem; max-width: 28ch; font: clamp(1.8rem, 4.2vw, 3.5rem)/1.25 var(--story-serif); }
+.budget-context { display: flex; gap: 2rem; align-items: center; padding-block: 1.5rem; border-top: 1px solid var(--pf-line-strong); border-bottom: 1px solid var(--pf-line-strong); }
+.budget-context strong, .budget-context span:not(.budget-plus) { display: block; }
+.budget-context div > span { margin-top: .4rem; color: var(--pf-muted); font-size: .85rem; }
+.budget-plus { font-size: 2rem; color: var(--project-accent); }
+.budget-return { margin: 1.5rem 0 0; font-weight: 600; }
+.evolve-turn { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 0; margin: 2rem 0; list-style: none; gap: 2rem; }
+.evolve-turn li { border-top: 2px solid var(--project-accent); padding-top: 1.25rem; }
+.evolve-turn strong, .evolve-turn span { display: block; }
+.evolve-turn span { margin-top: .5rem; color: var(--pf-muted); }
+.evolve-extension { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; border: 1px dashed var(--pf-line-strong); padding: 1.5rem; border-radius: 5px; font-size: .85rem; }
+.tcg-catalog { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; padding-block: 1.5rem 2rem; }
+.tcg-catalog strong { border: 1px solid var(--pf-line-strong); padding: .7rem 1rem; background: var(--pf-bg); }
+.tcg-relations { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; border-top: 1px solid var(--pf-line-strong); padding-block: 2rem 1rem; }
+.tcg-relations span { display: block; color: var(--pf-muted); font-size: .8rem; line-height: 1.7; margin-top: .5rem; }
+.donation-input, .donation-output { font-size: clamp(1.2rem, 2.4vw, 1.8rem); font-weight: 600; }
+.donation-branches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; padding-block: 2rem; margin-block: 1.5rem; border-block: 1px solid var(--pf-line-strong); }
+.donation-branches strong { display: block; margin-bottom: 1rem; }
+.donation-branches span { display: block; margin-top: .6rem; color: var(--pf-muted); font-size: .9rem; }
+.donation-output span { color: var(--project-accent); margin-inline: .5rem; }
+@media (max-width: 640px) {
+  .budget-context { flex-wrap: wrap; gap: 1rem; }
+  .evolve-turn { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .tcg-relations { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .donation-branches { grid-template-columns: minmax(0, 1fr); }
+}

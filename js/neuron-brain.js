@@ -1,78 +1,8 @@
+import { projectMapItems } from './project-map-data.js';
 
 (function() {
     // --- Data Configuration ---
-    const projects = [
-        {
-            id: 'budget-buddy',
-            title: 'Budget Buddy',
-            desc: 'AI-Powered Financial Chatbot',
-            url: 'project_details/project-budget-buddy.html',
-            tags: ['Python', 'AI Agents', 'Financial Planning', 'Data Systems', 'Web/API']
-        },
-        {
-            id: 'neural-noir',
-            title: 'Neural Noir',
-            desc: 'AI-Driven Interactive Story Game',
-            url: 'project_details/project-neural-noir.html',
-            tags: ['Generative AI', 'Procedural Storytelling', 'Unreal Engine', 'Games', 'Python']
-        },
-        {
-            id: 'holovinyl',
-            title: 'HoloVinyl',
-            desc: 'Touchless Vision Control Deck',
-            url: 'project_details/project-holovinyl.html',
-            tags: ['Python', 'Computer Vision', 'Gesture UI', 'Interfaces', 'Music']
-        },
-        {
-            id: 'drsorriso',
-            title: 'DrSorrisoDonations',
-            desc: 'Donation Intelligence Platform',
-            url: 'project_details/project-drsorrisodonations.html',
-            tags: ['Python', 'Donor CRM', 'Analytics', 'Data Systems', 'Web/API']
-        },
-        {
-            id: 'victoria',
-            title: 'VictorIA',
-            desc: 'Multi-Domain AI Sandbox',
-            url: 'project_details/project-victoria.html',
-            tags: ['Python', 'Game AI', 'Computer Vision', 'Robotics', 'Physical Computing']
-        },
-        {
-            id: 'remainder',
-            title: 'ReminderZ',
-            desc: 'AI Context Weaving Platform',
-            url: 'project_details/project-remainder-v0.html',
-            tags: ['Python', 'AI Agents', 'Knowledge Graph', 'Productivity', 'Web/API']
-        },
-        {
-            id: 'clipclop',
-            title: 'ClipClop',
-            desc: 'Cross-Device Clipboard Intelligence',
-            url: 'project_details/project-clipclop.html',
-            tags: ['Python', 'Android', 'macOS', 'Productivity', 'Local-First Tools']
-        },
-        {
-            id: 'evolve',
-            title: 'EvolveProject',
-            desc: 'AI Card Generation Backend',
-            url: 'project_details/project-evolveproject.html',
-            tags: ['Python', 'Generative AI', 'Unreal Engine', 'Games', 'Web/API']
-        },
-        {
-            id: 'algorithms-project',
-            title: 'Clash Royale In Python',
-            desc: 'Algorithmic Strategy Game Engine',
-            url: 'project_details/project-algorithms-project.html',
-            tags: ['Python', 'Pygame', 'Games', 'Game AI', 'Algorithms', 'Pathfinding']
-        },
-        {
-            id: 'core-conflict',
-            title: 'Core Conflict',
-            desc: 'AI-Assisted Multiplayer Game Prototype',
-            url: 'project_details/project-gengame.html',
-            tags: ['Python', 'AI Agents', 'Generative AI', 'Games', 'Multiplayer', 'Web/API']
-        }
-    ];
+    const projects = projectMapItems;
 
     // --- Graph State ---
     const canvas = document.getElementById('neuron-canvas');

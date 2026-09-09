@@ -1,9 +1,8 @@
 import {
-  CHAMPIONSHIP_ENTRY_BLUEPRINTS,
-  DEMO_PROJECT_DRIVERS,
   createPaddockSimulator,
   mountF1Simulator,
 } from '@inventure71/paddockjs';
+import { PORTFOLIO_DRIVERS, PORTFOLIO_ENTRIES } from './portfolio-race-data.js';
 import { setPaddockShellState, syncPaddockShellLayout } from './paddockjs-boot-state.js';
 import { getPaddockTheme, installPaddockThemeSync } from './paddockjs-theme-sync.js';
 
@@ -39,8 +38,8 @@ const raceRules = {
 };
 
 const portfolioOptions = {
-  drivers: DEMO_PROJECT_DRIVERS,
-  entries: CHAMPIONSHIP_ENTRY_BLUEPRINTS,
+  drivers: PORTFOLIO_DRIVERS,
+  entries: PORTFOLIO_ENTRIES,
   rules: raceRules,
   physicsMode: 'arcade',
   theme: getPaddockTheme(),

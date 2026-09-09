@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Dream2Detect - a synthetic-to-real computer vision study for package damage classification" />
+    <meta name="author" content="Matteo Giorgetti" />
+    <title>Dream2Detect - M.G.</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <script src="../js/theme-boot.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../css/site-core.css" rel="stylesheet" />
+    <link href="../css/modern.css" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-dream2detect.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/dream2detect.css" rel="stylesheet" />
+    <!-- /route-styles -->
+</head>
+
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--dream2detect project-story story-dream2detect" data-project-family="research">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
+    <main class="flex-shrink-0">
+        <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
+      <div class="container">
+        <div class="pf-brand-group" data-glass-group>
+          <a class="navbar-brand" href="/index.html" data-glass-item data-glass-tone="brand">MG</a>
+          <button class="pf-nav-ai-button" type="button" data-ai-guide-copy data-glass-item data-glass-tone="green">Ask AI</button>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
+            <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
+                </li>
+              
+            </ul>
+            <div class="d-flex gap-2" data-glass-group>
+              <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
+                <i class="bi bi-command"></i>
+              </button>
+              <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
+                <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
+                  <i class="bi bi-sun" data-theme-current-icon></i>
+                </span>
+                <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
+                  <i class="bi bi-moon" data-theme-preview-icon></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+        </nav>
+
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell d2d-hero">
+                <div class="d2d-heading-line"><p class="story-kicker">Computer vision · 2026</p><span class="d2d-role">ML &amp; data pipeline</span></div>
+                <h1 class="story-title d2d-title">Dream2Detect</h1>
+                <div class="d2d-introduction">
+                    <p class="story-lede">Can a model learn from generated package images and recognise damage in real photographs?</p>
+                    <a class="story-button" href="https://github.com/Inventure71/Dream2Detect" target="_blank" rel="noreferrer">Explore the code <span aria-hidden="true">↗</span></a>
+                </div>
+                <div class="d2d-walkthrough" data-experiment-walkthrough>
+                    <h2 class="d2d-walkthrough-heading">How the experiment works</h2>
+                    <div class="d2d-step-controls" data-step-controls hidden aria-label="Experiment steps">
+                        <button type="button" id="experiment-tab-generate" data-step="generate" aria-controls="experiment-generate"><span>01</span> Generate images</button>
+                        <button type="button" id="experiment-tab-review" data-step="review" aria-controls="experiment-review"><span>02</span> Review labels</button>
+                        <button type="button" id="experiment-tab-evaluate" data-step="evaluate" aria-controls="experiment-evaluate"><span>03</span> Test on real photos</button>
+                    </div>
+                    <div class="d2d-step" id="experiment-generate" data-step-panel="generate">
+                        <div class="d2d-step-intro"><h3>Generate the training images</h3><p>An image generator produces packages with different damage, shapes, backgrounds, and lighting. These generated images form the task-specific training data.</p></div>
+                        <div class="d2d-training-examples">
+                            <figure><img src="../assets/project-media/dream2detect/0_10.jpg" width="360" height="240" alt="Generated package reference in damage band 0 to 10" decoding="async" fetchpriority="high" /><figcaption>Band 0–10 <span>Least damage</span></figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/46_55.jpg" width="360" height="240" alt="Generated package reference in damage band 46 to 55" decoding="async" /><figcaption>Band 46–55 <span>Middle of the scale</span></figcaption></figure>
+                            <figure><img src="../assets/project-media/dream2detect/86_100.jpg" width="360" height="240" alt="Generated package reference in damage band 86 to 100" decoding="async" /><figcaption>Band 86–100 <span>Most damage</span></figcaption></figure>
+                        </div>
+                        <p class="d2d-step-note">Three synthetic reference images from the labeling guide. The study groups damage into ten ordered bands, from least to most damaged.</p>
+                    </div>
+                    <div class="d2d-step" id="experiment-review" data-step-panel="review">
+                        <div class="d2d-step-intro"><h3>Review what was generated</h3><p>Asking for a damaged box does not guarantee the generated image shows that damage. A person reviews each image and corrects its label before it enters the training set.</p></div>
+                        <div class="d2d-review-evidence">
+                            <p class="d2d-evidence-label">First review pass · 800 generated images</p>
+                            <div class="d2d-review-bar" role="img" aria-label="Of 800 generated images reviewed, 623 kept their original label and 177 were relabeled."><span></span><span></span></div>
+                            <dl class="d2d-review-counts"><div><dt>Original label kept</dt><dd>623</dd></div><div><dt>Label corrected</dt><dd>177</dd></div></dl>
+                        </div>
+                        <p class="d2d-step-note">The expanded pool contained 899 reviewed synthetic images. Models learned from the reviewed labels rather than assuming every prompt produced the intended damage.</p>
+                    </div>
+                    <div class="d2d-step" id="experiment-evaluate" data-step-panel="evaluate">
+                        <div class="d2d-step-intro"><h3>Evaluate on real photographs</h3><p>The trained models assess 385 real package photographs excluded from task-specific training. Each predicted band is compared with the photograph's human-reviewed label.</p></div>
+                        <div class="d2d-evaluation-flow" aria-label="Evaluation process">
+                            <div><span class="d2d-evidence-label">Input</span><strong>Real package photo</strong><p>Unseen during damage training</p></div>
+                            <span class="d2d-flow-arrow" aria-hidden="true">→</span>
+                            <div><span class="d2d-evidence-label">Model</span><strong>Predicted damage band</strong><p>Learned from synthetic examples</p></div>
+                            <span class="d2d-flow-arrow" aria-hidden="true">→</span>
+                            <div><span class="d2d-evidence-label">Check</span><strong>Distance from the label</strong><p>How many bands away?</p></div>
+                        </div>
+                        <div class="d2d-scoring-key"><p><strong>Exact match</strong> means the model chose the reviewed band.</p><p><strong>Within one band</strong> also includes either neighboring band.</p></div>
+                        <p class="d2d-step-note">The strongest model used a pretrained visual backbone. “Synthetic training” refers to its package-damage training, not its earlier pretraining.</p>
+                    </div>
+                    <div class="d2d-step-footer" data-step-footer hidden><span data-step-position>Step 1 of 3</span><button type="button" data-step-next>Next: Review labels <span aria-hidden="true">→</span></button><a href="#results-title" data-step-results hidden>See the results <span aria-hidden="true">↓</span></a></div>
+                </div>
+            </header>
+
+            <section class="story-shell story-section d2d-results" aria-labelledby="results-title">
+                <div class="d2d-results-heading"><div><p class="story-kicker">The result</p><h2 class="story-section-heading" id="results-title">Results on 385 real photographs</h2></div><p class="d2d-result-context">Both models were evaluated on the same real photographs.</p></div>
+                <div class="d2d-results-layout">
+                    <div class="d2d-primary-result"><p class="d2d-result-value">64.16<span>%</span></p><p>within one damage band</p><p class="d2d-result-caption">ConvNeXt ensemble · EMD60 + SAM40</p></div>
+                    <div class="d2d-comparison" role="img" aria-label="Within-one-band accuracy on 385 real photos: from-scratch V5-B model 39.48 percent, pretrained EMD60 plus SAM40 ensemble 64.16 percent.">
+                        <div class="d2d-chart-scale" aria-hidden="true"><span>0</span><span>50</span><span>100%</span></div>
+                        <div class="d2d-chart-row"><div class="d2d-chart-label"><span>From-scratch CNN</span><strong>39.48%</strong></div><div class="d2d-chart-track"><span style="--result: 39.48%"></span></div></div>
+                        <div class="d2d-chart-row d2d-chart-row--ensemble"><div class="d2d-chart-label"><span>Pretrained ensemble</span><strong>64.16%</strong></div><div class="d2d-chart-track"><span style="--result: 64.16%"></span></div></div>
+                        <p class="d2d-chart-caption">Within-one-band accuracy ↑</p>
+                    </div>
+                </div>
+                <div class="d2d-result-detail"><dl><div><dt>Exact-band accuracy</dt><dd>21.04<span>%</span></dd></div><div><dt>Mean band error</dt><dd>1.3351</dd></div></dl><p>Near misses were common. The pretrained ensemble transferred better than the custom CNN, but assigning the exact damage band remained difficult.</p></div>
+            </section>
+
+            <section class="story-shell story-section d2d-findings" aria-labelledby="findings-title">
+                <div><p class="story-kicker">What it means</p><h2 class="story-section-heading" id="findings-title">What transferred</h2></div>
+                <div class="d2d-findings-copy"><p>The strongest model combined two views: the full image and a crop around the package. Its training also accounted for distance between bands, so a large error cost more than a near miss.</p><p class="d2d-finding-limit">The study shows useful transfer on this evaluation set. It does not establish reliable exact-band grading or how results would scale to a larger dataset.</p></div>
+            </section>
+
+            <div class="story-shell story-end d2d-end"><a href="https://github.com/Inventure71/Dream2Detect" target="_blank" rel="noreferrer">Explore Dream2Detect <span aria-hidden="true">↗</span></a><a href="../projects.html">All projects <span aria-hidden="true">→</span></a></div>
+        </article>
+    </main>
+    <footer class="pf-footer py-4 mt-auto"></footer>
+    <script defer src="/js/navbar.js"></script>
+    <script src="../js/theme.js"></script>
+    <script type="module" src="../js/playfolio.js"></script>
+    <script type="module" src="../js/project-demos/dream2detect.js"></script>
+</body>
+
+</html>

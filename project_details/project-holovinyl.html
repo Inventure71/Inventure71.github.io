@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="HoloVinyl - A touchless computer vision interface for music control" />
+    <meta name="description" content="HoloVinyl - a touchless interface that plays the music mapped to a physical object you show the camera" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>HoloVinyl - M.G.</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,15 +23,21 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-story.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
+    <!-- /route-styles -->
+    <link href="/css/project-stories/robotics.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--holo">
-    <div class="project-wip" data-component="wip-tape">
-        <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
-            <span class="project-wip__label">Work in progress – click to dismiss</span>
-        </button>
-    </div>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-story story-collection story-holovinyl project-page--holo" data-project-family="app">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -88,228 +94,23 @@
         </nav>
 
         <!-- Project Details Section-->
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <h1>HoloVinyl</h1>
-                            <p class="lead">Python-native holographic console that turns gestures and tracked objects
-                                into living music controls.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Computer Vision</span>
-                                <span class="project-pill">Gesture UI</span>
-                                <span class="project-pill">Python</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card">
-                                <span class="label">Role</span>
-                                <span class="value">Solo Builder · CV Engineer</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Timeline</span>
-                                <span class="value">2024 – Present</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Stack</span>
-                                <span class="value">Python · OpenCV · YOLO</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Status</span>
-                                <span class="value">Prototype Interface</span>
-                            </div>
-                        </div>
-                    </header>
-
-                    <section class="project-media-panel project-media-panel--split">
-                        <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/project-media/holovinyl/object-tracking-hero.jpg"
-                                alt="HoloVinyl object tracking UI detecting a vinyl card" loading="lazy" />
-                        </div>
-                        <aside class="project-sidecard">
-                            <h3>Project Snapshot</h3>
-                            <p>HoloVinyl experiments with touchless interaction by pairing live hand tracking and
-                                lightweight object detection with a modular UI canvas.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-lightning-charge"></i><span>Captures and interprets gestures at ~25
-                                        FPS on consumer hardware.</span></li>
-                                <li><i class="bi bi-ui-radios-grid"></i><span>Builds buttons and submenus dynamically in
-                                        response to tracked tasks.</span></li>
-                            </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71/HoloVinyl" target="_blank" rel="noreferrer">
-                                    <span>View Repository</span>
-                                    <i class="bi bi-arrow-up-right"></i>
-                                </a>
-                                <a href="https://youtu.be/ryHQKgpnL-Q" target="_blank" rel="noreferrer">
-                                    <span>Watch Demo</span>
-                                    <i class="bi bi-play-circle"></i>
-                                </a>
-                            </div>
-                        </aside>
-                    </section>
-
-                    <section class="project-section project-video-section" aria-labelledby="holovinyl-video-title">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Demo video</p>
-                            <h2 id="holovinyl-video-title">HoloVinyl in motion</h2>
-                        </div>
-                        <div class="project-video-frame">
-                            <iframe data-src="https://www.youtube-nocookie.com/embed/ryHQKgpnL-Q"
-                                title="HoloVinyl project demo video" loading="lazy"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        </div>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Session design</p>
-                            <h2>What makes the hologram feel alive</h2>
-                        </div>
-                        <ul class="project-keypoints">
-                            <li>
-                                <h4>Gesture lab</h4>
-                                <p>Rapidly iterates pinch, swipe, and hold combos with visual debug trails so new moves
-                                    can be tuned in minutes.</p>
-                            </li>
-                            <li>
-                                <h4>DJ workflows</h4>
-                                <p>Deck, loop, and effects layers snap together as modular scenes that respond to stage
-                                    lighting and camera angle.</p>
-                            </li>
-                            <li>
-                                <h4>Installation footprint</h4>
-                                <p>Runs on a single laptop and webcam, with calibration cues that coach performers
-                                    through setup without a crew.</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Interaction layers</p>
-                            <h2>What makes motion feel like an instrument</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h4>Signature gestures</h4>
-                                <p>Pinch, swipe, and hold combinations orchestrate deck actions while the UI mirrors
-                                    hand rotation.</p>
-                                <ul>
-                                    <li>Context-aware overlays fade in around active fingertips.</li>
-                                    <li>Gesture cooldowns prevent accidental double triggers.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h4>Perception stack</h4>
-                                <p>Landmark tracking pairs with YOLO detections so props like vinyl sleeves unlock extra
-                                    controls.</p>
-                                <ul>
-                                    <li>Light compensation keeps hand masks crisp in dim venues.</li>
-                                    <li>Detection fallbacks swap to generic gestures when objects leave frame.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h4>Dynamic UI fabric</h4>
-                                <p>Modular overlays draw directly on the video texture, rendering faders, meters, and
-                                    tooltips around the performer.</p>
-                                <ul>
-                                    <li>UI nodes define their own animation and decay profiles.</li>
-                                    <li>Hooks allow future model drops without changing rendering code.</li>
-                                </ul>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h3>Stage presence with invisible hardware</h3>
-                        <p>
-                            HoloVinyl lets performers carry a single webcam and laptop yet still project a futuristic
-                            control surface that
-                            audiences can read and react to.
-                        </p>
-                    </section>
-
-                    <section class="project-section project-flow">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Flow</p>
-                            <h2>How a session plays out</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step">
-                                <span class="flow-index">01</span>
-                                <div class="flow-body">
-                                    <h5>Calibration</h5>
-                                    <p>Webcam stream initializes, lighting is normalized, and gesture thresholds hydrate
-                                        from config.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">02</span>
-                                <div class="flow-body">
-                                    <h5>Perception Loop</h5>
-                                    <p>Hand landmarks and YOLO detections stream into a shared state store that
-                                        translates poses into intents.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">03</span>
-                                <div class="flow-body">
-                                    <h5>UI Reaction</h5>
-                                    <p>Dynamic buttons and vinyl widgets spawn, animate, and retire based on recognized
-                                        gestures and detected props.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">04</span>
-                                <div class="flow-body">
-                                    <h5>Playback Control</h5>
-                                    <p>Mapped commands fire into the audio layer, logging interactions for future
-                                        gesture analytics.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Gallery</p>
-                            <h2>Glances at the prototype</h2>
-                        </div>
-                        <div class="project-gallery">
-                            <figure class="gallery-card">
-                                <img src="../assets/project-media/holovinyl/multi-card-tracking.jpg"
-                                    alt="HoloVinyl camera view tracking multiple cards" loading="lazy" />
-                                <figcaption>Live camera feed with detection boxes feeding the interaction layer.
-                                </figcaption>
-                            </figure>
-                            <figure class="gallery-card">
-                                <img src="../assets/project-media/holovinyl/class-mapping-ui.jpg" alt="HoloVinyl class mapping UI"
-                                    loading="lazy" />
-                                <figcaption>Class mapping controls used to bind detected objects to interface actions.</figcaption>
-                            </figure>
-                        </div>
-                    </section>
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to all projects
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+<header class="story-shell story-hero"><p class="story-kicker">Computer vision · 2025</p><h1 class="story-title">HoloVinyl</h1><p class="story-lede">A camera-based music interface: objects select Spotify tracks, and hand gestures control playback.</p><ul class="story-meta"><li>Solo project</li><li>Python · YOLO11 · MediaPipe</li><li>Working prototype</li></ul><div class="story-actions"><a class="story-button" href="https://github.com/Inventure71/HoloVinyl" target="_blank" rel="noreferrer">View repository <span aria-hidden="true">↗</span></a><a class="story-button is-secondary" href="https://youtu.be/ryHQKgpnL-Q" target="_blank" rel="noreferrer">Watch demo <span aria-hidden="true">↗</span></a></div></header>
+            <div class="story-shell"><figure class="story-feature gallery-card"><img src="../assets/project-media/holovinyl/object-tracking-hero.jpg" width="1600" height="900" alt="HoloVinyl camera interface recognizing a physical card" decoding="async" fetchpriority="high" /><figcaption class="story-caption">The prototype recognizing a card in the camera feed.</figcaption></figure></div><section class="story-shell story-section"><p class="story-kicker">Recognition &amp; controls</p><h2 class="story-section-heading">Object recognition and hand tracking</h2><div class="story-columns"><div><h3>Object-to-music mapping</h3><p class="story-copy">A fine-tuned YOLO11 model recognizes the objects in front of the camera. Each class maps to a Spotify source; several steady detections are required before an object becomes active.</p></div><div><h3>Point and pinch controls</h3><p class="story-copy">MediaPipe tracks the hand over the camera view. Point at a playback control and pinch to click it. ArUco markers align the physical surface with the interface.</p></div></div></section>
+            <section class="story-shell story-section" aria-labelledby="holovinyl-video-title"><p class="story-kicker">The prototype</p><h2 class="story-section-heading" id="holovinyl-video-title">Objects and gestures controlling music</h2><div class="project-video-frame"><iframe data-src="https://www.youtube-nocookie.com/embed/ryHQKgpnL-Q" title="Objects and gestures controlling music" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><p class="story-caption"><a href="https://youtu.be/ryHQKgpnL-Q" target="_blank" rel="noreferrer">Watch on YouTube ↗</a></p></section>
+            <section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Adding an object</p><h2 class="story-section-heading">Train a new object</h2><p class="story-copy">Capture photos, train the detector, and assign music from the same interface.</p></div><ol class="story-process"><li><strong>Capture</strong><span>Name the object and take five photos.</span></li><li><strong>Train</strong><span>Background removal produces labels for fine-tuning the detector.</span></li><li><strong>Map</strong><span>Assign the recognised class a Spotify track, album, or playlist.</span></li></ol></div><div class="story-gallery"><figure class="story-feature gallery-card"><img src="../assets/project-media/holovinyl/multi-card-tracking.jpg" width="1600" height="900" alt="HoloVinyl detecting several physical cards in the camera view" decoding="async" loading="lazy" /><figcaption class="story-caption">Several recognised objects in the live camera feed.</figcaption></figure>
+            <figure class="story-feature gallery-card"><img src="../assets/project-media/holovinyl/class-mapping-ui.jpg" width="1600" height="900" alt="HoloVinyl interface mapping object classes to Spotify sources" decoding="async" loading="lazy" /><figcaption class="story-caption">The class-mapping screen links objects with music.</figcaption></figure></div></section>
+            <section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Music suggestions</p><h2 class="story-section-heading">Recognising an unfamiliar object</h2></div><p class="story-copy">An optional workflow uses Moondream to describe an object and DeepSeek to turn that description into a music query. These models run locally; Spotify playback requires a network connection.</p></div></section>
+            <div class="story-shell story-end"><a href="https://github.com/Inventure71/HoloVinyl" target="_blank" rel="noreferrer">View source <span aria-hidden="true">↗</span></a><a href="../projects.html">All projects <span aria-hidden="true">→</span></a></div>
+        </article>
     </main>
 
     <!-- Footer-->
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js"></script>
+    <script src="../js/project-pages.js?v=20260908-story-focus"></script>
 </body>
 
 </html>

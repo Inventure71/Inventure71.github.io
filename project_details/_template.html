@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="[PROJECT DESCRIPTION]" />
-        <meta name="author" content="Matteo Giorgetti" />
-        <title>[PROJECT NAME] - M.G.</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
-        <!-- Custom Google font-->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
-        <script src="../js/theme-boot.js"></script>
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
-        <!-- Site core CSS -->
-        <link href="../css/site-core.css" rel="stylesheet" />
-        <!-- Modern Design System -->
-        <link href="../css/modern.css" rel="stylesheet" />
-        <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css" rel="stylesheet" />
-    </head>
-    <body class="playfolio-page d-flex flex-column h-100 project-page">
-        <main class="flex-shrink-0">
-            <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="[ONE-SENTENCE PROJECT DESCRIPTION]" />
+    <meta name="author" content="Matteo Giorgetti" />
+    <meta name="theme-color" content="#0d0d0b" />
+    <title>[PROJECT NAME] - M.G.</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <script src="../js/theme-boot.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../css/site-core.css" rel="stylesheet" />
+    <link href="../css/modern.css" rel="stylesheet" />
+    <!-- route-styles: /css/playfolio-project-story.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
+    <!-- /route-styles -->
+</head>
+
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--[SLUG] project-story story-collection">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
+
+    <main class="flex-shrink-0" id="project-content">
+        <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
         <div class="pf-brand-group" data-glass-group>
           <a class="navbar-brand" href="/index.html" data-glass-item data-glass-tone="brand">MG</a>
@@ -76,183 +84,37 @@
           </div>
         </div>
       </div>
-            </nav>
-
-            <!-- Project Details Section-->
-            <section class="py-5">
-                <div class="container px-5">
-                    <div class="project-shell fade-in">
-                        <!-- Module: Hero Meta -->
-                        <header class="project-hero">
-                            <div>
-                                <h1>[Project Name]</h1>
-                                <p class="lead">[One sentence description that feels human and real.]</p>
-                                <div class="project-pills">
-                                    <span class="project-pill">[Tag 1]</span>
-                                    <span class="project-pill">[Tag 2]</span>
-                                    <span class="project-pill">[Tag 3]</span>
-                                </div>
-                            </div>
-                            <div class="hero-meta">
-                                <div class="hero-meta-card">
-                                    <span class="label">Role</span>
-                                    <span class="value">[Role / Ownership]</span>
-                                </div>
-                                <div class="hero-meta-card">
-                                    <span class="label">Timeline</span>
-                                    <span class="value">[Timeline]</span>
-                                </div>
-                                <div class="hero-meta-card">
-                                    <span class="label">Stack</span>
-                                    <span class="value">[Key Tech]</span>
-                                </div>
-                                <div class="hero-meta-card">
-                                    <span class="label">Status</span>
-                                    <span class="value">[In progress / Released / etc]</span>
-                                </div>
-                            </div>
-                        </header>
-
-                        <!-- Module: Media + Snapshot -->
-                        <section class="project-media-panel project-media-panel--split">
-                            <div class="project-media-stage">
-                                <iframe
-                                    src="https://www.youtube-nocookie.com/embed/[VIDEO_ID]"
-                                    title="[Project Video]"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    referrerpolicy="strict-origin-when-cross-origin"
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                            <aside class="project-sidecard">
-                                <h3>Project Snapshot</h3>
-                                <p>[Quick context about what the visitor should notice.]</p>
-                                <ul class="sidecard-highlight">
-                                    <li><i class="bi bi-check2-circle"></i><span>[Tangible win or metric]</span></li>
-                                    <li><i class="bi bi-sliders"></i><span>[Design or technical highlight]</span></li>
-                                </ul>
-                                <div class="sidecard-links">
-                                    <a href="#" target="_blank" rel="noreferrer">
-                                        <span>View Repository</span>
-                                        <i class="bi bi-arrow-up-right"></i>
-                                    </a>
-                                    <a href="#" target="_blank" rel="noreferrer">
-                                        <span>Download / Playtest</span>
-                                        <i class="bi bi-arrow-down-circle"></i>
-                                    </a>
-                                </div>
-                            </aside>
-                        </section>
-
-                        <!-- To stack media above text on wider screens, swap the modifier:
-                             <section class="project-media-panel project-media-panel--stacked"> -->
-
-                        <!-- Module: Narrative -->
-                        <section class="project-section">
-                            <div class="project-section-header">
-                                <p class="project-section-eyebrow">Narrative</p>
-                                <h2>Why this project exists</h2>
-                            </div>
-                            <p class="project-copy">
-                                [Tell the story. Talk about the problem or itch you wanted to scratch, and describe the core outcome without sounding like a press release.]
-                            </p>
-                            <ul class="project-stack-list">
-                                <li>[Tech]</li>
-                                <li>[System]</li>
-                                <li>[Tool]</li>
-                                <li>[Process]</li>
-                            </ul>
-                        </section>
-
-                        <!-- Module: Systems Grid -->
-                        <section class="project-section">
-                            <div class="project-section-header">
-                                <p class="project-section-eyebrow">Systems</p>
-                                <h2>What makes it different</h2>
-                            </div>
-                            <div class="project-module-grid">
-                                <article class="project-module">
-                                    <h4>Signature Moment</h4>
-                                    <p>Describe a memorable interaction or mechanic.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Technical Solve</h4>
-                                    <p>Explain the clever build or optimization.</p>
-                                </article>
-                                <article class="project-module">
-                                    <h4>Player Impact</h4>
-                                    <p>Focus on the way people experience the work.</p>
-                                </article>
-                            </div>
-                        </section>
-
-                        <!-- Module: Flow Timeline -->
-                        <section class="project-section project-flow">
-                            <div class="project-section-header">
-                                <p class="project-section-eyebrow">Flow</p>
-                                <h2>How someone moves through it</h2>
-                            </div>
-                            <div class="project-flow-steps">
-                                <div class="project-flow-step">
-                                    <span class="flow-index">01</span>
-                                    <div class="flow-body">
-                                        <h5>Step One</h5>
-                                        <p>Set the scene and describe how things begin.</p>
-                                    </div>
-                                </div>
-                                <div class="project-flow-step">
-                                    <span class="flow-index">02</span>
-                                    <div class="flow-body">
-                                        <h5>Step Two</h5>
-                                        <p>Show how the system responds and adapts.</p>
-                                    </div>
-                                </div>
-                                <div class="project-flow-step">
-                                    <span class="flow-index">03</span>
-                                    <div class="flow-body">
-                                        <h5>Step Three</h5>
-                                        <p>Close out with what success looks like.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- Module: Gallery -->
-                        <section class="project-section">
-                            <div class="project-section-header">
-                                <p class="project-section-eyebrow">Gallery</p>
-                                <h2>Proof & atmosphere</h2>
-                            </div>
-                            <div class="project-gallery">
-                                <figure class="gallery-card">
-                                    <img src="../assets/[project]/image1.png" alt="[Screenshot 1]" loading="lazy" />
-                                    <figcaption>[Context for the first image]</figcaption>
-                                </figure>
-                                <figure class="gallery-card">
-                                    <img src="../assets/[project]/image2.png" alt="[Screenshot 2]" loading="lazy" />
-                                    <figcaption>[Context for the second image]</figcaption>
-                                </figure>
-                            </div>
-                        </section>
-
-                        <!-- Module: Back Link -->
-                        <div class="text-center">
-                            <a href="../projects.html" class="project-back-link">
-                                <i class="bi bi-arrow-left"></i>
-                                Back to all projects
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        </nav>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">[PROJECT TYPE]</p>
+                <h1 class="story-title">[PROJECT NAME]</h1>
+                <p class="story-lede">[What the project does in one concise sentence.]</p>
+                <ul class="story-meta"><li>[YOUR CONTRIBUTION]</li><li>[RELEVANT TECHNOLOGY OR SCOPE]</li></ul>
+                <div class="story-actions"><a class="story-button" href="[PUBLIC PROJECT URL]">Explore the project <span aria-hidden="true">↗</span></a></div>
+            </header>
+            <!-- Optional: real media or a clearly labelled explanatory diagram. Omit when neither helps. -->
+            <div class="story-shell">
+                <figure class="story-feature">
+                    <img src="../assets/project-media/[SLUG]/[IMAGE]" width="1600" height="900" decoding="async" alt="[WHAT THE IMAGE SHOWS]" />
+                    <figcaption class="story-caption">[Why this evidence matters.]</figcaption>
+                </figure>
+            </div>
+            <section class="story-shell story-section">
+                <h2 class="story-section-heading">[THE INTERESTING TECHNICAL DECISION]</h2>
+                <dl class="story-notes">
+                    <div><dt>[RESPONSIBILITY]</dt><dd>[What this part does and why.]</dd></div>
+                    <div><dt>[CONSTRAINT]</dt><dd>[A verified limitation or tradeoff.]</dd></div>
+                </dl>
             </section>
-            </main>
+            <nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+        </article>
+    </main>
 
-        <footer class="pf-footer py-4 mt-auto"></footer>
+    <footer class="pf-footer py-4 mt-auto"></footer>
+    <script defer src="/js/navbar.js"></script>
+    <script src="../js/theme.js"></script>
+    <script type="module" src="../js/playfolio.js"></script>
+</body>
 
-        <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../js/theme.js"></script>
-        <script type="module" src="../js/playfolio.js"></script>
-    </body>
 </html>

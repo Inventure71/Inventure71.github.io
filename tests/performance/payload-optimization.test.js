@@ -39,9 +39,9 @@ describe('payload optimization contracts', () => {
 
     expect(html).not.toMatch(/<link[^>]+href="dist\/f1-simulator\/f1-simulator\.css/);
     expect(html).not.toMatch(/<script[^>]+src="dist\/f1-simulator\/f1-simulator\.js/);
-    expect(html).toContain('dist/f1-simulator/paddock-placeholder.css?v=20260605-paddockjs-410');
-    expect(html).toContain('data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=20260605-paddockjs-410"');
-    expect(html).toContain('data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=20260605-paddockjs-410"');
+    expect(html).toContain('dist/f1-simulator/paddock-placeholder.css?v=20260908-project-catalog');
+    expect(html).toContain('data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=20260908-project-catalog"');
+    expect(html).toContain('data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=20260908-project-catalog"');
     expect(html).toContain('data-paddock-auto-start="idle"');
     expect(html).toContain('data-paddock-auto-delay-ms="900"');
     expect(html).toContain('js/projects-race-loader.js');
@@ -93,7 +93,7 @@ describe('payload optimization contracts', () => {
     const manifests = {
       'css/playfolio-home.css': ['motion.css', 'project-browse.css'],
       'css/playfolio-projects.css': ['race.css', 'project-race-guide.css'],
-      'css/playfolio-project-detail.css': ['project-pages.css', 'project-overrides.css'],
+      'css/playfolio-project-detail.css': ['project-pages.css'],
       'css/playfolio-tags.css': ['tag-network.css'],
       'css/playfolio-directory.css': ['directory.css'],
       'css/playfolio-resume-page.css': ['resume.css'],
@@ -107,6 +107,7 @@ describe('payload optimization contracts', () => {
 
     expect(readRepoFile('css/playfolio-home.css')).not.toContain('race.css');
     expect(readRepoFile('css/playfolio-projects.css')).not.toContain('project-overrides.css');
+    expect(readRepoFile('css/playfolio-project-detail.css')).not.toContain('project-overrides.css');
     expect(readRepoFile('css/playfolio-tags.css')).not.toContain('race.css');
   });
 

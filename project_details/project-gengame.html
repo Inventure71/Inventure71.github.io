@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description"
-        content="Core Conflict - A self-evolving multiplayer game framework driven by AI code patches." />
+        content="Core Conflict is a multiplayer arena prototype where player requests become tested Python patches for a shared match." />
     <meta name="author" content="Matteo Giorgetti" />
     <title>Core Conflict - M.G.</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,15 +24,20 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-story.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--gengame">
-    <div class="project-wip" data-component="wip-tape">
-        <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
-            <span class="project-wip__label">Work in progress – click to dismiss</span>
-        </button>
-    </div>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--gengame project-story story-collection" data-project-family="game">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -88,199 +93,27 @@
       </div>
         </nav>
 
-        <!-- Project Details Section-->
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <h1>Core Conflict</h1>
-                            <p class="lead">A self-evolving multiplayer game engine where AI agents diagnose issues,
-                                suggest mechanics, and write real-time code patches.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Python</span>
-                                <span class="project-pill">GenAI</span>
-                                <span class="project-pill">Multiplayer</span>
-                                <span class="project-pill">Networking</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card">
-                                <span class="label">Role</span>
-                                <span class="value">Lead Developer · Architect</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Timeline</span>
-                                <span class="value">2024 – Present</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Stack</span>
-                                <span class="value">Python · FastAPI · WebSockets</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">LLMs</span>
-                                <span class="value">Google Gemini · OpenAI</span>
-                            </div>
-                        </div>
-                    </header>
-
-                    <section class="project-media-panel project-media-panel--split">
-                        <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/project-media/core-conflict/feature-test-passed-hero.jpg"
-                                alt="Core Conflict agent control center showing a feature prompt with passing tests"
-                                loading="lazy" />
-                        </div>
-                        <aside class="project-sidecard">
-                            <h3>Project Snapshot</h3>
-                            <p>Core Conflict explores adaptive game systems: software that can revise selected runtime
-                                modules in response to player behavior or operational issues.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-patch-check"></i><span>Autonomous code patching using LLMs and
-                                        <code>Merge3</code>.</span></li>
-                                <li><i class="bi bi-broadcast"></i><span>Real-time state and code synchronization via
-                                        WebSockets.</span></li>
-                            </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71/GenGame" target="_blank" rel="noreferrer">
-                                    <span>View Repository</span>
-                                    <i class="bi bi-arrow-up-right"></i>
-                                </a>
-                                <a href="https://youtu.be/JgWvJM1WQKc" target="_blank" rel="noreferrer">
-                                    <span>Watch Demo</span>
-                                    <i class="bi bi-play-circle"></i>
-                                </a>
-                            </div>
-                        </aside>
-                    </section>
-
-                    <section class="project-section project-video-section" aria-labelledby="core-video-title">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Demo video</p>
-                            <h2 id="core-video-title">Core Conflict in motion</h2>
-                        </div>
-                        <div class="project-video-frame">
-                            <iframe data-src="https://www.youtube-nocookie.com/embed/JgWvJM1WQKc"
-                                title="Core Conflict project demo video" loading="lazy"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        </div>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Core Pillars</p>
-                            <h2>The Engine of Evolution</h2>
-                        </div>
-                        <ul class="project-keypoints">
-                            <li>
-                                <h4>Adaptive runtime modules</h4>
-                                <p>Core Conflict agents monitor game logs and performance, generating and applying code
-                                    patches
-                                    to the live environment without restarts.</p>
-                            </li>
-                            <li>
-                                <h4>Modular Architecture</h4>
-                                <p>Every game mechanic, character ability, and UI element is a decoupled module,
-                                    allowing the AI to modify specific components without touching unrelated systems.</p>
-                            </li>
-                            <li>
-                                <h4>Decentralized Sync</h4>
-                                <p>Integrated <code>Merge3</code> logic ensures that code patches generated on the
-                                    server are merged and executed identically across all clients.</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h3>Beyond Fixed Mechanics</h3>
-                        <p>
-                            Traditionally, game rules are set in stone at launch. Core Conflict turns the "developer
-                            loop"
-                            into a "runtime loop," where the game itself acts as the developer, tester, and deployer.
-                        </p>
-                    </section>
-
-                    <section class="project-section project-flow">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">The Evolution Cycle</p>
-                            <h2>How a Patch is Born</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step">
-                                <span class="flow-index">01</span>
-                                <div class="flow-body">
-                                    <h5>Diagnosis</h5>
-                                    <p>The monitoring agent detects an imbalance or a bug in a specific character
-                                        ability module.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">02</span>
-                                <div class="flow-body">
-                                    <h5>Generation</h5>
-                                    <p>An LLM agent writes a Python patch, tested against a simulated sandbox
-                                        environment.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">03</span>
-                                <div class="flow-body">
-                                    <h5>Synchronization</h5>
-                                    <p>The patch is broadcast to all clients; <code>Merge3</code> applies the changes to
-                                        their local runtime modules.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">04</span>
-                                <div class="flow-body">
-                                    <h5>Hot-Reload</h5>
-                                    <p>The game engine re-imports the modified module, updating mechanics for all
-                                        players mid-session.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Runtime Evidence</p>
-                            <h2>From Game State to Agent Loop</h2>
-                        </div>
-                        <div class="project-gallery">
-                            <figure class="gallery-card">
-                                <img src="../assets/project-media/core-conflict/feature-prompt-running.jpg"
-                                    alt="Core Conflict feature prompt running through the agent control center"
-                                    loading="lazy" />
-                                <figcaption>Feature request entered into the agent control center before the test run
-                                    completes.
-                                </figcaption>
-                            </figure>
-                            <figure class="gallery-card">
-                                <img src="../assets/project-media/core-conflict/patched-gameplay.jpg"
-                                    alt="Core Conflict patched gameplay running after a feature test" loading="lazy" />
-                                <figcaption>Patched runtime loaded into the game room after the feature test passes.
-                                </figcaption>
-                            </figure>
-                        </div>
-                    </section>
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to all projects
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">Multiplayer prototype · Python + Pygame</p>
+                <h1 class="story-title">Core Conflict</h1>
+                <p class="story-lede">A multiplayer arena where players request new mechanics for their cows. Agents write and test those changes before the match.</p>
+                <ul class="story-meta"><li>Lead developer</li><li>Python · Pygame · Docker</li><li>Gemini · OpenAI</li></ul>
+                <div class="story-actions"><a class="story-button" href="https://github.com/Inventure71/GenGame" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a><a class="story-button is-secondary" href="https://youtu.be/JgWvJM1WQKc" target="_blank" rel="noopener noreferrer">Watch demo <span aria-hidden="true">↗</span></a></div>
+            </header>
+            <div class="story-shell"><figure class="story-feature"><img src="../assets/project-media/core-conflict/patched-gameplay.jpg" width="1600" height="900" alt="Core Conflict arena gameplay after a feature patch" decoding="async" fetchpriority="high" /><figcaption class="story-caption">A match running with generated changes.</figcaption></figure></div><section class="story-shell story-section" aria-labelledby="core-build"><h2 class="story-section-heading" id="core-build">Generating mechanics in the lobby</h2><ol class="story-process"><li><strong>Request</strong><span>A player describes an ability or a balance change. The agent works against the existing Python game.</span></li><li><strong>Test</strong><span>Generated patches run through pytest. Failed tests feed a repair loop.</span></li><li><strong>Merge</strong><span>The server combines the selected patches, using the agent when code changes conflict.</span></li><li><strong>Play</strong><span>The shared build is synchronized to the clients before the match begins.</span></li></ol><div class="story-gallery"><figure class="story-feature gallery-card"><img src="../assets/project-media/core-conflict/feature-prompt-running.jpg" width="1600" height="900" alt="A feature request being processed in the Core Conflict agent control center" decoding="async" loading="lazy" /><figcaption class="story-caption">A requested mechanic moving through generation and testing.</figcaption></figure>
+            <figure class="story-feature gallery-card"><img src="../assets/project-media/core-conflict/feature-test-passed-hero.jpg" width="1600" height="900" alt="Core Conflict agent control center displaying passing tests" decoding="async" loading="lazy" /><figcaption class="story-caption">The generated feature after its tests pass.</figcaption></figure></div></section>
+            <section class="story-shell story-section" aria-labelledby="core-match"><h2 class="story-section-heading" id="core-match">Combining changes for multiplayer</h2><div class="story-columns"><div class="story-copy"><p>Players can select different patches. The server merges them and distributes a shared game build to every client.</p></div><div class="story-copy"><p>Generated mechanics modify an arena with movement, abilities, growth, and a shrinking safe zone.</p></div></div><div class="project-video-frame"><iframe data-src="https://www.youtube-nocookie.com/embed/JgWvJM1WQKc" title="Core Conflict feature generation and multiplayer demo" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></section>
+            <div class="story-shell story-end"><a href="project-algorithms-project.html">Next: Clash Royale in Python <span aria-hidden="true">→</span></a><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></div>
+        </article>
     </main>
 
     <!-- Footer-->
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js"></script>
+    <script src="../js/project-pages.js?v=20260908-story-focus"></script>
 </body>
 
 </html>

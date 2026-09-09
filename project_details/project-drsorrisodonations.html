@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="DrSorrisoDonations - Donation intelligence and engagement platform" />
+    <meta name="description" content="Dr Sorriso Donations — an internal tool for parsing transfer descriptions and entering charity donations" />
     <meta name="author" content="Matteo Giorgetti" />
     <title>DrSorrisoDonations - M.G.</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,15 +23,21 @@
     <!-- Modern Design System -->
     <link href="../css/modern.css" rel="stylesheet" />
     <!-- Project Pages Styles -->
-        <link href="../css/playfolio-project-detail.css" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-story.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
+    <!-- /route-styles -->
+    <link href="../css/project-stories/data-tools.css" rel="stylesheet" />
 </head>
 
-<body class="playfolio-page d-flex flex-column h-100 project-page project-page--drsorriso">
-    <div class="project-wip" data-component="wip-tape">
-        <button class="project-wip__tape" type="button" aria-label="Dismiss work in progress notice">
-            <span class="project-wip__label">Work in progress – click to dismiss</span>
-        </button>
-    </div>
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--drsorriso project-story story-collection" data-project-family="systems">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -87,213 +93,27 @@
       </div>
         </nav>
 
-        <!-- Project Details Section-->
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="project-shell fade-in">
-                    <header class="project-hero">
-                        <div>
-                            <h1>DrSorrisoDonations</h1>
-                            <p class="lead">Python-first donation intelligence suite that centralizes intake,
-                                allocation, and storytelling for the Dr Sorriso initiative.</p>
-                            <div class="project-pills">
-                                <span class="project-pill">Python</span>
-                                <span class="project-pill">Donor CRM</span>
-                                <span class="project-pill">Analytics</span>
-                            </div>
-                        </div>
-                        <div class="hero-meta">
-                            <div class="hero-meta-card">
-                                <span class="label">Role</span>
-                                <span class="value">Full-Stack Engineer · Data Strategist</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Timeline</span>
-                                <span class="value">2024</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Stack</span>
-                                <span class="value">FastAPI · PostgreSQL · Stripe SDK</span>
-                            </div>
-                            <div class="hero-meta-card">
-                                <span class="label">Status</span>
-                                <span class="value">Internal Pilot</span>
-                            </div>
-                        </div>
-                    </header>
+        <article class="project-story-content" id="project-story" tabindex="-1">
+<header class="story-shell story-hero"><p class="story-kicker">Fondazione Dottor Sorriso · Internal tool</p><h1 class="story-title">Dr Sorriso Donations</h1><p class="story-lede">Match bank transfers to donors and enter donations in the foundation’s existing platform.</p><ul class="story-meta"><li>Solo project</li><li>2024–2025</li><li>Python · Selenium</li></ul></header>
+<figure class="story-shell story-diagram donation-route">
+ <p class="story-kicker">Donation processing</p>
+ <div class="donation-input">Bank-transfer description</div>
+ <div class="donation-branches"><div><strong>Campaign code present</strong><span>Extract the code</span><span>Match the campaign</span></div><div><strong>Name in the description</strong><span>Remove banking boilerplate</span><span>Extract &amp; check the donor</span></div></div>
+ <div class="donation-output">Match the contact <span aria-hidden="true">→</span> Record the donation</div>
+ <figcaption class="story-caption">Campaign codes and donor names lead to the same donation record.</figcaption>
+</figure>
+            <section class="story-shell story-section"><h2 class="story-section-heading">Identifying the donor</h2><dl class="story-notes"><div><dt>Clean the description</dt><dd>Rules remove SEPA boilerplate, banking identifiers, and repeated tokens. Italian name dictionaries help distinguish names from codes.</dd></div><div><dt>Resolve the donor</dt><dd>GPT-4o-mini proposes names across several calls. Agreement and a second pass check the result; a cache avoids parsing the same description again.</dd></div><div><dt>Enter the record</dt><dd>Selenium selects the campaign, finds or creates the contact, and enters the donation in the existing platform.</dd></div></dl></section>
 
-                    <section class="project-media-panel project-media-panel--split">
-                        <div class="project-media-stage project-media-stage--image">
-                            <img src="../assets/placeholders/debug-placeholder.svg"
-                                alt="Placeholder dashboard for DrSorrisoDonations" loading="lazy" />
-                        </div>
-                        <aside class="project-sidecard">
-                            <h3>Project Snapshot</h3>
-                            <p>Built to retire spreadsheets and manual reconciliations, DrSorrisoDonations keeps
-                                donation flows auditable while delighting donors with timely updates.</p>
-                            <ul class="sidecard-highlight">
-                                <li><i class="bi bi-graph-up-arrow"></i><span>Real-time campaign dashboard with
-                                        retention, average gift, and conversion KPIs.</span></li>
-                                <li><i class="bi bi-envelope-open-heart"></i><span>Automated thank-you and compliance
-                                        receipts tailored by donor segment.</span></li>
-                            </ul>
-                            <div class="sidecard-links">
-                                <a href="https://github.com/Inventure71/DrSorrisoDonations" target="_blank"
-                                    rel="noreferrer">
-                                    <span>View Repository</span>
-                                    <i class="bi bi-arrow-up-right"></i>
-                                </a>
-                            </div>
-                        </aside>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Impact loops</p>
-                            <h2>How the platform keeps donors close</h2>
-                        </div>
-                        <ul class="project-keypoints">
-                            <li>
-                                <h4>Campaign health</h4>
-                                <p>Dashboards tie pledges, disbursements, and stories together so coordinators see which
-                                    programs need fresh attention.</p>
-                            </li>
-                            <li>
-                                <h4>Volunteer follow-ups</h4>
-                                <p>Weekly digests surface lapsed donors with context, scripts, and the last touchpoint
-                                    to make outreach effortless.</p>
-                            </li>
-                            <li>
-                                <h4>Compliance guardrails</h4>
-                                <p>Consent flags, GDPR exports, and receipt archives live in the same workflow, keeping
-                                    the legal team confident.</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Operating spine</p>
-                            <h2>How donors and staff stay aligned</h2>
-                        </div>
-                        <div class="project-insight-grid">
-                            <article class="project-insight-card">
-                                <h4>Unified intake</h4>
-                                <p>Gateway adapters validate signatures, normalize currencies, and attach campaign
-                                    metadata before storage.</p>
-                                <ul>
-                                    <li>Stripe and PayPal payloads collapse into a shared schema.</li>
-                                    <li>Manual gifts imported via spreadsheet use the same pipeline.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h4>Donor relationship map</h4>
-                                <p>CRM layer tracks consent flags, communication preferences, and volunteer notes for
-                                    each supporter.</p>
-                                <ul>
-                                    <li>Lapsed donor alerts feed weekly volunteer stand-ups.</li>
-                                    <li>Automations adapt tone based on donor lifecycle stage.</li>
-                                </ul>
-                            </article>
-                            <article class="project-insight-card">
-                                <h4>Transparent allocations</h4>
-                                <p>Ledger splits each donation across programs so finance, marketing, and leadership
-                                    share the same numbers.</p>
-                                <ul>
-                                    <li>Impact stories pull directly from allocation metadata.</li>
-                                    <li>Audit logs mirror every manual override or refund.</li>
-                                </ul>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="project-section project-spotlight">
-                        <h3>Volunteers see who needs a thank-you next</h3>
-                        <p>
-                            Weekly digests pair donor sentiment with giving history so community teams know which
-                            families to call, who to
-                            celebrate, and when to flag finance about unusual activity.
-                        </p>
-                    </section>
-
-                    <section class="project-section project-flow">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Flow</p>
-                            <h2>How a donation travels</h2>
-                        </div>
-                        <div class="project-flow-steps">
-                            <div class="project-flow-step">
-                                <span class="flow-index">01</span>
-                                <div class="flow-body">
-                                    <h5>Capture</h5>
-                                    <p>A supporter completes a web form; payment gateway webhook verifies and delivers
-                                        event payload.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">02</span>
-                                <div class="flow-body">
-                                    <h5>Process</h5>
-                                    <p>Donation service links the gift to a donor record, applies campaign attribution,
-                                        and records allocation intent.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">03</span>
-                                <div class="flow-body">
-                                    <h5>Acknowledge</h5>
-                                    <p>Background worker sends personalized thank-you, issues receipt PDF, and updates
-                                        stakeholder dashboards.</p>
-                                </div>
-                            </div>
-                            <div class="project-flow-step">
-                                <span class="flow-index">04</span>
-                                <div class="flow-body">
-                                    <h5>Report</h5>
-                                    <p>Nightly analytics snapshots refresh retention metrics, segment changes, and
-                                        impact exports for finance.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="project-section">
-                        <div class="project-section-header">
-                            <p class="project-section-eyebrow">Gallery</p>
-                            <h2>Signals &amp; surfaces</h2>
-                        </div>
-                        <div class="project-gallery">
-                            <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg"
-                                    alt="Placeholder donation intake form" loading="lazy" />
-                                <figcaption>Responsive donation intake form wired to the API gateway.</figcaption>
-                            </figure>
-                            <figure class="gallery-card">
-                                <img src="../assets/placeholders/debug-placeholder.svg"
-                                    alt="Placeholder analytics dashboard view" loading="lazy" />
-                                <figcaption>Campaign health dashboard tracking totals, retention, and allocation
-                                    progress.</figcaption>
-                            </figure>
-                        </div>
-                    </section>
-
-                    <div class="text-center">
-                        <a href="../projects.html" class="project-back-link">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to all projects
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+</article>
     </main>
 
     <!-- Footer-->
     <footer class="pf-footer py-4 mt-auto"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="../js/theme.js"></script>
     <script type="module" src="../js/playfolio.js"></script>
-    <script src="../js/project-pages.js"></script>
+
 </body>
 
 </html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="MattyFlow - local-first dictation and rewriting for macOS" />
+    <meta name="author" content="Matteo Giorgetti" />
+    <meta name="theme-color" content="#0d0d0b" />
+    <title>MattyFlow - M.G.</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <script src="../js/theme-boot.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../css/site-core.css" rel="stylesheet" />
+    <link href="../css/modern.css" rel="stylesheet" />
+    <!-- route-styles: /css/playfolio-project-story.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
+    <!-- /route-styles -->
+    <link href="../css/project-stories/apps.css" rel="stylesheet" />
+</head>
+
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--mattyflow project-story story-collection" data-project-family="app">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
+    <main class="flex-shrink-0">
+        <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
+      <div class="container">
+        <div class="pf-brand-group" data-glass-group>
+          <a class="navbar-brand" href="/index.html" data-glass-item data-glass-tone="brand">MG</a>
+          <button class="pf-nav-ai-button" type="button" data-ai-guide-copy data-glass-item data-glass-tone="green">Ask AI</button>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
+            <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
+                </li>
+              
+            </ul>
+            <div class="d-flex gap-2" data-glass-group>
+              <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
+                <i class="bi bi-command"></i>
+              </button>
+              <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
+                <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
+                  <i class="bi bi-sun" data-theme-current-icon></i>
+                </span>
+                <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
+                  <i class="bi bi-moon" data-theme-preview-icon></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+        </nav>
+
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">Local dictation · 2026</p>
+                <h1 class="story-title">MattyFlow</h1>
+                <p class="story-lede">Hold Fn to dictate into your current app, with local transcription and optional rewriting.</p>
+                <ul class="story-meta"><li>Swift / AppKit · Python / FastAPI · MLX</li><li>macOS prototype</li></ul>
+            </header>
+            <figure class="story-shell story-diagram matty-pipeline">
+                <div class="matty-lane"><span class="app-diagram-label">Native app</span><strong><kbd>Fn</kbd> Record audio</strong><span>Remember the destination</span></div>
+                <span class="matty-transfer" aria-hidden="true">→</span>
+                <div class="matty-lane matty-lane--model"><span class="app-diagram-label">Local service</span><strong>Transcribe</strong><span>Optional rewrite</span></div>
+                <span class="matty-transfer" aria-hidden="true">→</span>
+                <div class="matty-lane"><span class="app-diagram-label">Native app</span><strong>Insert the result</strong><span>Newest request only</span></div>
+                <figcaption class="story-caption">Recording and insertion stay in the native app; Python runs the models.</figcaption>
+            </figure>
+            <section class="story-shell story-section story-split" aria-labelledby="matty-boundaries">
+                <h2 class="story-section-heading" id="matty-boundaries">Recording and insertion</h2>
+                <dl class="story-notes">
+                    <div><dt>Capture &amp; return</dt><dd>The app remembers which application was focused when recording began. Only the newest completed request is pasted there.</dd></div>
+                    <div><dt>Model service</dt><dd>FastAPI prepares the recording for the selected speech model and, when enabled, sends its transcript through a rewrite prompt.</dd></div>
+                    <div><dt>Model lifecycle</dt><dd>Models download separately and can unload when idle. Loading them again adds time to the next request.</dd></div>
+                </dl>
+            </section>
+            <section class="story-shell story-section story-split" aria-labelledby="matty-runtime">
+                <h2 class="story-section-heading" id="matty-runtime">Models and permissions</h2>
+                <div><p class="story-copy">Models run on the Mac by default. OpenAI is also available as an optional provider.</p><p class="story-copy">Requires Apple silicon and Microphone, Input Monitoring, and Accessibility permissions.</p></div>
+            </section>
+<nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+        </article>
+    </main>
+    <footer class="pf-footer py-4 mt-auto"></footer>
+    <script defer src="/js/navbar.js"></script><script src="../js/theme.js"></script><script type="module" src="../js/playfolio.js"></script>
+</body>
+
+</html>

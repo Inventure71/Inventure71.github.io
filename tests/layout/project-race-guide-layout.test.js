@@ -37,12 +37,10 @@ describe('project race guide responsive layout', () => {
     const mobileRules = extractBlock(css, '@media (max-width: 720px)');
     const copyRule = ruleIn(mobileRules, '.pf-race-guide__copy');
     const markerRule = ruleIn(mobileRules, '.pf-race-guide__marker');
-    const markerPoleRule = ruleIn(mobileRules, '.pf-race-guide__marker::after');
 
     expect(declarationValue(copyRule, 'grid-template-columns')).toBe('auto minmax(0, 1fr)');
     expect(declarationValue(copyRule, 'align-items')).toBe('start');
     expect(declarationValue(markerRule, 'width')).toMatch(/^clamp\(/);
     expect(declarationValue(markerRule, 'height')).toMatch(/^clamp\(/);
-    expect(declarationValue(markerPoleRule, 'right')).toBe('-0.68rem');
   });
 });

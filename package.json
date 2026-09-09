@@ -9,14 +9,16 @@
     "check:chrome": "node scripts/sync-shared-chrome.mjs --check",
     "test": "npm run test:f1",
     "test:f1": "vitest run tests",
-    "check": "npm run check:chrome && npm run test && npm run build:f1"
+    "check": "npm run check:chrome && npm run check:styles && npm run test && npm run build:f1",
+    "sync:styles": "node scripts/sync-route-styles.mjs",
+    "check:styles": "node scripts/sync-route-styles.mjs --check"
   },
   "dependencies": {
     "@inventure71/paddockjs": "^4.1.0",
     "pixi.js": "8.18.1"
   },
   "devDependencies": {
-    "vite": "8.0.10",
+    "vite": "8.2.2",
     "vitest": "4.1.5"
   }
 }

@@ -1,0 +1,45 @@
+/* Shared composition contracts for the V8 project stories. */
+.project-story {
+  --story-space: clamp(4rem, 9vw, 8rem);
+  --story-serif: Georgia, 'Times New Roman', serif;
+}
+.project-story-content { display: block; }
+.project-story-content > * { min-width: 0; }
+.story-shell { width: min(1180px, calc(100% - var(--pf-pad) * 2)); margin-inline: auto; }
+.story-shell > * { min-width: 0; }
+.story-hero { padding-block: clamp(2.5rem, 6vw, 5rem); }
+.story-kicker { margin: 0 0 1.25rem; font-family: var(--project-mono); font-size: .72rem; font-weight: 600; line-height: 1.5; text-transform: uppercase; letter-spacing: .12em !important; color: var(--pf-muted); }
+.project-story .story-title { margin: 0; font-size: clamp(3.5rem, 8.8vw, 8rem); font-weight: 750; line-height: .98; letter-spacing: -.065em !important; overflow-wrap: normal; }
+.story-lede { max-width: 72ch; margin: 1.6rem 0 0; color: var(--pf-muted); font-size: clamp(1.08rem, 1.7vw, 1.35rem); line-height: 1.65; }
+.story-meta { display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; padding: 1.25rem 0; margin: 0; font-family: var(--project-mono); font-size: .7rem; line-height: 1.6; color: var(--pf-muted); list-style: none; }
+.story-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .8rem 1.5rem; margin-top: 2rem; }
+.project-story .story-button { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 46px; padding: .75rem 1.3rem; border: 1px solid var(--pf-ink); border-radius: 100px; background: var(--pf-ink); color: var(--pf-bg); font-size: .85rem; line-height: 1.5; font-weight: 650; text-decoration: none; transition: transform 180ms ease, opacity 180ms ease; }
+.project-story .story-button:hover { transform: translateY(-2px); }
+.project-story .story-button.is-secondary { background: transparent; color: inherit; border-color: var(--pf-line-strong); }
+.project-story .story-button:disabled { transform: none; }
+.story-section { padding-block: var(--story-space); }
+.story-section-heading { margin: 0 0 1.5rem; max-width: 100%; font-size: clamp(2rem, 4.6vw, 4rem); line-height: 1.12; font-weight: 650; letter-spacing: -.045em !important; }
+.story-copy { max-width: 72ch; color: var(--pf-muted); line-height: 1.75; }
+.story-caption { margin: .9rem 0 0; font-size: .75rem; line-height: 1.65; color: var(--pf-muted); }
+.story-end { display: flex; justify-content: space-between; align-items: center; gap: 2rem; padding-block: 2.5rem; border-top: 1px solid var(--pf-line); }
+.story-end p { margin: .5rem 0 0; font-size: .9rem; color: var(--pf-muted); }
+.story-end .story-actions { margin: 0; }
+.project-story-content a { text-underline-offset: .25em; }
+.project-story-content :is(button, a, input, textarea, select, [tabindex]):focus-visible { outline: 2px solid var(--project-accent); outline-offset: 5px; }
+.project-story-content figure { margin: 0; }
+.project-story-content img { display: block; max-width: 100%; }
+.project-story-content [hidden] { display: none !important; }
+@media (max-width: 640px) {
+  .project-story .story-title { font-size: clamp(2.7rem, 13vw, 4rem); }
+  .story-section-heading { max-width: 100%; }
+  .story-end { align-items: flex-start; flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-story-content *, .project-story-content *::before, .project-story-content *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}
+
+/* Explicit accessibility utilities: these routes do not load Bootstrap. */
+.project-story .story-sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip-path:inset(50%)!important; white-space:nowrap!important; border:0!important; }
+.project-story .story-skip-link { position:fixed; top:-120px; left:12px; z-index:10000; padding:.8rem 1rem; background:var(--pf-ink); color:var(--pf-bg)!important; border-radius:4px; transform:none!important; }
+.project-story .story-skip-link:not(:focus) { clip-path:inset(50%); }
+.project-story .story-skip-link:focus { top:8px; clip-path:none; }

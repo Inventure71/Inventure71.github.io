@@ -1,5 +1,13 @@
 /* Shared command palette overlay */
 
+html.pf-command-open {
+  overflow: hidden;
+}
+
+html.pf-command-open body {
+  padding-inline-end: calc(var(--pf-command-body-padding, 0px) + var(--pf-command-scrollbar-gap, 0px));
+}
+
 .pf-command-overlay {
   position: fixed;
   inset: 0;
@@ -45,7 +53,20 @@
   max-height: min(22rem, calc(100vh - 12vh - 6rem));
   max-height: min(22rem, calc(100dvh - 12vh - 6rem));
   overflow: auto;
+  overscroll-behavior: contain;
   padding: 0.35rem;
+}
+
+.pf-command-empty {
+  margin: 0;
+  padding: 1rem;
+  color: var(--pf-muted);
+  font-size: 0.9rem;
+}
+
+.pf-command-input:focus-visible,
+.pf-command-item:focus-visible {
+  outline-offset: -3px;
 }
 
 .pf-command-item {

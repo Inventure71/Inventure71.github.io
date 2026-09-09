@@ -38,10 +38,7 @@ html {
 
 body.playfolio-page {
   min-height: 100vh;
-  background:
-    linear-gradient(90deg, transparent calc(100% - 1px), var(--pf-line) 100%) 0 0 / 80px 80px,
-    linear-gradient(180deg, transparent calc(100% - 1px), var(--pf-line) 100%) 0 0 / 80px 80px,
-    var(--pf-bg) !important;
+  background: var(--pf-bg) !important;
   color: var(--pf-ink);
 }
 
@@ -51,6 +48,43 @@ body.playfolio-page {
 
 .playfolio-page a {
   color: inherit;
+}
+
+.playfolio-page :is(a, button, input, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--pf-accent-3);
+  outline-offset: 4px;
+}
+
+.playfolio-page :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+.playfolio-page :is(section[id], main[id]) {
+  scroll-margin-top: 6rem;
+}
+
+.pf-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  color: var(--pf-ink);
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+.pf-text-link i {
+  transition: transform 180ms ease;
+}
+
+.pf-text-link:hover i {
+  transform: translateX(3px);
+}
+
+.pf-section-link {
+  justify-self: end;
 }
 
 .playfolio-page img {
@@ -160,6 +194,9 @@ body.playfolio-page {
 
 .pf-button,
 .playfolio-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 2.75rem;
   border: 1px solid var(--pf-ink) !important;
   border-radius: 6px !important;
@@ -198,7 +235,7 @@ body.playfolio-page {
 }
 
 .pf-page {
-  padding: clamp(3.5rem, 8vw, 7rem) 0 clamp(3rem, 8vw, 6rem);
+  padding: clamp(2.75rem, 6vw, 5rem) 0 clamp(3rem, 8vw, 6rem);
 }
 
 .playfolio-page .pf-hero {
@@ -209,12 +246,12 @@ body.playfolio-page {
 }
 
 .playfolio-home .pf-hero {
-  min-height: calc(100svh - 5.5rem);
-  padding-block: clamp(5rem, 10vh, 7.5rem) clamp(7rem, 15vh, 10rem) !important;
+  min-height: min(44rem, calc(100svh - 5.5rem));
+  padding-block: clamp(3rem, 7vh, 5rem) !important;
 }
 
 .playfolio-home .pf-hero + .pf-home-scroll-section {
-  margin-top: clamp(2rem, 7vh, 4.5rem);
+  margin-top: 0;
 }
 
 .pf-hero-grid {
@@ -267,12 +304,13 @@ body.playfolio-page {
 .pf-section-title {
   margin: 0;
   color: var(--pf-ink);
-  font-size: clamp(2.2rem, 6vw, 5.6rem);
-  font-weight: 850;
-  line-height: 0.92;
+  font-size: clamp(2.1rem, 4.5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.05;
 }
 
 .pf-section-copy {
+  margin: 0;
   color: var(--pf-muted);
   font-size: 1rem;
   line-height: 1.65;

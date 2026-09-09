@@ -7,9 +7,6 @@ export function buildAiGuide(root = document) {
   const summary = root.querySelector('.pf-lede')?.textContent?.trim()
     || root.querySelector('meta[name="description"]')?.getAttribute('content')?.trim()
     || '';
-  const principles = Array.from(root.querySelectorAll('.pf-principle h3'))
-    .slice(0, 3)
-    .map((node) => node.textContent.trim());
   const featuredProjects = Array.from(root.querySelectorAll('[data-project-card]'))
     .slice(0, 3)
     .map((card) => {
@@ -44,12 +41,7 @@ export function buildAiGuide(root = document) {
     'Best starting links:',
     ...startLinks,
     '',
-    'Featured projects to inspect first:',
-    ...featuredProjects,
-    '',
-    'Work style signals:',
-    ...principles.map((principle) => `- ${principle}`),
-    '',
+    ...(featuredProjects.length ? ['Featured projects to inspect first:', ...featuredProjects, ''] : []),
     'Primary contact:',
     `- ${new URL('/contact.html', origin).href}`,
   ].join('\n');

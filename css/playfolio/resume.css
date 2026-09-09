@@ -41,9 +41,9 @@
 .pf-resume-layout {
   display: grid;
   grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
-  gap: 1.1rem;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
   align-items: start;
-  margin-top: 1.1rem;
+  margin-top: 2rem;
 }
 
 .pf-resume-panel {
@@ -130,13 +130,12 @@
 
 .pf-resume-doc {
   display: grid;
-  gap: 1.1rem;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .pf-resume-block {
   padding-block: 0 !important;
-  border: 1px solid var(--pf-line);
-  border-radius: var(--pf-radius);
+  border-block: 1px solid var(--pf-line);
   background: var(--pf-line);
   overflow: hidden;
 }
@@ -163,7 +162,7 @@
 .pf-resume-block > header h2 {
   margin: 0;
   color: var(--pf-ink);
-  font-size: clamp(1.3rem, 3vw, 2.2rem);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
   font-weight: 850;
   line-height: 1;
 }
@@ -220,7 +219,7 @@
 }
 
 .pf-resume-projects article {
-  min-height: 10.5rem;
+  min-height: 0;
   padding: 1rem;
   background: color-mix(in srgb, var(--pf-bg) 84%, var(--pf-surface));
   display: flex;
@@ -233,7 +232,7 @@
 }
 
 .pf-resume-projects h3 {
-  margin-top: auto;
+  margin-top: 0.85rem;
 }
 
 .pf-resume-projects small {

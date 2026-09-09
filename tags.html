@@ -8,7 +8,7 @@
     <meta name="author" content="Matteo Giorgetti" />
     <title>Neural Tag Network - M.G.</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,7 +22,14 @@
     <link href="css/site-core.css" rel="stylesheet" />
     <!-- Modern Design System -->
     <link href="css/modern.css" rel="stylesheet" />
-    <link href="css/playfolio-tags.css" rel="stylesheet" />
+    <!-- route-styles: /css/playfolio-tags.css -->
+    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/tag-network.css" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <!-- /route-styles -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 tag-network-page">
@@ -86,14 +93,13 @@
 
             <div class="neuron-ui">
                 <h1 class="neuron-title">Project map</h1>
-                <p class="neuron-subtitle">A clearer view of how the projects cluster around AI, interfaces, games,
-                    systems, and tools.</p>
+                <p class="neuron-subtitle">Choose a topic to find related projects.</p>
             </div>
 
             <div class="neuron-controls">
                 <a href="projects.html" class="neuron-btn">
-                    <i class="bi bi-grid-fill"></i>
-                    Grid View
+                    <i class="bi bi-flag" aria-hidden="true"></i>
+                    Project race
                 </a>
             </div>
 
@@ -110,10 +116,10 @@
 
     <footer class="pf-footer py-4 mt-auto"></footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/navbar.js"></script>
     <script src="js/theme.js"></script>
     <script type="module" src="js/playfolio.js"></script>
-    <script src="js/neuron-brain.js"></script>
+    <script type="module" src="js/neuron-brain.js"></script>
 </body>
 
 </html>

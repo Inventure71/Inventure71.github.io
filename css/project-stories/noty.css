@@ -1,0 +1,24 @@
+/* A compact engineering case study; product presentation lives on the Noty site. */
+.story-noty { --project-accent: #93611d; }
+.noty-period { color: #bc7a1c; }
+.noty-overview { display: grid; grid-template-columns: 1.2fr .8fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+.story-noty .noty-overview { padding-top: clamp(2.5rem, 5vw, 3.5rem) !important; }
+.noty-overview .story-lede { max-width: none; }
+.noty-editor-capture { width: min(100%, 390px); justify-self: end; }
+.noty-editor-capture img { width: 100%; height: auto; }
+.noty-editor-capture figcaption { text-align: center; }
+.noty-engineering-section { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem, 5vw, 5rem); padding-block: clamp(2rem, 4vw, 3.5rem); border-top: 1px solid var(--pf-line); }
+.story-noty .noty-engineering-section { padding-top: clamp(2rem, 4vw, 3.5rem) !important; }
+.noty-engineering-section .story-section-heading { margin: 0; font-size: clamp(1.5rem, 2.5vw, 2.25rem); max-width: none; }
+.noty-system-details { margin: 0; }
+.noty-system-details > div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.noty-system-details > div:last-child { margin-bottom: 0; }
+.noty-system-details dt { font-size: .86rem; font-weight: 650; line-height: 1.7; }
+.noty-system-details dd { margin: 0; color: var(--pf-muted); font-size: .9rem; line-height: 1.75; }
+.noty-storage .story-copy { margin: 0; max-width: none; font-size: .9rem; }
+@media (max-width: 900px) {
+  .noty-overview, .noty-engineering-section { grid-template-columns: 1fr; gap: 1.75rem; }
+  .noty-overview .story-lede, .noty-engineering-section .story-copy { width: 100%; max-width: none; }
+  .noty-editor-capture { width: min(100%, 340px); justify-self: center; }
+  .noty-system-details > div { grid-template-columns: 1fr; gap: .35rem; }
+}

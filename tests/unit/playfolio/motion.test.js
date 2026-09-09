@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { createCodexWallHitParticles, setupCodexAmbassadorLogo } from '../../../js/playfolio/motion.js';
+import { createCodexWallHitParticles, setupCodexAmbassadorLogo, setupPortraitCycle } from '../../../js/playfolio/motion.js';
 
 function createClassList() {
   const classes = new Set();
@@ -66,10 +66,12 @@ function createCodexLogoHarness({
   },
 } = {}) {
   const listeners = new Map();
+  const documentListeners = new Map();
   let frameCallback = null;
   const stageChildren = [];
   const ownerDocument = {
     createElement: vi.fn((tagName) => createElement(tagName)),
+    addEventListener: vi.fn((eventName, handler) => documentListeners.set(eventName, handler)),
   };
   const stage = {
     ownerDocument,
@@ -101,9 +103,12 @@ function createCodexLogoHarness({
     cancelAnimationFrame: vi.fn(),
     addEventListener: vi.fn(),
   };
+  ownerDocument.defaultView = global.window;
   vi.spyOn(performance, 'now').mockReturnValue(1000);
 
   return {
+    ownerDocument,
+    documentListeners,
     logo,
     listeners,
     root,
@@ -122,8 +127,113 @@ function parseTranslate3d(transform) {
 
 describe('playfolio motion behavior', () => {
   afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
     vi.restoreAllMocks();
     delete global.window;
+  });
+
+  test('pauses an offscreen Codex flight and resumes its position without a time jump', () => {
+    const harness = createCodexLogoHarness();
+    let observe;
+    window.IntersectionObserver = class {
+      constructor(callback) { observe = callback; }
+      observe() {}
+    };
+    const setVisible = (isIntersecting) => observe([{ target: harness.stage, isIntersecting }]);
+
+    setupCodexAmbassadorLogo(harness.root);
+    setVisible(true);
+    harness.listeners.get('pointerenter')();
+    harness.runFrame(1016);
+    const position = harness.logo.style.transform;
+    const scheduled = window.requestAnimationFrame.mock.calls.length;
+
+    setVisible(false);
+    expect(window.cancelAnimationFrame).toHaveBeenCalled();
+    harness.runFrame(5000);
+    expect(harness.logo.style.transform).toBe(position);
+    expect(window.requestAnimationFrame).toHaveBeenCalledTimes(scheduled);
+    expect(harness.logo.classList.contains('is-flying')).toBe(true);
+
+    vi.mocked(performance.now).mockReturnValue(6000);
+    setVisible(true);
+    harness.runFrame(6000);
+    expect(harness.logo.style.transform).toBe(position);
+    expect(window.requestAnimationFrame.mock.calls.length).toBeGreaterThan(scheduled);
+  });
+
+  test('defers Codex video download until visible and pauses playback in hidden tabs', () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('navigator', {});
+    const harness = createCodexLogoHarness();
+    Object.assign(window, { setTimeout, clearTimeout });
+    const source = { dataset: { src: '/codex.webm' } };
+    const video = {
+      dataset: { loadDelayMs: '10' },
+      querySelector: () => source,
+      load: vi.fn(),
+      play: vi.fn(() => Promise.resolve()),
+      pause: vi.fn(),
+    };
+    harness.logo.querySelector.mockReturnValue(video);
+    let observe;
+    window.IntersectionObserver = class {
+      constructor(callback) { observe = callback; }
+      observe() {}
+    };
+    setupCodexAmbassadorLogo(harness.root);
+    vi.advanceTimersByTime(10);
+    expect(video.load).not.toHaveBeenCalled();
+
+    observe([{ target: harness.stage, isIntersecting: true }]);
+    expect(source.src).toBe('/codex.webm');
+    expect(video.load).toHaveBeenCalledOnce();
+    expect(video.play).toHaveBeenCalledOnce();
+
+    video.pause.mockClear();
+    harness.ownerDocument.visibilityState = 'hidden';
+    harness.documentListeners.get('visibilitychange')();
+    expect(video.pause).toHaveBeenCalledOnce();
+    harness.ownerDocument.visibilityState = 'visible';
+    harness.documentListeners.get('visibilitychange')();
+    expect(video.play).toHaveBeenCalledTimes(2);
+    expect(video.load).toHaveBeenCalledOnce();
+  });
+
+  test('cancels a pending portrait change while offscreen and resumes one timer on return', () => {
+    vi.useFakeTimers();
+    const harness = createCodexLogoHarness();
+    Object.assign(window, { setTimeout, clearTimeout, setInterval, clearInterval });
+    vi.stubGlobal('Image', class {});
+    const image = {
+      ownerDocument: harness.ownerDocument,
+      dataset: { cycleImages: 'one.webp,two.webp' },
+      src: 'one.webp',
+      getAttribute: () => 'one.webp',
+      classList: createClassList(),
+      addEventListener: vi.fn(),
+    };
+    let observe;
+    window.IntersectionObserver = class {
+      constructor(callback) { observe = callback; }
+      observe() {}
+    };
+    setupPortraitCycle({ querySelector: () => image });
+    observe([{ target: image, isIntersecting: true }]);
+    vi.advanceTimersByTime(2400);
+    expect(image.classList.contains('is-switching')).toBe(true);
+    observe([{ target: image, isIntersecting: false }]);
+    vi.advanceTimersByTime(6000);
+    expect(image.src).toBe('one.webp');
+    expect(image.classList.contains('is-switching')).toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
+
+    observe([{ target: image, isIntersecting: true }]);
+    observe([{ target: image, isIntersecting: true }]);
+    expect(vi.getTimerCount()).toBe(1);
+    vi.advanceTimersByTime(2580);
+    expect(image.src).toBe('two.webp');
   });
 
   test('does not draw an internal portrait-stage wall', () => {

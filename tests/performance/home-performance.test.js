@@ -26,14 +26,17 @@ describe('home page loading budget', () => {
   test('uses compressed portrait cycle images instead of multi-megabyte PNG sources', () => {
     const portraitMarkup = indexHtml.match(/<img[^>]+data-portrait-cycle[^>]+>/s)?.[0] || '';
 
-    expect(portraitMarkup).toContain('/assets/profile.webp');
-    expect(portraitMarkup).toContain('/assets/profile2.webp');
+    expect(portraitMarkup).toContain('fetchpriority="high"');
+    expect(portraitMarkup).toMatch(/width="\d+"/);
+    expect(portraitMarkup).toMatch(/height="\d+"/);
     expect(portraitMarkup).not.toContain('/assets/profile.png');
     expect(portraitMarkup).not.toContain('/assets/profile2.png');
 
-    for (const asset of ['../../assets/profile.webp', '../../assets/profile2.webp']) {
-      const size = statSync(new URL(asset, import.meta.url)).size;
-      expect(size).toBeLessThan(700 * 1024);
+    const sources = portraitMarkup.match(/data-cycle-images="([^"]+)"/)[1].split(',');
+    expect(sources).toHaveLength(2);
+    for (const asset of sources) {
+      const size = statSync(new URL(`../..${asset}`, import.meta.url)).size;
+      expect(size).toBeLessThan(120 * 1024);
     }
   });
 
