@@ -13,4 +13,4 @@ Metrics were checked on 2026-09-08 against the local project report at `/Users/i
 
 The pretrained ensemble's task-specific package-damage training used generated images; its pretrained backbone has prior visual training. The page avoids describing it as trained from scratch or claiming all pretraining data were synthetic.
 
-Project source: https://github.com/Inventure72/Dream2Detect
+Project source: https://github.com/Inventure71/Dream2Detect
