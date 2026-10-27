@@ -30,9 +30,24 @@
     <link href="/css/tag-network.css" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <!-- site-metadata -->
+    <link rel="canonical" href="https://mgiorgetti.com/tags.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Matteo Giorgetti" />
+    <meta property="og:title" content="Neural Tag Network - M.G." />
+    <meta property="og:description" content="Interactive Neural Network of Project Tags" />
+    <meta property="og:url" content="https://mgiorgetti.com/tags.html" />
+    <meta property="og:image" content="https://mgiorgetti.com/assets/profile-1100.webp" />
+    <meta property="og:image:alt" content="Portrait of Matteo Giorgetti" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Neural Tag Network - M.G." />
+    <meta name="twitter:description" content="Interactive Neural Network of Project Tags" />
+    <meta name="twitter:image" content="https://mgiorgetti.com/assets/profile-1100.webp" />
+    <!-- /site-metadata -->
 </head>
 
 <body class="playfolio-page d-flex flex-column h-100 tag-network-page">
+    <a class="pf-skip-link" data-site-skip href="#main-content">Skip to content</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
       <div class="container">
@@ -88,8 +103,8 @@
       </div>
         </nav>
 
-        <div class="neuron-container">
-            <canvas id="neuron-canvas"></canvas>
+        <div class="neuron-container" id="main-content" tabindex="-1">
+            <canvas id="neuron-canvas" aria-hidden="true"></canvas>
 
             <div class="neuron-ui">
                 <h1 class="neuron-title">Project map</h1>
@@ -103,7 +118,7 @@
                 </a>
             </div>
 
-            <aside class="neuron-overlay" id="neuron-overlay" aria-hidden="true" aria-labelledby="overlay-title" inert>
+            <aside class="neuron-overlay" id="neuron-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="overlay-title" inert>
                 <button class="neuron-overlay-close" aria-label="Close panel"><i class="bi bi-x-lg"></i></button>
                 <h2 class="h2 mb-2" id="overlay-title">Tag Name</h2>
                 <p class="text-muted mb-4" id="overlay-count">0 Projects</p>

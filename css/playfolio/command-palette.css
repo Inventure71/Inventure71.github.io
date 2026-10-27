@@ -98,3 +98,8 @@ html.pf-command-open body {
   color: var(--pf-muted);
   font-size: 0.78rem;
 }
+
+.pf-command-item { text-decoration: none; }
+.pf-command-item:focus-visible { outline: 2px solid var(--pf-ink); outline-offset: -3px; }
+
+.pf-command-item[hidden] { display: none; }

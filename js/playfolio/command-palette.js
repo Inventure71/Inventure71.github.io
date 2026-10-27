@@ -7,11 +7,11 @@ export function buildCommandPaletteMarkup(items = commandItems) {
         <input class="pf-command-input" type="search" aria-label="Search pages and projects" placeholder="Jump to..." data-command-input />
         <div class="pf-command-list">
           ${items.map((item) => `
-            <button class="pf-command-item" type="button" data-command-item
+            <a class="pf-command-item" href="${escapeHtml(item.href)}" data-command-item
               data-href="${escapeHtml(item.href)}"
               data-keywords="${escapeHtml(item.keywords || '')}">
               <strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.description)}</span>
-            </button>
+            </a>
           `).join('')}
         </div>
         <p class="pf-command-empty" data-command-empty role="status" hidden>No results. Try another project name or topic.</p>
@@ -88,6 +88,7 @@ export function setupCommandPalette(root = document) {
   const selectItem = (item) => {
     if (!item) return;
     items.forEach((candidate) => candidate.classList.toggle('is-selected', candidate === item));
+    item.focus({ preventScroll: true });
     item.scrollIntoView({ block: 'nearest' });
   };
 
@@ -97,9 +98,6 @@ export function setupCommandPalette(root = document) {
     if (event.target === overlay) close();
   });
 
-  items.forEach((item) => {
-    item.addEventListener('click', () => runItem(item));
-  });
 
   input.addEventListener('input', () => {
     const query = input.value.trim().toLowerCase();
@@ -110,10 +108,10 @@ export function setupCommandPalette(root = document) {
     const candidates = visibleItems();
     emptyState.hidden = candidates.length > 0;
     items.forEach((item) => item.classList.remove('is-selected'));
-    selectItem(candidates[0]);
+    if (candidates[0]) candidates[0].classList.add('is-selected');
   });
 
-  input.addEventListener('keydown', (event) => {
+  const navigateResults = (event) => {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       const candidates = visibleItems();
@@ -125,10 +123,18 @@ export function setupCommandPalette(root = document) {
       selectItem(candidates[nextIndex]);
     }
 
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && event.target === input) {
+      event.preventDefault();
       const selected = visibleItems().find((item) => item.classList.contains('is-selected')) || visibleItems()[0];
       if (selected) runItem(selected);
     }
+  };
+  input.addEventListener('keydown', navigateResults);
+  items.forEach((item) => {
+    item.addEventListener('keydown', navigateResults);
+    item.addEventListener('focus', () => {
+      items.forEach((candidate) => candidate.classList.toggle('is-selected', candidate === item));
+    });
   });
 
   root.addEventListener('focusin', (event) => {

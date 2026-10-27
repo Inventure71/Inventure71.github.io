@@ -30,7 +30,7 @@ function declarationValue(rule, property) {
 
 describe('tag network overlay closed state', () => {
   test('starts hidden from assistive tech and focus order', () => {
-    expect(html).toContain('id="neuron-overlay" aria-hidden="true" aria-labelledby="overlay-title" inert');
+    expect(html).toContain('id="neuron-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="overlay-title" inert');
   });
 
   test('does not accept pointer interaction while closed', () => {

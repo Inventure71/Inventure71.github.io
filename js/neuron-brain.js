@@ -1,3 +1,4 @@
+import { observeElementActivity } from './playfolio/visibility.js';
 import { projectMapItems } from './project-map-data.js';
 
 (function() {
@@ -14,22 +15,26 @@ import { projectMapItems } from './project-map-data.js';
     const overlayList = document.getElementById('overlay-list');
     const closeBtn = document.querySelector('.neuron-overlay-close');
 
-    let width, height, dpr;
+    let width, height, dpr, graphTop = 210;
     let nodes = [];
     let edges = [];
-    let animationId;
+    let animationId = null;
+    let active = false;
+    let framesRemaining = 0;
+    let previousFocus;
+    let inertBackground = [];
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const topics = document.createElement('div');
+    topics.className = 'neuron-topics';
+    topics.setAttribute('role', 'group');
+    topics.setAttribute('aria-label', 'Project topics');
+    container.insertBefore(topics, overlay);
     let hoveredNode = null;
     let selectedNode = null;
     let draggedNode = null;
     
     // Mouse interaction
     const mouse = { x: 0, y: 0, isDown: false };
-
-    function hashString(value) {
-        return Array.from(value).reduce((hash, char) => {
-            return ((hash << 5) - hash) + char.charCodeAt(0);
-        }, 0);
-    }
 
     function nodePalette(node) {
         const label = node.id.toLowerCase();
@@ -42,20 +47,21 @@ import { projectMapItems } from './project-map-data.js';
         return '#d8ded8';
     }
 
-    function placeNode(node, index, count) {
-        const angle = (-Math.PI / 2) + (Math.PI * 2 * index / count);
-        const ring = Math.min(width, height) * (0.3 + ((index % 3) * 0.09));
-        const horizontalBias = width < 760 ? 0 : width * 0.14;
-        node.homeX = (width / 2) + horizontalBias + Math.cos(angle) * ring;
-        node.homeY = (height / 2) + Math.sin(angle) * ring * 0.7;
-        node.x = node.homeX + ((hashString(node.id) % 41) - 20);
-        node.y = node.homeY + ((hashString(`${node.id}:y`) % 41) - 20);
+    function placeNode(node, index) {
+        const columns = Math.max(2, Math.floor((width - 32) / 160));
+        const cellWidth = (width - 32) / columns;
+        node.homeX = 16 + cellWidth * (index % columns + 0.5);
+        node.homeY = graphTop + Math.floor(index / columns) * 120 + (index % 2) * 12;
+        node.x = node.homeX;
+        node.y = node.homeY;
+        node.vx = node.vy = 0;
     }
 
     // --- Initialization ---
     function init() {
         resize();
         window.addEventListener('resize', resize);
+        new ResizeObserver(resize).observe(container.querySelector('.neuron-ui'));
         
         // Build Graph Data
         const tagMap = new Map();
@@ -85,10 +91,47 @@ import { projectMapItems } from './project-map-data.js';
         nodes.forEach((node, index) => {
             node.radius = 18 + Math.min(node.projects.length, 4) * 5;
             node.color = nodePalette(node);
-            node.labelRank = index;
-            node.labelSide = index % 2 === 0 ? 1 : -1;
-            placeNode(node, index, nodes.length);
+            placeNode(node, index);
         });
+
+        nodes.forEach((node) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'neuron-topic';
+            const label = document.createElement('span');
+            label.className = 'neuron-topic-label';
+            label.textContent = node.id;
+            button.append(label);
+            button.setAttribute('aria-label', `${node.id}, ${node.projects.length} project${node.projects.length === 1 ? '' : 's'}`);
+            button.setAttribute('aria-controls', 'neuron-overlay');
+            button.setAttribute('aria-expanded', 'false');
+            button.style.setProperty('--topic-color', node.color);
+            let dragStart = null, moved = false;
+            button.addEventListener('pointerdown', (event) => {
+                dragStart = { x: event.clientX, y: event.clientY, nodeX: node.x, nodeY: node.y };
+                moved = false;
+                button.setPointerCapture(event.pointerId);
+            });
+            button.addEventListener('pointermove', (event) => {
+                if (!dragStart || event.pointerType === 'touch') return;
+                const dx = event.clientX - dragStart.x, dy = event.clientY - dragStart.y;
+                if (Math.hypot(dx, dy) < 5) return;
+                moved = true;
+                node.homeX = node.x = Math.max(80, Math.min(width - 80, dragStart.nodeX + dx));
+                node.homeY = node.y = Math.max(graphTop, Math.min(height - 100, dragStart.nodeY + dy));
+                wake();
+            });
+            button.addEventListener('pointerup', () => { dragStart = null; });
+            button.addEventListener('pointercancel', () => { dragStart = null; });
+            button.addEventListener('click', () => { if (!moved) selectNode(node); moved = false; });
+            button.addEventListener('focus', () => { hoveredNode = node; wake(); });
+            button.addEventListener('pointerenter', () => { hoveredNode = node; wake(); });
+            button.addEventListener('pointerleave', () => { hoveredNode = null; wake(); });
+            button.addEventListener('blur', () => { hoveredNode = null; wake(); });
+            topics.append(button);
+            node.button = button;
+        });
+        resize();
 
         // Create Edges (Co-occurrence)
         // Connect tags that appear in the same project
@@ -123,10 +166,28 @@ import { projectMapItems } from './project-map-data.js';
         canvas.addEventListener('click', onClick);
         closeBtn.addEventListener('click', closeOverlay);
 
-        animate();
+        container.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && selectedNode) { event.preventDefault(); closeOverlay(); }
+            if (event.key === 'Tab' && selectedNode) {
+                const links = [...overlay.querySelectorAll('button, a[href]')];
+                const first = links[0], last = links.at(-1);
+                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+                else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            }
+        });
+        motion.addEventListener('change', () => { resize(); wake(); });
+        observeElementActivity(container, (value) => {
+            active = value;
+            if (!active && animationId !== null) { cancelAnimationFrame(animationId); animationId = null; }
+            if (active) wake();
+        });
     }
 
     function resize() {
+        const columns = Math.max(2, Math.floor((container.clientWidth - 32) / 160));
+        const intro = container.querySelector('.neuron-ui');
+        graphTop = intro.offsetTop + intro.offsetHeight + 70;
+        container.style.height = `${Math.max(620, graphTop + 100 + Math.ceil(nodes.length / columns) * 120)}px`;
         const rect = container.getBoundingClientRect();
         width = rect.width;
         height = rect.height;
@@ -138,8 +199,9 @@ import { projectMapItems } from './project-map-data.js';
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         if (nodes.length) {
-            nodes.forEach((node, index) => placeNode(node, index, nodes.length));
+            nodes.forEach((node, index) => placeNode(node, index));
         }
+        wake();
     }
 
     // --- Physics Engine ---
@@ -225,6 +287,8 @@ import { projectMapItems } from './project-map-data.js';
             node.x += node.vx;
             node.y += node.vy;
 
+            node.x = Math.max(node.homeX - 7, Math.min(node.homeX + 7, node.x));
+            node.y = Math.max(node.homeY - 6, Math.min(node.homeY + 6, node.y));
             // Boundary Check
             const margin = node.radius + 20;
             if (node.x < margin) { node.x = margin; node.vx *= -1; }
@@ -268,32 +332,6 @@ import { projectMapItems } from './project-map-data.js';
                 }
             }
         }
-    }
-
-    function drawLabel(node, strong = false) {
-        const fontSize = strong ? 15 : 12;
-        ctx.font = `${strong ? '700' : '650'} ${fontSize}px "Plus Jakarta Sans"`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        const label = node.id;
-        const maxWidth = Math.min(210, Math.max(86, node.radius * 4.5));
-        const width = Math.min(ctx.measureText(label).width + 18, maxWidth);
-        const height = fontSize + 10;
-        const x = node.x - (width / 2);
-        const labelGap = node.radius + 13;
-        const y = node.labelSide > 0 ? node.y + labelGap : node.y - labelGap - height;
-
-        ctx.fillStyle = strong ? 'rgba(13, 13, 11, 0.82)' : 'rgba(13, 13, 11, 0.56)';
-        ctx.strokeStyle = strong ? 'rgba(244, 241, 232, 0.24)' : 'rgba(244, 241, 232, 0.1)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.roundRect(x, y, width, height, 5);
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.fillStyle = strong ? '#f4f1e8' : 'rgba(244, 241, 232, 0.76)';
-        ctx.fillText(label, node.x, y + (height / 2), maxWidth - 14);
     }
 
     // --- Rendering ---
@@ -366,21 +404,28 @@ import { projectMapItems } from './project-map-data.js';
             ctx.lineWidth = isHovered || isSelected ? 2 : 1;
             ctx.stroke();
 
-            // Draw Label
-            if (isHovered || isSelected || isConnected || (!hoveredNode && (node.projects.length > 1 || node.labelRank < 8))) {
-                drawLabel(node, isHovered || isSelected);
-            }
+            node.button.style.left = `${node.x}px`;
+            node.button.style.top = `${node.y}px`;
+
         });
     }
 
     function animate() {
-        updatePhysics();
+        animationId = null;
+        if (!active) return;
+        if (!motion.matches) updatePhysics();
         draw();
-        animationId = requestAnimationFrame(animate);
+        if (!motion.matches && --framesRemaining > 0) animationId = requestAnimationFrame(animate);
+    }
+
+    function wake() {
+        framesRemaining = 120;
+        if (active && animationId === null) animationId = requestAnimationFrame(animate);
     }
 
     // --- Interaction Handlers ---
     function onMouseMove(e) {
+        wake();
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
         mouse.y = e.clientY - rect.top;
@@ -432,7 +477,13 @@ import { projectMapItems } from './project-map-data.js';
     }
 
     function selectNode(node) {
+        previousFocus = node.button;
         selectedNode = node;
+        nodes.forEach((item) => item.button.setAttribute('aria-expanded', String(item === node)));
+        inertBackground = [topics, container.querySelector('.neuron-ui'), container.querySelector('.neuron-controls'), document.querySelector('nav'), document.querySelector('footer')]
+            .filter(Boolean).map(element => ({ element, wasInert: element.inert }));
+        inertBackground.forEach(({ element }) => { element.inert = true; });
+        wake();
         
         // Populate Overlay
         overlayTitle.textContent = node.id;
@@ -450,6 +501,7 @@ import { projectMapItems } from './project-map-data.js';
         overlay.removeAttribute('aria-hidden');
         overlay.inert = false;
         overlay.classList.add('active');
+        closeBtn.focus({ preventScroll: true });
     }
 
     function closeOverlay() {
@@ -457,6 +509,11 @@ import { projectMapItems } from './project-map-data.js';
         overlay.setAttribute('aria-hidden', 'true');
         overlay.inert = true;
         selectedNode = null;
+        inertBackground.forEach(({ element, wasInert }) => { element.inert = wasInert; });
+        inertBackground = [];
+        nodes.forEach((item) => item.button.setAttribute('aria-expanded', 'false'));
+        previousFocus?.focus({ preventScroll: true });
+        wake();
     }
 
     // Start

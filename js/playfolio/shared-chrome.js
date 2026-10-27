@@ -93,6 +93,12 @@ export function renderSharedNavbar(root = document) {
     });
   }
 
+  const skip = root.querySelector('[data-site-skip]');
+  if (skip) skip.addEventListener('click', () => {
+    const target = root.getElementById('main-content');
+    target?.focus({ preventScroll: true });
+    target?.scrollIntoView({ block: 'start' });
+  });
   installReactiveGlassSurface(navbar);
 
   if (window.MGTheme) {

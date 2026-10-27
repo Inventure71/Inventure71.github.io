@@ -8,16 +8,20 @@
     "sync:chrome": "node scripts/sync-shared-chrome.mjs",
     "check:chrome": "node scripts/sync-shared-chrome.mjs --check",
     "test": "npm run test:f1",
-    "test:f1": "vitest run tests",
-    "check": "npm run check:chrome && npm run check:styles && npm run test && npm run build:f1",
+    "test:f1": "vitest run tests --exclude \"tests/browser/**\"",
+    "check": "npm run check:chrome && npm run check:styles && npm run check:metadata && npm run test && npm run build:f1",
     "sync:styles": "node scripts/sync-route-styles.mjs",
-    "check:styles": "node scripts/sync-route-styles.mjs --check"
+    "check:styles": "node scripts/sync-route-styles.mjs --check",
+    "sync:metadata": "node scripts/sync-metadata.mjs",
+    "check:metadata": "node scripts/sync-metadata.mjs --check",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "@inventure71/paddockjs": "^4.1.0",
     "pixi.js": "8.18.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "vite": "8.2.2",
     "vitest": "4.1.5"
   }

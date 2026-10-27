@@ -1,19 +1,10 @@
+import { setPaddockShellState as setShellState } from './paddockjs-boot-state.js';
+
 const selectors = {
   shell: '[data-paddock-shell]',
   start: '[data-paddock-start]',
   retry: '[data-paddock-retry]',
 };
-
-function setShellState(shell, state) {
-  shell.dataset.simulatorState = state;
-  shell.setAttribute('aria-busy', state === 'loading' ? 'true' : 'false');
-
-  const loading = shell.querySelector('[data-paddock-loading]');
-  if (loading) loading.hidden = state !== 'loading';
-
-  const error = shell.querySelector('[data-paddock-error]');
-  if (error) error.hidden = state !== 'error';
-}
 
 function ensureStylesheet(href) {
   if (!href) return Promise.resolve();
@@ -28,7 +19,7 @@ function ensureStylesheet(href) {
     link.href = href;
     link.dataset.paddockLazyStyle = 'true';
     link.addEventListener('load', () => resolve(), { once: true });
-    link.addEventListener('error', () => reject(new Error(`Failed to load ${href}`)), { once: true });
+    link.addEventListener('error', () => { link.remove(); reject(new Error(`Failed to load ${href}`)); }, { once: true });
     document.head.append(link);
   });
 }
@@ -71,18 +62,20 @@ export function installProjectsRaceLoader(root = document) {
   const searchParams = new URLSearchParams(window.location.search);
 
   async function startRace() {
-    if (!scriptSrc || shell.dataset.simulatorState === 'loading' || shell.dataset.simulatorState === 'ready') return;
+    if (!scriptSrc || ['loading', 'booting'].includes(shell.dataset.simulatorState) || shell.dataset.simulatorState === 'ready') return;
 
     setControlsDisabled(shell, true);
     setShellState(shell, 'loading');
 
     try {
       await ensureStylesheet(styleHref);
-      await import(new URL(scriptSrc, window.location.href).href);
+      const integration = await import(new URL(scriptSrc, window.location.href).href);
+      await integration.initializeProjectsRace(shell);
     } catch (error) {
       console.error('Project race failed to load.', error);
-      setControlsDisabled(shell, false);
       setShellState(shell, 'error');
+    } finally {
+      setControlsDisabled(shell, false);
     }
   }
 

@@ -21,7 +21,7 @@ Use real captures and footage when available. Label conceptual diagrams as diagr
 
 ## Structure and components
 
-Place `article.project-story-content#project-story` directly after the navbar inside `main`. Use the static `.story-skip-link` and `tabindex="-1"` on its target. Do not use the retired `.project-shell` wrapper: it enables the legacy script’s layout transforms and reveals.
+Place `article.project-story-content#project-story` directly after the navbar inside `main`. Use the static `.story-skip-link` and `tabindex="-1"` on its target. Use the story markup rather than the retired `.project-shell` wrapper; its legacy layout transforms, reveals, and reading progress have been removed.
 
 - `.story-shell`: centered maximum width. May wrap a figure or be placed on it directly.
 - `.story-hero`, `.story-kicker`, `.story-title`, `.story-lede`, `.story-meta`: introduction and compact facts.

@@ -129,6 +129,8 @@ export function mountGhoststrokeDemo(root) {
   const text = find('text'), status = find('status');
   const wave = find('wave'), timeline = find('timeline'), time = find('time');
   const explanation = find('explanation');
+  const toggle = find('toggle');
+  let userPaused = false;
   const original = find('original'), alternative = find('alternative');
   if (original) original.textContent = PREPARED_TEXT;
   if (alternative) alternative.textContent = FALSE_START;
@@ -176,10 +178,15 @@ export function mountGhoststrokeDemo(root) {
   } });
   const loop = createLoopingPlayback(player);
   function updatePlayback() {
-    const active = inView && !document.hidden && !pageHidden && !motion?.matches;
+    const active = inView && !document.hidden && !pageHidden && !motion?.matches && !userPaused;
+    if (toggle) {
+      toggle.textContent = motion?.matches ? 'Animation off: reduced motion' : userPaused ? 'Resume demonstration' : 'Pause demonstration';
+      toggle.disabled = Boolean(motion?.matches);
+    }
     if (active) hasPlayed = true;
     loop.setActive(active);
   }
+  toggle?.addEventListener('click', () => { userPaused = !userPaused; updatePlayback(); });
   document.addEventListener('visibilitychange', updatePlayback);
   window.addEventListener('pagehide', () => { pageHidden = true; updatePlayback(); });
   window.addEventListener('pageshow', () => { pageHidden = false; updatePlayback(); });

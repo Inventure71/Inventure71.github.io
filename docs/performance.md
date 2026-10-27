@@ -16,7 +16,9 @@ simulator build.
   their elements exist.
 - `js/playfolio/visibility.js` combines intersection and document visibility.
   Portrait timers and Codex video/flight pause while invisible; reduced-motion
-  preferences disable decorative movement.
+  preferences disable decorative movement. The project map uses the same activity
+  observer, draws a static reduced-motion scene, and settles after 120 frames
+  until interaction or visibility wakes it. Topic controls stay in the scene.
 - Reactive-glass pointer coordinates are coalesced into one update per frame.
 
 ## Media variants
@@ -56,3 +58,20 @@ motion/selection modules, and no active route requests Bootstrap's JS bundle.
 
 These are asset-size and local behavior measurements, not a deployed Lighthouse
 score or a claim about real-user network timing.
+
+
+## Static metadata and browser checks
+
+`npm run sync:metadata` regenerates canonical/Open Graph/Twitter tags from each
+public route's existing title, description and project imagery, plus the sitemap
+and robots.txt. The canonical origin is `https://mgiorgetti.com/`. The template
+is noindex; local experiments are excluded, and the Matrices external redirect
+is outside this generator. `npm run check:metadata` checks for drift.
+
+`npm run test:browser` runs the interaction suite against an isolated local
+static server. See `tests/browser/README.md` for browser setup. These checks
+include actual renderer failure/retry using the built PaddockJS integration.
+The host exports `initializeProjectsRace(shell)` (duplicate starts share a
+promise) and `destroyProjectsRace(shell)` (awaits startup before teardown).
+The loader awaits initialization; importing its cached bundle does not start an
+embedded race by itself. Standalone startup remains automatic.

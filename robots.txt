@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /project_details/_template.html
+Disallow: /topbar-variants.html
+Sitemap: https://mgiorgetti.com/sitemap.xml

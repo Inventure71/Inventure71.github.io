@@ -43,7 +43,18 @@ export function syncSharedNavbar({ rootDir = process.cwd(), write = false } = {}
     }
 
     const nextNavbar = renderStaticNavbar(match.groups.activeKey, match.groups.indent);
-    const nextHtml = html.replace(NAV_PATTERN, nextNavbar);
+    let nextHtml = html.replace(NAV_PATTERN, nextNavbar);
+    // Story routes retain their more specific skip link and target.
+    if (!nextHtml.includes('story-skip-link')) {
+      nextHtml = nextHtml.replace(/ id="main-content" tabindex="-1"/g, '');
+      const navEnd = nextHtml.indexOf('</nav>') + '</nav>'.length;
+      // The first content element after shared navigation is the skip target.
+      nextHtml = nextHtml.slice(0, navEnd) + nextHtml.slice(navEnd).replace(/<(main|header|section|div)\b([^>]*)>/, (tag, name, attributes) =>
+        `<${name}${attributes.replace(/ id="[^"]*"| tabindex="[^"]*"/g, '')} id="main-content" tabindex="-1">`);
+      if (!nextHtml.includes('data-site-skip')) {
+        nextHtml = nextHtml.replace(/(<body\b[^>]*>)/, '$1\n    <a class="pf-skip-link" data-site-skip href="#main-content">Skip to content</a>');
+      }
+    }
 
     if (nextHtml !== html) {
       changed.push(file);

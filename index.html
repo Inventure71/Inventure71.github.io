@@ -28,9 +28,24 @@
     <link href="/css/playfolio/selected-work.css" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
     <!-- /route-styles -->
+    <!-- site-metadata -->
+    <link rel="canonical" href="https://mgiorgetti.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Matteo Giorgetti" />
+    <meta property="og:title" content="Matteo Giorgetti" />
+    <meta property="og:description" content="Matteo Giorgetti is a Computer Science and AI student building interactive systems, AI tools, and practical software." />
+    <meta property="og:url" content="https://mgiorgetti.com/" />
+    <meta property="og:image" content="https://mgiorgetti.com/assets/profile-1100.webp" />
+    <meta property="og:image:alt" content="Portrait of Matteo Giorgetti" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Matteo Giorgetti" />
+    <meta name="twitter:description" content="Matteo Giorgetti is a Computer Science and AI student building interactive systems, AI tools, and practical software." />
+    <meta name="twitter:image" content="https://mgiorgetti.com/assets/profile-1100.webp" />
+    <!-- /site-metadata -->
 </head>
 
 <body class="playfolio-page playfolio-home d-flex flex-column h-100">
+    <a class="pf-skip-link" data-site-skip href="#main-content">Skip to content</a>
     <main class="flex-shrink-0">
         <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="home">
       <div class="container">
@@ -86,7 +101,7 @@
       </div>
         </nav>
 
-        <header class="pf-hero">
+        <header class="pf-hero" id="main-content" tabindex="-1">
             <div class="pf-shell pf-hero-grid">
                 <div class="pf-reveal">
                     <h1 class="pf-title">Matteo Giorgetti</h1>

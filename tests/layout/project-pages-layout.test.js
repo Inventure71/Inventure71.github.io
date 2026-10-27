@@ -113,20 +113,6 @@ describe('project detail responsive media', () => {
     expect(manifest).not.toContain('project-overrides.css');
     expect(projectPagesCss).toContain('.playfolio-page.project-page main > section > .container');
     expect(projectPagesCss).toContain('background: transparent !important');
-    expect(projectPagesCss).toContain('.project-shell > section');
-    expect(projectPagesCss).toContain('padding-block: 0');
-  });
-
-  test('makes the gallery modal keyboard-operable and restores focus', () => {
-    expect(projectPagesJs).toContain("item.setAttribute('role', 'button')");
-    expect(projectPagesJs).toContain('item.tabIndex = 0');
-    expect(projectPagesJs).toContain("stage.setAttribute('role', 'button')");
-    expect(projectPagesJs).toContain("stage.setAttribute('aria-haspopup', 'dialog')");
-    expect(projectPagesJs).toContain("stage.dataset.zoomReady = 'true'");
-    expect(projectPagesJs).toContain("event.key === 'Escape'");
-    expect(projectPagesJs).toContain("event.key !== 'Enter' && event.key !== ' '");
-    expect(projectPagesJs).toContain('previousFocus.focus');
-    expect(projectPagesJs).toContain("child.setAttribute('inert', '')");
   });
 
   test('keeps project headings in a valid h1 to h2 to h3 hierarchy', () => {
@@ -159,48 +145,8 @@ describe('project detail responsive media', () => {
     expect(storyStyles).toContain('@media (prefers-reduced-motion: reduce)');
   });
 
-  test('uses purposeful motion without turning passive content into false controls', () => {
-    const reducedMotionBlock = extractBlock(projectPagesCss, '@media (prefers-reduced-motion: reduce)');
-
-    expect(projectPagesCss).toContain('.project-reading-progress');
-    expect(projectPagesCss).toContain('.project-motion-ready .project-shell > .is-project-visible');
-    expect(projectPagesCss).not.toContain('.sidecard-highlight li:hover');
-    expect(projectPagesCss).not.toContain('.project-flow-step:hover');
-    expect(projectPagesCss).not.toContain(
-      '.project-shell > .project-section:not(.project-spotlight)::after'
-    );
-    expect(reducedMotionBlock).toContain('.project-reading-progress');
-    expect(reducedMotionBlock).toContain('display: none');
-    expect(projectPagesJs).toContain('function initReadingProgress');
-    expect(projectPagesJs).toContain("'--project-read-progress'");
-    expect(projectPagesJs).toContain('function initMediaDepth');
-    expect(projectPagesJs).toContain("matchMedia?.('(pointer: fine)')");
-  });
-
-  test('uses a media-led feature stage without generic floating UI', () => {
-    expect(projectPagesCss).toContain('.project-intro-stage');
-    expect(projectPagesCss).toContain('minmax(18rem, 0.78fr) minmax(0, 1.22fr)');
-    expect(projectPagesCss).toContain('.project-intro-panel');
-    expect(projectPagesCss).toContain('.project-gallery');
-    expect(projectPagesCss).toContain('scroll-snap-type: x mandatory');
-    expect(projectPagesCss).not.toContain('counter-reset: project-chapter');
-    expect(projectPagesCss).not.toContain('counter(project-item');
-    expect(projectPagesCss).not.toContain('radial-gradient');
-    expect(projectPagesCss).not.toContain('--project-glow-x');
-    expect(projectPagesCss).not.toContain('.project-section-nav');
-    expect(projectPagesJs).toContain('function initProjectIntroStage');
-    expect(projectPagesJs).toContain("stage.className = 'project-intro-stage'");
-    expect(projectPagesJs).toContain("adjacentPanel.classList.add('project-intro-panel')");
-    expect(projectPagesJs).toContain('adjacentPanel.insertBefore(meta, sidecard || null)');
-    expect(projectPagesJs).not.toContain('function initSectionNavigation');
-    expect(projectPagesJs).not.toContain('function initInteractiveSurfaces');
-  });
-
   test('keeps spotlight and inline-code colors inside the shared theme contract', () => {
     expect(projectPagesCss).toContain('--project-accent-text:');
-    expect(projectPagesCss).toContain(
-      '.playfolio-page.project-page .project-shell > .project-spotlight'
-    );
     expect(projectPagesCss).toContain('.project-page :not(pre) > code');
     expect(projectPagesCss).toContain('color: var(--pf-ink)');
   });

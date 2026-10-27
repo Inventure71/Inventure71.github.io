@@ -5,8 +5,6 @@
     galleryItem: '.gallery-item, .gallery-card',
     lazyVideo: '.video-container iframe[data-src], .project-video-frame iframe[data-src]',
     placeholderMedia: '[data-placeholder-media]',
-    projectMain: 'main',
-    projectShell: '.project-shell',
     zoomableMedia: '.project-media-stage--image',
   };
 
@@ -19,9 +17,7 @@
   let previousBodyOverflow = '';
   let inertState = [];
   let eventsBound = false;
-  let readingProgressInitialized = false;
   let videoObserver;
-  let revealObserver;
 
   function createImageModal() {
     const element = document.createElement('div');
@@ -259,128 +255,6 @@
     });
   }
 
-  function enhanceSectionSemantics(root = document) {
-    root.querySelectorAll('.project-section').forEach((section, index) => {
-      const heading = section.querySelector('.project-section-header h2');
-      if (!heading) return;
-      if (!heading.id) heading.id = `project-section-${index + 1}`;
-      if (!section.hasAttribute('aria-labelledby')) {
-        section.setAttribute('aria-labelledby', heading.id);
-      }
-    });
-
-    root.querySelectorAll('.project-sidecard').forEach((sidecard) => {
-      if (!sidecard.hasAttribute('aria-label')) sidecard.setAttribute('aria-label', 'Project summary');
-    });
-  }
-
-  function initProjectIntroStage(root = document) {
-    const shell = root.querySelector(selectors.projectShell);
-    if (!shell || shell.querySelector(':scope > .project-intro-stage')) return;
-
-    const hero = shell.querySelector(':scope > .project-hero');
-    if (!hero) return;
-
-    const adjacentPanel = hero.nextElementSibling?.matches('.project-media-panel')
-      ? hero.nextElementSibling
-      : null;
-    const meta = hero.querySelector(':scope > .hero-meta');
-    const stage = document.createElement('div');
-    stage.className = 'project-intro-stage';
-
-    shell.insertBefore(stage, hero);
-    stage.appendChild(hero);
-
-    if (!adjacentPanel) {
-      stage.classList.add('project-intro-stage--solo');
-      return;
-    }
-
-    adjacentPanel.classList.add('project-intro-panel');
-    stage.appendChild(adjacentPanel);
-
-    if (meta) {
-      const sidecard = adjacentPanel.querySelector(':scope > .project-sidecard');
-      adjacentPanel.insertBefore(meta, sidecard || null);
-    }
-  }
-
-  function initCaseStudyChrome(root = document) {
-    const main = root.querySelector(selectors.projectMain);
-    const shell = root.querySelector(selectors.projectShell);
-    if (!main || !shell) return;
-
-    if (!main.id) main.id = 'project-content';
-    if (!root.querySelector('.project-skip-link')) {
-      const skipLink = document.createElement('a');
-      skipLink.className = 'project-skip-link';
-      skipLink.href = `#${main.id}`;
-      skipLink.textContent = 'Skip to project content';
-      document.body.prepend(skipLink);
-    }
-
-    enhanceSectionSemantics(root);
-
-    const blocks = Array.from(shell.children)
-      .filter((child) => child.matches('.project-intro-stage, .project-section, .text-center'));
-    if (!blocks.length || reducedMotion?.matches) return;
-
-    if (!('IntersectionObserver' in window)) {
-      blocks.forEach((block) => block.classList.add('is-project-visible'));
-      return;
-    }
-
-    document.body.classList.add('project-motion-ready');
-    revealObserver = revealObserver || new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-project-visible');
-        revealObserver.unobserve(entry.target);
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -36px 0px' });
-
-    blocks.forEach((block, index) => {
-      if (block.dataset.revealReady === 'true') return;
-      block.dataset.revealReady = 'true';
-      if (index === 0) {
-        requestAnimationFrame(() => block.classList.add('is-project-visible'));
-      } else {
-        revealObserver.observe(block);
-      }
-    });
-  }
-
-  function initReadingProgress(root = document) {
-    if (readingProgressInitialized || reducedMotion?.matches) return;
-
-    const shell = root.querySelector(selectors.projectShell);
-    if (!shell) return;
-
-    const progress = document.createElement('div');
-    progress.className = 'project-reading-progress';
-    progress.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(progress);
-    readingProgressInitialized = true;
-
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const rect = shell.getBoundingClientRect();
-      const start = rect.top + window.scrollY;
-      const distance = Math.max(1, shell.offsetHeight - window.innerHeight);
-      const value = Math.min(1, Math.max(0, (window.scrollY - start) / distance));
-      progress.style.setProperty('--project-read-progress', value.toFixed(4));
-    };
-    const requestUpdate = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', requestUpdate, { passive: true });
-  }
-
   function initMediaDepth(root = document) {
     if (reducedMotion?.matches || !window.matchMedia?.('(pointer: fine)').matches) return;
 
@@ -421,13 +295,10 @@
 
   function init(root = document) {
     initPlaceholderMedia(root);
-    initProjectIntroStage(root);
     enhanceGalleryItems(root);
     enhanceZoomableMedia(root);
     secureExternalLinks(root);
     initLazyVideoEmbeds(root);
-    initCaseStudyChrome(root);
-    initReadingProgress(root);
     initMediaDepth(root);
     bindDocumentEvents();
   }
@@ -443,7 +314,6 @@
     openImageModal,
     closeImageModal,
     initPlaceholderMedia,
-    initProjectIntroStage,
     secureExternalLinks,
   };
 })();

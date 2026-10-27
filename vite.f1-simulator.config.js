@@ -7,6 +7,7 @@ export default defineConfig({
     emptyOutDir: true,
     outDir: 'dist/f1-simulator',
     rollupOptions: {
+      preserveEntrySignatures: 'strict',
       input: 'js/paddockjs-portfolio.js',
       output: {
         entryFileNames: 'f1-simulator.js',

@@ -50,44 +50,6 @@
   display: none !important;
 }
 
-.project-skip-link {
-  position: fixed;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 2200;
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
-  background: var(--pf-ink);
-  color: var(--pf-bg) !important;
-  font-weight: 800;
-  text-decoration: none;
-  transform: translateY(calc(-100% - 1rem));
-  transition: transform 160ms ease;
-}
-
-.project-skip-link:focus {
-  transform: translateY(0);
-}
-
-.project-reading-progress {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 2050;
-  height: 2px;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.project-reading-progress::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--project-accent);
-  transform: scaleX(var(--project-read-progress, 0));
-  transform-origin: left center;
-  transition: transform 90ms linear;
-}
-
 /* Route containment */
 .playfolio-page.project-page main > section.py-5 {
   margin: 0;
@@ -103,49 +65,6 @@
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-}
-
-.project-shell {
-  display: grid;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-}
-
-.project-shell > * {
-  min-width: 0;
-  margin: 0;
-}
-
-.project-shell > section {
-  padding-block: 0;
-}
-
-/* First viewport: story on the left, proof on the right. */
-.project-intro-stage {
-  display: grid;
-  grid-template-columns: minmax(18rem, 0.78fr) minmax(0, 1.22fr);
-  gap: clamp(2.5rem, 5vw, 5rem);
-  align-items: start;
-  min-height: 0;
-  padding: clamp(1rem, 2.5vw, 2rem) 0 clamp(2.5rem, 5vw, 4rem);
-}
-
-.project-intro-stage > .project-hero {
-  container-type: inline-size;
-  min-width: 0;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: var(--pf-ink);
-}
-
-.project-intro-stage > .project-hero::before,
-.project-intro-stage > .project-hero::after {
-  display: none !important;
 }
 
 .project-eyebrow,
@@ -238,10 +157,6 @@
   align-content: start;
 }
 
-.project-intro-stage:has(.project-media-panel--without-media) {
-  align-items: start;
-}
-
 .hero-meta {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -285,24 +200,6 @@
   font-weight: 760;
   line-height: 1.35;
   text-wrap: pretty;
-}
-
-.project-intro-stage--solo {
-  grid-template-columns: minmax(0, 1fr);
-  min-height: 0;
-  padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
-}
-
-.project-intro-stage--solo > .project-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.65fr);
-  gap: clamp(2rem, 6vw, 5rem);
-  align-items: end;
-}
-
-.project-intro-stage--solo .hero-meta {
-  align-self: end;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 /* Proof media */
@@ -512,20 +409,6 @@
   outline-offset: 3px;
 }
 
-/* Evidence sections */
-.playfolio-page.project-page .project-shell > .project-section {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: clamp(1.5rem, 3.5vw, 3.5rem);
-  align-items: start;
-  padding: clamp(2.5rem, 3.5vw, 3.75rem) 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
 .project-section-header {
   grid-column: 1 / span 4;
   align-self: start;
@@ -550,23 +433,6 @@
 .project-section > :not(.project-section-header) {
   min-width: 0;
   grid-column: 5 / -1;
-}
-
-/* Sections whose payload is a multi-item grid or scroller claim the full width:
-   heading on top, content below — so nothing is crammed into 8 columns. */
-.playfolio-page.project-page .project-shell > .project-section:has(> .project-keypoints, > .project-insight-grid, > .project-module-grid, > .project-data-strip, > .project-flow-steps, > .project-timeline, > .project-gallery, > .project-severity-ladder, > .project-status-list) {
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(1.35rem, 2.4vw, 2rem);
-}
-
-.playfolio-page.project-page .project-shell > .project-section:has(> .project-keypoints, > .project-insight-grid, > .project-module-grid, > .project-data-strip, > .project-flow-steps, > .project-timeline, > .project-gallery, > .project-severity-ladder, > .project-status-list) > .project-section-header,
-.playfolio-page.project-page .project-shell > .project-section:has(> .project-keypoints, > .project-insight-grid, > .project-module-grid, > .project-data-strip, > .project-flow-steps, > .project-timeline, > .project-gallery, > .project-severity-ladder, > .project-status-list) > :not(.project-section-header) {
-  grid-column: 1 / -1;
-}
-
-/* A full-width heading can breathe wider than the cramped 14ch sidebar version. */
-.playfolio-page.project-page .project-shell > .project-section:has(> .project-keypoints, > .project-insight-grid, > .project-module-grid, > .project-data-strip, > .project-flow-steps, > .project-timeline, > .project-gallery, > .project-severity-ladder, > .project-status-list) > .project-section-header h2 {
-  max-width: 100%;
 }
 
 .project-copy,
@@ -844,39 +710,6 @@
 }
 
 /* One strong takeaway surface per page. */
-.playfolio-page.project-page .project-shell > .project-spotlight {
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: clamp(1.5rem, 3.5vw, 3.5rem);
-  margin: clamp(1.5rem, 3vw, 2.5rem) 0 !important;
-  padding: clamp(2rem, 5vw, 4rem) !important;
-  border: 0 !important;
-  border-radius: 10px !important;
-  background: color-mix(in srgb, var(--project-accent) 15%, var(--project-panel)) !important;
-  color: var(--pf-ink) !important;
-}
-
-.playfolio-page.project-page .project-shell > .project-spotlight > h2,
-.playfolio-page.project-page .project-shell > .project-spotlight > h3 {
-  grid-column: 1 / span 5;
-  max-width: 100%;
-  margin: 0;
-  color: inherit !important;
-  font-size: clamp(1.65rem, 3.1vw, 2.65rem);
-  font-weight: 830;
-  letter-spacing: -0.045em;
-  line-height: 1.02;
-  text-wrap: balance;
-}
-
-.playfolio-page.project-page .project-shell > .project-spotlight > p {
-  grid-column: 6 / -1;
-  max-width: var(--project-measure);
-  margin: 0;
-  color: var(--pf-muted) !important;
-  font-size: 0.96rem;
-  line-height: 1.68;
-  text-wrap: pretty;
-}
 
 /* Timelines are grouped facts, not ornamental rails. */
 .project-timeline {
@@ -968,12 +801,6 @@
 }
 
 /* Return to the live race. */
-.project-shell > .text-center {
-  display: flex;
-  justify-content: flex-end;
-  padding: clamp(2.5rem, 5vw, 4rem) 0 0;
-  text-align: left !important;
-}
 
 /* Accessible gallery and hero-media dialog. */
 .image-modal {
@@ -1021,48 +848,8 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
 }
 
 /* Entrance hierarchy: one stage, then evidence blocks. */
-.project-motion-ready .project-shell > .project-intro-stage,
-.project-motion-ready .project-shell > .project-section,
-.project-motion-ready .project-shell > .text-center {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 440ms ease, transform 440ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.project-motion-ready .project-shell > .is-project-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.project-motion-ready .project-intro-stage > .project-hero,
-.project-motion-ready .project-intro-stage > .project-media-panel {
-  opacity: 0;
-  transition: opacity 520ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.project-motion-ready .project-intro-stage > .project-hero {
-  transform: translateX(-16px);
-}
-
-.project-motion-ready .project-intro-stage > .project-media-panel {
-  transform: translateX(16px);
-}
-
-.project-motion-ready .project-intro-stage.is-project-visible > .project-hero,
-.project-motion-ready .project-intro-stage.is-project-visible > .project-media-panel {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.project-motion-ready .project-intro-stage.is-project-visible > .project-media-panel {
-  transition-delay: 80ms;
-}
 
 @media (max-width: 1100px) {
-  .project-intro-stage {
-    grid-template-columns: minmax(16rem, 0.76fr) minmax(0, 1.24fr);
-    gap: clamp(2rem, 4vw, 3.5rem);
-  }
 
   .project-sidecard {
     grid-template-columns: minmax(0, 1fr);
@@ -1079,23 +866,6 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
 }
 
 @media (max-width: 900px) {
-  .project-intro-stage {
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(1.75rem, 5vw, 2.5rem);
-    min-height: 0;
-    padding: clamp(1rem, 4vw, 2rem) 0 clamp(3.5rem, 8vw, 5rem);
-  }
-
-  .project-intro-stage > .project-hero,
-  .project-intro-stage > .project-media-panel {
-    grid-column: 1;
-  }
-
-  .project-intro-stage--solo > .project-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.5rem;
-  }
 
   .project-hero h1,
   .project-title {
@@ -1103,15 +873,8 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
     font-size: clamp(2.35rem, 11.8cqi, 4.75rem);
   }
 
-  .hero-meta,
-  .project-intro-stage--solo .hero-meta {
+  .hero-meta {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .playfolio-page.project-page .project-shell > .project-section {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.75rem;
-    padding: clamp(2.4rem, 6vw, 3.5rem) 0 !important;
   }
 
   .project-section-header,
@@ -1124,21 +887,11 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
   .project-section-header h2 {
     max-width: 100%;
   }
-
-  .playfolio-page.project-page .project-shell > .project-spotlight > h2,
-  .playfolio-page.project-page .project-shell > .project-spotlight > h3,
-  .playfolio-page.project-page .project-shell > .project-spotlight > p {
-    grid-column: 1 / -1;
-  }
 }
 
 @media (max-width: 640px) {
   .playfolio-page.project-page main > section.py-5 {
     padding-top: 0.75rem !important;
-  }
-
-  .project-intro-stage {
-    gap: 1.5rem;
   }
 
   .project-hero h1,
@@ -1214,12 +967,6 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
   .gallery-item {
     flex-basis: 88%;
   }
-
-  .playfolio-page.project-page .project-shell > .project-spotlight {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
-    padding: 1.5rem !important;
-  }
 }
 
 /* Project accents and entry motion. */
@@ -1274,58 +1021,8 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
   font-size: 0.66rem !important;
 }
 
-/* Spotlight edge picks up the accent to match its tinted fill. */
-.playfolio-page.project-page .project-shell > .project-spotlight {
-  border: 1px solid color-mix(in srgb, var(--project-accent) 32%, transparent) !important;
-}
-
-/* A short stagger introduces the content as its section appears. */
-@media (prefers-reduced-motion: no-preference) {
-  .project-motion-ready .is-project-visible .project-keypoints li,
-  .project-motion-ready .is-project-visible .project-insight-card,
-  .project-motion-ready .is-project-visible .project-module,
-  .project-motion-ready .is-project-visible .project-data-strip li,
-  .project-motion-ready .is-project-visible .project-flow-step,
-  .project-motion-ready .is-project-visible .project-timeline-item {
-    animation: project-child-rise 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .project-motion-ready .is-project-visible :is(.project-keypoints li, .project-insight-card, .project-module, .project-data-strip li, .project-flow-step, .project-timeline-item):nth-child(2) {
-    animation-delay: 70ms;
-  }
-
-  .project-motion-ready .is-project-visible :is(.project-keypoints li, .project-insight-card, .project-module, .project-data-strip li, .project-flow-step, .project-timeline-item):nth-child(3) {
-    animation-delay: 140ms;
-  }
-
-  .project-motion-ready .is-project-visible :is(.project-keypoints li, .project-insight-card, .project-module, .project-data-strip li, .project-flow-step, .project-timeline-item):nth-child(4) {
-    animation-delay: 210ms;
-  }
-
-  .project-motion-ready .is-project-visible :is(.project-data-strip li, .project-module):nth-child(5),
-  .project-motion-ready .is-project-visible :is(.project-data-strip li, .project-module):nth-child(6) {
-    animation-delay: 280ms;
-  }
-}
-
-@keyframes project-child-rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .project-reading-progress {
-    display: none;
-  }
 
-  .project-skip-link,
   .sidecard-links a,
   .sidecard-links a i,
   .project-back-link,
@@ -1334,19 +1031,13 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
   .back-button i,
   .gallery-card img,
   .gallery-item img,
-  .project-media-stage--image img,
-  .project-motion-ready .project-shell > *,
-  .project-motion-ready .project-intro-stage > .project-hero,
-  .project-motion-ready .project-intro-stage > .project-media-panel {
+  .project-media-stage--image img {
     transition: none !important;
   }
 
   .project-media-stage--image img,
   .gallery-card img,
-  .gallery-item img,
-  .project-motion-ready .project-shell > *,
-  .project-motion-ready .project-intro-stage > .project-hero,
-  .project-motion-ready .project-intro-stage > .project-media-panel {
+  .gallery-item img {
     opacity: 1 !important;
     transform: none !important;
   }
@@ -1366,8 +1057,7 @@ body:has(.image-modal:not([hidden])) > :not(.image-modal) {
 
 .project-page[data-project-family] .project-media-stage,
 .project-page[data-project-family] .project-media-panel > .ratio,
-.project-page[data-project-family] .project-video-frame,
-.playfolio-page.project-page[data-project-family] .project-shell > .project-spotlight {
+.project-page[data-project-family] .project-video-frame {
   border-radius: var(--panel-radius) !important;
 }
 

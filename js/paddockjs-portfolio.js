@@ -7,7 +7,6 @@ import { setPaddockShellState, syncPaddockShellLayout } from './paddockjs-boot-s
 import { getPaddockTheme, installPaddockThemeSync } from './paddockjs-theme-sync.js';
 
 const root = document.getElementById('f1-simulator-root');
-const raceRoot = document.getElementById('paddock-race-root');
 const paddockShell = document.querySelector('[data-paddock-shell]');
 
 const raceRules = {
@@ -73,33 +72,78 @@ async function mountStandaloneSimulator() {
   installPaddockThemeSync(simulator);
 }
 
-async function mountProjectsSimulator() {
-  syncPaddockShellLayout(paddockShell, projectSimulatorUi);
-  setPaddockShellState(paddockShell, 'booting');
+// A cached module is reusable: each mount owns one in-flight or ready instance.
+const sessions = new WeakMap();
 
-  const simulator = createPaddockSimulator({
-    ...portfolioOptions,
-    showBackLink: false,
-    ui: projectSimulatorUi,
-    theme: getPaddockTheme(),
-  });
+export function initializeProjectsRace(shell = paddockShell) {
+  const raceRoot = shell?.querySelector('#paddock-race-root');
+  if (!raceRoot) return Promise.reject(new Error('Missing project race mount.'));
+  const existing = sessions.get(raceRoot);
+  if (existing?.teardown) return existing.teardown.then(() => initializeProjectsRace(shell));
+  if (existing) return existing.promise;
 
-  simulator.mountRaceTelemetryDrawer(raceRoot, {
-    timingTowerVerticalFit: projectSimulatorUi.timingTowerVerticalFit,
-    raceDataTelemetryDetail: projectSimulatorUi.raceDataTelemetryDetail,
+  const session = { simulator: null, stopTheme: () => {} };
+  sessions.set(raceRoot, session);
+  session.promise = Promise.resolve().then(async () => {
+    syncPaddockShellLayout(shell, projectSimulatorUi);
+    setPaddockShellState(shell, 'booting');
+    try {
+      const simulator = createPaddockSimulator({
+        ...portfolioOptions,
+        showBackLink: false,
+        ui: projectSimulatorUi,
+        theme: getPaddockTheme(),
+      });
+      session.simulator = simulator;
+      simulator.mountRaceTelemetryDrawer(raceRoot, {
+        timingTowerVerticalFit: projectSimulatorUi.timingTowerVerticalFit,
+        raceDataTelemetryDetail: projectSimulatorUi.raceDataTelemetryDetail,
+      });
+      await simulator.start();
+      session.stopTheme = installPaddockThemeSync(simulator);
+      if (!session.teardown) setPaddockShellState(shell, 'ready');
+      return simulator;
+    } catch (error) {
+      if (sessions.get(raceRoot) === session) {
+        releaseSession(raceRoot, session);
+        setPaddockShellState(shell, 'error');
+      }
+      throw error;
+    }
   });
-  await simulator.start();
-  installPaddockThemeSync(simulator);
-  setPaddockShellState(paddockShell, 'ready');
+  return session.promise;
 }
 
-if (root || raceRoot) {
-  const mount = root ? mountStandaloneSimulator : mountProjectsSimulator;
+function releaseSession(raceRoot, session) {
+  if (sessions.get(raceRoot) !== session) return;
+  sessions.delete(raceRoot);
+  session.stopTheme();
+  try { session.simulator?.destroy(); }
+  catch (error) { console.error('PaddockJS cleanup failed.', error); }
+  raceRoot.replaceChildren();
+}
 
-  mount().catch((error) => {
-    setPaddockShellState(paddockShell, 'error');
-    const errorRoot = root || raceRoot;
-    if (errorRoot) errorRoot.dataset.simulatorState = 'error';
+// Await teardown before mounting into the same root again. In particular, do
+// not destroy a package instance midway through its asynchronous renderer init.
+export function destroyProjectsRace(shell = paddockShell) {
+  const raceRoot = shell?.querySelector('#paddock-race-root');
+  const session = raceRoot && sessions.get(raceRoot);
+  if (!session) return Promise.resolve();
+  if (!session.teardown) {
+    session.teardown = session.promise.catch(() => {}).then(() => {
+      if (!sessions.has(raceRoot) || sessions.get(raceRoot) === session) {
+        releaseSession(raceRoot, session);
+        setPaddockShellState(shell, 'preview');
+      }
+    });
+  }
+  return session.teardown;
+}
+
+// Only the standalone page auto-mounts. Embedded startup belongs to its loader.
+if (root) {
+  mountStandaloneSimulator().catch((error) => {
+    root.dataset.simulatorState = 'error';
     console.error('PaddockJS failed to initialize.', error);
   });
 }

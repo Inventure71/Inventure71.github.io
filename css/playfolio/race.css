@@ -95,19 +95,8 @@
   transition: opacity 220ms ease;
 }
 
-.pf-paddock-layout[data-simulator-state="preview"] .pf-paddock-loading,
-.pf-paddock-layout[data-simulator-state="preview"] .pf-paddock-error,
-.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-preview,
-.pf-paddock-layout[data-simulator-state="booting"] .pf-paddock-error,
-.pf-paddock-layout[data-simulator-state="loading"] .pf-paddock-error,
-.pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-loading,
-.pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-error,
-.pf-paddock-layout[data-simulator-state="ready"] .pf-paddock-preview,
-.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-loading,
-.pf-paddock-layout[data-simulator-state="error"] .pf-paddock-preview {
-  opacity: 0;
-  pointer-events: none;
-}
+/* Author styles must never override the host's semantic hidden state. */
+.pf-paddock-layout [hidden] { display: none !important; }
 
 .pf-paddock-loading__label,
 .pf-paddock-error {
