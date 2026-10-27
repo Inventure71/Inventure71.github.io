@@ -57,7 +57,7 @@ import { projectMapItems } from './project-map-data.js';
         node.x = node.homeX;
         node.y = node.homeY;
         node.vx = node.vy = 0;
-        node.dragOffsetX = node.dragOffsetY = 0;
+        node.boundaryMargin = Math.max(node.radius + 20, (node.button?.offsetWidth || 0) / 2 + 8);
     }
 
     // --- Initialization ---
@@ -112,7 +112,7 @@ import { projectMapItems } from './project-map-data.js';
             let dragStart = null, moved = false;
             button.addEventListener('pointerdown', (event) => {
                 if (event.button !== 0) return;
-                dragStart = { x: event.clientX, y: event.clientY, offsetX: node.dragOffsetX, offsetY: node.dragOffsetY };
+                dragStart = { x: event.clientX, y: event.clientY, nodeX: node.x, nodeY: node.y };
                 moved = false;
                 button.setPointerCapture(event.pointerId);
             });
@@ -122,8 +122,9 @@ import { projectMapItems } from './project-map-data.js';
                 if (Math.hypot(dx, dy) < 5) return;
                 moved = true;
                 draggedNode = node;
-                node.dragOffsetX = Math.max(80, Math.min(width - 80, node.homeX + dragStart.offsetX + dx)) - node.homeX;
-                node.dragOffsetY = Math.max(graphTop, Math.min(height - 100, node.homeY + dragStart.offsetY + dy)) - node.homeY;
+                node.x = Math.max(80, Math.min(width - 80, dragStart.nodeX + dx));
+                node.y = Math.max(graphTop, Math.min(height - 100, dragStart.nodeY + dy));
+                node.vx = node.vy = 0;
                 wake();
             });
             const releaseDrag = () => {
@@ -220,132 +221,61 @@ import { projectMapItems } from './project-map-data.js';
     }
 
     // --- Physics Engine ---
-    function updatePhysics() {
-        // 1. Repulsion (Coulomb's Law)
-        for (let i = 0; i < nodes.length; i++) {
-            for (let j = i + 1; j < nodes.length; j++) {
-                const a = nodes[i];
-                const b = nodes[j];
-                const dx = b.x - a.x;
-                const dy = b.y - a.y;
-                const dist = Math.hypot(dx, dy) || 1;
-                
-                // Stronger repulsion at close range
-                const force = (1200 * 1200) / (dist * dist);
-                
-                const fx = (dx / dist) * force * 0.0002;
-                const fy = (dy / dist) * force * 0.0002;
-
-                if (a !== draggedNode) {
-                    a.vx -= fx;
-                    a.vy -= fy;
-                }
-                if (b !== draggedNode) {
-                    b.vx += fx;
-                    b.vy += fy;
-                }
-            }
-        }
-
-        // 2. Spring (Edges)
-        edges.forEach(edge => {
-            const a = edge.source;
-            const b = edge.target;
-            const dx = b.x - a.x;
-            const dy = b.y - a.y;
-            const dist = Math.hypot(dx, dy) || 1;
-            const targetDist = Math.max(150, a.radius + b.radius + 110);
-            
-            const force = (dist - targetDist) * (0.0019 + (edge.strength * 0.0006));
-            const fx = (dx / dist) * force;
-            const fy = (dy / dist) * force;
-
-            if (a !== draggedNode) {
-                a.vx += fx;
-                a.vy += fy;
-            }
-            if (b !== draggedNode) {
-                b.vx -= fx;
-                b.vy -= fy;
-            }
-        });
-
-        // 3. Home Gravity
+    function updatePhysics(step = 1) {
+        const damping = Math.pow(0.65, step);
         nodes.forEach(node => {
-            if (node === draggedNode) {
-                node.vx = 0;
-                node.vy = 0;
+            if (node === draggedNode) return;
+            if (motion.matches || (!draggedNode && framesRemaining === 1)) {
+                node.x = node.homeX;
+                node.y = node.homeY;
+                node.vx = node.vy = 0;
                 return;
             }
-
-            const dx = node.homeX - node.x;
-            const dy = node.homeY - node.y;
-            node.vx += dx * 0.0022;
-            node.vy += dy * 0.0022;
-
-            // Mouse Interaction (Repel/Attract)
-            const mdx = mouse.x - node.x;
-            const mdy = mouse.y - node.y;
-            const mDist = Math.hypot(mdx, mdy);
-            
-            if (mDist > 0 && mDist < 180) {
-                const mForce = (180 - mDist) * 0.0008;
-                node.vx -= (mdx / mDist) * mForce;
-                node.vy -= (mdy / mDist) * mForce;
-            }
-
-            // Velocity Damping
-            node.vx *= 0.90;
-            node.vy *= 0.90;
-
-            // Update Position
-            node.x += node.vx;
-            node.y += node.vy;
-
-            node.x = Math.max(node.homeX - 7, Math.min(node.homeX + 7, node.x));
-            node.y = Math.max(node.homeY - 6, Math.min(node.homeY + 6, node.y));
-            // Boundary Check
-            const margin = node.radius + 20;
-            if (node.x < margin) { node.x = margin; node.vx *= -1; }
-            if (node.x > width - margin) { node.x = width - margin; node.vx *= -1; }
-            if (node.y < margin) { node.y = margin; node.vy *= -1; }
-            if (node.y > height - margin) { node.y = height - margin; node.vy *= -1; }
+            node.vx = (node.vx + (node.homeX - node.x) * 0.08 * step) * damping;
+            node.vy = (node.vy + (node.homeY - node.y) * 0.08 * step) * damping;
+            node.x += node.vx * step;
+            node.y += node.vy * step;
         });
 
-        // 4. Hard Collision Resolution (Prevent Overlap)
-        for (let i = 0; i < nodes.length; i++) {
-            for (let j = i + 1; j < nodes.length; j++) {
-                const a = nodes[i];
-                const b = nodes[j];
-                const dx = b.x - a.x;
-                const dy = b.y - a.y;
-                const dist = Math.hypot(dx, dy);
-                const minDist = a.radius + b.radius + 10; // Add buffer
-
-                if (dist < minDist) {
-                    const overlap = minDist - dist;
-                    const nx = dist ? dx / dist : 1;
-                    const ny = dist ? dy / dist : 0;
-                    
-                    // Move apart proportional to inverse mass (assume equal mass for now)
-                    const moveX = nx * overlap * 0.5;
-                    const moveY = ny * overlap * 0.5;
-
-                    if (a !== draggedNode) {
-                        a.x -= moveX;
-                        a.y -= moveY;
-                        // Kill velocity in collision direction
+        // Resolve contact using the same positions that are drawn and dragged.
+        // A few passes let a pushed neighbor transfer contact to another node.
+        for (let pass = 0; pass < 3; pass++) {
+            let touching = false;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const a = nodes[i], b = nodes[j];
+                    const dx = b.x + (b.floatX || 0) - a.x - (a.floatX || 0);
+                    const dy = b.y + (b.floatY || 0) - a.y - (a.floatY || 0);
+                    const distance = Math.hypot(dx, dy);
+                    const separation = a.radius + b.radius + 10;
+                    if (distance >= separation) continue;
+                    touching = true;
+                    const homeDistance = Math.hypot(b.homeX - a.homeX, b.homeY - a.homeY) || 1;
+                    const nx = distance > 0.01 ? dx / distance : (b.homeX - a.homeX) / homeDistance;
+                    const ny = distance > 0.01 ? dy / distance : (b.homeY - a.homeY) / homeDistance;
+                    const overlap = separation - distance;
+                    const aShare = a === draggedNode ? 0 : b === draggedNode ? 1 : 0.5;
+                    const bShare = 1 - aShare;
+                    if (aShare) {
+                        a.x -= nx * overlap * aShare;
+                        a.y -= ny * overlap * aShare;
                         a.vx *= 0.5;
                         a.vy *= 0.5;
                     }
-                    if (b !== draggedNode) {
-                        b.x += moveX;
-                        b.y += moveY;
+                    if (bShare) {
+                        b.x += nx * overlap * bShare;
+                        b.y += ny * overlap * bShare;
                         b.vx *= 0.5;
                         b.vy *= 0.5;
                     }
                 }
             }
+            nodes.forEach(node => {
+                const margin = node.boundaryMargin;
+                node.x = Math.max(margin, Math.min(width - margin, node.x));
+                node.y = Math.max(graphTop, Math.min(height - 100, node.y));
+            });
+            if (!touching) break;
         }
     }
 
@@ -361,9 +291,8 @@ import { projectMapItems } from './project-map-data.js';
                 node.floatX = Math.sin(floatTime * 0.65 + index * 2.4) * 2.5;
                 node.floatY = Math.sin(floatTime * 0.5 + index * 1.6) * 2;
             }
-            // Reserve room for the drift within the existing grid spacing.
-            node.drawX = node.homeX + Math.max(-3.5, Math.min(3.5, node.x - node.homeX)) + (node.floatX || 0) + node.dragOffsetX;
-            node.drawY = node.homeY + Math.max(-4, Math.min(4, node.y - node.homeY)) + (node.floatY || 0) + node.dragOffsetY;
+            node.drawX = node.x + (node.floatX || 0);
+            node.drawY = node.y + (node.floatY || 0);
         });
 
         // Draw Edges
@@ -442,7 +371,7 @@ import { projectMapItems } from './project-map-data.js';
         animationId = null;
         if (!active) return;
         if (motion.matches) {
-            nodes.forEach(node => { if (node !== draggedNode) node.dragOffsetX = node.dragOffsetY = 0; });
+            updatePhysics();
             draw();
             return;
         }
@@ -452,15 +381,10 @@ import { projectMapItems } from './project-map-data.js';
             const elapsed = lastFrameTime === null ? 0 : Math.min(timestamp - lastFrameTime, 100);
             floatTime += elapsed / 1000;
             lastFrameTime = timestamp;
-            const returnFactor = Math.exp(-elapsed / 220);
-            nodes.forEach(node => {
-                if (node === draggedNode) return;
-                node.dragOffsetX *= returnFactor;
-                node.dragOffsetY *= returnFactor;
-                if (Math.abs(node.dragOffsetX) < 0.1) node.dragOffsetX = 0;
-                if (Math.abs(node.dragOffsetY) < 0.1) node.dragOffsetY = 0;
-            });
-            if (framesRemaining > 0) { updatePhysics(); framesRemaining--; }
+            if (framesRemaining > 0 || draggedNode) {
+                updatePhysics(Math.min(elapsed / (1000 / 30), 1.5) || 1);
+                if (!draggedNode) framesRemaining--;
+            }
             draw();
         }
         animationId = requestAnimationFrame(animate);
@@ -492,8 +416,8 @@ import { projectMapItems } from './project-map-data.js';
         canvas.style.cursor = hoveredNode ? 'pointer' : 'default';
 
         if (draggedNode) {
-            draggedNode.dragOffsetX = mouse.x - draggedNode.homeX;
-            draggedNode.dragOffsetY = mouse.y - draggedNode.homeY;
+            draggedNode.x = mouse.x;
+            draggedNode.y = mouse.y;
             canvas.style.cursor = 'grabbing';
         }
     }

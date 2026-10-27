@@ -187,7 +187,7 @@ test('map nodes float gently in place at a bounded frame rate and pause offscree
   console.log(`map float: ${draws} draws in 750ms; zero draws while offscreen`);
 });
 
-test('dragged map topics return to their original position without opening a panel', async ({ page }) => {
+test('dragged map topics push their neighbors and both return home without opening a panel', async ({ page }) => {
   for (const reducedMotion of ['no-preference', 'reduce']) {
     await page.emulateMedia({ reducedMotion });
     await quietNavigation(page, '/tags.html');
@@ -198,11 +198,18 @@ test('dragged map topics return to their original position without opening a pan
       await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     });
     const original = await topic.boundingBox();
+    const neighbor = page.locator('.neuron-topic').nth(1);
+    const neighborOriginal = await neighbor.boundingBox();
     const x = original.x + original.width / 2, y = original.y + 42;
     await page.mouse.move(x, y);
     await page.mouse.down();
-    await page.mouse.move(x + 140, y + 90, { steps: 8 });
+    await page.mouse.move(neighborOriginal.x + neighborOriginal.width / 2 - 20, neighborOriginal.y + 42, { steps: 8 });
     await expect.poll(async () => (await topic.boundingBox()).x - original.x).toBeGreaterThan(100);
+    const neighborDistance = async () => {
+      const current = await neighbor.boundingBox();
+      return Math.hypot(current.x - neighborOriginal.x, current.y - neighborOriginal.y);
+    };
+    await expect.poll(neighborDistance).toBeGreaterThan(25);
     await page.mouse.up();
     await expect(page.locator('.neuron-overlay')).not.toHaveClass(/active/);
     const distance = async () => {
@@ -211,6 +218,7 @@ test('dragged map topics return to their original position without opening a pan
     };
     if (reducedMotion === 'no-preference') expect(await distance()).toBeGreaterThan(50);
     await expect.poll(distance).toBeLessThan(14);
+    await expect.poll(neighborDistance).toBeLessThan(14);
   }
 });
 
