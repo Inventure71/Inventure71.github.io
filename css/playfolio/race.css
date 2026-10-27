@@ -166,8 +166,17 @@
 }
 
 .pf-paddock-race .sim-canvas-panel {
+  border-top: 0;
   border-radius: 16px;
   overflow: hidden;
+}
+
+.pf-paddock-race .race-telemetry-drawer__toolbar {
+  border-bottom: 0;
+}
+
+.pf-paddock-race .camera-controls--external {
+  border-radius: 16px;
 }
 
 .pf-paddock-race > .sim-canvas-panel,
