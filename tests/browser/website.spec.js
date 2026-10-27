@@ -140,6 +140,21 @@ test('map topics share scene selection, keyboard focus, links, touch, readable g
   await touchPage.getByRole('button', { name: 'Close panel' }).tap();
   await expect(touchPage.locator('.neuron-topic').first()).toBeFocused();
   await touch.close();
+
+  // The canvas must not select another node behind a desktop dialog and
+  // overwrite the background's original inert state.
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await quietNavigation(page, '/tags.html');
+  const firstTopic = page.locator('.neuron-topic').first();
+  const topicBox = await firstTopic.boundingBox();
+  await firstTopic.click();
+  await page.mouse.move(topicBox.x + topicBox.width / 2, topicBox.y + 42);
+  await page.mouse.click(topicBox.x + topicBox.width / 2, topicBox.y + 42);
+  await page.keyboard.press('Escape');
+  await expect(firstTopic).toBeFocused();
+  await expect(page.locator('nav.navbar')).not.toHaveAttribute('inert', '');
+  await expect(page.locator('.neuron-topics')).not.toHaveAttribute('inert', '');
+  await expect(page.locator('#neuron-canvas')).not.toHaveAttribute('inert', '');
 });
 
 test('map frames settle, wake on interaction and pause offscreen', async ({ page }) => {

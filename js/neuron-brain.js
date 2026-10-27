@@ -477,10 +477,11 @@ import { projectMapItems } from './project-map-data.js';
     }
 
     function selectNode(node) {
+        if (selectedNode) return;
         previousFocus = node.button;
         selectedNode = node;
         nodes.forEach((item) => item.button.setAttribute('aria-expanded', String(item === node)));
-        inertBackground = [topics, container.querySelector('.neuron-ui'), container.querySelector('.neuron-controls'), document.querySelector('nav'), document.querySelector('footer')]
+        inertBackground = [canvas, topics, container.querySelector('.neuron-ui'), container.querySelector('.neuron-controls'), document.querySelector('nav'), document.querySelector('footer'), document.querySelector('[data-site-skip]')]
             .filter(Boolean).map(element => ({ element, wasInert: element.inert }));
         inertBackground.forEach(({ element }) => { element.inert = true; });
         wake();
