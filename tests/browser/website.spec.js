@@ -187,6 +187,33 @@ test('map nodes float gently in place at a bounded frame rate and pause offscree
   console.log(`map float: ${draws} draws in 750ms; zero draws while offscreen`);
 });
 
+test('dragged map topics return to their original position without opening a panel', async ({ page }) => {
+  for (const reducedMotion of ['no-preference', 'reduce']) {
+    await page.emulateMedia({ reducedMotion });
+    await quietNavigation(page, '/tags.html');
+    const topic = page.locator('.neuron-topic').first();
+    await expect(topic).toBeVisible();
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    });
+    const original = await topic.boundingBox();
+    const x = original.x + original.width / 2, y = original.y + 42;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x + 140, y + 90, { steps: 8 });
+    await expect.poll(async () => (await topic.boundingBox()).x - original.x).toBeGreaterThan(100);
+    await page.mouse.up();
+    await expect(page.locator('.neuron-overlay')).not.toHaveClass(/active/);
+    const distance = async () => {
+      const current = await topic.boundingBox();
+      return Math.hypot(current.x - original.x, current.y - original.y);
+    };
+    if (reducedMotion === 'no-preference') expect(await distance()).toBeGreaterThan(50);
+    await expect.poll(distance).toBeLessThan(14);
+  }
+});
+
 test('Ghostyper pause survives visibility changes and resumes; reduced motion shows static original', async ({ page }) => {
   await quietNavigation(page, '/project_details/project-ghoststroke.html');
   const demo = page.locator('[data-gs-demo]');

@@ -19,7 +19,9 @@ simulator build.
   preferences disable decorative movement. The project map uses the same activity
   observer and draws a static reduced-motion scene. Its physics settles after 60
   updates; a gentle in-place float continues at up to 30 updates per second while
-  visible. Topic controls and labels move with their nodes.
+  visible. Topic controls and labels move with their nodes. Dragging keeps each
+  grid anchor intact; released nodes ease home without restarting the full physics
+  continuously, or return immediately when reduced motion is enabled.
 - Reactive-glass pointer coordinates are coalesced into one update per frame.
 
 ## Media variants

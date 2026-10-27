@@ -57,6 +57,7 @@ import { projectMapItems } from './project-map-data.js';
         node.x = node.homeX;
         node.y = node.homeY;
         node.vx = node.vy = 0;
+        node.dragOffsetX = node.dragOffsetY = 0;
     }
 
     // --- Initialization ---
@@ -110,7 +111,8 @@ import { projectMapItems } from './project-map-data.js';
             button.style.setProperty('--topic-color', node.color);
             let dragStart = null, moved = false;
             button.addEventListener('pointerdown', (event) => {
-                dragStart = { x: event.clientX, y: event.clientY, nodeX: node.x, nodeY: node.y };
+                if (event.button !== 0) return;
+                dragStart = { x: event.clientX, y: event.clientY, offsetX: node.dragOffsetX, offsetY: node.dragOffsetY };
                 moved = false;
                 button.setPointerCapture(event.pointerId);
             });
@@ -119,12 +121,19 @@ import { projectMapItems } from './project-map-data.js';
                 const dx = event.clientX - dragStart.x, dy = event.clientY - dragStart.y;
                 if (Math.hypot(dx, dy) < 5) return;
                 moved = true;
-                node.homeX = node.x = Math.max(80, Math.min(width - 80, dragStart.nodeX + dx));
-                node.homeY = node.y = Math.max(graphTop, Math.min(height - 100, dragStart.nodeY + dy));
+                draggedNode = node;
+                node.dragOffsetX = Math.max(80, Math.min(width - 80, node.homeX + dragStart.offsetX + dx)) - node.homeX;
+                node.dragOffsetY = Math.max(graphTop, Math.min(height - 100, node.homeY + dragStart.offsetY + dy)) - node.homeY;
                 wake();
             });
-            button.addEventListener('pointerup', () => { dragStart = null; });
-            button.addEventListener('pointercancel', () => { dragStart = null; });
+            const releaseDrag = () => {
+                dragStart = null;
+                if (draggedNode === node) draggedNode = null;
+                wake();
+            };
+            button.addEventListener('pointerup', releaseDrag);
+            button.addEventListener('pointercancel', releaseDrag);
+            button.addEventListener('lostpointercapture', releaseDrag);
             button.addEventListener('click', () => { if (!moved) selectNode(node); moved = false; });
             button.addEventListener('focus', () => { hoveredNode = node; wake(); });
             button.addEventListener('pointerenter', () => { hoveredNode = node; wake(); });
@@ -353,8 +362,8 @@ import { projectMapItems } from './project-map-data.js';
                 node.floatY = Math.sin(floatTime * 0.5 + index * 1.6) * 2;
             }
             // Reserve room for the drift within the existing grid spacing.
-            node.drawX = node.homeX + Math.max(-3.5, Math.min(3.5, node.x - node.homeX)) + (node.floatX || 0);
-            node.drawY = node.homeY + Math.max(-4, Math.min(4, node.y - node.homeY)) + (node.floatY || 0);
+            node.drawX = node.homeX + Math.max(-3.5, Math.min(3.5, node.x - node.homeX)) + (node.floatX || 0) + node.dragOffsetX;
+            node.drawY = node.homeY + Math.max(-4, Math.min(4, node.y - node.homeY)) + (node.floatY || 0) + node.dragOffsetY;
         });
 
         // Draw Edges
@@ -432,12 +441,25 @@ import { projectMapItems } from './project-map-data.js';
     function animate(timestamp) {
         animationId = null;
         if (!active) return;
-        if (motion.matches) { draw(); return; }
+        if (motion.matches) {
+            nodes.forEach(node => { if (node !== draggedNode) node.dragOffsetX = node.dragOffsetY = 0; });
+            draw();
+            return;
+        }
         // Gentle ambient motion needs only 30 updates per second. Physics can
         // sleep once settled; the inexpensive drift continues independently.
         if (lastFrameTime === null || timestamp - lastFrameTime >= 1000 / 30) {
-            floatTime += lastFrameTime === null ? 0 : Math.min(timestamp - lastFrameTime, 100) / 1000;
+            const elapsed = lastFrameTime === null ? 0 : Math.min(timestamp - lastFrameTime, 100);
+            floatTime += elapsed / 1000;
             lastFrameTime = timestamp;
+            const returnFactor = Math.exp(-elapsed / 220);
+            nodes.forEach(node => {
+                if (node === draggedNode) return;
+                node.dragOffsetX *= returnFactor;
+                node.dragOffsetY *= returnFactor;
+                if (Math.abs(node.dragOffsetX) < 0.1) node.dragOffsetX = 0;
+                if (Math.abs(node.dragOffsetY) < 0.1) node.dragOffsetY = 0;
+            });
             if (framesRemaining > 0) { updatePhysics(); framesRemaining--; }
             draw();
         }
@@ -470,10 +492,8 @@ import { projectMapItems } from './project-map-data.js';
         canvas.style.cursor = hoveredNode ? 'pointer' : 'default';
 
         if (draggedNode) {
-            draggedNode.x = mouse.x;
-            draggedNode.y = mouse.y;
-            draggedNode.homeX = mouse.x;
-            draggedNode.homeY = mouse.y;
+            draggedNode.dragOffsetX = mouse.x - draggedNode.homeX;
+            draggedNode.dragOffsetY = mouse.y - draggedNode.homeY;
             canvas.style.cursor = 'grabbing';
         }
     }
@@ -489,6 +509,7 @@ import { projectMapItems } from './project-map-data.js';
     function onMouseUp(e) {
         mouse.isDown = false;
         draggedNode = null;
+        wake();
         canvas.style.cursor = hoveredNode ? 'pointer' : 'default';
     }
 
