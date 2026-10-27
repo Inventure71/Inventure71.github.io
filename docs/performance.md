@@ -17,8 +17,9 @@ simulator build.
 - `js/playfolio/visibility.js` combines intersection and document visibility.
   Portrait timers and Codex video/flight pause while invisible; reduced-motion
   preferences disable decorative movement. The project map uses the same activity
-  observer, draws a static reduced-motion scene, and settles after 120 frames
-  until interaction or visibility wakes it. Topic controls stay in the scene.
+  observer and draws a static reduced-motion scene. Its physics settles after 60
+  updates; a gentle in-place float continues at up to 30 updates per second while
+  visible. Topic controls and labels move with their nodes.
 - Reactive-glass pointer coordinates are coalesced into one update per frame.
 
 ## Media variants

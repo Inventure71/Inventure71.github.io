@@ -157,18 +157,26 @@ test('map topics share scene selection, keyboard focus, links, touch, readable g
   await expect(page.locator('#neuron-canvas')).not.toHaveAttribute('inert', '');
 });
 
-test('map frames settle, wake on interaction and pause offscreen', async ({ page }) => {
+test('map nodes float gently in place at a bounded frame rate and pause offscreen', async ({ page }) => {
   await trackMapFrames(page);
   await quietNavigation(page, '/tags.html');
   const map = page.locator('.neuron-container');
   await page.evaluate(() => document.fonts.ready);
   await expect.poll(async () => await mapFrames(page)).toBeGreaterThan(20);
   await page.waitForTimeout(2200);
-  const idle = await mapFrames(page);
-  await page.waitForTimeout(250);
-  expect(await mapFrames(page)).toBe(idle);
-  await page.locator('.neuron-topic').first().hover();
-  await expect.poll(async () => await mapFrames(page)).toBeGreaterThan(idle);
+  const before = await page.locator('.neuron-topic').evaluateAll(elements => elements.map(el => {
+    const box = el.getBoundingClientRect(); return { x: box.x, y: box.y };
+  }));
+  const floating = await mapFrames(page);
+  await page.waitForTimeout(750);
+  const draws = await mapFrames(page) - floating;
+  expect(draws).toBeGreaterThan(2);
+  expect(draws).toBeLessThanOrEqual(25);
+  const displacement = await page.locator('.neuron-topic').evaluateAll((elements, before) => elements.map((el, i) => {
+    const box = el.getBoundingClientRect(); return Math.hypot(box.x - before[i].x, box.y - before[i].y);
+  }), before);
+  expect(displacement.some(distance => distance > 0.1)).toBe(true);
+  expect(Math.max(...displacement)).toBeLessThan(16);
   await page.evaluate(() => { document.querySelector('footer').style.minHeight = '1200px'; window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }); });
   await expect.poll(async () => { const box = await map.boundingBox(); return box.y + box.height; }).toBeLessThanOrEqual(0);
   const offscreen = await mapFrames(page);
@@ -176,7 +184,7 @@ test('map frames settle, wake on interaction and pause offscreen', async ({ page
   expect(await mapFrames(page)).toBe(offscreen);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await expect.poll(async () => await mapFrames(page)).toBeGreaterThan(offscreen);
-  console.log(`map frames: idle=${idle}, offscreen=${offscreen}; zero increments during each paused interval`);
+  console.log(`map float: ${draws} draws in 750ms; zero draws while offscreen`);
 });
 
 test('Ghostyper pause survives visibility changes and resumes; reduced motion shows static original', async ({ page }) => {

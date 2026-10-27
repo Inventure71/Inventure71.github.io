@@ -21,6 +21,8 @@ import { projectMapItems } from './project-map-data.js';
     let animationId = null;
     let active = false;
     let framesRemaining = 0;
+    let lastFrameTime = null;
+    let floatTime = 0;
     let previousFocus;
     let inertBackground = [];
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -178,7 +180,11 @@ import { projectMapItems } from './project-map-data.js';
         motion.addEventListener('change', () => { resize(); wake(); });
         observeElementActivity(container, (value) => {
             active = value;
-            if (!active && animationId !== null) { cancelAnimationFrame(animationId); animationId = null; }
+            if (!active) {
+                if (animationId !== null) cancelAnimationFrame(animationId);
+                animationId = null;
+                lastFrameTime = null;
+            }
             if (active) wake();
         });
     }
@@ -338,14 +344,27 @@ import { projectMapItems } from './project-map-data.js';
     function draw() {
         ctx.clearRect(0, 0, width, height);
 
+        nodes.forEach((node, index) => {
+            // Keep labels and targets steady while someone is using them.
+            if (motion.matches) {
+                node.floatX = node.floatY = 0;
+            } else if (node !== hoveredNode && node !== selectedNode && node !== draggedNode) {
+                node.floatX = Math.sin(floatTime * 0.65 + index * 2.4) * 2.5;
+                node.floatY = Math.sin(floatTime * 0.5 + index * 1.6) * 2;
+            }
+            // Reserve room for the drift within the existing grid spacing.
+            node.drawX = node.homeX + Math.max(-3.5, Math.min(3.5, node.x - node.homeX)) + (node.floatX || 0);
+            node.drawY = node.homeY + Math.max(-4, Math.min(4, node.y - node.homeY)) + (node.floatY || 0);
+        });
+
         // Draw Edges
         edges.forEach(edge => {
             const isConnectedToHover = hoveredNode && (edge.source === hoveredNode || edge.target === hoveredNode);
             const isConnectedToSelected = selectedNode && (edge.source === selectedNode || edge.target === selectedNode);
             
             ctx.beginPath();
-            ctx.moveTo(edge.source.x, edge.source.y);
-            ctx.lineTo(edge.target.x, edge.target.y);
+            ctx.moveTo(edge.source.drawX, edge.source.drawY);
+            ctx.lineTo(edge.target.drawX, edge.target.drawY);
             
             if (isConnectedToHover || isConnectedToSelected) {
                 ctx.strokeStyle = 'rgba(244, 241, 232, 0.78)';
@@ -375,7 +394,7 @@ import { projectMapItems } from './project-map-data.js';
             );
 
             ctx.beginPath();
-            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            ctx.arc(node.drawX, node.drawY, node.radius, 0, Math.PI * 2);
             
             if (isSelected) {
                 ctx.fillStyle = node.color;
@@ -404,22 +423,29 @@ import { projectMapItems } from './project-map-data.js';
             ctx.lineWidth = isHovered || isSelected ? 2 : 1;
             ctx.stroke();
 
-            node.button.style.left = `${node.x}px`;
-            node.button.style.top = `${node.y}px`;
+            node.button.style.left = `${node.drawX}px`;
+            node.button.style.top = `${node.drawY}px`;
 
         });
     }
 
-    function animate() {
+    function animate(timestamp) {
         animationId = null;
         if (!active) return;
-        if (!motion.matches) updatePhysics();
-        draw();
-        if (!motion.matches && --framesRemaining > 0) animationId = requestAnimationFrame(animate);
+        if (motion.matches) { draw(); return; }
+        // Gentle ambient motion needs only 30 updates per second. Physics can
+        // sleep once settled; the inexpensive drift continues independently.
+        if (lastFrameTime === null || timestamp - lastFrameTime >= 1000 / 30) {
+            floatTime += lastFrameTime === null ? 0 : Math.min(timestamp - lastFrameTime, 100) / 1000;
+            lastFrameTime = timestamp;
+            if (framesRemaining > 0) { updatePhysics(); framesRemaining--; }
+            draw();
+        }
+        animationId = requestAnimationFrame(animate);
     }
 
     function wake() {
-        framesRemaining = 120;
+        framesRemaining = 60;
         if (active && animationId === null) animationId = requestAnimationFrame(animate);
     }
 
@@ -433,7 +459,7 @@ import { projectMapItems } from './project-map-data.js';
         // Hit testing
         let found = null;
         for (const node of nodes) {
-            const dist = Math.hypot(mouse.x - node.x, mouse.y - node.y);
+            const dist = Math.hypot(mouse.x - node.drawX, mouse.y - node.drawY);
             if (dist < node.radius + 5) {
                 found = node;
                 break;
