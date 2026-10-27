@@ -131,6 +131,7 @@ export const projectCommandItems = [
 
 export const footerLinks = [
   { label: 'GitHub', href: 'https://github.com/Inventure71', external: true },
+  { label: 'University GitHub', href: 'https://github.com/Inventure72', external: true },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/matteo-giorgetti-026172247/', external: true },
   { label: 'Resume PDF', href: '/assets/docs/matteo-giorgetti-resume-current.pdf', external: false },
 ];
@@ -160,6 +161,12 @@ export const commandItems = [
     description: 'Open Inventure71 profile',
     href: 'https://github.com/Inventure71',
     keywords: 'code repositories profile external',
+  },
+  {
+    label: 'University GitHub',
+    description: 'Open coursework on Inventure72',
+    href: 'https://github.com/Inventure72',
+    keywords: 'university coursework assignments school code repositories external',
   },
   {
     label: 'LinkedIn',
