@@ -15,7 +15,7 @@ failure traces go to the ignored `output/playwright/` directory.
 The suite exercises real navigation and mobile collapse, skip targets and
 subsequent keyboard focus, command search/real links/arrows/empty state, modal
 focus/Escape/return, map keyboard/touch selection and non-overlapping geometry,
-reduced motion, bounded floating motion and offscreen draw counts, Ghostyper pause/resume, and an actual
+reduced motion, bounded floating motion and offscreen draw counts, Ghostyper offscreen pause/resume, and an actual
 WebGL startup failure followed by retry of the same cached integration module.
 It also checks standalone startup and every sitemap/canonical/social-image
 URL against the local files. The shared visibility observer's hidden-document

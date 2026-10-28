@@ -230,26 +230,21 @@ test('dragged map topics push their neighbors and both return home without openi
   }
 });
 
-test('Ghostyper pause survives visibility changes and resumes; reduced motion shows static original', async ({ page }) => {
+test('Ghostyper autoplays in view, pauses offscreen, and stays static with reduced motion', async ({ page }) => {
   await quietNavigation(page, '/project_details/project-ghoststroke.html');
   const demo = page.locator('[data-gs-demo]');
-  const toggle = page.locator('[data-gs-toggle]');
+  await expect(page.locator('[data-gs-toggle]')).toHaveCount(0);
   await demo.scrollIntoViewIfNeeded();
   await expect(demo).toHaveAttribute('data-playing', 'true');
-  await toggle.click();
+  await page.locator('footer').scrollIntoViewIfNeeded();
   await expect(demo).toHaveAttribute('data-playing', 'false');
-  await expect(toggle).toHaveText('Resume demonstration');
   const text = await page.locator('[data-gs-text]').textContent();
   await page.waitForTimeout(500);
   expect(await page.locator('[data-gs-text]').textContent()).toBe(text);
-  await page.locator('footer').scrollIntoViewIfNeeded();
-  await toggle.scrollIntoViewIfNeeded();
-  await expect(demo).toHaveAttribute('data-playing', 'false');
-  await toggle.click();
+  await demo.scrollIntoViewIfNeeded();
   await expect(demo).toHaveAttribute('data-playing', 'true');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(demo).toHaveAttribute('data-playing', 'false');
-  await expect(toggle).toBeDisabled();
   await expect(page.locator('[data-gs-text]')).toHaveText(await page.locator('[data-gs-original]').textContent());
 });
 
@@ -390,7 +385,7 @@ test('mobile navigation follows the real Apps anchor and closes correctly on the
   await expect(page.locator('#navbarSupportedContent')).toBeHidden();
 });
 
-test('corrected dates and Ghostyper controls at desktop/narrow sizes in both themes', async ({ page }) => {
+test('corrected dates and Ghostyper autoplay at desktop/narrow sizes in both themes', async ({ page }) => {
   for (const width of [1440, 390]) for (const theme of ['light', 'dark']) {
     await page.setViewportSize({ width, height: 900 });
     await page.emulateMedia({ colorScheme: theme });
@@ -400,17 +395,15 @@ test('corrected dates and Ghostyper controls at desktop/narrow sizes in both the
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await quietNavigation(page, '/project_details/project-ghoststroke.html');
-    const toggle = page.locator('[data-gs-toggle]');
-    await toggle.scrollIntoViewIfNeeded();
-    await toggle.focus();
-    await toggle.press('Enter');
-    await expect(page.locator('[data-gs-demo]')).toHaveAttribute('data-playing', 'false');
-    await expect(toggle).toHaveText('Resume demonstration');
+    const demo = page.locator('[data-gs-demo]');
+    await demo.scrollIntoViewIfNeeded();
+    await expect(page.locator('[data-gs-toggle]')).toHaveCount(0);
+    await expect(demo).toHaveAttribute('data-playing', 'true');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await page.screenshot({ path: `output/playwright/ghostyper-${width}-${theme}.png` });
-    await toggle.press('Enter');
-    await expect(page.locator('[data-gs-demo]')).toHaveAttribute('data-playing', 'true');
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
-    await expect(toggle).toBeDisabled();
+    await expect(demo).toHaveAttribute('data-playing', 'false');
+    await expect(page.locator('[data-gs-text]')).toHaveText(await page.locator('[data-gs-original]').textContent());
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'no-preference' });
   }
 });

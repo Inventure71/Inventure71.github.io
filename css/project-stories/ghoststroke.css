@@ -90,6 +90,3 @@
  .gs-demo-label > span { flex:1; }
  .gs-availability .story-actions { flex-wrap:wrap; }
 }
-
-.gs-playback-toggle { display: block; margin: 1rem 0 .6rem; padding: .6rem .9rem; background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 5px; cursor: pointer; }
-.gs-playback-toggle:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
