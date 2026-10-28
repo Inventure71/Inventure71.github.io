@@ -7,7 +7,7 @@ project-race-guide {
   --pf-race-stop: #c40000;
   --pf-race-caution: #a26b00;
   --pf-race-flag-color: var(--pf-accent-2);
-  --pf-race-flag-texture: linear-gradient(var(--pf-race-flag-color), var(--pf-race-flag-color));
+  --pf-race-flag-chequered: 0;
   --pf-race-flag-width: 2.75rem;
   --pf-race-flag-height: 1.65rem;
   display: grid;
@@ -53,8 +53,18 @@ project-race-guide {
   height: var(--pf-race-flag-height);
   color: var(--pf-race-flag-color);
   overflow: hidden;
-  background: var(--pf-race-flag-texture) 0 0 / 0.65rem 0.65rem;
-  mask: url("../assets/race-flag-mask.svg") center / 100% 100% no-repeat;
+  background-color: var(--pf-race-flag-color);
+  transition: background-color 450ms ease;
+  mask: url("../assets/race-flag-mask.svg?v=20261028-flatter") center / 100% 100% no-repeat;
+}
+
+.pf-race-guide__fabric::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(#f7f4ec 25%, #171717 0 50%, #f7f4ec 0 75%, #171717 0) 0 0 / 0.65rem 0.65rem;
+  opacity: var(--pf-race-flag-chequered);
+  transition: opacity 450ms ease;
 }
 
 .pf-race-guide__fabric::after {
@@ -113,7 +123,7 @@ project-race-guide {
 
 .pf-race-guide:has([data-race-status="finished"]) {
   --pf-race-flag-color: var(--pf-ink);
-  --pf-race-flag-texture: conic-gradient(#f7f4ec 25%, #171717 0 50%, #f7f4ec 0 75%, #171717 0);
+  --pf-race-flag-chequered: 1;
 }
 
 .pf-race-guide__flag {
@@ -193,6 +203,11 @@ project-race-guide {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .pf-race-guide__fabric,
+  .pf-race-guide__fabric::before {
+    transition: none;
+  }
+
   .pf-race-guide__fabric::after {
     animation: none;
     transform: none;
