@@ -17,7 +17,7 @@
     "test:browser": "playwright test"
   },
   "dependencies": {
-    "@inventure71/paddockjs": "4.3.0"
+    "@inventure71/paddockjs": "4.3.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

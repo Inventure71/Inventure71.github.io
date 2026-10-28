@@ -325,6 +325,55 @@ test('standalone simulator still auto-mounts', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Stop race', exact: true })).toBeEnabled();
 });
 
+test('Grid Walk releases captured drags and preserves race progress through resizing and resume', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/projects.html?raceAutoStart=1');
+  await expect(page.locator('[data-paddock-shell]')).toHaveAttribute('data-simulator-state', 'ready', { timeout: 30000 });
+  await page.evaluate(async () => {
+    const module = await import('/' + document.querySelector('[data-paddock-shell]').dataset.paddockScriptSrc);
+    window.hostRace = await module.initializeProjectsRace();
+    window.originalCanvas = document.querySelector('#paddock-race-root canvas');
+  });
+  await page.waitForFunction(() => window.hostRace.getSnapshot().time > 6);
+  await page.getByRole('button', { name: 'Stop race', exact: true }).click();
+  const paused = await page.evaluate(() => JSON.stringify(window.hostRace.getSnapshot()));
+  await page.getByRole('combobox', { name: 'Jump to grid entry' }).selectOption('noty');
+  const panel = page.locator('.sim-canvas-panel');
+  for (const cancellation of ['blur', 'no-buttons']) {
+    await panel.evaluate(el => el.addEventListener('pointerdown', event => { window.dragPointerId = event.pointerId; }, { capture: true, once: true }));
+    const label = page.locator('[data-grid-entry="noty"]');
+    await label.scrollIntoViewIfNeeded();
+    const box = await label.boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width / 2 + 55, box.y + box.height / 2, { steps: 5 });
+    await expect(page.locator('[data-grid-dragging="true"]')).toHaveCount(1);
+    expect(await panel.evaluate(el => el.hasPointerCapture(window.dragPointerId))).toBe(true);
+    await page.evaluate(cancellation => {
+      if (cancellation === 'blur') window.dispatchEvent(new Event('blur'));
+      else document.querySelector('#paddock-race-root canvas').dispatchEvent(new PointerEvent('pointermove', {
+        bubbles: true, pointerType: 'mouse', pointerId: window.dragPointerId, buttons: 0, clientX: 700, clientY: 500,
+      }));
+    }, cancellation);
+    await expect(page.locator('[data-grid-dragging="true"]')).toHaveCount(0);
+    expect(await panel.evaluate(el => el.hasPointerCapture(window.dragPointerId))).toBe(false);
+    await page.mouse.up();
+  }
+  await expect(page.getByRole('combobox', { name: 'Jump to grid entry' })).toHaveValue('noty');
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await expect(page.locator('[data-grid-walk]')).toHaveAttribute('data-orientation', width === 390 ? 'vertical' : 'horizontal');
+    expect(await page.evaluate(() => JSON.stringify(window.hostRace.getSnapshot()))).toBe(paused);
+    expect(await page.evaluate(() => document.querySelector('#paddock-race-root canvas') === window.originalCanvas)).toBe(true);
+  }
+  await page.getByRole('button', { name: 'Start race', exact: true }).click();
+  await page.waitForFunction(time => window.hostRace.getSnapshot().time > time + 1, JSON.parse(paused).time);
+  await page.getByRole('button', { name: 'Stop race', exact: true }).click();
+  await expect(page.getByRole('combobox', { name: 'Jump to grid entry' })).toHaveValue('noty');
+  await page.locator('[data-grid-project-banner]').getByRole('link', { name: 'View project' }).click();
+  await expect(page).toHaveURL(/project_details\/project-noty\.html$/);
+});
+
 test('mobile navigation follows the real Apps anchor and closes correctly on the new route', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await quietNavigation(page, '/');

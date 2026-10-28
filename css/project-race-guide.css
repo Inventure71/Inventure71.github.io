@@ -37,6 +37,7 @@ project-race-guide {
   color: var(--pf-race-flag-color);
   overflow: hidden;
   background: var(--pf-race-flag-texture) 0 0 / 0.65rem 0.65rem;
+  mask: url("../assets/race-flag-mask.svg") center / 100% 100% no-repeat;
 }
 
 .pf-race-guide__marker::after {

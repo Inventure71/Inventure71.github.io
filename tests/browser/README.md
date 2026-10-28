@@ -20,6 +20,9 @@ WebGL startup failure followed by retry of the same cached integration module.
 It also checks standalone startup and every sitemap/canonical/social-image
 URL against the local files. The shared visibility observer's hidden-document
 event path retains unit coverage; headless tabs do not reliably become hidden.
+Grid Walk coverage includes captured-drag cancellation on controlled window blur
+and no-button movement, exact paused state through resizing, resumed progress,
+preserved selection, and ordinary project-link navigation.
 
 These replace the gallery source-string assertions and retired shell/reveal/
 reading-progress assertions. Existing discovery, data, media, asset-budget,
