@@ -278,6 +278,8 @@ test('actual renderer startup failure releases controls; retry reuses cached mod
   await expect(page.locator('[data-paddock-preview]')).toBeHidden();
   await expect(page.locator('#paddock-race-root')).toHaveAttribute('aria-hidden', 'false');
   await expect(page.locator('#paddock-race-root canvas')).toHaveCount(1);
+  await expect(page.getByRole('button', { name: 'Stop race', exact: true })).toBeEnabled();
+  await page.getByRole('button', { name: 'Stop race', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Start race', exact: true })).toBeEnabled();
   await expect(page.getByRole('combobox', { name: 'Jump to grid entry' })).toHaveValue('core');
   await expect(page.locator('[data-grid-project-banner] a')).toHaveAttribute('href', '/project_details/project-gengame.html');
@@ -291,7 +293,7 @@ test('standalone simulator still auto-mounts', async ({ page }) => {
   await page.goto('/f1-simulator.html');
   await expect(page.locator('#f1-simulator-root canvas')).toHaveCount(1, { timeout: 30000 });
   expect(await page.locator('#f1-simulator-root').getAttribute('data-simulator-state')).not.toBe('error');
-  await expect(page.getByRole('button', { name: 'Start race', exact: true })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Stop race', exact: true })).toBeEnabled();
 });
 
 test('mobile navigation follows the real Apps anchor and closes correctly on the new route', async ({ page }) => {

@@ -3,6 +3,9 @@ const PROJECT_RACE_GUIDE_DEFAULTS = {
   lead: 'Each car is a project.',
   action: 'Click a car',
   tail: 'to explore it.',
+  browseLead: 'Use',
+  browseAction: 'Stop race',
+  browseTail: 'to explore the cars at your own pace.',
 };
 
 function escapeHtml(value) {
@@ -31,6 +34,10 @@ export function buildProjectRaceGuideMarkup(options = {}) {
                             </p>
                         </div>
                     </div>
+                    <p class="pf-race-guide__headline pf-race-guide__browse">
+                        ${escapeHtml(content.browseLead)} <strong>${escapeHtml(content.browseAction)}</strong>
+                        ${escapeHtml(content.browseTail)}
+                    </p>
                 </section>`;
 }
 

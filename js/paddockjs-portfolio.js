@@ -41,7 +41,7 @@ const portfolioOptions = {
   entries: PORTFOLIO_ENTRIES,
   rules: raceRules,
   physicsMode: 'arcade',
-  gridWalk: { enabled: true, initialView: 'grid-walk' },
+  gridWalk: { enabled: true, initialView: 'race' },
   ui: { viewControls: 'toggle' },
   theme: getPaddockTheme(),
   title: 'F1 Simulator Lab',
