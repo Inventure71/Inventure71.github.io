@@ -35,31 +35,21 @@ project-race-guide {
   width: var(--pf-race-flag-width);
   height: var(--pf-race-flag-height);
   color: var(--pf-race-flag-color);
-}
-
-.pf-race-guide__marker::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 1px;
-  background: currentColor;
+  overflow: hidden;
+  background: var(--pf-race-flag-texture) 0 0 / 0.65rem 0.65rem;
 }
 
 .pf-race-guide__marker::after {
   content: "";
   position: absolute;
-  inset: 0.05rem 0 0.3rem 1px;
-  background:
-    linear-gradient(100deg, #ffffff30, transparent 30%, #00000020 65%, #ffffff20) 0 0 / 100% 100%,
-    var(--pf-race-flag-texture) 0 0 / 0.65rem 0.65rem;
-  clip-path: polygon(0 0, 50% 4%, 100% 14%, 100% 86%, 50% 95%, 0 100%);
-  transform-origin: left center;
-  animation: pf-race-flag-wave 2.8s ease-in-out infinite;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 18%, #ffffff24 38%, #00000018 58%, transparent 80%);
+  animation: pf-race-flag-wave 2.6s linear infinite;
 }
 
 @keyframes pf-race-flag-wave {
-  0%, 100% { transform: perspective(8rem) rotateY(-12deg) skewY(-2deg); }
-  50% { transform: perspective(8rem) rotateY(12deg) skewY(2deg); }
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
 }
 
 .pf-race-guide__headline {
@@ -93,10 +83,6 @@ project-race-guide {
   width: var(--pf-race-flag-width);
   height: var(--pf-race-flag-height);
   color: var(--pf-race-flag-color);
-}
-
-.pf-shell:has([data-paddock-shell]:not([data-simulator-state="ready"])) :is(.pf-race-guide__status, .pf-race-guide__marker) {
-  visibility: hidden;
 }
 
 .pf-race-guide:has([data-race-status="loading"], [data-race-status="starting"], [data-race-status="safety-car"]) {

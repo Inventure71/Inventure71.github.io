@@ -27,6 +27,12 @@ for (const width of [1440, 390]) {
         await quietNavigation(page, route);
         await page.evaluate(theme => window.MGTheme?.apply?.(theme), theme);
         await expect(page.locator('h1')).toBeVisible();
+        if (route.startsWith('/projects.html')) {
+          // The flags remain visible before the lazy simulator starts.
+          await expect(page.locator('[data-paddock-shell]')).toHaveAttribute('data-simulator-state', 'preview');
+          await expect(page.locator('.pf-race-guide__marker').first()).toBeVisible();
+          await expect(page.locator('.pf-race-guide__marker').last()).toBeVisible();
+        }
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
         const skip = page.getByRole('link', { name: 'Skip to content', exact: true });
         await page.keyboard.press('Tab');
