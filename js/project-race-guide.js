@@ -28,7 +28,7 @@ export function buildProjectRaceGuideMarkup(options = {}) {
   return `
                 <section class="pf-race-guide" aria-label="${escapeHtml(content.ariaLabel)}">
                     <div class="pf-race-guide__copy">
-                        <span class="pf-race-guide__marker" aria-hidden="true"></span>
+                        <span class="pf-race-guide__marker" aria-hidden="true"><span class="pf-race-guide__fabric"></span></span>
                         <div>
                             <p class="pf-race-guide__headline">
                                 ${escapeHtml(content.lead)} <strong>${escapeHtml(content.action)}</strong>
@@ -46,7 +46,7 @@ export function buildProjectRaceGuideMarkup(options = {}) {
                             ${escapeHtml(content.resumeTail)}
                         </p>
                         <span class="pf-race-guide__status" data-race-status="loading" role="status">
-                            <span class="pf-race-guide__marker pf-race-guide__flag" aria-hidden="true"></span>
+                            <span class="pf-race-guide__marker pf-race-guide__flag" aria-hidden="true"><span class="pf-race-guide__fabric"></span></span>
                             <span class="pf-race-guide__status-label" data-race-status-label>Loading</span>
                             <span class="pf-race-guide__status-label pf-race-guide__paused-label">Paused</span>
                         </span>
