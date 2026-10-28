@@ -36,14 +36,21 @@ export function buildProjectRaceGuideMarkup(options = {}) {
                             </p>
                         </div>
                     </div>
-                    <p class="pf-race-guide__headline pf-race-guide__browse">
-                        ${escapeHtml(content.browseLead)} <strong>${escapeHtml(content.browseAction)}</strong>
-                        ${escapeHtml(content.browseTail)}
-                    </p>
-                    <p class="pf-race-guide__headline pf-race-guide__browse pf-race-guide__browse--stopped">
-                        ${escapeHtml(content.browseLead)} <strong>${escapeHtml(content.resumeAction)}</strong>
-                        ${escapeHtml(content.resumeTail)}
-                    </p>
+                    <div class="pf-race-guide__right">
+                        <p class="pf-race-guide__headline pf-race-guide__browse">
+                            ${escapeHtml(content.browseLead)} <strong>${escapeHtml(content.browseAction)}</strong>
+                            ${escapeHtml(content.browseTail)}
+                        </p>
+                        <p class="pf-race-guide__headline pf-race-guide__browse pf-race-guide__browse--stopped">
+                            ${escapeHtml(content.browseLead)} <strong>${escapeHtml(content.resumeAction)}</strong>
+                            ${escapeHtml(content.resumeTail)}
+                        </p>
+                        <span class="pf-race-guide__status" data-race-status="loading" role="status">
+                            <span class="pf-race-guide__marker pf-race-guide__flag" aria-hidden="true"></span>
+                            <span class="pf-race-guide__status-label" data-race-status-label>Loading</span>
+                            <span class="pf-race-guide__status-label pf-race-guide__paused-label">Paused</span>
+                        </span>
+                    </div>
                 </section>`;
 }
 

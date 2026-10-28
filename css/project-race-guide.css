@@ -5,6 +5,11 @@ project-race-guide {
 
 .pf-race-guide {
   --pf-race-stop: #c40000;
+  --pf-race-caution: #a26b00;
+  --pf-race-flag-color: var(--pf-accent-2);
+  --pf-race-flag-texture: linear-gradient(var(--pf-race-flag-color), var(--pf-race-flag-color));
+  --pf-race-flag-width: 2.75rem;
+  --pf-race-flag-height: 1.65rem;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
@@ -24,10 +29,37 @@ project-race-guide {
 }
 
 .pf-race-guide__marker {
-  width: 2.75rem;
-  height: 1.65rem;
-  background: conic-gradient(#f7f4ec 25%, #171717 0 50%, #f7f4ec 0 75%, #171717 0) 0 0 / 0.65rem 0.65rem;
-  clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--pf-race-flag-width);
+  height: var(--pf-race-flag-height);
+  color: var(--pf-race-flag-color);
+}
+
+.pf-race-guide__marker::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: currentColor;
+}
+
+.pf-race-guide__marker::after {
+  content: "";
+  position: absolute;
+  inset: 0.05rem 0 0.3rem 1px;
+  background:
+    linear-gradient(100deg, #ffffff30, transparent 30%, #00000020 65%, #ffffff20) 0 0 / 100% 100%,
+    var(--pf-race-flag-texture) 0 0 / 0.65rem 0.65rem;
+  clip-path: polygon(0 0, 50% 4%, 100% 14%, 100% 86%, 50% 95%, 0 100%);
+  transform-origin: left center;
+  animation: pf-race-flag-wave 2.8s ease-in-out infinite;
+}
+
+@keyframes pf-race-flag-wave {
+  0%, 100% { transform: perspective(8rem) rotateY(-12deg) skewY(-2deg); }
+  50% { transform: perspective(8rem) rotateY(12deg) skewY(2deg); }
 }
 
 .pf-race-guide__headline {
@@ -48,8 +80,61 @@ project-race-guide {
   text-align: right;
 }
 
+.pf-race-guide__right {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.pf-race-guide__status {
+  flex: none;
+  width: var(--pf-race-flag-width);
+  height: var(--pf-race-flag-height);
+  color: var(--pf-race-flag-color);
+}
+
+.pf-shell:has([data-paddock-shell]:not([data-simulator-state="ready"])) :is(.pf-race-guide__status, .pf-race-guide__marker) {
+  visibility: hidden;
+}
+
+.pf-race-guide:has([data-race-status="loading"], [data-race-status="starting"], [data-race-status="safety-car"]) {
+  --pf-race-flag-color: var(--pf-race-caution);
+}
+
+.pf-race-guide:has([data-race-status="red-flag"]) {
+  --pf-race-flag-color: var(--pf-race-stop);
+}
+
+.pf-race-guide:has([data-race-status="finished"]) {
+  --pf-race-flag-color: var(--pf-ink);
+  --pf-race-flag-texture: conic-gradient(#f7f4ec 25%, #171717 0 50%, #f7f4ec 0 75%, #171717 0);
+}
+
+.pf-race-guide__flag {
+  display: block;
+  margin: 0;
+  transform: scaleX(-1);
+}
+
+.pf-race-guide__status-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.pf-race-guide__paused-label {
+  display: none;
+}
+
 :root[data-theme="dark"] .pf-race-guide {
   --pf-race-stop: #ff6b6b;
+  --pf-race-caution: #f4b84a;
 }
 
 .pf-race-guide__browse strong {
@@ -73,19 +158,39 @@ project-race-guide {
   display: block;
 }
 
+.pf-shell:has([data-paddock-shell] [data-grid-action="start"]) .pf-race-guide:not(:has([data-race-status="finished"])) {
+  --pf-race-flag-color: var(--pf-race-stop);
+}
+
+.pf-shell:has([data-paddock-shell] [data-grid-action="start"]) .pf-race-guide:not(:has([data-race-status="finished"])) [data-race-status-label] {
+  display: none;
+}
+
+.pf-shell:has([data-paddock-shell] [data-grid-action="start"]) .pf-race-guide:not(:has([data-race-status="finished"])) .pf-race-guide__paused-label {
+  display: inline;
+}
+
 @media (max-width: 720px) {
   .pf-race-guide {
+    --pf-race-flag-width: clamp(2rem, 8vw, 2.75rem);
+    --pf-race-flag-height: clamp(1.25rem, 5vw, 1.65rem);
     gap: 0.75rem;
   }
 
   .pf-race-guide__copy {
     grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
+    align-items: center;
   }
 
-  .pf-race-guide__marker {
-    width: clamp(2rem, 8vw, 2.75rem);
-    height: clamp(1.25rem, 5vw, 1.65rem);
-    margin-top: 0.2rem;
+  .pf-race-guide__right {
+    gap: 0.5rem;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-race-guide__marker::after {
+    animation: none;
+    transform: none;
   }
 }

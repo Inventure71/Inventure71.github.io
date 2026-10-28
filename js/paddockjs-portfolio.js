@@ -5,6 +5,7 @@ import {
 import { PORTFOLIO_DRIVERS, PORTFOLIO_ENTRIES } from './portfolio-race-data.js';
 import { setPaddockShellState, syncPaddockShellLayout } from './paddockjs-boot-state.js';
 import { getPaddockTheme, installPaddockThemeSync } from './paddockjs-theme-sync.js';
+import { observeProjectRaceStatus, updateProjectRaceStatus } from './project-race-status.js';
 
 const root = document.getElementById('f1-simulator-root');
 const paddockShell = document.querySelector('[data-paddock-shell]');
@@ -84,7 +85,7 @@ export function initializeProjectsRace(shell = paddockShell) {
   if (existing?.teardown) return existing.teardown.then(() => initializeProjectsRace(shell));
   if (existing) return existing.promise;
 
-  const session = { simulator: null, stopTheme: () => {} };
+  const session = { simulator: null, stopTheme: () => {}, stopStatus: () => {} };
   sessions.set(raceRoot, session);
   session.promise = Promise.resolve().then(async () => {
     syncPaddockShellLayout(shell, projectSimulatorUi);
@@ -95,6 +96,9 @@ export function initializeProjectsRace(shell = paddockShell) {
         showBackLink: false,
         ui: { ...portfolioOptions.ui, ...projectSimulatorUi },
         theme: getPaddockTheme(),
+        onReady: ({ snapshot }) => updateProjectRaceStatus(shell, snapshot),
+        onRaceEvent: (_event, snapshot) => updateProjectRaceStatus(shell, snapshot),
+        onRaceFinish: ({ snapshot }) => updateProjectRaceStatus(shell, snapshot),
       });
       session.simulator = simulator;
       simulator.mountRaceTelemetryDrawer(raceRoot, {
@@ -102,6 +106,7 @@ export function initializeProjectsRace(shell = paddockShell) {
         raceDataTelemetryDetail: projectSimulatorUi.raceDataTelemetryDetail,
       });
       await simulator.start();
+      session.stopStatus = observeProjectRaceStatus(shell, simulator, raceRoot);
       session.stopTheme = installPaddockThemeSync(simulator);
       if (!session.teardown) setPaddockShellState(shell, 'ready');
       return simulator;
@@ -120,6 +125,7 @@ function releaseSession(raceRoot, session) {
   if (sessions.get(raceRoot) !== session) return;
   sessions.delete(raceRoot);
   session.stopTheme();
+  session.stopStatus();
   try { session.simulator?.destroy(); }
   catch (error) { console.error('PaddockJS cleanup failed.', error); }
   raceRoot.replaceChildren();

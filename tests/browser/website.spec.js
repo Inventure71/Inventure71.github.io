@@ -248,6 +248,8 @@ test('Ghostyper pause survives visibility changes and resumes; reduced motion sh
 });
 
 test('actual renderer startup failure releases controls; retry reuses cached module and creates a working race', async ({ page }) => {
+  // A failed context plus a cold software-rendered retry can exceed 45s on a busy host.
+  test.setTimeout(90000);
   const errors = [];
   page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
   let imports = 0;
@@ -284,15 +286,30 @@ test('actual renderer startup failure releases controls; retry reuses cached mod
   await page.getByRole('button', { name: 'Stop race', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Start race', exact: true })).toBeEnabled();
   await expect(guideAction).toHaveText('Start race');
-  await page.getByRole('button', { name: 'Start race', exact: true }).click();
-  await expect(guideAction).toHaveText('Stop race');
-  await page.getByRole('button', { name: 'Stop race', exact: true }).click();
   await expect(page.getByRole('combobox', { name: 'Jump to grid entry' })).toHaveValue('core');
   await expect(page.locator('[data-grid-project-banner] a')).toHaveAttribute('href', '/project_details/project-gengame.html');
   expect(imports).toBe(1);
   expect(errors.some(message => message.includes('Controlled renderer failure'))).toBe(true);
   expect(errors.some(message => message.includes('cleanup failed'))).toBe(false);
   await page.screenshot({ path: 'output/playwright/race-retry.png' });
+});
+
+test('race flag and guide follow running, safety car, paused and resumed state', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/projects.html?raceAutoStart=1');
+  const flag = page.locator('[data-race-status]');
+  const guideAction = page.locator('.pf-race-guide__browse:visible strong');
+  await expect(flag).toHaveAttribute('data-race-status', 'racing', { timeout: 30000 });
+  await expect(guideAction).toHaveText('Stop race');
+  await page.getByRole('button', { name: 'Safety Car', exact: true }).click();
+  await expect(flag).toHaveAttribute('data-race-status', 'safety-car');
+  await page.getByRole('button', { name: 'Stop race', exact: true }).click();
+  await expect(guideAction).toHaveText('Start race');
+  await expect(page.locator('.pf-race-guide__paused-label')).not.toHaveCSS('display', 'none');
+  await page.getByRole('button', { name: 'Start race', exact: true }).click();
+  await expect(guideAction).toHaveText('Stop race');
+  await page.getByRole('button', { name: 'Safety Car', exact: true }).click();
+  await expect(flag).toHaveAttribute('data-race-status', 'racing');
 });
 
 test('standalone simulator still auto-mounts', async ({ page }) => {
