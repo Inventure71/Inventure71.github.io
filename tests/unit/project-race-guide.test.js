@@ -11,6 +11,8 @@ describe('project race guide component', () => {
     expect(markup).toContain('to explore it.');
     expect(markup).toContain('<strong>Stop race</strong>');
     expect(markup).toContain('to explore the cars at your own pace.');
+    expect(markup).toContain('<strong>Start race</strong>');
+    expect(markup).toContain('to see the cars in action.');
     expect(markup).toContain('aria-hidden="true"');
     expect(markup).not.toContain('pf-race-guide__hints');
   });

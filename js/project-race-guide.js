@@ -6,6 +6,8 @@ const PROJECT_RACE_GUIDE_DEFAULTS = {
   browseLead: 'Use',
   browseAction: 'Stop race',
   browseTail: 'to explore the cars at your own pace.',
+  resumeAction: 'Start race',
+  resumeTail: 'to see the cars in action.',
 };
 
 function escapeHtml(value) {
@@ -37,6 +39,10 @@ export function buildProjectRaceGuideMarkup(options = {}) {
                     <p class="pf-race-guide__headline pf-race-guide__browse">
                         ${escapeHtml(content.browseLead)} <strong>${escapeHtml(content.browseAction)}</strong>
                         ${escapeHtml(content.browseTail)}
+                    </p>
+                    <p class="pf-race-guide__headline pf-race-guide__browse pf-race-guide__browse--stopped">
+                        ${escapeHtml(content.browseLead)} <strong>${escapeHtml(content.resumeAction)}</strong>
+                        ${escapeHtml(content.resumeTail)}
                     </p>
                 </section>`;
 }
