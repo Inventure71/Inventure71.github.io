@@ -4,9 +4,9 @@ project-race-guide {
 }
 
 .pf-race-guide {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
-  justify-content: space-between;
   gap: 1rem 2rem;
   margin: 0 0 1.5rem;
   padding: 1rem 0;
@@ -14,7 +14,8 @@ project-race-guide {
 }
 
 .pf-race-guide__copy {
-  flex: 1 1 24rem;
+  min-width: 0;
+  text-align: left;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.85rem;
@@ -42,25 +43,18 @@ project-race-guide {
 }
 
 .pf-race-guide__browse {
-  flex: 0 1 26rem;
+  min-width: 0;
   text-align: right;
 }
 
 @media (max-width: 720px) {
   .pf-race-guide {
-    flex-direction: column;
-    align-items: stretch;
     gap: 0.75rem;
   }
 
   .pf-race-guide__copy {
-    flex: none;
     grid-template-columns: auto minmax(0, 1fr);
     align-items: start;
-  }
-
-  .pf-race-guide__browse {
-    flex: none;
   }
 
   .pf-race-guide__marker {
