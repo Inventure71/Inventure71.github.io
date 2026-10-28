@@ -34,6 +34,7 @@ import { projectMapItems } from './project-map-data.js';
     let hoveredNode = null;
     let selectedNode = null;
     let draggedNode = null;
+    let cancelTopicDrag = null;
     
     // Mouse interaction
     const mouse = { x: 0, y: 0, isDown: false };
@@ -110,14 +111,27 @@ import { projectMapItems } from './project-map-data.js';
             button.setAttribute('aria-expanded', 'false');
             button.style.setProperty('--topic-color', node.color);
             let dragStart = null, moved = false;
+            const releaseDrag = () => {
+                if (!dragStart) return;
+                const { pointerId } = dragStart;
+                dragStart = null;
+                if (cancelTopicDrag === releaseDrag) cancelTopicDrag = null;
+                if (draggedNode === node) draggedNode = null;
+                if (button.hasPointerCapture(pointerId)) button.releasePointerCapture(pointerId);
+                wake();
+            };
             button.addEventListener('pointerdown', (event) => {
                 if (event.button !== 0) return;
-                dragStart = { x: event.clientX, y: event.clientY, nodeX: node.x, nodeY: node.y };
+                cancelTopicDrag?.();
+                dragStart = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, nodeX: node.x, nodeY: node.y };
+                cancelTopicDrag = releaseDrag;
                 moved = false;
                 button.setPointerCapture(event.pointerId);
             });
             button.addEventListener('pointermove', (event) => {
-                if (!dragStart || event.pointerType === 'touch') return;
+                if (!dragStart || event.pointerId !== dragStart.pointerId) return;
+                if (event.buttons === 0) { releaseDrag(); return; }
+                if (event.pointerType === 'touch') return;
                 const dx = event.clientX - dragStart.x, dy = event.clientY - dragStart.y;
                 if (Math.hypot(dx, dy) < 5) return;
                 moved = true;
@@ -127,14 +141,12 @@ import { projectMapItems } from './project-map-data.js';
                 node.vx = node.vy = 0;
                 wake();
             });
-            const releaseDrag = () => {
-                dragStart = null;
-                if (draggedNode === node) draggedNode = null;
-                wake();
+            const releasePointer = (event) => {
+                if (event.pointerId === dragStart?.pointerId) releaseDrag();
             };
-            button.addEventListener('pointerup', releaseDrag);
-            button.addEventListener('pointercancel', releaseDrag);
-            button.addEventListener('lostpointercapture', releaseDrag);
+            button.addEventListener('pointerup', releasePointer);
+            button.addEventListener('pointercancel', releasePointer);
+            button.addEventListener('lostpointercapture', releasePointer);
             button.addEventListener('click', () => { if (!moved) selectNode(node); moved = false; });
             button.addEventListener('focus', () => { hoveredNode = node; wake(); });
             button.addEventListener('pointerenter', () => { hoveredNode = node; wake(); });
@@ -176,6 +188,7 @@ import { projectMapItems } from './project-map-data.js';
         canvas.addEventListener('mouseup', onMouseUp);
         canvas.addEventListener('mouseleave', onMouseUp);
         canvas.addEventListener('click', onClick);
+        window.addEventListener('blur', () => { cancelTopicDrag?.(); onMouseUp(); });
         closeBtn.addEventListener('click', closeOverlay);
 
         container.addEventListener('keydown', (event) => {
@@ -191,6 +204,8 @@ import { projectMapItems } from './project-map-data.js';
         observeElementActivity(container, (value) => {
             active = value;
             if (!active) {
+                cancelTopicDrag?.();
+                onMouseUp();
                 if (animationId !== null) cancelAnimationFrame(animationId);
                 animationId = null;
                 lastFrameTime = null;
@@ -397,6 +412,7 @@ import { projectMapItems } from './project-map-data.js';
 
     // --- Interaction Handlers ---
     function onMouseMove(e) {
+        if (draggedNode && e.buttons === 0) onMouseUp();
         wake();
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;

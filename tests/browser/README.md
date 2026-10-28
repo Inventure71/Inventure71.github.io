@@ -23,6 +23,8 @@ event path retains unit coverage; headless tabs do not reliably become hidden.
 Grid Walk coverage includes captured-drag cancellation on controlled window blur
 and no-button movement, exact paused state through resizing, resumed progress,
 preserved selection, and ordinary project-link navigation.
+Map drag recovery checks actual pointer capture followed by controlled blur,
+hidden-document and no-button interruptions, then verifies the node returns home.
 
 These replace the gallery source-string assertions and retired shell/reveal/
 reading-progress assertions. Existing discovery, data, media, asset-budget,

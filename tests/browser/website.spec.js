@@ -205,6 +205,8 @@ test('dragged map topics push their neighbors and both return home without openi
       await document.fonts.ready;
       await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     });
+    // Hover waits for the rendered target and holds its ambient drift still.
+    await topic.hover({ position: { x: 72, y: 42 } });
     const original = await topic.boundingBox();
     const neighbor = page.locator('.neuron-topic').nth(1);
     const neighborOriginal = await neighbor.boundingBox();
@@ -227,6 +229,41 @@ test('dragged map topics push their neighbors and both return home without openi
     if (reducedMotion === 'no-preference') expect(await distance()).toBeGreaterThan(50);
     await expect.poll(distance).toBeLessThan(14);
     await expect.poll(neighborDistance).toBeLessThan(14);
+  }
+});
+
+test('map drag releases capture on blur and missed mouseup, then returns home', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/tags.html', { waitUntil: 'load' });
+  await page.evaluate(() => document.fonts.ready);
+  const topic = page.locator('.neuron-topic').first();
+  for (const cancellation of ['blur', 'no-buttons', 'hidden']) {
+    await topic.hover({ position: { x: 72, y: 42 } });
+    const original = await topic.boundingBox();
+    await topic.evaluate(node => node.addEventListener('pointerdown', event => { window.mapPointerId = event.pointerId; }, { once: true }));
+    await page.mouse.down();
+    await page.mouse.move(original.x + original.width / 2 + 110, original.y + 42, { steps: 6 });
+    expect(await topic.evaluate(node => node.hasPointerCapture(window.mapPointerId))).toBe(true);
+    await expect.poll(async () => (await topic.boundingBox()).x - original.x).toBeGreaterThan(80);
+    await topic.evaluate((node, cancellation) => {
+      if (cancellation === 'blur') window.dispatchEvent(new Event('blur'));
+      else if (cancellation === 'hidden') {
+        Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
+        document.dispatchEvent(new Event('visibilitychange'));
+      } else node.dispatchEvent(new PointerEvent('pointermove', {
+        bubbles: true, pointerType: 'mouse', pointerId: window.mapPointerId, buttons: 0, clientX: 700, clientY: 500,
+      }));
+    }, cancellation);
+    expect(await topic.evaluate(node => node.hasPointerCapture(window.mapPointerId))).toBe(false);
+    await page.mouse.up();
+    if (cancellation === 'hidden') await page.evaluate(() => {
+      delete document.visibilityState;
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    await expect.poll(async () => Math.abs((await topic.boundingBox()).x - original.x)).toBeLessThan(4);
+    await page.mouse.move(original.x + 300, original.y + 42);
+    await expect.poll(async () => Math.abs((await topic.boundingBox()).x - original.x)).toBeLessThan(4);
+    await expect(page.locator('.neuron-overlay')).not.toHaveClass(/active/);
   }
 });
 
