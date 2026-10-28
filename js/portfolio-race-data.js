@@ -235,8 +235,17 @@ const entriesById = new Map([
   ...additionalEntrySpecs.map(createBalancedEntry),
 ].map((entry) => [entry.driverId, entry]));
 
-export const PORTFOLIO_ENTRIES = PORTFOLIO_DRIVERS.map(({ id }) => {
+export const PORTFOLIO_ENTRIES = PORTFOLIO_DRIVERS.map(({ id, link }) => {
   const entry = entriesById.get(id);
   if (!entry) throw new Error(`Race entry missing for project: ${id}`);
-  return entry;
+  const project = catalogByHref.get(link);
+  return {
+    ...entry,
+    presentation: {
+      name: project.label,
+      summary: project.description,
+      href: project.href,
+      linkLabel: 'View project',
+    },
+  };
 });

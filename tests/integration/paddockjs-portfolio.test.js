@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 import { PORTFOLIO_DRIVERS, PORTFOLIO_ENTRIES } from '../../js/portfolio-race-data.js';
+import { projectCommandItems } from '../../js/playfolio/catalog.js';
 
 const sourcePath = fileURLToPath(new URL('../../js/paddockjs-portfolio.js', import.meta.url));
 const themeSyncPath = fileURLToPath(new URL('../../js/paddockjs-theme-sync.js', import.meta.url));
@@ -41,6 +42,19 @@ describe('PaddockJS project race integration', () => {
     expect(driverIds).not.toContain('safeway');
     expect(new Set(PORTFOLIO_ENTRIES.map((entry) => entry.driverNumber)).size)
       .toBe(PORTFOLIO_ENTRIES.length);
+  });
+
+  test('every Grid Walk entry uses the real portfolio name, summary and ordinary destination', () => {
+    for (const [index, entry] of PORTFOLIO_ENTRIES.entries()) {
+      const driver = PORTFOLIO_DRIVERS[index];
+      const project = projectCommandItems.find(project => project.href === driver.link);
+      expect(entry.presentation).toEqual({
+        name: project.label,
+        summary: project.description,
+        href: project.href,
+        linkLabel: 'View project',
+      });
+    }
   });
 
   test('uses the package-owned telemetry drawer instead of detached safety controls', () => {

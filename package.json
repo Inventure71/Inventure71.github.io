@@ -17,8 +17,7 @@
     "test:browser": "playwright test"
   },
   "dependencies": {
-    "@inventure71/paddockjs": "^4.1.0",
-    "pixi.js": "8.18.1"
+    "@inventure71/paddockjs": "4.3.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

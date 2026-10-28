@@ -193,6 +193,8 @@ test('dragged map topics push their neighbors and both return home without openi
     await quietNavigation(page, '/tags.html');
     const topic = page.locator('.neuron-topic').first();
     await expect(topic).toBeVisible();
+    // Late font stylesheets can reflow the intro and move the whole graph.
+    await page.waitForLoadState('load');
     await page.evaluate(async () => {
       await document.fonts.ready;
       await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -276,6 +278,9 @@ test('actual renderer startup failure releases controls; retry reuses cached mod
   await expect(page.locator('[data-paddock-preview]')).toBeHidden();
   await expect(page.locator('#paddock-race-root')).toHaveAttribute('aria-hidden', 'false');
   await expect(page.locator('#paddock-race-root canvas')).toHaveCount(1);
+  await expect(page.getByRole('button', { name: 'Start race', exact: true })).toBeEnabled();
+  await expect(page.getByRole('combobox', { name: 'Jump to grid entry' })).toHaveValue('core');
+  await expect(page.locator('[data-grid-project-banner] a')).toHaveAttribute('href', '/project_details/project-gengame.html');
   expect(imports).toBe(1);
   expect(errors.some(message => message.includes('Controlled renderer failure'))).toBe(true);
   expect(errors.some(message => message.includes('cleanup failed'))).toBe(false);
@@ -286,6 +291,7 @@ test('standalone simulator still auto-mounts', async ({ page }) => {
   await page.goto('/f1-simulator.html');
   await expect(page.locator('#f1-simulator-root canvas')).toHaveCount(1, { timeout: 30000 });
   expect(await page.locator('#f1-simulator-root').getAttribute('data-simulator-state')).not.toBe('error');
+  await expect(page.getByRole('button', { name: 'Start race', exact: true })).toBeEnabled();
 });
 
 test('mobile navigation follows the real Apps anchor and closes correctly on the new route', async ({ page }) => {

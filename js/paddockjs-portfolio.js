@@ -41,6 +41,8 @@ const portfolioOptions = {
   entries: PORTFOLIO_ENTRIES,
   rules: raceRules,
   physicsMode: 'arcade',
+  gridWalk: { enabled: true, initialView: 'grid-walk' },
+  ui: { viewControls: 'toggle' },
   theme: getPaddockTheme(),
   title: 'F1 Simulator Lab',
   kicker: 'Race Control',
@@ -91,7 +93,7 @@ export function initializeProjectsRace(shell = paddockShell) {
       const simulator = createPaddockSimulator({
         ...portfolioOptions,
         showBackLink: false,
-        ui: projectSimulatorUi,
+        ui: { ...portfolioOptions.ui, ...projectSimulatorUi },
         theme: getPaddockTheme(),
       });
       session.simulator = simulator;
