@@ -166,7 +166,7 @@ describe('local navbar collapse', () => {
     ).filter((html) => html.includes('playfolio-page'));
     expect(pages.length).toBeGreaterThan(20);
     for (const html of pages) {
-      expect(html).toContain('<script defer src="/js/navbar.js"></script>');
+      expect(html).toContain('<script defer src="/js/navbar.js?v=v9-content-fit"></script>');
       expect(html).not.toContain('bootstrap.bundle');
     }
   });

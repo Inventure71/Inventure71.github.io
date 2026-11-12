@@ -36,7 +36,11 @@ first-screen downloads do not wait behind the stylesheet queue.
   while its complete walkthrough remains readable without JavaScript.
 - Reveal setup only arms content below the viewport, so late initialization or
   a restored scroll position cannot hide content already on screen.
-- `js/navbar.js` owns mobile collapse; the site does not require Bootstrap JS.
+- `js/navbar.js` owns navigation fit and mobile collapse; the site does not require
+  Bootstrap JS. It measures the actual brand, links and tools, reserving one square
+  control's width between Ask AI and the links. It hides the command button before
+  collapsing the menu, and rechecks on width, font and label changes. Keyboard focus
+  moves to a visible control when its previous target becomes hidden.
 - `js/playfolio/init.js` imports homepage motion and project selection only when
   their elements exist.
 - `js/playfolio/visibility.js` combines intersection and document visibility.
