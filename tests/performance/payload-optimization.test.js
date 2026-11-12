@@ -73,8 +73,8 @@ describe('payload optimization contracts', () => {
 
     expect(html).not.toMatch(/<source[^>]+\ssrc="\/assets\/brand\/codex\/codex-logo-ambassador-animated[^"\n]*\.webm"/);
     expect(html).toContain('data-deferred-video');
-    expect(html).toContain('data-src="/assets/brand/codex/codex-logo-ambassador-animated-160.webm"');
-    expect(readFileSync(new URL('assets/brand/codex/codex-logo-ambassador-animated-160.webm', repoRoot)).length).toBeLessThan(200 * 1024);
+    expect(html).toContain('data-src="/assets/brand/codex/codex-logo-ambassador-animated-160-alpha.webm"');
+    expect(readFileSync(new URL('assets/brand/codex/codex-logo-ambassador-animated-160-alpha.webm', repoRoot)).length).toBeLessThan(400 * 1024);
     expect(html).toContain('preload="none"');
   });
 

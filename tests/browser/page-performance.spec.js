@@ -1,5 +1,38 @@
 import { test, expect } from '@playwright/test';
 
+test('the playing Codex logo retains transparency throughout its animation', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  const video = page.locator('[data-codex-ambassador-logo] video');
+  await video.scrollIntoViewIfNeeded();
+  await expect.poll(() => video.evaluate(v => v.readyState >= 2 && !v.paused), { timeout: 15000 }).toBe(true);
+  const frames = await video.evaluate(async v => {
+    v.pause();
+    const canvas = document.createElement('canvas');
+    canvas.width = v.videoWidth;
+    canvas.height = v.videoHeight;
+    const context = canvas.getContext('2d');
+    const samples = [];
+    for (const time of [0.1, 5, 18, 35]) {
+      await new Promise(resolve => { v.addEventListener('seeked', resolve, { once: true }); v.currentTime = time; });
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(v, 0, 0);
+      const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      let transparent = 0, opaque = 0;
+      for (let i = 3; i < pixels.length; i += 4) {
+        if (pixels[i] === 0) transparent++;
+        if (pixels[i] === 255) opaque++;
+      }
+      samples.push({ time, transparent, opaque });
+    }
+    return samples;
+  });
+  for (const frame of frames) {
+    expect(frame.transparent, `transparent pixels at ${frame.time}s`).toBeGreaterThan(1000);
+    expect(frame.opaque, `visible logo pixels at ${frame.time}s`).toBeGreaterThan(1000);
+  }
+});
+
 test('site fonts load locally once without an external font or icon stylesheet', async ({ page }) => {
   const requests = [];
   page.on('request', request => requests.push(request.url()));
