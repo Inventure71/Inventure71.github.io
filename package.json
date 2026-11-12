@@ -27,7 +27,7 @@
     "check:icons": "node scripts/sync-site-icons.mjs --check"
   },
   "dependencies": {
-    "@inventure71/paddockjs": "4.3.2"
+    "@inventure71/paddockjs": "4.4.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
