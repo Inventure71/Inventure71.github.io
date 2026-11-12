@@ -13,6 +13,7 @@
   --pf-accent-3: #2f6ce5;
   --pf-shadow: 0 24px 70px rgba(23, 23, 23, 0.09);
   --pf-radius: 8px;
+  --pf-nav-control-size: 2.45rem;
   --pf-max: 1180px;
   --pf-pad: clamp(1rem, 4vw, 2rem);
   --pf-section-space: clamp(2.75rem, 6vw, 4.5rem);
@@ -75,11 +76,11 @@ body.playfolio-page {
   text-underline-offset: 0.3em;
 }
 
-.pf-text-link i {
+.pf-text-link .pf-icon {
   transition: transform 180ms ease;
 }
 
-.pf-text-link:hover i {
+.pf-text-link:hover .pf-icon {
   transform: translateX(3px);
 }
 
@@ -112,6 +113,9 @@ body.playfolio-page {
 }
 
 .playfolio-page .navbar-toggler {
+  width: var(--pf-nav-control-size);
+  height: var(--pf-nav-control-size);
+  padding: 0;
   border: 1px solid var(--pf-line);
   border-radius: 6px;
   color: var(--pf-ink);
@@ -166,16 +170,121 @@ body.playfolio-page {
   gap: 5px;
 }
 
+.pf-nav-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.pf-nav-content .navbar-nav {
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.pf-nav-tools {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* The controller measures the intrinsic row, including one control of clearance
+   after Ask AI. Keep this measurement independent of the current layout mode. */
+.playfolio-page .navbar[data-nav-measuring] .navbar-collapse {
+  display: flex !important;
+  position: absolute;
+  width: max-content;
+  height: auto !important;
+  visibility: hidden;
+  pointer-events: none;
+  overflow: visible;
+  flex-basis: auto;
+}
+
+.navbar[data-nav-measuring] .pf-nav-content,
+.navbar[data-nav-layout]:not([data-nav-layout="collapsed"]) .pf-nav-content {
+  flex-direction: row;
+  flex-shrink: 0;
+}
+
+.navbar[data-nav-measuring] .navbar-nav,
+.navbar[data-nav-layout]:not([data-nav-layout="collapsed"]) .navbar-nav {
+  flex-direction: row;
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.playfolio-page .navbar[data-nav-layout]:not([data-nav-layout="collapsed"]) > .container {
+  flex-wrap: nowrap;
+}
+
+.playfolio-page .navbar[data-nav-layout]:not([data-nav-layout="collapsed"]) .navbar-collapse {
+  display: flex !important;
+  flex-basis: auto;
+}
+
+.navbar[data-nav-layout]:not([data-nav-layout="collapsed"]) .navbar-toggler,
+.navbar[data-nav-layout="compact"] [data-command-open] {
+  display: none;
+}
+
+.navbar[data-nav-measuring] [data-command-open] {
+  display: inline-flex;
+}
+
+.playfolio-page .navbar[data-nav-layout="collapsed"]:not([data-nav-measuring]) > .container {
+  flex-wrap: wrap;
+}
+
+.playfolio-page .navbar[data-nav-layout="collapsed"]:not([data-nav-measuring]) .navbar-toggler {
+  display: inline-flex;
+}
+
+.playfolio-page .navbar[data-nav-layout="collapsed"]:not([data-nav-measuring]) .navbar-collapse {
+  flex-basis: 100%;
+}
+
+.playfolio-page .navbar[data-nav-layout="collapsed"]:not([data-nav-measuring]) .navbar-collapse.collapse:not(.show) {
+  display: none !important;
+}
+
+.playfolio-page .navbar[data-nav-layout="collapsed"]:not([data-nav-measuring]) .navbar-collapse:is(.show, .collapsing) {
+  display: block !important;
+}
+
+.playfolio-page .navbar[data-nav-layout="collapsed"]:not([data-nav-measuring]) .navbar-nav {
+  flex-direction: column;
+}
+
+/* Preserve the existing wide fallback before JS runs or when it is disabled. */
+@media (min-width: 992px) {
+  .navbar:not([data-nav-layout]) .pf-nav-content {
+    flex-direction: row;
+  }
+  .navbar:not([data-nav-layout]) .navbar-nav {
+    margin-bottom: 0;
+    text-align: left;
+  }
+}
+
 .playfolio-page .nav-link:hover,
 .playfolio-page .nav-link.active {
   color: var(--pf-ink) !important;
   background: var(--pf-surface-soft);
 }
 
+.pf-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+}
+
 .playfolio-page .theme-toggle-btn,
 .pf-icon-button {
-  width: 2.45rem;
-  height: 2.45rem;
+  width: var(--pf-nav-control-size);
+  height: var(--pf-nav-control-size);
   border: 1px solid var(--pf-line);
   border-radius: 6px !important;
   background: var(--pf-surface);

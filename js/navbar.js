@@ -9,6 +9,7 @@
 
     let expanded = panel.classList.contains('show');
     let fallback;
+    let isInline = () => desktop.matches;
     const settle = () => {
       window.clearTimeout(fallback);
       panel.classList.remove('collapsing');
@@ -24,7 +25,7 @@
       toggle.setAttribute('aria-expanded', String(expanded));
       window.clearTimeout(fallback);
 
-      if (desktop.matches || reducedMotion.matches) {
+      if (isInline() || reducedMotion.matches) {
         settle();
         return;
       }
@@ -44,5 +45,55 @@
     });
     desktop.addEventListener('change', settle);
     reducedMotion.addEventListener('change', settle);
+
+    const navbar = toggle.closest?.('.navbar');
+    const row = navbar?.querySelector('.container');
+    const brand = navbar?.querySelector('.pf-brand-group');
+    const content = panel.querySelector?.('.pf-nav-content');
+    const command = content?.querySelector('[data-command-open]');
+    const theme = content?.querySelector('[data-theme-toggle]');
+    const tools = content?.querySelector('.pf-nav-tools');
+    if (!row || !brand || !command || !theme || !tools) return;
+
+    isInline = () => navbar.dataset.navLayout !== 'collapsed';
+    let frame = 0;
+    const fit = () => {
+      frame = 0;
+      // Use the real elements, out of flow and hidden only for this synchronous
+      // measurement. No duplicate links, IDs or focus targets are introduced.
+      navbar.setAttribute('data-nav-measuring', '');
+      const padding = getComputedStyle(row);
+      const available = row.clientWidth - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight);
+      const full = content.getBoundingClientRect().width;
+      const compact = full - command.getBoundingClientRect().width - parseFloat(getComputedStyle(tools).columnGap);
+      const required = brand.getBoundingClientRect().width + theme.getBoundingClientRect().width;
+      const layout = available >= required + full ? 'full'
+        : available >= required + compact ? 'compact' : 'collapsed';
+      navbar.removeAttribute('data-nav-measuring');
+      if (navbar.dataset.navLayout !== layout) {
+        const focused = document.activeElement;
+        navbar.dataset.navLayout = layout;
+        settle();
+        if (layout === 'compact' && focused === command) theme.focus({ preventScroll: true });
+        else if (layout === 'collapsed' && !expanded && panel.contains(focused)) toggle.focus({ preventScroll: true });
+        else if (layout !== 'collapsed' && focused === toggle) panel.querySelector('a')?.focus({ preventScroll: true });
+      }
+      // A stationary pointer can now cover a different item, even when the
+      // layout mode stays the same. Let the glass controller hit-test it again.
+      navbar.dispatchEvent(new Event('portfolio:navlayoutchange'));
+    };
+    const scheduleFit = () => {
+      if (!frame) frame = window.requestAnimationFrame(fit);
+    };
+    fit();
+    let observedWidth;
+    new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width === observedWidth) return;
+      observedWidth = entry.contentRect.width;
+      scheduleFit();
+    }).observe(row);
+    document.fonts?.ready.then(scheduleFit);
+    document.fonts?.addEventListener('loadingdone', scheduleFit);
+    new MutationObserver(scheduleFit).observe(content, { childList: true, characterData: true, subtree: true });
   });
 })();

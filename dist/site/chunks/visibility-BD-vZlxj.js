@@ -1,0 +1,1 @@
+function e(e,t){let n=e.ownerDocument,r=n.defaultView,i=typeof r.IntersectionObserver!=`function`,a,o=()=>{let e=i&&n.visibilityState!==`hidden`;e!==a&&(a=e,t(a))};typeof r.IntersectionObserver==`function`&&new r.IntersectionObserver(t=>{i=t.some(t=>t.target===e&&t.isIntersecting),o()}).observe(e),n.addEventListener(`visibilitychange`,o),o()}export{e as t};

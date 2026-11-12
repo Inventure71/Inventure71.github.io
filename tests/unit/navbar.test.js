@@ -3,12 +3,17 @@ import { runInNewContext } from 'node:vm';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 const source = readFileSync(new URL('../../js/navbar.js', import.meta.url), 'utf8');
+const pointerSource = readFileSync(new URL('../../js/navigation-pointer.js', import.meta.url), 'utf8');
 
 function harness({ expanded = false, desktop = false, reducedMotion = false, missingPanel = false } = {}) {
   vi.useFakeTimers();
   const classes = new Set(['collapse', ...(expanded ? ['show'] : [])]);
   const panelEvents = new Map();
   const toggleEvents = new Map();
+  const documentEvents = new Map();
+  const windowEvents = new Map();
+  const values = new Map();
+  const storage = { getItem: key => values.get(key) ?? null, setItem: vi.fn((key, value) => values.set(key, value)) };
   const attributes = new Map([['aria-controls', 'navbarSupportedContent']]);
   const media = [desktop, reducedMotion].map((matches) => ({
     matches,
@@ -34,19 +39,26 @@ function harness({ expanded = false, desktop = false, reducedMotion = false, mis
     setAttribute: (name, value) => attributes.set(name, value),
     addEventListener: (type, callback) => toggleEvents.set(type, callback),
   };
-  runInNewContext(source, {
-    window: {
+  const browserWindow = {
       matchMedia: (query) => media[query.includes('992px') ? 0 : 1],
+      addEventListener: (type, callback) => windowEvents.set(type, callback),
       setTimeout,
       clearTimeout,
-    },
+  };
+  const context = {
+    window: browserWindow,
+    sessionStorage: storage,
+    Date,
     document: {
+      addEventListener: (type, callback) => documentEvents.set(type, callback),
       querySelectorAll: () => [toggle],
       getElementById: () => missingPanel ? null : panel,
     },
-  });
+  };
+  runInNewContext(pointerSource, context);
+  runInNewContext(source, context);
   return {
-    panel, classes, attributes, media,
+    panel, classes, attributes, media, browserWindow, storage, documentEvents, windowEvents,
     click: () => toggleEvents.get('click')(),
     end: (target = panel, propertyName = 'height') => panelEvents.get('transitionend')({ target, propertyName }),
   };
@@ -55,6 +67,27 @@ function harness({ expanded = false, desktop = false, reducedMotion = false, mis
 afterEach(() => vi.useRealTimers());
 
 describe('local navbar collapse', () => {
+  test('tracks early mouse movement without writing a navigation handoff for ordinary hovering', () => {
+    const nav = harness();
+    nav.documentEvents.get('pointermove')({ pointerType: 'mouse', clientX: 130, clientY: 45 });
+    expect(nav.browserWindow.MGNavigationPointer.current).toEqual({ x: 130, y: 45 });
+    nav.documentEvents.get('pointermove')({ pointerType: 'touch', clientX: 500, clientY: 300 });
+    expect(nav.browserWindow.MGNavigationPointer.current).toEqual({ x: 130, y: 45 });
+    nav.windowEvents.get('pagehide')();
+    expect(nav.storage.setItem).not.toHaveBeenCalled();
+  });
+
+  test('navigation handoff includes movement during the pending response without extending its lifetime', () => {
+    const nav = harness();
+    const time = Date.now();
+    nav.storage.setItem('pfReactiveGlassPointer', JSON.stringify({ x: 130, y: 45, time }));
+    nav.storage.setItem.mockClear();
+    nav.documentEvents.get('pointermove')({ pointerType: 'mouse', clientX: 600, clientY: 300 });
+    nav.windowEvents.get('pagehide')();
+    expect(JSON.parse(nav.storage.getItem('pfReactiveGlassPointer'))).toEqual({ x: 600, y: 300, time });
+    expect(nav.storage.setItem).toHaveBeenCalledOnce();
+  });
+
   test('opens and closes the mobile panel, synchronizing accessibility and cleanup', () => {
     const nav = harness();
     nav.click();
@@ -133,7 +166,7 @@ describe('local navbar collapse', () => {
     ).filter((html) => html.includes('playfolio-page'));
     expect(pages.length).toBeGreaterThan(20);
     for (const html of pages) {
-      expect(html).toContain('<script defer src="/js/navbar.js"></script>');
+      expect(html).toContain('<script defer src="/js/navbar.js?v=v9-resize-glow"></script>');
       expect(html).not.toContain('bootstrap.bundle');
     }
   });

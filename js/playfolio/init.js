@@ -10,6 +10,10 @@ export function initializePlayfolio(root = document) {
   setupCommandPalette(root);
   setupAiGuideCopy(root);
 
+  if (root.querySelector('#neuron-canvas')) {
+    import('../neuron-brain.js');
+  }
+
   if (root.querySelector('[data-project-inspector]')) {
     import('./project-selection.js').then(({ setupProjectExplorer }) => {
       setupProjectExplorer(root);

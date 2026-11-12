@@ -49,7 +49,15 @@ export function setupCommandPalette(root = document) {
       item.hidden = false;
       item.classList.remove('is-selected');
     });
-    if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
+    if (previousFocus?.isConnected) {
+      previousFocus.focus({ preventScroll: true });
+      // Resizing can hide the navbar opener while the palette is open.
+      if (root.activeElement !== previousFocus) {
+        const navbar = previousFocus.closest?.('.navbar');
+        navbar?.querySelector(navbar.dataset.navLayout === 'collapsed'
+          ? '.navbar-toggler' : '[data-theme-toggle]')?.focus({ preventScroll: true });
+      }
+    }
     previousFocus = null;
   };
 

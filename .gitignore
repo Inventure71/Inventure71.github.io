@@ -33,3 +33,9 @@ output/
 
 tmp/
 .claude/
+.agents/
+
+# local Python tooling for CV generation
+.venv/
+__pycache__/
+*.py[cod]

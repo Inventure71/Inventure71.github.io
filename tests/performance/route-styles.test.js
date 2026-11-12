@@ -9,7 +9,7 @@ afterEach(() => fixtures.splice(0).forEach((dir) => rmSync(dir, { recursive: tru
 
 test('all route links match their manifests without adding a CSS discovery waterfall', () => {
   const result = syncRouteStyles();
-  expect(result.count).toBe(27);
+  expect(result.count).toBe(32);
   expect(result.changed).toEqual([]);
 });
 

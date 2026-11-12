@@ -43,7 +43,7 @@ describe('payload optimization contracts', () => {
     expect(html).toMatch(/data-paddock-script-src="dist\/f1-simulator\/f1-simulator\.js(?:\?[^"]+)?"/);
     expect(html).toMatch(/data-paddock-style-href="dist\/f1-simulator\/f1-simulator\.css(?:\?[^"]+)?"/);
     expect(html).toContain('data-paddock-auto-start="idle"');
-    expect(html).toContain('data-paddock-auto-delay-ms="900"');
+    expect(html).toContain('data-paddock-auto-delay-ms="0"');
     expect(html).toContain('js/projects-race-loader.js');
   });
 
@@ -71,9 +71,10 @@ describe('payload optimization contracts', () => {
   test('home page does not ship an eager Codex ambassador WebM source', () => {
     const html = readRepoFile('index.html');
 
-    expect(html).not.toMatch(/<source[^>]+\ssrc="\/assets\/brand\/codex\/codex-logo-ambassador-animated-compressed\.webm"/);
+    expect(html).not.toMatch(/<source[^>]+\ssrc="\/assets\/brand\/codex\/codex-logo-ambassador-animated[^"\n]*\.webm"/);
     expect(html).toContain('data-deferred-video');
-    expect(html).toContain('data-src="/assets/brand/codex/codex-logo-ambassador-animated-compressed.webm"');
+    expect(html).toContain('data-src="/assets/brand/codex/codex-logo-ambassador-animated-160-alpha.webm"');
+    expect(readFileSync(new URL('assets/brand/codex/codex-logo-ambassador-animated-160-alpha.webm', repoRoot)).length).toBeLessThan(400 * 1024);
     expect(html).toContain('preload="none"');
   });
 

@@ -1,8 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
-import { PORTFOLIO_DRIVERS, PORTFOLIO_ENTRIES } from '../../js/portfolio-race-data.js';
+import { PORTFOLIO_DRIVERS, PORTFOLIO_ENTRIES, getPortfolioGrid } from '../../js/portfolio-race-data.js';
 import { projectCommandItems } from '../../js/playfolio/catalog.js';
+import { projects, SERIES } from '../../js/playfolio/project-catalog.js';
+import { buildChampionshipDriverGrid } from '@inventure71/paddockjs/data';
 
 const sourcePath = fileURLToPath(new URL('../../js/paddockjs-portfolio.js', import.meta.url));
 const themeSyncPath = fileURLToPath(new URL('../../js/paddockjs-theme-sync.js', import.meta.url));
@@ -12,14 +14,25 @@ const raceCssPath = fileURLToPath(new URL('../../css/playfolio/race.css', import
 
 describe('PaddockJS project race integration', () => {
   test('starts in the curated project order with matching vehicle entries', () => {
-    const expectedOrder = [
-      'core', 'victoria', 'ghoststroke', 'dream2detect', 'noir', 'vinyl',
-      'mosaic', 'vigil', 'noty', 'paddockjs', 'project-unity', 'clipclop',
-      'contextkey', 'mattyflow', 'clash', 'drsorriso', 'reminderz', 'evolve',
-      'databases-ie', 'budget',
-    ];
+    const expectedOrder = [...projects].sort((a, b) => a.priority - b.priority).map(project => project.raceId);
     expect(PORTFOLIO_DRIVERS.map((driver) => driver.id)).toEqual(expectedOrder);
     expect(PORTFOLIO_ENTRIES.map((entry) => entry.driverId)).toEqual(expectedOrder);
+  });
+
+  test('each series reaches the package with only its entrants in editorial grid order', () => {
+    const seen = [];
+    for (const { id } of SERIES) {
+      const { drivers, entries } = getPortfolioGrid(id);
+      const expected = projects.filter(project => project.tier === id).sort((a, b) => a.priority - b.priority);
+      const grid = buildChampionshipDriverGrid(drivers, entries);
+      expect(grid.map(driver => driver.id)).toEqual(expected.map(project => project.raceId));
+      expect(grid.length).toBeGreaterThan(1);
+      expect(new Set(grid.map(driver => driver.driverNumber)).size).toBe(grid.length);
+      seen.push(...grid.map(driver => driver.id));
+    }
+    expect(new Set(seen).size).toBe(projects.length);
+    expect(seen).toHaveLength(projects.length);
+    expect(getPortfolioGrid('bad-link')).toEqual(getPortfolioGrid('F1'));
   });
 
   test('includes the researched portfolio entries without private Safeway data', () => {
@@ -67,7 +80,6 @@ describe('PaddockJS project race integration', () => {
     expect(source).toContain('raceDataTelemetryDetail');
     expect(source).toContain("enabled: ['project', 'radio']");
     expect(source).toContain("initial: 'project'");
-    expect(source).not.toContain('mountRaceCanvas');
     expect(source).not.toContain('mountSafetyCarControl');
     expect(source).not.toContain('mountTimingTower');
     expect(source).not.toContain('paddock-safety-root');
@@ -112,7 +124,7 @@ describe('PaddockJS project race integration', () => {
     const raceCss = readFileSync(raceCssPath, 'utf8');
     const bootState = readFileSync(bootStatePath, 'utf8');
 
-    expect(projectsCss).toContain('@import url("./playfolio/race.css");');
+    expect(projectsCss).toMatch(/@import url\("\.\/playfolio\/race\.css\?v=[^"]+"\);/);
     expect(raceCss).toContain('.pf-paddock-layout');
     expect(raceCss).toContain('.pf-paddock-preview');
     expect(raceCss).toContain('grid-row: 1');

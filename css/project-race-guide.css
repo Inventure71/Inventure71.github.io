@@ -1,4 +1,4 @@
-/* Parallel instructions for racing and browsing the starting grid. */
+/* Mirrored flags frame the centered project instruction. */
 project-race-guide {
   display: block;
 }
@@ -8,24 +8,15 @@ project-race-guide {
   --pf-race-caution: #a26b00;
   --pf-race-flag-color: var(--pf-accent-2);
   --pf-race-flag-chequered: 0;
-  --pf-race-flag-width: 2.75rem;
-  --pf-race-flag-height: 1.65rem;
+  --pf-race-flag-width: 2rem;
+  --pf-race-flag-height: 1.2rem;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: var(--pf-race-flag-width) minmax(0, 1fr) var(--pf-race-flag-width);
   align-items: center;
-  gap: 1rem 2rem;
-  margin: 0 0 0.25rem;
-  padding: 1rem 0 0.375rem;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.4rem 0;
   border-top: 1px solid var(--pf-line);
-}
-
-.pf-race-guide__copy {
-  min-width: 0;
-  text-align: left;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 0.85rem;
-  align-items: center;
 }
 
 .pf-race-guide__marker {
@@ -82,28 +73,16 @@ project-race-guide {
 
 .pf-race-guide__headline {
   margin: 0;
+  text-align: center;
   color: var(--pf-muted);
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 .pf-race-guide__headline strong {
   color: var(--pf-ink);
   font-weight: 650;
-}
-
-.pf-race-guide__browse {
-  min-width: 0;
-  text-align: right;
-}
-
-.pf-race-guide__right {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 1rem;
 }
 
 .pf-race-guide__status {
@@ -142,62 +121,16 @@ project-race-guide {
   white-space: nowrap;
 }
 
-.pf-race-guide__paused-label {
-  display: none;
-}
-
 :root[data-theme="dark"] .pf-race-guide {
   --pf-race-stop: #ff6b6b;
   --pf-race-caution: #f4b84a;
 }
 
-.pf-race-guide__browse strong {
-  color: var(--pf-race-stop);
-}
-
-.pf-race-guide__browse--stopped {
-  display: none;
-}
-
-.pf-race-guide__browse--stopped strong {
-  color: var(--pf-accent-2);
-}
-
-/* The package's action describes the next view change; no second mode state. */
-.pf-shell:has([data-paddock-shell] [data-grid-action="start"]) .pf-race-guide__browse {
-  display: none;
-}
-
-.pf-shell:has([data-paddock-shell] [data-grid-action="start"]) .pf-race-guide__browse--stopped {
-  display: block;
-}
-
-.pf-shell:has([data-paddock-shell] [data-grid-action="start"]) .pf-race-guide:not(:has([data-race-status="finished"])) {
-  --pf-race-flag-color: var(--pf-race-stop);
-}
-
-.pf-shell:has([data-paddock-shell] [data-grid-action="start"]) .pf-race-guide:not(:has([data-race-status="finished"])) [data-race-status-label] {
-  display: none;
-}
-
-.pf-shell:has([data-paddock-shell] [data-grid-action="start"]) .pf-race-guide:not(:has([data-race-status="finished"])) .pf-race-guide__paused-label {
-  display: inline;
-}
-
 @media (max-width: 720px) {
   .pf-race-guide {
-    --pf-race-flag-width: clamp(2rem, 8vw, 2.75rem);
-    --pf-race-flag-height: clamp(1.25rem, 5vw, 1.65rem);
+    --pf-race-flag-width: clamp(1.6rem, 6vw, 2rem);
+    --pf-race-flag-height: clamp(1rem, 4vw, 1.2rem);
     gap: 0.75rem;
-  }
-
-  .pf-race-guide__copy {
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-  }
-
-  .pf-race-guide__right {
-    gap: 0.5rem;
   }
 
 }

@@ -1,5 +1,6 @@
 import { navItems } from './catalog.js';
 import { readProjectData } from './dom.js';
+import { iconMarkup } from './icons.js';
 
 export function buildAiGuide(root = document) {
   const origin = new URL(root.baseURI).origin;
@@ -78,7 +79,7 @@ export function buildAiGuideToastMarkup() {
   return `
         <div class="pf-ai-toast-card" role="status" aria-live="polite">
           <button class="pf-ai-toast-close" type="button" data-ai-guide-toast-close aria-label="Close AI popup">
-            <i class="bi bi-x-lg"></i>
+            ${iconMarkup('x-lg')}
           </button>
           <span class="pf-ai-toast-kicker" data-ai-guide-toast-kicker>Copied</span>
           <h2 class="pf-ai-toast-title" data-ai-guide-toast-title>Prompt ready.</h2>

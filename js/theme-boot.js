@@ -1,4 +1,5 @@
 (function () {
+  document.documentElement.classList.add('has-js');
   try {
     var storageKey = 'mg-color-theme';
     var storedTheme = localStorage.getItem(storageKey);

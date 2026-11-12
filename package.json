@@ -9,15 +9,26 @@
     "check:chrome": "node scripts/sync-shared-chrome.mjs --check",
     "test": "npm run test:f1",
     "test:f1": "vitest run tests --exclude \"tests/browser/**\"",
-    "check": "npm run check:chrome && npm run check:styles && npm run check:metadata && npm run test && npm run build:f1",
+    "check": "npm run build:site && npm run check:chrome && npm run check:icons && npm run check:styles && npm run check:runtime && npm run check:metadata && npm run check:portfolio && npm run check:resume && npm run check:agents && npm run check:cv && npm run test && npm run build:f1",
     "sync:styles": "node scripts/sync-route-styles.mjs",
     "check:styles": "node scripts/sync-route-styles.mjs --check",
     "sync:metadata": "node scripts/sync-metadata.mjs",
     "check:metadata": "node scripts/sync-metadata.mjs --check",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "sync:portfolio": "node scripts/sync-portfolio.mjs",
+    "check:portfolio": "node scripts/sync-portfolio.mjs --check",
+    "sync:resume": "node scripts/sync-resume.mjs",
+    "check:resume": "node scripts/sync-resume.mjs --check",
+    "check:cv": "python3 scripts/build-resume.py --check",
+    "sync:agents": "node scripts/sync-agent-content.mjs",
+    "check:agents": "node scripts/sync-agent-content.mjs --check",
+    "build:site": "vite build --config vite.site.config.js && node scripts/sync-site-runtime.mjs",
+    "check:runtime": "node scripts/sync-site-runtime.mjs --check",
+    "sync:icons": "node scripts/sync-site-icons.mjs",
+    "check:icons": "node scripts/sync-site-icons.mjs --check"
   },
   "dependencies": {
-    "@inventure71/paddockjs": "4.3.2"
+    "@inventure71/paddockjs": "4.4.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

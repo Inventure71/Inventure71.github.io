@@ -9,9 +9,38 @@ Edit the manifests, then regenerate; do not manually edit the generated link
 blocks. `npm run check` verifies them alongside shared navigation, tests and the
 simulator build.
 
+Plus Jakarta Sans is delivered from the same unmodified WOFF2 subsets previously
+requested from Google Fonts. `css/fonts.css` retains its weight range and Unicode
+coverage; the runtime generator adds a Latin-subset preload and replaces external
+font stylesheet links. Font sources and the OFL license are in `assets/fonts`.
+The Home portrait and HoloVinyl hero image are preloaded before the font so their
+first-screen downloads do not wait behind the stylesheet queue.
+
 ## Runtime ownership
 
-- `js/navbar.js` owns mobile collapse; the site does not require Bootstrap JS.
+- `npm run build:site` bundles the shared page runtime into `dist/site` and
+  synchronizes its content-versioned URL in all Playfolio pages. Resume filtering
+  is included in that entry; homepage motion and project selection remain lazy
+  chunks. `npm run check` builds this runtime before checking the generated pages.
+- The tiny theme and pointer startup scripts are inlined immediately after the
+  charset declaration by the same generator. Pointer tracking is available before
+  stylesheet downloads, preserving navbar hover state during slow navigation.
+- Resume uses inline SVG icons, avoiding the global icon-font download. Its
+  wrapping role toolbar reserves its natural layout while JavaScript initializes;
+  without JavaScript the toolbar remains hidden and the complete CV stays readable.
+- All public Playfolio pages now use the same inline-icon helper. `sync:icons`
+  migrates static markup, and `check:icons` rejects a reintroduced icon-font
+  dependency. Content generators emit the helper markup directly.
+- Projects pre-renders its race guide and loads simulator CSS/code concurrently.
+  Dream2Detect reserves the enhanced walkthrough geometry before its module loads,
+  while its complete walkthrough remains readable without JavaScript.
+- Reveal setup only arms content below the viewport, so late initialization or
+  a restored scroll position cannot hide content already on screen.
+- `js/navbar.js` owns navigation fit and mobile collapse; the site does not require
+  Bootstrap JS. It measures the actual brand, links and tools, reserving one square
+  control's width between Ask AI and the links. It hides the command button before
+  collapsing the menu, and rechecks on width, font and label changes. Keyboard focus
+  moves to a visible control when its previous target becomes hidden.
 - `js/playfolio/init.js` imports homepage motion and project selection only when
   their elements exist.
 - `js/playfolio/visibility.js` combines intersection and document visibility.
@@ -23,6 +52,15 @@ simulator build.
   their neighbors using the same positions as rendering. Grid anchors stay intact
   and all displaced nodes spring home, or return immediately under reduced motion.
   Contact physics runs during dragging and settling, then sleeps again.
+- The map runtime is a lazy chunk of the shared build. Its world coordinates and
+  full scrolling topic layout stay intact, but canvas pixels are capped to one
+  viewport at DPR ≤2. Scroll redraws the current slice, including reduced motion;
+  topic targets move with transforms rather than layout coordinates.
+  The introduction's race link stays in document flow, and the initial map height
+  keeps the footer below the viewport while the full graph initializes.
+- The homepage logo uses a 160px VP9 delivery variant at its original duration and
+  frame rate. See `assets/brand/codex/ENCODING.md`; deferred loading and visibility,
+  reduced-motion and data-saving behavior are preserved.
 - Reactive-glass pointer coordinates are coalesced into one update per frame.
 
 ## Media variants

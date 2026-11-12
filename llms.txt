@@ -1,0 +1,38 @@
+# Matteo Giorgetti
+
+> Computer Science and Artificial Intelligence student at IE University, building native applications, reusable simulation tools and robotics software. Research experience in AI and robotics, with projects spanning backend systems, computer vision and on-device AI.
+
+This is Matteo Giorgetti's public portfolio. The Markdown resources below provide the same public profile and case-study facts in a format suitable for assistants, search and recruiting research. Follow the project-specific contribution and limitation sections when describing the work; distinguish individual work, team contributions, prototypes and reported evaluations. The pages are public and accessible directly by URL.
+
+## Profile
+
+- [Profile and resume](https://mgiorgetti.com/profile.md): Education, experience, skills, community work, contact details and the complete project directory.
+- [Portfolio website](https://mgiorgetti.com/): Human-readable portfolio.
+- [Resume](https://mgiorgetti.com/resume.html): Human-readable resume and downloadable PDF.
+
+## Projects
+
+- [Noty](https://mgiorgetti.com/projects/noty.md): Notes that stay attached to your Mac windows. 2026; macOS application.
+- [PaddockJS](https://mgiorgetti.com/projects/paddockjs.md): A reusable racing simulation for browsers and headless experiments. 2026; Open-source package.
+- [Dream2Detect](https://mgiorgetti.com/projects/dream2detect.md): Learning package-damage assessment from synthetic images. 2026; Research study.
+- [Who’s On Repeat](https://mgiorgetti.com/projects/whos-on-repeat.md): A multiplayer music game with shared rooms and an offline demo. 2026; Course project.
+- [Ghostyper](https://mgiorgetti.com/projects/ghostyper.md): Prepared text typed with custom pace, pauses and corrections. 2026; macOS application.
+- [ClipClop](https://mgiorgetti.com/projects/clipclop.md): Share text and images between a Mac and Android phone. 2025–2026; Working prototype.
+- [VIGIL](https://mgiorgetti.com/projects/vigil.md): Robot fleet monitoring, remote terminals and guided recovery. 2026; Lab platform.
+- [VictorIA](https://mgiorgetti.com/projects/victoria.md): A robot arm that reads a board and plays Connect Four. 2025; Robotics prototype.
+- [Neural Noir](https://mgiorgetti.com/projects/neural-noir.md): A detective game with generated cases and suspect dialogue. 2024; Game prototype.
+- [MattyFlow](https://mgiorgetti.com/projects/mattyflow.md): Local dictation and optional rewriting into the current app. 2026; macOS prototype.
+- [Dr Sorriso Donations](https://mgiorgetti.com/projects/dottor-sorriso.md): Match bank transfers to donors and record donations. 2023–2025; Internal automation.
+- [Project Unity](https://mgiorgetti.com/projects/project-unity.md): One keyboard and mouse across macOS and Windows. 2026; Systems prototype.
+- [MOSAIC](https://mgiorgetti.com/projects/mosaic-swarm.md): Robot fleet coordination and spatial debugging through shared telemetry. 2025–2026; Lab platform prototype.
+- [Core Conflict](https://mgiorgetti.com/projects/core-conflict.md): Agents generate and test new mechanics for a multiplayer game. 2025–2026; Game prototype.
+- [ContextKey](https://mgiorgetti.com/projects/contextkey.md): Cursor-side autocomplete using a model running on your Mac. 2026; Experimental prototype.
+- [HoloVinyl](https://mgiorgetti.com/projects/holovinyl.md): Objects select music; hand gestures control playback. 2025; Computer vision prototype.
+- [TCGNET](https://mgiorgetti.com/projects/tcgnet.md): A card collection marketplace with transactional inventory. 2026; Course project.
+- [ReminderZ & Project Loom](https://mgiorgetti.com/projects/reminderz.md): Experiments in organizing messages and visual Python programming. 2025; Desktop prototypes.
+- [Learning Rules](https://mgiorgetti.com/projects/pead-learning-demos.md): Interactive experiments in learning, PCA and forgetting. 2026; ML demonstrations.
+- [Evolve Project](https://mgiorgetti.com/projects/evolve.md): An agent that writes and loads tools during a task. 2025; Agent experiment.
+- [Clash Royale in Python](https://mgiorgetti.com/projects/algorithms-game.md): A strategy game with pathfinding and custom data structures. 2025; Course project.
+- [Sparse SVD Recommender](https://mgiorgetti.com/projects/matrices-recommender.md): Explore movie recommendations through matrix reconstruction. 2026; Interactive demonstration.
+- [Budget Buddy](https://mgiorgetti.com/projects/budget-buddy.md): A budget assistant using spending history and savings goals. 2024; Hackathon prototype.
+- [Tech Roulette Website](https://mgiorgetti.com/projects/gdg-event-website.md): An event website for the IE GDG community hackathon. 2026; Community website.

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <!-- site-boot -->
+    <script>
+// Capture pointer movement before styles or deferred modules can delay startup.
+(() => {
+  // Install before module/simulator startup: native :hover can reset across
+  // documents, while the pointer may move before the full glass UI is bound.
+  const pointerState = { current: null };
+  window.MGNavigationPointer = pointerState;
+  document.addEventListener('pointermove', event => {
+    if (event.pointerType === 'touch') return;
+    pointerState.current = { x: event.clientX, y: event.clientY };
+  }, { capture: true, passive: true });
+  window.addEventListener('pagehide', () => {
+    // Include any movement during a pending navigation in its one-shot handoff.
+    // Ordinary pointer movement does not write to storage.
+    if (!pointerState.current) return;
+    try {
+      const key = 'pfReactiveGlassPointer';
+      const saved = JSON.parse(sessionStorage.getItem(key) || 'null');
+      if (saved && Date.now() - saved.time <= 4000) {
+        sessionStorage.setItem(key, JSON.stringify({ ...saved, ...pointerState.current }));
+      }
+    } catch { /* Storage can be unavailable; live tracking still works. */ }
+  });
+})();
+(function () {
+  document.documentElement.classList.add('has-js');
+  try {
+    var storageKey = 'mg-color-theme';
+    var storedTheme = localStorage.getItem(storageKey);
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = storedTheme || (prefersDark ? 'dark' : 'light');
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  } catch (error) {
+    document.documentElement.dataset.theme = 'light';
+  }
+})();
+    </script>
+    <!-- /site-boot -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="A multiplayer music party game with server-timed rounds, private answers, and an offline demo." />
+    <meta name="author" content="Matteo Giorgetti" />
+    <title>Who’s On Repeat - M.G.</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+    <!-- site-fonts -->
+    <link rel="preload" href="/assets/fonts/plus-jakarta-sans-v12-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link href="/css/fonts.css?v=c7d7cff84e39" rel="stylesheet" />
+    <!-- /site-fonts -->
+    <link href="../css/site-core.css" rel="stylesheet" />
+    <link href="../css/modern.css" rel="stylesheet" />
+        <!-- route-styles: /css/playfolio-project-story.css -->
+    <link href="/css/playfolio/foundation.css?v=v9-nav-height" rel="stylesheet" />
+    <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
+    <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
+    <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
+    <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css?v=v9-site-performance" rel="stylesheet" />
+    <link href="/css/project-stories.css" rel="stylesheet" />
+    <link href="/css/project-stories/collection.css" rel="stylesheet" />
+    <!-- /route-styles -->
+    <!-- site-metadata -->
+    <link rel="canonical" href="https://mgiorgetti.com/project_details/project-whos-on-repeat.html" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
+    <link rel="alternate" type="text/markdown" href="https://mgiorgetti.com/projects/whos-on-repeat.md" title="Project case study (Markdown)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Matteo Giorgetti" />
+    <meta property="og:title" content="Who’s On Repeat - M.G." />
+    <meta property="og:description" content="A multiplayer music party game with server-timed rounds, private answers, and an offline demo." />
+    <meta property="og:url" content="https://mgiorgetti.com/project_details/project-whos-on-repeat.html" />
+    <meta property="og:image" content="https://mgiorgetti.com/assets/profile-1100.webp" />
+    <meta property="og:image:alt" content="Portrait of Matteo Giorgetti" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Who’s On Repeat - M.G." />
+    <meta name="twitter:description" content="A multiplayer music party game with server-timed rounds, private answers, and an offline demo." />
+    <meta name="twitter:image" content="https://mgiorgetti.com/assets/profile-1100.webp" />
+    <!-- /site-metadata -->
+</head>
+
+<body class="playfolio-page d-flex flex-column h-100 project-page project-page--whos-on-repeat project-story story-collection" data-project-family="games">
+    <a class="story-skip-link" href="#project-story">Skip to project</a>
+    <main class="flex-shrink-0">
+        <nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom" data-active-page="projects">
+      <div class="container">
+        <div class="pf-brand-group" data-glass-group>
+          <a class="navbar-brand" href="/index.html" data-glass-item data-glass-tone="brand">MG</a>
+          <button class="pf-nav-ai-button" type="button" data-ai-guide-copy data-glass-item data-glass-tone="green">Ask AI</button>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="pf-nav-content">
+            <ul class="navbar-nav" data-glass-group>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
+                </li>
+
+            </ul>
+            <div class="pf-nav-tools" data-glass-group>
+              <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
+                <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 8V5.5A2.5 2.5 0 1 0 5.5 8H18.5A2.5 2.5 0 1 0 16 5.5v13a2.5 2.5 0 1 0 2.5-2.5h-13A2.5 2.5 0 1 0 8 18.5V8Z"/></svg>
+              </button>
+              <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
+                <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
+                  <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" data-theme-current-icon=""><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42m0-14.14-1.42 1.42m-11.3 11.3-1.42 1.42"/></svg>
+                </span>
+                <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
+                  <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" data-theme-preview-icon=""><path d="M20.5 13.1A8.6 8.6 0 0 1 10.9 3.5a8.6 8.6 0 1 0 9.6 9.6Z"/></svg>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+        </nav>
+
+        <article class="project-story-content" id="project-story" tabindex="-1">
+            <header class="story-shell story-hero">
+                <p class="story-kicker">Multiplayer music game · 2026</p>
+                <h1 class="story-title">Who’s On Repeat</h1>
+                <p class="story-lede">Recognize the song. Guess who listens to it. Everyone answers on their own screen while the host plays the music.</p>
+                <ul class="story-meta"><li>Solo course project</li><li>Python · FastAPI · SQLite</li><li>JavaScript browser client</li></ul>
+                <div class="story-actions"><a class="story-button" href="https://github.com/Inventure72/DevOpsAssignement" target="_blank" rel="noopener noreferrer">Explore the source <span aria-hidden="true">↗</span></a><a class="story-button is-secondary" href="https://github.com/Inventure72/DevOpsAssignement#run" target="_blank" rel="noopener noreferrer">Run the demo <span aria-hidden="true">↗</span></a></div>
+            </header>
+            <section class="story-shell story-section" aria-labelledby="repeat-round">
+                <p class="story-kicker">The game</p><h2 class="story-section-heading" id="repeat-round">One shared round</h2>
+                <ol class="story-process"><li><strong>Listen</strong><span>The host device plays the preview through a shared speaker.</span></li><li><strong>Answer</strong><span>Each player identifies the song and chooses the listeners.</span></li><li><strong>Reveal</strong><span>Answers stay private until the server advances the round.</span></li><li><strong>Score</strong><span>Frozen song and player facts determine the points and ranking.</span></li></ol>
+            </section>
+            <section class="story-shell story-section" aria-labelledby="repeat-server">
+                <h2 class="story-section-heading" id="repeat-server">The server owns the clock</h2>
+                <div class="story-split"><p class="story-copy">A browser cannot extend a deadline by sending an old timestamp. Commands enter a room-specific lock, use server time, and apply due transitions before handling the next action.</p><dl class="story-notes"><div><dt>Separate domains</dt><dd>Rooms manages membership and listening data. Game manages rounds, answers and rankings.</dd></div><div><dt>Stable scoring</dt><dd>A game freezes its roster and song facts at the start. Disconnects and later lobby changes do not rewrite an earlier round.</dd></div><div><dt>Recovery</dt><dd>Refreshing reconnects to the room. After a server restart, interrupted games are aborted and rooms return to the lobby.</dd></div></dl></div>
+            </section>
+            <section class="story-shell story-section" aria-labelledby="repeat-music">
+                <h2 class="story-section-heading" id="repeat-music">Two ways to bring the music</h2>
+                <div class="story-columns"><div><h3>Demo</h3><p class="story-copy">A downloadable pack contains 100 song previews and simulated listening libraries. After setup, the demo works offline without a Spotify account.</p></div><div><h3>Real</h3><p class="story-copy">Spotify imports personal listening data through the same admission and game workflows. This mode needs configured provider access and approved participants. Personal Apple Music import is outside the current scope.</p></div></div>
+            </section>
+            <section class="story-shell story-section" aria-labelledby="repeat-boundaries">
+                <h2 class="story-section-heading" id="repeat-boundaries">Tests at the boundaries</h2>
+                <p class="story-copy">Controlled clocks and random inputs make rule tests repeatable. SQLite and HTTP tests cover persistence, authorization and answer privacy; browser-controller tests cover screen and audio behavior. Live provider access and multi-device audio have separate manual checks.</p>
+            </section>
+            <nav class="story-shell story-end" aria-label="Project navigation"><a href="project-paddockjs.html">Explore PaddockJS <span aria-hidden="true">→</span></a><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
+        </article>
+    </main>
+    <footer class="pf-footer py-4 mt-auto"></footer>
+    <script defer src="/js/navbar.js?v=v9-resize-glow"></script>
+    <script src="../js/theme.js"></script>
+    <script type="module" src="/dist/site/playfolio.js?v=6bcf97ab1a3c"></script>
+</body>
+
+</html>

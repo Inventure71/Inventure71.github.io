@@ -4,6 +4,7 @@
 npm ci
 npx playwright install chromium
 npm run build:f1
+npm run build:site
 npm run test:browser
 ```
 

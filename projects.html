@@ -3,32 +3,70 @@
 
 <head>
     <meta charset="utf-8" />
+    <!-- site-boot -->
+    <script>
+// Capture pointer movement before styles or deferred modules can delay startup.
+(() => {
+  // Install before module/simulator startup: native :hover can reset across
+  // documents, while the pointer may move before the full glass UI is bound.
+  const pointerState = { current: null };
+  window.MGNavigationPointer = pointerState;
+  document.addEventListener('pointermove', event => {
+    if (event.pointerType === 'touch') return;
+    pointerState.current = { x: event.clientX, y: event.clientY };
+  }, { capture: true, passive: true });
+  window.addEventListener('pagehide', () => {
+    // Include any movement during a pending navigation in its one-shot handoff.
+    // Ordinary pointer movement does not write to storage.
+    if (!pointerState.current) return;
+    try {
+      const key = 'pfReactiveGlassPointer';
+      const saved = JSON.parse(sessionStorage.getItem(key) || 'null');
+      if (saved && Date.now() - saved.time <= 4000) {
+        sessionStorage.setItem(key, JSON.stringify({ ...saved, ...pointerState.current }));
+      }
+    } catch { /* Storage can be unavailable; live tracking still works. */ }
+  });
+})();
+(function () {
+  document.documentElement.classList.add('has-js');
+  try {
+    var storageKey = 'mg-color-theme';
+    var storedTheme = localStorage.getItem(storageKey);
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = storedTheme || (prefersDark ? 'dark' : 'light');
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  } catch (error) {
+    document.documentElement.dataset.theme = 'light';
+  }
+})();
+    </script>
+    <!-- /site-boot -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="Interactive project circuit for Matteo Giorgetti's software and AI work." />
     <meta name="author" content="Matteo Giorgetti" />
     <title>Projects - Matteo Giorgetti</title>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-        rel="stylesheet" />
-    <script src="js/theme-boot.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- site-fonts -->
+    <link rel="preload" href="/assets/fonts/plus-jakarta-sans-v12-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link href="/css/fonts.css?v=c7d7cff84e39" rel="stylesheet" />
+    <!-- /site-fonts -->
     <link href="css/site-core.css" rel="stylesheet" />
     <link href="css/modern.css" rel="stylesheet" />
-    <link href="dist/f1-simulator/paddock-placeholder.css?v=4.3.2-native-scroll" rel="stylesheet" />
+    <link href="dist/f1-simulator/paddock-placeholder.css?v=4.4.0" rel="stylesheet" />
     <!-- route-styles: /css/playfolio-projects.css -->
-    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/foundation.css?v=v9-nav-height" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
-    <link href="/css/playfolio/race.css" rel="stylesheet" />
-    <link href="/css/project-race-guide.css?v=20261028-soft-flags" rel="stylesheet" />
-    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/playfolio/race.css?v=v9-transparent-placeholder" rel="stylesheet" />
+    <link href="/css/project-race-guide.css?v=v9-race-polish" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css?v=v9-site-performance" rel="stylesheet" />
     <!-- /route-styles -->
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/projects.html" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
     <meta property="og:title" content="Projects - Matteo Giorgetti" />
@@ -58,40 +96,40 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
-            <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
-              
+          <div class="pf-nav-content">
+            <ul class="navbar-nav" data-glass-group>
+
                 <li class="nav-item">
                   <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
                 </li>
-              
+
             </ul>
-            <div class="d-flex gap-2" data-glass-group>
+            <div class="pf-nav-tools" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
-                <i class="bi bi-command"></i>
+                <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 8V5.5A2.5 2.5 0 1 0 5.5 8H18.5A2.5 2.5 0 1 0 16 5.5v13a2.5 2.5 0 1 0 2.5-2.5h-13A2.5 2.5 0 1 0 8 18.5V8Z"/></svg>
               </button>
               <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
                 <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
-                  <i class="bi bi-sun" data-theme-current-icon></i>
+                  <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" data-theme-current-icon=""><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42m0-14.14-1.42 1.42m-11.3 11.3-1.42 1.42"/></svg>
                 </span>
                 <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
-                  <i class="bi bi-moon" data-theme-preview-icon></i>
+                  <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" data-theme-preview-icon=""><path d="M20.5 13.1A8.6 8.6 0 0 1 10.9 3.5a8.6 8.6 0 1 0 9.6 9.6Z"/></svg>
                 </span>
               </button>
             </div>
@@ -104,56 +142,67 @@
             <div class="pf-shell">
                 <header class="pf-section-head pf-reveal">
                     <div>
-                        <h1 class="pf-section-title">Project race</h1>
+                        <h1 class="pf-section-title">Projects</h1>
                     </div>
                 </header>
 
-                <project-race-guide></project-race-guide>
+                <!-- project-series -->
+<nav class="pf-series-selector pf-reveal" aria-label="Project series">
+                    <a class="pf-series-choice" href="?series=F1" data-series-choice="F1"><img src="/dist/f1-simulator/assets/f1Logo.png" alt="F1" data-series-logo="F1" width="120" height="40" /><span>Refined projects</span></a>
+                    <a class="pf-series-choice" href="?series=F2" data-series-choice="F2"><img src="/assets/brand/racing/f2-logo.svg" alt="F2" data-series-logo="F2" width="120" height="40" /><span>Prototypes &amp; explorations</span></a>
+                    <a class="pf-series-choice" href="?series=F3" data-series-choice="F3"><img src="/assets/brand/racing/f3-logo.svg" alt="F3" data-series-logo="F3" width="120" height="40" /><span>Focused work &amp; studies</span></a>
+                </nav>
+                <!-- /project-series -->
 
-                <div class="pf-paddock-layout" data-paddock-shell data-simulator-state="preview"
-                    data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=4.3.2-native-scroll"
-                    data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=4.3.2-native-scroll"
-                    data-paddock-auto-start="idle"
-                    data-paddock-auto-delay-ms="900"
+                <div class="pf-race-toolbar pf-reveal">
+                    <!-- project-race-guide -->
+<project-race-guide>
+                <section class="pf-race-guide" aria-label="Project race guide">
+                    <span class="pf-race-guide__marker" aria-hidden="true"><span class="pf-race-guide__fabric"></span></span>
+                    <p class="pf-race-guide__headline">
+                        Each car is a project. <strong>Click a car</strong>
+                        to explore it.
+                    </p>
+                        <span class="pf-race-guide__status" data-race-status="loading" role="status">
+                            <span class="pf-race-guide__marker pf-race-guide__flag" aria-hidden="true"><span class="pf-race-guide__fabric"></span></span>
+                            <span class="pf-race-guide__status-label" data-race-status-label>Loading</span>
+                        </span>
+                </section></project-race-guide>
+                <!-- /project-race-guide -->
+                    <button class="pf-race-launch" type="button" data-project-race-toggle data-race-action="race" aria-controls="paddock-race-root" disabled>
+                        <span data-race-toggle-label>Start race</span><svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 22V3"/><path d="M5 3c5-4 9 4 15 0v11c-6 4-10-4-15 0Z" fill="currentColor"/></svg>
+                    </button>
+                </div>
+                <div class="pf-paddock-layout" data-paddock-shell data-race-view="grid-walk" data-simulator-state="preview"
+                    data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=4.4.0"
+                    data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=4.4.0"
+                    data-paddock-auto-start="idle" data-race-series="F1" data-paddock-auto-delay-ms="0"
                     aria-label="PaddockJS project race" aria-busy="false">
                     <div class="pf-paddock-preview paddock-placeholder" data-paddock-preview data-paddock-placeholder
                         data-paddock-placeholder-variant="lights" role="status" aria-live="polite" aria-busy="true">
                         <div class="paddock-placeholder__content">
-                            <div class="paddock-placeholder__lights" aria-hidden="true">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
+                            <div class="paddock-placeholder__lights" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
                             <span class="paddock-placeholder__label">Loading project race</span>
-                            <span class="paddock-placeholder__detail">Preparing race control</span>
                         </div>
                     </div>
                     <div class="pf-paddock-error" data-paddock-error role="alert" hidden>
                         <span>The project race failed to load.</span>
-                        <button class="pf-button is-quiet" type="button" data-paddock-retry>Retry live race</button>
+                        <button class="pf-button is-quiet" type="button" data-paddock-retry>Retry project race</button>
                     </div>
-                    <div class="pf-paddock-grid">
-                        <div id="paddock-race-root" class="f1-sim-component pf-paddock-race"></div>
-                    </div>
+                    <div class="pf-paddock-grid"><div id="paddock-race-root" data-paddock-root class="f1-sim-component pf-paddock-race"></div></div>
                 </div>
+                <p class="pf-package-note"><span>Built with my simulation library,</span> <a href="https://www.npmjs.com/package/@inventure71/paddockjs" target="_blank" rel="noopener">@inventure71/paddockjs</a></p>
 
-                <div class="pf-package-note" aria-label="PaddockJS npm package note">
-                    <span class="pf-package-note__badge">npm</span>
-                    <span>
-                        Built with my simulation library,
-                        <a href="https://www.npmjs.com/package/@inventure71/paddockjs" target="_blank"
-                            rel="noopener">@inventure71/paddockjs</a>.
-                    </span>
-                </div>
+                    <!-- project-directory -->
+<noscript><ul class="pf-project-fallback"><li><a href="/project_details/project-noty.html">Noty</a></li><li><a href="/project_details/project-paddockjs.html">PaddockJS</a></li><li><a href="/project_details/project-dream2detect.html">Dream2Detect</a></li><li><a href="/project_details/project-whos-on-repeat.html">Who’s On Repeat</a></li><li><a href="/project_details/project-ghoststroke.html">Ghostyper</a></li><li><a href="/project_details/project-clipclop.html">ClipClop</a></li><li><a href="/project_details/project-vigil.html">VIGIL</a></li><li><a href="/project_details/project-victoria.html">VictorIA</a></li><li><a href="/project_details/project-neural-noir.html">Neural Noir</a></li><li><a href="/project_details/project-mattyflow.html">MattyFlow</a></li><li><a href="/project_details/project-drsorrisodonations.html">Dr Sorriso Donations</a></li><li><a href="/project_details/project-unity.html">Project Unity</a></li><li><a href="/project_details/project-mosaic.html">MOSAIC</a></li><li><a href="/project_details/project-gengame.html">Core Conflict</a></li><li><a href="/project_details/project-contextkey.html">ContextKey</a></li><li><a href="/project_details/project-holovinyl.html">HoloVinyl</a></li><li><a href="/project_details/project-databases-ie.html">TCGNET</a></li><li><a href="/project_details/project-remainder-v0.html">ReminderZ &amp; Project Loom</a></li><li><a href="/project_details/project-pead.html">Learning Rules</a></li><li><a href="/project_details/project-evolveproject.html">Evolve Project</a></li><li><a href="/project_details/project-algorithms-project.html">Clash Royale in Python</a></li><li><a href="/project_details/project-matrices.html">Sparse SVD Recommender</a></li><li><a href="/project_details/project-budget-buddy.html">Budget Buddy</a></li><li><a href="/project_details/project-gdg-website.html">Tech Roulette Website</a></li></ul></noscript>
+                <!-- /project-directory -->
 
                 <div class="pf-network-jump" aria-label="Open project network view">
                     <span class="pf-network-jump__copy">
                         Explore the connections between projects.
                     </span>
                     <a class="pf-network-jump__button" href="tags.html">
-                        <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                        <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="2" y="16" width="6" height="5" rx="1"/><rect x="16" y="16" width="6" height="5" rx="1"/><path d="M12 8v4H5v4m7-4h7v4"/></svg>
                         <span>Browse by topic</span>
                     </a>
                 </div>
@@ -162,11 +211,12 @@
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>
 
-    <script defer src="/js/navbar.js"></script>
+    <script defer src="/js/navbar.js?v=v9-resize-glow"></script>
     <script src="js/theme.js"></script>
-    <script type="module" src="js/project-race-guide.js?v=20261028-flag-poles"></script>
-    <script type="module" src="js/projects-race-loader.js?v=20260605-payload"></script>
-    <script type="module" src="js/playfolio.js?v=2"></script>
+    <script type="module" src="js/project-race-guide.js?v=v9-page-performance"></script>
+    <script type="module" src="js/projects-race-loader.js?v=v9-page-performance"></script>
+    <script type="module" src="js/projects-page.js"></script>
+    <script type="module" src="/dist/site/playfolio.js?v=6bcf97ab1a3c"></script>
 </body>
 
 </html>

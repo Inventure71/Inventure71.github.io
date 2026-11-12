@@ -2,6 +2,46 @@
 <html lang="en" data-theme="light">
     <head>
         <meta charset="utf-8" />
+    <!-- site-boot -->
+    <script>
+// Capture pointer movement before styles or deferred modules can delay startup.
+(() => {
+  // Install before module/simulator startup: native :hover can reset across
+  // documents, while the pointer may move before the full glass UI is bound.
+  const pointerState = { current: null };
+  window.MGNavigationPointer = pointerState;
+  document.addEventListener('pointermove', event => {
+    if (event.pointerType === 'touch') return;
+    pointerState.current = { x: event.clientX, y: event.clientY };
+  }, { capture: true, passive: true });
+  window.addEventListener('pagehide', () => {
+    // Include any movement during a pending navigation in its one-shot handoff.
+    // Ordinary pointer movement does not write to storage.
+    if (!pointerState.current) return;
+    try {
+      const key = 'pfReactiveGlassPointer';
+      const saved = JSON.parse(sessionStorage.getItem(key) || 'null');
+      if (saved && Date.now() - saved.time <= 4000) {
+        sessionStorage.setItem(key, JSON.stringify({ ...saved, ...pointerState.current }));
+      }
+    } catch { /* Storage can be unavailable; live tracking still works. */ }
+  });
+})();
+(function () {
+  document.documentElement.classList.add('has-js');
+  try {
+    var storageKey = 'mg-color-theme';
+    var storedTheme = localStorage.getItem(storageKey);
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = storedTheme || (prefersDark ? 'dark' : 'light');
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  } catch (error) {
+    document.documentElement.dataset.theme = 'light';
+  }
+})();
+    </script>
+    <!-- /site-boot -->
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Neural Noir is an Unreal Engine detective game with generated cases, suspect interviews, and evidence-based accusations." />
         <meta name="author" content="Matteo Giorgetti" />
@@ -9,29 +49,30 @@
         <!-- Favicon-->
         <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
         <!-- Custom Google font-->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
-        <script src="../js/theme-boot.js"></script>
+        <!-- site-fonts -->
+    <link rel="preload" href="/assets/fonts/plus-jakarta-sans-v12-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link href="/css/fonts.css?v=c7d7cff84e39" rel="stylesheet" />
+    <!-- /site-fonts -->
         <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Site core CSS -->
         <link href="../css/site-core.css" rel="stylesheet" />
         <!-- Modern Design System -->
         <link href="../css/modern.css" rel="stylesheet" />
         <!-- Project Pages Styles -->
         <!-- route-styles: /css/playfolio-project-story.css -->
-    <link href="/css/playfolio/foundation.css" rel="stylesheet" />
+    <link href="/css/playfolio/foundation.css?v=v9-nav-height" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/project-pages.css?v=20260710-feature-stage-v19" rel="stylesheet" />
-    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css?v=v9-site-performance" rel="stylesheet" />
     <link href="/css/project-stories.css" rel="stylesheet" />
     <link href="/css/project-stories/collection.css" rel="stylesheet" />
     <!-- /route-styles -->
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/project_details/project-neural-noir.html" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
+    <link rel="alternate" type="text/markdown" href="https://mgiorgetti.com/projects/neural-noir.md" title="Project case study (Markdown)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
     <meta property="og:title" content="Neural Noir - M.G." />
@@ -60,40 +101,40 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
-            <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
-              
+          <div class="pf-nav-content">
+            <ul class="navbar-nav" data-glass-group>
+
                 <li class="nav-item">
                   <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
                 </li>
-              
+
             </ul>
-            <div class="d-flex gap-2" data-glass-group>
+            <div class="pf-nav-tools" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
-                <i class="bi bi-command"></i>
+                <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 8V5.5A2.5 2.5 0 1 0 5.5 8H18.5A2.5 2.5 0 1 0 16 5.5v13a2.5 2.5 0 1 0 2.5-2.5h-13A2.5 2.5 0 1 0 8 18.5V8Z"/></svg>
               </button>
               <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
                 <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
-                  <i class="bi bi-sun" data-theme-current-icon></i>
+                  <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" data-theme-current-icon=""><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42m0-14.14-1.42 1.42m-11.3 11.3-1.42 1.42"/></svg>
                 </span>
                 <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
-                  <i class="bi bi-moon" data-theme-preview-icon></i>
+                  <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" data-theme-preview-icon=""><path d="M20.5 13.1A8.6 8.6 0 0 1 10.9 3.5a8.6 8.6 0 1 0 9.6 9.6Z"/></svg>
                 </span>
               </button>
             </div>
@@ -119,9 +160,9 @@
         <footer class="pf-footer py-4 mt-auto"></footer>
 
         <!-- Scripts -->
-        <script defer src="/js/navbar.js"></script>
+        <script defer src="/js/navbar.js?v=v9-resize-glow"></script>
         <script src="../js/theme.js"></script>
-        <script type="module" src="../js/playfolio.js"></script>
+        <script type="module" src="/dist/site/playfolio.js?v=6bcf97ab1a3c"></script>
     <script src="../js/project-pages.js?v=20260908-story-focus"></script>
     </body>
 </html>

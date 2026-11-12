@@ -1,4 +1,9 @@
 /* Evidence-led art direction. Shared page geometry lives in project-stories.css. */
+/* Match the enhanced first step before its module arrives. Keep every step
+   readable when JavaScript is disabled. */
+.has-js [data-experiment-walkthrough]:not([data-walkthrough-ready="true"]) [data-step-panel]:not([data-step-panel="generate"]) { display: none; }
+.has-js [data-experiment-walkthrough]:not([data-walkthrough-ready="true"]) [data-step-controls][hidden] { display: grid !important; visibility: hidden; }
+.has-js [data-experiment-walkthrough]:not([data-walkthrough-ready="true"]) [data-step-footer][hidden] { display: flex !important; visibility: hidden; }
 .story-dream2detect {
   --d2d-accent: #3e6348;
   --d2d-soft: #e8ece2;

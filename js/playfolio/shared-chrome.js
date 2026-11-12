@@ -1,6 +1,7 @@
 import { escapeHtml } from './dom.js';
 import { footerLinks, navItems } from './catalog.js';
 import { installReactiveGlassSurface } from './reactive-glass.js';
+import { iconMarkup } from './icons.js';
 
 export { installReactiveGlassSurface } from './reactive-glass.js';
 
@@ -37,31 +38,31 @@ export function buildSharedNavbarMarkup(activeKey = 'home') {
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
-            <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
+          <div class="pf-nav-content">
+            <ul class="navbar-nav" data-glass-group>
               ${navItems.map((item) => `
                 <li class="nav-item">
                   <a class="nav-link${item.key === activeKey ? ' active' : ''}" href="${escapeHtml(item.href)}" data-glass-item data-glass-tone="${NAV_TONES[item.key] || 'green'}">${escapeHtml(item.label)}</a>
                 </li>
               `).join('')}
             </ul>
-            <div class="d-flex gap-2" data-glass-group>
+            <div class="pf-nav-tools" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
-                <i class="bi bi-command"></i>
+                ${iconMarkup('command')}
               </button>
               <button class="theme-toggle-btn" type="button" data-theme-toggle data-glass-item data-glass-tone="mode-preview" aria-label="Toggle color scheme">
                 <span class="theme-toggle-icon theme-toggle-icon--current" aria-hidden="true">
-                  <i class="bi bi-sun" data-theme-current-icon></i>
+                  ${iconMarkup('sun', { 'data-theme-current-icon': true })}
                 </span>
                 <span class="theme-toggle-icon theme-toggle-icon--preview" aria-hidden="true">
-                  <i class="bi bi-moon" data-theme-preview-icon></i>
+                  ${iconMarkup('moon', { 'data-theme-preview-icon': true })}
                 </span>
               </button>
             </div>
           </div>
         </div>
       </div>
-    `;
+    `.replace(/[\t ]+$/gm, '');
 }
 
 export function buildSharedFooterMarkup() {
