@@ -1,5 +1,12 @@
 /* Resume page */
 
+/* Keep the real, wrapping filter layout in the first paint while its controls
+   initialize. Without JavaScript the hidden toolbar stays out of the document. */
+.has-js .pf-resume-filter[hidden] {
+  display: flex !important;
+  visibility: hidden;
+}
+
 .pf-resume-page {
   padding-top: clamp(2.75rem, 6vw, 5.5rem);
 }

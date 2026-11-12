@@ -3,6 +3,7 @@ import { runInNewContext } from 'node:vm';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 const source = readFileSync(new URL('../../js/navbar.js', import.meta.url), 'utf8');
+const pointerSource = readFileSync(new URL('../../js/navigation-pointer.js', import.meta.url), 'utf8');
 
 function harness({ expanded = false, desktop = false, reducedMotion = false, missingPanel = false } = {}) {
   vi.useFakeTimers();
@@ -44,7 +45,7 @@ function harness({ expanded = false, desktop = false, reducedMotion = false, mis
       setTimeout,
       clearTimeout,
   };
-  runInNewContext(source, {
+  const context = {
     window: browserWindow,
     sessionStorage: storage,
     Date,
@@ -53,7 +54,9 @@ function harness({ expanded = false, desktop = false, reducedMotion = false, mis
       querySelectorAll: () => [toggle],
       getElementById: () => missingPanel ? null : panel,
     },
-  });
+  };
+  runInNewContext(pointerSource, context);
+  runInNewContext(source, context);
   return {
     panel, classes, attributes, media, browserWindow, storage, documentEvents, windowEvents,
     click: () => toggleEvents.get('click')(),

@@ -11,6 +11,18 @@ simulator build.
 
 ## Runtime ownership
 
+- `npm run build:site` bundles the shared page runtime into `dist/site` and
+  synchronizes its content-versioned URL in all Playfolio pages. Resume filtering
+  is included in that entry; homepage motion and project selection remain lazy
+  chunks. `npm run check` builds this runtime before checking the generated pages.
+- The tiny theme and pointer startup scripts are inlined immediately after the
+  charset declaration by the same generator. Pointer tracking is available before
+  stylesheet downloads, preserving navbar hover state during slow navigation.
+- Resume uses inline SVG icons, avoiding the global icon-font download. Its
+  wrapping role toolbar reserves its natural layout while JavaScript initializes;
+  without JavaScript the toolbar remains hidden and the complete CV stays readable.
+- Reveal setup only arms content below the viewport, so late initialization or
+  a restored scroll position cannot hide content already on screen.
 - `js/navbar.js` owns mobile collapse; the site does not require Bootstrap JS.
 - `js/playfolio/init.js` imports homepage motion and project selection only when
   their elements exist.

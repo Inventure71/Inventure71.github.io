@@ -467,7 +467,7 @@ test('navigation hover handoff cannot keep Projects highlighted after the pointe
   let requested;
   const gate = new Promise(resolve => { release = resolve; });
   const pending = new Promise(resolve => { requested = resolve; });
-  await page.route('**/js/playfolio/reactive-glass.js*', async route => {
+  await page.route('**/dist/site/playfolio.js*', async route => {
     if (hold) { requested(); await gate; }
     await route.continue();
   });

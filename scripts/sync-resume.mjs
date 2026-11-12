@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { projects, ROLE_OPTIONS } from '../js/playfolio/project-catalog.js';
+import { iconMarkup } from '../js/playfolio/icons.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const data = JSON.parse(await fs.readFile(path.join(root, 'data/resume.json'), 'utf8'));
@@ -49,8 +50,8 @@ const markup = `<!-- resume-content:start -->
           <header class="pf-resume-top pf-reveal">
             <div><h1>${escape(data.identity.name)}</h1><p>${escape(data.identity.headline)}</p></div>
             <div class="pf-resume-actions">
-              <a class="pf-button" href="/assets/docs/matteo-giorgetti-resume-current.pdf" target="_blank" rel="noopener">View CV PDF <i class="bi bi-file-earmark-text" aria-hidden="true"></i></a>
-              <a class="pf-button is-quiet" href="/assets/docs/matteo-giorgetti-resume-current.pdf" download>Download CV <i class="bi bi-download" aria-hidden="true"></i></a>
+              <a class="pf-button" href="/assets/docs/matteo-giorgetti-resume-current.pdf" target="_blank" rel="noopener">View CV PDF ${iconMarkup('file-text')}</a>
+              <a class="pf-button is-quiet" href="/assets/docs/matteo-giorgetti-resume-current.pdf" download>Download CV ${iconMarkup('download')}</a>
             </div>
           </header>
           <div class="pf-resume-filter pf-reveal" data-resume-filter hidden>
@@ -87,7 +88,6 @@ const previous = await fs.readFile(filename, 'utf8');
 const region = /<!-- resume-content:start -->[\s\S]*?<!-- resume-content:end -->/;
 let next = previous.replace(region.test(previous) ? region : /    <main class="flex-shrink-0" id="main-content"[\s\S]*?<\/main>/, markup);
 if (next === previous && !region.test(previous)) throw new Error('Resume content boundary not found');
-if (!next.includes('src="js/resume-page.js"')) next = next.replace('    <script type="module" src="js/playfolio.js"></script>', '    <script type="module" src="js/playfolio.js"></script>\n    <script type="module" src="js/resume-page.js"></script>');
 if (process.argv.includes('--check')) {
   if (next !== previous) { console.error('Resume content is out of sync. Run node scripts/sync-resume.mjs.'); process.exitCode = 1; }
   else console.log('Resume content is in sync.');

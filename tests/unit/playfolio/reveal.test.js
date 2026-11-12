@@ -10,6 +10,7 @@ describe('playfolio reveal behavior', () => {
 
   test('reveals a section once and leaves it visible when it leaves the viewport', () => {
     const item = {
+      getBoundingClientRect: () => ({ top: 1000 }),
       classList: {
         add: vi.fn(),
       },
@@ -21,7 +22,7 @@ describe('playfolio reveal behavior', () => {
     const unobserve = vi.fn();
     let observerCallback;
 
-    global.window = { IntersectionObserver: true };
+    global.window = { IntersectionObserver: true, innerHeight: 800 };
     global.IntersectionObserver = vi.fn(function intersectionObserver(callback) {
       observerCallback = callback;
       return { observe, unobserve };
@@ -55,6 +56,21 @@ describe('playfolio reveal behavior', () => {
     global.IntersectionObserver = vi.fn();
     setupReveals({ querySelectorAll: () => [item] });
     expect(item.classList.add).toHaveBeenCalledWith('is-visible');
+    expect(global.IntersectionObserver).not.toHaveBeenCalled();
+  });
+
+  test('late initialization keeps content at or above the viewport visible', () => {
+    const items = [-500, 100, 799].map(top => ({
+      getBoundingClientRect: () => ({ top }),
+      classList: { add: vi.fn() },
+    }));
+    global.window = { IntersectionObserver: true, innerHeight: 800 };
+    global.IntersectionObserver = vi.fn();
+    setupReveals({ querySelectorAll: () => items });
+    for (const item of items) {
+      expect(item.classList.add).toHaveBeenCalledWith('is-visible');
+      expect(item.classList.add).not.toHaveBeenCalledWith('is-reveal-ready');
+    }
     expect(global.IntersectionObserver).not.toHaveBeenCalled();
   });
 });

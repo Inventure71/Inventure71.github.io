@@ -1,6 +1,6 @@
 /* Project detail Playfolio manifest */
 
-@import url("./playfolio/foundation.css");
+@import url("./playfolio/foundation.css?v=v9-inline-icons");
 @import url("./playfolio/reactive-glass.css");
 @import url("./playfolio/ai-guide.css");
 @import url("./playfolio/command-palette.css");

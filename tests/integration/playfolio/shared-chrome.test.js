@@ -10,7 +10,7 @@ import {
 
 function collectHtmlFiles(dir, root = dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-    if (entry.name.startsWith('.') || ['dist', 'node_modules'].includes(entry.name)) return [];
+      if (entry.name.startsWith('.') || ['dist', 'node_modules', 'output', 'tmp'].includes(entry.name)) return [];
 
     const absolutePath = path.join(dir, entry.name);
     if (entry.isDirectory()) return collectHtmlFiles(absolutePath, root);
@@ -45,6 +45,8 @@ describe('playfolio shared chrome', () => {
     expect(markup).toContain('data-glass-tone="mode-preview"');
     expect(markup).toContain('data-theme-current-icon');
     expect(markup).toContain('data-theme-preview-icon');
+    expect(markup.match(/<svg /g)).toHaveLength(3);
+    expect(markup).not.toContain('<i class="bi');
     expect(markup).not.toContain('pf-glass-mode-bead');
     expect(markup).toContain('href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>');
     expect(markup).toContain('nav-link active');
@@ -60,7 +62,7 @@ describe('playfolio shared chrome', () => {
       return !html.includes('<nav class="navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom"') ||
         !html.includes('data-glass-item') ||
         !html.includes('data-theme-toggle') ||
-        !/src=["'][^"']*js\/playfolio\.js(?:\?[^"']*)?["']/.test(html);
+        !/src=["']\/dist\/site\/playfolio\.js\?v=[^"']+["']/.test(html);
     });
 
     expect(playfolioPages.length).toBeGreaterThan(0);

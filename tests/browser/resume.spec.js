@@ -1,5 +1,41 @@
 import { test, expect } from '@playwright/test';
 
+for (const width of [1440, 390]) test(`delayed Resume startup preserves layout and visible content at ${width}px without an icon font`, async ({ page }) => {
+  let release;
+  const ready = new Promise(resolve => { release = resolve; });
+  const requests = [];
+  page.on('request', request => requests.push(request.url()));
+  await page.route('**/dist/site/playfolio.js*', async route => {
+    await ready;
+    await route.continue();
+  });
+  try {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/resume.html', { waitUntil: 'commit' });
+    await expect(page.locator('.pf-resume-top')).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const before = await page.evaluate(() => ({
+      top: document.querySelector('.pf-resume-layout').getBoundingClientRect().top,
+      filterHeight: document.querySelector('[data-resume-filter]').getBoundingClientRect().height,
+      visibility: getComputedStyle(document.querySelector('[data-resume-filter]')).visibility,
+    }));
+    expect(before.filterHeight).toBeGreaterThan(40);
+    expect(before.visibility).toBe('hidden');
+    await expect(page.locator('.pf-resume-top')).toHaveCSS('opacity', '1');
+    release();
+    await expect(page.locator('[data-resume-filter]')).toHaveAttribute('data-bound', 'true');
+    await expect(page.locator('[data-command-palette]')).toBeAttached();
+    const after = await page.locator('.pf-resume-layout').evaluate(el => el.getBoundingClientRect().top);
+    expect(Math.abs(after - before.top)).toBeLessThanOrEqual(1);
+    await expect(page.locator('.pf-resume-top')).not.toHaveClass(/is-reveal-ready/);
+    await expect(page.locator('#projects')).toHaveClass(/is-reveal-ready/);
+    await expect(page.locator('svg.pf-icon')).toHaveCount(5);
+    expect(requests.some(url => /bootstrap-icons|\.woff2?/.test(url) && !url.includes('fonts.gstatic.com'))).toBe(false);
+    expect(requests.filter(url => url.includes('/dist/site/playfolio.js'))).toHaveLength(1);
+    expect(requests.some(url => /\/js\/playfolio\//.test(url))).toBe(false);
+  } finally { release(); }
+});
+
 test('resume roles filter projects and sections while retaining essential details and the generic PDF', async ({ page }) => {
   await page.goto('/resume.html');
   const robotics = page.getByRole('button', { name: 'Robotics', exact: true });

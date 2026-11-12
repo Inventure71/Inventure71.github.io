@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildSharedNavbarMarkup } from '../js/playfolio/shared-chrome.js';
 
-const SKIP_DIRS = new Set(['.git', 'dist', 'node_modules']);
+const SKIP_DIRS = new Set(['.git', 'dist', 'node_modules', 'output', 'tmp']);
 const SHARED_NAV_CLASS = 'navbar navbar-expand-lg pf-reactive-glass pf-reactive-glass--site-bloom';
 const NAV_PATTERN = /(?<indent>[^\S\r\n]*)<nav class="navbar navbar-expand-lg(?: pf-reactive-glass pf-reactive-glass--site-bloom)?" data-active-page="(?<activeKey>[^"]+)">[\s\S]*?<\/nav>/;
 
