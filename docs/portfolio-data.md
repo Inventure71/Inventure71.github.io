@@ -17,6 +17,14 @@ component page and points to the combined case study. The private career library
 rather than maintaining a second set of values. Unpublished local work is not
 included automatically.
 
+Set up the pinned CV tooling once, then activate it before the checks:
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python3 -m pip install -r requirements-cv.txt
+```
+
 After editing public project facts or priorities:
 
 ```sh
@@ -53,5 +61,8 @@ the sync commands above; do not maintain the Markdown outputs by hand. Changes
 in real projects still require a deliberate review of their public facts.
 
 The PDF generator uses ReportLab and pypdf, produces at most two A4 pages and
-keeps contact/project links. `--check` verifies the artifact matches its inputs.
+keeps contact/project links. `npm run check:cv` verifies the artifact matches its
+inputs and is included in `npm run check`; stale or missing PDFs fail the check
+without rewriting the download. Its Python dependencies are pinned in
+`requirements-cv.txt`.
 Private research dossiers and job applications are not website build inputs.

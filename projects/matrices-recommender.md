@@ -75,5 +75,4 @@ The inspectable example uses ten users and sixteen movies, with one to six retai
 - [Portfolio case study](https://mgiorgetti.com/project_details/project-matrices.html)
 - [Open the demo](https://inventure72.github.io/MatricesProject/)
 - [View source](https://github.com/Inventure72/MatricesProject)
-- [Explore Learning Rule Lab](https://mgiorgetti.com/project_details/project-pead.html)
 - [Matteo Giorgetti profile](https://mgiorgetti.com/profile.md)

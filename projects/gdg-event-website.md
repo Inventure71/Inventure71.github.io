@@ -61,5 +61,4 @@ The site supported the April 13–27, 2026 event. Registration is handled by a l
 - [Portfolio case study](https://mgiorgetti.com/project_details/project-gdg-website.html)
 - [View the source](https://github.com/GDSC-IE/GDG_Hackathon_Website)
 - [Read the event recap](https://www.linkedin.com/posts/salome-shioshvili_gdgoncampus-buildwithai-techroulette-activity-7454639683298582528-BfjB)
-- [Experience & community](https://mgiorgetti.com/resume.html)
 - [Matteo Giorgetti profile](https://mgiorgetti.com/profile.md)

@@ -69,5 +69,4 @@ The package powers this portfolio's project race. Its advanced physics supports 
 - [Portfolio case study](https://mgiorgetti.com/project_details/project-paddockjs.html)
 - [View source](https://github.com/Inventure71/PaddockJS)
 - [Open npm package](https://www.npmjs.com/package/@inventure71/paddockjs)
-- [Next: Neural Noir](https://mgiorgetti.com/project_details/project-neural-noir.html)
 - [Matteo Giorgetti profile](https://mgiorgetti.com/profile.md)

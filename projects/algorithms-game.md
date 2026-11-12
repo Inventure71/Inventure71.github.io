@@ -61,5 +61,4 @@ The course project is completed and has public gameplay and source links. It dem
 - [Portfolio case study](https://mgiorgetti.com/project_details/project-algorithms-project.html)
 - [View source](https://github.com/Inventure72/AlgorithmsProject)
 - [Watch gameplay on YouTube](https://youtu.be/35BMyos7Oa8)
-- [Next: PaddockJS](https://mgiorgetti.com/project_details/project-paddockjs.html)
 - [Matteo Giorgetti profile](https://mgiorgetti.com/profile.md)

@@ -56,5 +56,4 @@ The public page links a demonstration, source and downloadable build. It does no
 - [View source](https://github.com/Inventure71/Neural-Noir)
 - [Download build · 34 GB](https://drive.google.com/drive/folders/1e6U4PTc7bPPMejsGn5PjFi9E43LcJbiB?usp=sharing)
 - [Watch Neural Noir on YouTube](https://youtu.be/tAHpsxYZ3cQ)
-- [Next: Core Conflict](https://mgiorgetti.com/project_details/project-gengame.html)
 - [Matteo Giorgetti profile](https://mgiorgetti.com/profile.md)

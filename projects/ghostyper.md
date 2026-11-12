@@ -52,5 +52,4 @@ The application targets Apple silicon and macOS 14 or later and requires Accessi
 
 - [Portfolio case study](https://mgiorgetti.com/project_details/project-ghoststroke.html)
 - [Download Ghostyper](https://downloads.mgiorgetti.com/ghostyper/1.0.0-1/Ghostyper-1.0.0-1-app.dmg)
-- [Explore the other apps](https://mgiorgetti.com/apps.html)
 - [Matteo Giorgetti profile](https://mgiorgetti.com/profile.md)

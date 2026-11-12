@@ -119,3 +119,28 @@ for (const [width, target] of [[700, '[data-theme-toggle]'], [650, '.navbar-togg
   await page.keyboard.press('Escape');
   await expect(nav.locator(target)).toBeFocused();
 });
+
+test('resize reconciles the navbar glow under a stationary pointer', async ({ page }) => {
+  await page.setViewportSize({ width: 750, height: 900 });
+  await page.goto('/contact.html');
+  const nav = page.locator('.navbar');
+  const command = nav.locator('[data-command-open]');
+  await expect(nav).toHaveAttribute('data-nav-layout', 'full');
+  await command.hover();
+  await expect(command).toHaveClass(/is-glass-target/);
+  const box = await command.boundingBox();
+  const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+  await page.setViewportSize({ width: 700, height: 900 });
+  await expect(nav).toHaveAttribute('data-nav-layout', 'compact');
+  await expect(command).toBeHidden();
+  await expect(command).not.toHaveClass(/is-glass-target/);
+  await expect.poll(() => page.evaluate(({ x, y }) => {
+    const nav = document.querySelector('.navbar');
+    const hovered = document.elementFromPoint(x, y)?.closest('[data-glass-item]');
+    return hovered === nav.querySelector('.is-glass-target');
+  }, point)).toBe(true);
+  await page.setViewportSize({ width: 650, height: 900 });
+  await expect(nav).toHaveAttribute('data-nav-layout', 'collapsed');
+  await expect(nav.locator('.is-glass-target')).toHaveCount(0);
+  await expect(nav).not.toHaveClass(/is-glass-(item|bar)-hovering/);
+});

@@ -70,14 +70,17 @@
       const layout = available >= required + full ? 'full'
         : available >= required + compact ? 'compact' : 'collapsed';
       navbar.removeAttribute('data-nav-measuring');
-      if (navbar.dataset.navLayout === layout) return;
-
-      const focused = document.activeElement;
-      navbar.dataset.navLayout = layout;
-      settle();
-      if (layout === 'compact' && focused === command) theme.focus({ preventScroll: true });
-      else if (layout === 'collapsed' && !expanded && panel.contains(focused)) toggle.focus({ preventScroll: true });
-      else if (layout !== 'collapsed' && focused === toggle) panel.querySelector('a')?.focus({ preventScroll: true });
+      if (navbar.dataset.navLayout !== layout) {
+        const focused = document.activeElement;
+        navbar.dataset.navLayout = layout;
+        settle();
+        if (layout === 'compact' && focused === command) theme.focus({ preventScroll: true });
+        else if (layout === 'collapsed' && !expanded && panel.contains(focused)) toggle.focus({ preventScroll: true });
+        else if (layout !== 'collapsed' && focused === toggle) panel.querySelector('a')?.focus({ preventScroll: true });
+      }
+      // A stationary pointer can now cover a different item, even when the
+      // layout mode stays the same. Let the glass controller hit-test it again.
+      navbar.dispatchEvent(new Event('portfolio:navlayoutchange'));
     };
     const scheduleFit = () => {
       if (!frame) frame = window.requestAnimationFrame(fit);

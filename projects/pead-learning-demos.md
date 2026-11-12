@@ -74,5 +74,4 @@ The experiments use small datasets and inspectable calculations. They explain le
 
 - [Portfolio case study](https://mgiorgetti.com/project_details/project-pead.html)
 - [Explore the source](https://github.com/Inventure72/PEADProject)
-- [Explore Dream2Detect](https://mgiorgetti.com/project_details/project-dream2detect.html)
 - [Matteo Giorgetti profile](https://mgiorgetti.com/profile.md)

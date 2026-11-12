@@ -377,6 +377,10 @@ export function installReactiveGlassSurface(surface, options = {}) {
   surface.addEventListener('click', handleClick);
   surface.addEventListener('pointerleave', handlePointerLeave);
   surface.addEventListener('pointercancel', handlePointerLeave);
+  surface.addEventListener('portfolio:navlayoutchange', () => {
+    handlePointerLeave();
+    primeCurrentHoverState(surface, resolvedOptions);
+  });
   surfaceWindow.addEventListener?.('blur', handlePointerLeave);
   surfaceWindow.addEventListener?.('pagehide', handlePointerLeave);
   surface.ownerDocument?.addEventListener?.('visibilitychange', handleVisibilityChange);

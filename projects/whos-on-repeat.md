@@ -77,5 +77,4 @@ The offline demo uses a downloadable pack of 100 previews and simulated listenin
 - [Portfolio case study](https://mgiorgetti.com/project_details/project-whos-on-repeat.html)
 - [Explore the source](https://github.com/Inventure72/DevOpsAssignement)
 - [Run the demo](https://github.com/Inventure72/DevOpsAssignement#run)
-- [Explore PaddockJS](https://mgiorgetti.com/project_details/project-paddockjs.html)
 - [Matteo Giorgetti profile](https://mgiorgetti.com/profile.md)

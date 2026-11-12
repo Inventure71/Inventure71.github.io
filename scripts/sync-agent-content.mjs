@@ -84,16 +84,21 @@ function caseStudy(tree) {
 }
 function publicLinks(tree, href) {
   const links = new Map();
-  function visit(node) {
-    if (typeof node === 'string') return;
+  function visit(node, inEndBlock = false) {
+    if (typeof node === 'string' || node.tag === 'nav') return;
+    // End blocks can mix site navigation with valid source/demo/download links.
+    // Preserve those resources while excluding links to other site pages.
+    const ending = inEndBlock || /(?:^|\s)story-end(?:\s|$)/.test(node.attrs.class ?? '');
     if (node.tag === 'a' && node.attrs.href) {
       const url = new URL(node.attrs.href, `${origin}${href}`);
-      if (['https:', 'http:'].includes(url.protocol) && !(url.origin === origin && (url.pathname === '/projects.html' || url.hash))) {
+      const siteNavigation = url.origin === origin && (url.pathname === '/projects.html' || url.hash
+        || (ending && /(?:\.html|\/)$/i.test(url.pathname)));
+      if (['https:', 'http:'].includes(url.protocol) && !siteNavigation) {
         const label = text(node).replace(/[↗→↓]+/g, '').trim();
         if (label && !links.has(url.href)) links.set(url.href, label);
       }
     }
-    for (const child of node.children) visit(child);
+    for (const child of node.children) visit(child, ending);
   }
   visit(tree);
   return [...links].map(([url, label]) => `- [${label}](${url})`).join('\n');

@@ -59,5 +59,4 @@ The case study demonstrates generated mechanics in a prototype. Passing generate
 - [Portfolio case study](https://mgiorgetti.com/project_details/project-gengame.html)
 - [View source](https://github.com/Inventure71/GenGame)
 - [Watch demo](https://youtu.be/JgWvJM1WQKc)
-- [Next: Clash Royale in Python](https://mgiorgetti.com/project_details/project-algorithms-project.html)
 - [Matteo Giorgetti profile](https://mgiorgetti.com/profile.md)
