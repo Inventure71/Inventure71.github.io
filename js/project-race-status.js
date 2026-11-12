@@ -9,7 +9,11 @@ export function getProjectRaceStatus({ raceControl }) {
 export function updateProjectRaceStatus(shell, snapshot) {
   const indicator = shell?.parentElement?.querySelector('[data-race-status]');
   if (!indicator) return;
-  const { state, label } = getProjectRaceStatus(snapshot);
+  const { state, label } = ['loading', 'booting'].includes(shell.dataset.simulatorState)
+    ? { state: 'loading', label: 'Loading' }
+    : shell.dataset.raceView === 'grid-walk'
+    ? { state: 'browsing', label: shell.dataset.hasRaced === 'true' ? 'Race paused' : 'Starting grid' }
+    : getProjectRaceStatus(snapshot);
   if (indicator.dataset.raceStatus === state) return;
   indicator.dataset.raceStatus = state;
   indicator.querySelector('[data-race-status-label]').textContent = label;

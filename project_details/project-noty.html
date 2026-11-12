@@ -27,6 +27,8 @@
     <!-- /route-styles -->
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/project_details/project-noty.html" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
+    <link rel="alternate" type="text/markdown" href="https://mgiorgetti.com/projects/noty.md" title="Project case study (Markdown)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
     <meta property="og:title" content="Noty - M.G." />
@@ -58,27 +60,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
             <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
                 </li>
-              
+
             </ul>
             <div class="d-flex gap-2" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
@@ -121,6 +123,11 @@
             <section class="story-shell noty-engineering-section noty-storage" aria-labelledby="noty-storage-title">
                 <h2 class="story-section-heading" id="noty-storage-title">Native interface, local data</h2>
                 <p class="story-copy">Built in Swift, with SwiftUI for the note interface and AppKit for window behavior. Notes, tags, and attachment state are stored in SQLite on the Mac. Backup and restore validates the database and keeps the replaced copy in a recovery folder.</p>
+            </section>
+            <section class="story-shell noty-engineering-section" aria-labelledby="noty-ai-title">
+                <h2 class="story-section-heading" id="noty-ai-title">Optional AI, explicit access</h2>
+                <p class="story-copy">AI and agent access are optional. Permissions distinguish reading from editing, archiving and deleting; private notes are excluded from agent access. Revision checks prevent an asynchronous operation from silently using stale note content.</p>
+                <p class="story-copy">Recoverable history supports reviewing and rolling back edits. Local note storage does not mean every optional AI provider runs offline.</p>
             </section>
             <nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>
         </article>

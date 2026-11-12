@@ -28,6 +28,8 @@
     <link href="/css/project-stories/games.css" rel="stylesheet" />
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/project_details/project-paddockjs.html" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
+    <link rel="alternate" type="text/markdown" href="https://mgiorgetti.com/projects/paddockjs.md" title="Project case study (Markdown)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
     <meta property="og:title" content="PaddockJS - M.G." />
@@ -59,27 +61,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
             <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
                 </li>
-              
+
             </ul>
             <div class="d-flex gap-2" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
@@ -109,6 +111,8 @@
             </header>
             <div class="story-shell"><figure class="story-diagram game-simulation"><div class="game-simulation-input"><p class="story-kicker">Host supplies</p><strong>Drivers · tracks · rules</strong></div><span class="game-simulation-connector" aria-hidden="true">↓</span><div class="game-simulation-core"><span class="game-simulation-mark" aria-hidden="true"></span><strong>Simulation core</strong><span>Race state, physics, and control</span></div><div class="game-simulation-outputs"><div><p class="story-kicker">Browser</p><strong>Watch the race</strong><span>Canvas, controls, timing, telemetry</span></div><div><p class="story-kicker">Headless</p><strong>Step the environment</strong><span>Observations, actions, repeatable scenarios</span></div></div><figcaption class="story-caption">Both interfaces use the same simulation. Rendering belongs to the browser side.</figcaption></figure></div><section class="story-shell story-section" aria-labelledby="paddock-components"><h2 class="story-section-heading" id="paddock-components">Full race view or individual components</h2><div class="story-columns"><div class="story-copy"><h3>A complete race</h3><p>The complete browser view includes the track, cars, controls, and timing. On this site, selecting a driver opens its project.</p></div><div class="story-copy"><h3>Individual components</h3><p>Mount the race canvas, timing, controls, and telemetry into separate parts of a page. A shared controller keeps each view connected to the same race.</p></div></div></section>
             <section class="story-shell story-section" aria-labelledby="paddock-headless"><h2 class="story-section-heading" id="paddock-headless">Headless control and browser playback</h2><div class="story-split"><div class="story-copy"><p>The headless environment exposes reset and step operations for custom controllers. It runs without PixiJS or a browser, with observations and actions for testing driving policies.</p><p>Bring the controller back to browser playback to inspect its braking, track limits, and recovery.</p></div><div><p class="story-kicker">Install from npm</p><pre class="story-code"><code>npm install @inventure71/paddockjs</code></pre><div class="story-actions"><a class="story-button is-secondary" href="https://www.npmjs.com/package/@inventure71/paddockjs" target="_blank" rel="noopener noreferrer">Open npm package <span aria-hidden="true">↗</span></a></div></div></div></section>
+            <section class="story-shell story-section" aria-labelledby="paddock-grid-walk"><h2 class="story-section-heading" id="paddock-grid-walk">Browse the grid without changing the race</h2><p class="story-copy">Grid Walk presents the starting grid as an explorable project index. Switching between that view and the race preserves simulation time, random state, laps and pit state. Browsing is a presentation change, rather than a new simulation.</p></section>
+            <section class="story-shell story-section" aria-labelledby="paddock-model"><h2 class="story-section-heading" id="paddock-model">A shared model with explicit boundaries</h2><div class="story-columns"><div><h3>Arcade and advanced physics</h3><p class="story-copy">The advanced mode models tire forces, combined grip, wheel geometry and contact impulses. It supports repeatable simulation experiments; it is not a calibrated replica of a real Formula 1 car.</p></div><div><h3>Repeatable policy evaluation</h3><p class="story-copy">Seeded scenarios, controlled drivers and reset/step observations let an external policy interact with the same core used in browser playback. Packaging checks exercise the browser, data and headless import boundaries.</p></div></div></section>
             <div class="story-shell story-end"><a href="project-neural-noir.html">Next: Neural Noir <span aria-hidden="true">→</span></a><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></div>
         </article>
     </main>

@@ -1,0 +1,366 @@
+{
+  "identity": {
+    "name": "Matteo Giorgetti",
+    "headline": "Computer Science & AI student · Software, machine learning and robotics",
+    "summary": "Computer Science and Artificial Intelligence student at IE University, building native applications, reusable simulation tools and robotics software. Research experience in AI and robotics, with projects spanning backend systems, computer vision and on-device AI.",
+    "location": "Madrid, Spain / Milan, Italy",
+    "email": "matteo.giorgetti.05@gmail.com",
+    "phone": "+39 388 363 7191",
+    "website": "https://mgiorgetti.com",
+    "github": "https://github.com/Inventure71",
+    "linkedin": "https://www.linkedin.com/in/matteo-giorgetti-026172247/"
+  },
+  "experience": [
+    {
+      "id": "ie-robotics-lab-role",
+      "title": "Research Assistant",
+      "organization": "IE University AI & Robotics Lab",
+      "location": "Madrid, Spain",
+      "dates": "2024 - Present",
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics"
+      ],
+      "bullets": [
+        "Developed software for robotics research and demonstrations, collaborating with researchers on integration and troubleshooting.",
+        "Worked on MOSAIC, combining robot fleet coordination with calibrated floor visualization, recording and observation-only replay; movement authority remains in the robot application."
+      ]
+    },
+    {
+      "id": "dottor-sorriso",
+      "title": "Donation Automation Developer",
+      "organization": "Fondazione Dottor Sorriso",
+      "location": "Milan, Italy",
+      "dates": "Mar 2023 - Feb 2025",
+      "roles": [
+        "software-engineering",
+        "ai-ml"
+      ],
+      "bullets": [
+        "Built Python automation to extract donor names from 1,000+ inconsistent donation records and enter donations in the foundation's existing platform.",
+        "Combined model-assisted extraction, caching and Selenium automation, reducing manual entry by 90% and saving an estimated 40 hours of administrative work per month."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "id": "ie-university",
+      "title": "BSc Computer Science and Artificial Intelligence",
+      "organization": "IE University",
+      "location": "Madrid, Spain",
+      "dates": "2024 - Expected May 2028",
+      "essential": true,
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics",
+        "native-apps"
+      ],
+      "bullets": [
+        "Four-year degree combining computer science, artificial intelligence and mathematics."
+      ]
+    },
+    {
+      "id": "h-farm",
+      "title": "International Baccalaureate Diploma",
+      "organization": "H-FARM International School",
+      "location": "Roncade, Italy",
+      "dates": "Graduated May 2024",
+      "essential": true,
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics",
+        "native-apps"
+      ],
+      "bullets": [
+        "Higher Level Mathematics AA, Computer Science and Business. Extended Essay on neural-network size."
+      ],
+      "badge": "40/45"
+    }
+  ],
+  "community": [
+    {
+      "id": "codex-ambassador",
+      "title": "OpenAI Codex Ambassador",
+      "organization": "Community appointment",
+      "location": "Madrid, Spain",
+      "dates": "Feb 2026 - Present",
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "native-apps"
+      ],
+      "bullets": [
+        "Explore agentic coding workflows and share practical approaches to AI-assisted software development."
+      ],
+      "href": "https://developers.openai.com/community/codex-ambassadors/directory"
+    },
+    {
+      "id": "gdg-leadership",
+      "title": "Google Developer Group / Students Club",
+      "organization": "IE University",
+      "location": "Madrid, Spain",
+      "dates": "2024 - Present",
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics",
+        "native-apps"
+      ],
+      "bullets": [
+        "Progressed from Tech Guru to club lead, contributing to technical workshops and community projects."
+      ]
+    },
+    {
+      "id": "bot-battle",
+      "title": "Bot Battle · Game Environment & Judging",
+      "organization": "GDG on Campus IE University",
+      "location": "Google for Startups, Madrid",
+      "dates": "Mar - Apr 2025",
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics"
+      ],
+      "bullets": [
+        "Created the modular game environment, helped coordinate bot simulations and judged final presentations in a two-week AI hackathon with seven presenting teams."
+      ],
+      "href": "https://www.linkedin.com/posts/matteo-giorgetti_reinforcementlearning-hackathon-teamwork-activity-7320778992913936384-a3Gh"
+    },
+    {
+      "id": "tech-roulette-judge",
+      "title": "Tech Roulette · Hackathon Judge",
+      "organization": "GDG on Campus IE University",
+      "location": "Madrid, Spain",
+      "dates": "2026",
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics",
+        "native-apps"
+      ],
+      "bullets": [
+        "Served on the judging panel for the student hackathon's final project presentations."
+      ],
+      "href": "https://www.linkedin.com/posts/salome-shioshvili_gdgoncampus-buildwithai-techroulette-activity-7454639683298582528-BfjB"
+    },
+    {
+      "id": "technology-teaching",
+      "title": "Technology Teaching Volunteer",
+      "organization": "Community volunteering",
+      "location": "Roncade, Italy",
+      "dates": "Jan - Mar 2023",
+      "roles": [
+        "software-engineering",
+        "native-apps"
+      ],
+      "bullets": [
+        "Helped older adults use mobile phones and navigate online services."
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "id": "langchain-foundation",
+      "title": "Foundation: Introduction to LangChain - Python",
+      "organization": "LangChain Academy",
+      "dates": "Apr 2026",
+      "roles": [
+        "software-engineering",
+        "ai-ml"
+      ]
+    },
+    {
+      "id": "agent-skills",
+      "title": "Introduction to Agent Skills",
+      "organization": "Anthropic",
+      "dates": "Mar 2026",
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "native-apps"
+      ]
+    },
+    {
+      "id": "claude-code",
+      "title": "Claude Code in Action",
+      "organization": "Anthropic",
+      "dates": "Mar 2026",
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "native-apps"
+      ]
+    },
+    {
+      "id": "aws-compute",
+      "title": "AWS Educate Getting Started with Compute",
+      "organization": "Amazon Web Services",
+      "dates": "Oct 2025",
+      "roles": [
+        "software-engineering"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "programming",
+      "title": "Programming",
+      "items": [
+        "Python",
+        "Swift",
+        "JavaScript",
+        "SQL",
+        "Java",
+        "C++"
+      ],
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics",
+        "native-apps"
+      ]
+    },
+    {
+      "id": "native",
+      "title": "Native applications",
+      "items": [
+        "SwiftUI",
+        "AppKit",
+        "SQLite",
+        "macOS Accessibility",
+        "Android"
+      ],
+      "roles": [
+        "software-engineering",
+        "native-apps"
+      ]
+    },
+    {
+      "id": "backend",
+      "title": "Backend & systems",
+      "items": [
+        "FastAPI",
+        "Django",
+        "PostgreSQL",
+        "HTTP / WebSockets",
+        "TCP / UDP",
+        "Docker",
+        "Git",
+        "Automated testing"
+      ],
+      "roles": [
+        "software-engineering",
+        "robotics"
+      ]
+    },
+    {
+      "id": "ml",
+      "title": "AI & machine learning",
+      "items": [
+        "PyTorch",
+        "OpenCV",
+        "NumPy",
+        "Computer vision",
+        "Synthetic data",
+        "MLX",
+        "LLM integration"
+      ],
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics",
+        "native-apps"
+      ]
+    },
+    {
+      "id": "robotics",
+      "title": "Robotics",
+      "items": [
+        "ROS 2",
+        "OptiTrack",
+        "Robot perception",
+        "Telemetry",
+        "Calibration"
+      ],
+      "roles": [
+        "robotics"
+      ]
+    },
+    {
+      "id": "games",
+      "title": "Games & simulation",
+      "items": [
+        "PixiJS",
+        "Pygame",
+        "Unreal Engine",
+        "Headless simulation"
+      ],
+      "roles": [
+        "software-engineering",
+        "ai-ml"
+      ]
+    },
+    {
+      "id": "languages",
+      "title": "Languages",
+      "items": [
+        "Italian - native",
+        "English - native",
+        "Spanish - intermediate",
+        "French - basic"
+      ],
+      "essential": true,
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics",
+        "native-apps"
+      ]
+    }
+  ],
+  "projectIds": [
+    "noty",
+    "paddockjs",
+    "whos-on-repeat",
+    "dream2detect",
+    "vigil",
+    "mosaic-swarm",
+    "project-unity",
+    "tcgnet",
+    "ghostyper",
+    "mattyflow",
+    "victoria"
+  ],
+  "cvProjectIds": [
+    "noty",
+    "paddockjs",
+    "whos-on-repeat",
+    "dream2detect",
+    "vigil"
+  ],
+  "cvProjectBullets": {
+    "noty": [
+      "Developed a native macOS note application using Swift, SwiftUI and AppKit, with SQLite storage and notes attached to application windows.",
+      "Separated focus, window positioning and visibility, with recoverable editing and explicit privacy controls for optional AI access."
+    ],
+    "paddockjs": [
+      "Built a reusable JavaScript/PixiJS racing simulator with composable browser views and a shared headless reset/step API.",
+      "Separated grid browsing from simulation state and exposed configurable rules and policy-evaluation interfaces. The package powers the project race on my portfolio."
+    ],
+    "whos-on-repeat": [
+      "Designed and implemented a multiplayer music game as a solo course project, with a Python backend, SQLite transactions and server-timed scoring.",
+      "Separated room and game rules, protected answers until reveal, and integrated Spotify alongside an offline demo."
+    ],
+    "dream2detect": [
+      "Designed and implemented the end-to-end pipeline for a group project: synthetic package images, human label review, model training and evaluation on real photographs.",
+      "The reported ensemble achieved 64.16% within one severity band on 385 real photos; exact-band accuracy was 21.04%."
+    ],
+    "vigil": [
+      "Developed a robot-fleet operations dashboard using FastAPI, Paramiko and ROS interfaces, with browser-based SSH terminals.",
+      "Defined reusable diagnostic and recovery workflows, WebSocket terminal streaming and per-robot coordination to prevent conflicting jobs."
+    ]
+  }
+}

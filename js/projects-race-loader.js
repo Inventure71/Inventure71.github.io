@@ -1,4 +1,4 @@
-import { setPaddockShellState as setShellState } from './paddockjs-boot-state.js';
+import { setPaddockShellState as setShellState } from './paddockjs-boot-state.js?v=v9-package-loader';
 
 const selectors = {
   shell: '[data-paddock-shell]',
@@ -53,13 +53,13 @@ function onIdle(callback, timeout = 1500) {
   window.setTimeout(callback, 0);
 }
 
-export function installProjectsRaceLoader(root = document) {
-  const shell = root.querySelector(selectors.shell);
+function installRaceShell(shell) {
   if (!shell || shell.dataset.paddockLoaderBound === 'true') return null;
 
   const scriptSrc = shell.dataset.paddockScriptSrc;
   const styleHref = shell.dataset.paddockStyleHref;
   const searchParams = new URLSearchParams(window.location.search);
+  let integration = null;
 
   async function startRace() {
     if (!scriptSrc || ['loading', 'booting'].includes(shell.dataset.simulatorState) || shell.dataset.simulatorState === 'ready') return;
@@ -69,8 +69,8 @@ export function installProjectsRaceLoader(root = document) {
 
     try {
       await ensureStylesheet(styleHref);
-      const integration = await import(new URL(scriptSrc, window.location.href).href);
-      await integration.initializeProjectsRace(shell);
+      integration = await import(new URL(scriptSrc, window.location.href).href);
+      await integration.changeProjectsRaceSeries(shell);
     } catch (error) {
       console.error('Project race failed to load.', error);
       setShellState(shell, 'error');
@@ -84,11 +84,27 @@ export function installProjectsRaceLoader(root = document) {
 
     const delay = parseDelay(shell.dataset.paddockAutoDelayMs, 900);
     afterPageLoad(() => {
-      window.setTimeout(() => onIdle(startRace), delay);
+      if (shell.dataset.paddockAutoStart === 'visible' && typeof IntersectionObserver === 'function') {
+        const observer = new IntersectionObserver(entries => {
+          if (!entries.some(entry => entry.isIntersecting)) return;
+          observer.disconnect();
+          onIdle(startRace);
+        }, { rootMargin: '400px' });
+        observer.observe(shell);
+      } else {
+        window.setTimeout(() => onIdle(startRace), delay);
+      }
     });
   }
 
   shell.dataset.paddockLoaderBound = 'true';
+  shell.addEventListener('portfolio:serieschange', () => {
+    if (!integration) return;
+    integration.changeProjectsRaceSeries(shell).catch((error) => {
+      console.error('Project series failed to load.', error);
+      setShellState(shell, 'error');
+    });
+  });
   setShellState(shell, shell.dataset.simulatorState || 'preview');
   shell.querySelectorAll(`${selectors.start}, ${selectors.retry}`).forEach((button) => {
     button.addEventListener('click', startRace);
@@ -101,6 +117,10 @@ export function installProjectsRaceLoader(root = document) {
   }
 
   return { startRace };
+}
+
+export function installProjectsRaceLoader(root = document) {
+  return [...root.querySelectorAll(selectors.shell)].map(installRaceShell);
 }
 
 if (document.readyState === 'loading') {

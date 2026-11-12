@@ -36,6 +36,8 @@
     <link href="../css/project-stories/data-tools.css" rel="stylesheet" />
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/project_details/project-drsorrisodonations.html" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
+    <link rel="alternate" type="text/markdown" href="https://mgiorgetti.com/projects/dottor-sorriso.md" title="Project case study (Markdown)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
     <meta property="og:title" content="DrSorrisoDonations - M.G." />
@@ -67,27 +69,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
             <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
                 </li>
-              
+
             </ul>
             <div class="d-flex gap-2" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
@@ -116,6 +118,10 @@
  <div class="donation-output">Match the contact <span aria-hidden="true">→</span> Record the donation</div>
  <figcaption class="story-caption">Campaign codes and donor names lead to the same donation record.</figcaption>
 </figure>
+            <section class="story-shell story-section" aria-labelledby="donation-impact">
+                <h2 class="story-section-heading" id="donation-impact">Less time on manual entry</h2>
+                <p class="story-copy">Processed more than 1,000 inconsistent donation records. The automation reduced manual data entry by 90%, saving the team an estimated 40 hours of administrative work per month.</p>
+            </section>
             <section class="story-shell story-section"><h2 class="story-section-heading">Identifying the donor</h2><dl class="story-notes"><div><dt>Clean the description</dt><dd>Rules remove SEPA boilerplate, banking identifiers, and repeated tokens. Italian name dictionaries help distinguish names from codes.</dd></div><div><dt>Resolve the donor</dt><dd>GPT-4o-mini proposes names across several calls. Agreement and a second pass check the result; a cache avoids parsing the same description again.</dd></div><div><dt>Enter the record</dt><dd>Selenium selects the campaign, finds or creates the contact, and enters the donation in the existing platform.</dd></div></dl></section>
 
 <nav class="story-shell story-end" aria-label="Project navigation"><a href="../projects.html">All projects <span aria-hidden="true">↗</span></a></nav>

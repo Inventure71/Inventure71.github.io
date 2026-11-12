@@ -61,7 +61,7 @@ export function buildSharedNavbarMarkup(activeKey = 'home') {
           </div>
         </div>
       </div>
-    `;
+    `.replace(/[\t ]+$/gm, '');
 }
 
 export function buildSharedFooterMarkup() {

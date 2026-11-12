@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Mosaic - a ROS 2-first multi-robot control and visualization stack" />
+    <meta name="description" content="MOSAIC combines robot-local ROS 2 fleet control with calibrated visualization, timestamped telemetry, and observation-only replay." />
     <meta name="author" content="Matteo Giorgetti" />
     <meta name="theme-color" content="#0d0d0b" />
-    <title>Mosaic - M.G.</title>
+    <title>MOSAIC - M.G.</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,16 +29,18 @@
     <link href="/css/project-stories/robotics.css" rel="stylesheet" />
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/project_details/project-mosaic.html" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
+    <link rel="alternate" type="text/markdown" href="https://mgiorgetti.com/projects/mosaic-swarm.md" title="Project case study (Markdown)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
-    <meta property="og:title" content="Mosaic - M.G." />
-    <meta property="og:description" content="Mosaic - a ROS 2-first multi-robot control and visualization stack" />
+    <meta property="og:title" content="MOSAIC - M.G." />
+    <meta property="og:description" content="MOSAIC combines robot-local ROS 2 fleet control with calibrated visualization, timestamped telemetry, and observation-only replay." />
     <meta property="og:url" content="https://mgiorgetti.com/project_details/project-mosaic.html" />
     <meta property="og:image" content="https://mgiorgetti.com/assets/profile-1100.webp" />
     <meta property="og:image:alt" content="Portrait of Matteo Giorgetti" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Mosaic - M.G." />
-    <meta name="twitter:description" content="Mosaic - a ROS 2-first multi-robot control and visualization stack" />
+    <meta name="twitter:title" content="MOSAIC - M.G." />
+    <meta name="twitter:description" content="MOSAIC combines robot-local ROS 2 fleet control with calibrated visualization, timestamped telemetry, and observation-only replay." />
     <meta name="twitter:image" content="https://mgiorgetti.com/assets/profile-1100.webp" />
     <!-- /site-metadata -->
 </head>
@@ -60,27 +62,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
             <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
                 </li>
-              
+
             </ul>
             <div class="d-flex gap-2" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
@@ -101,12 +103,15 @@
         </nav>
 
         <article class="project-story-content" id="project-story" tabindex="-1">
-<header class="story-shell story-hero"><p class="story-kicker">Robot fleet control · 2025–2026</p><h1 class="story-title">Mosaic</h1><p class="story-lede">A ROS 2 fleet controller with an operator interface and movement control running on each robot.</p><ul class="story-meta"><li>Robotics systems engineering</li><li>Python · ROS 2 · UDP</li><li>Lab prototype</li></ul><div class="story-actions"><a class="story-button" href="https://github.com/Inventure71/SwarmProjectV1" target="_blank" rel="noreferrer">View repository <span aria-hidden="true">↗</span></a></div></header>
+<header class="story-shell story-hero"><p class="story-kicker">Robot fleet control &amp; visualization · 2025–2026</p><h1 class="story-title">MOSAIC</h1><p class="story-lede">Coordinate a robot fleet and make its behavior visible in physical space, with robot-local movement control and calibrated floor visualization.</p><ul class="story-meta"><li>AI &amp; Robotics Lab project</li><li>Python · ROS 2 · OptiTrack</li><li>UDP · NDI · TouchDesigner</li></ul><div class="story-actions"><a class="story-button" href="https://github.com/Inventure71/SwarmProjectV1" target="_blank" rel="noreferrer">Historical Hydra source <span aria-hidden="true">↗</span></a><a class="story-button is-secondary" href="project-mosaic-floor.html">Visualization &amp; debugging <span aria-hidden="true">→</span></a></div></header>
             <div class="story-shell"><figure class="story-diagram robotics-system"><div class="robotics-system-top"><div class="robotics-system-node"><span class="robotics-node-label">Operator</span><strong>Tk interface</strong><p>Paths and manual commands</p></div><div class="robotics-system-connection"><span>UDP</span><span aria-hidden="true">↔</span></div><div class="robotics-system-node"><span class="robotics-node-label">Supervisor</span><strong>ROS 2 bridge</strong><p>Commands in · fleet state out</p></div></div><div class="robotics-system-bus"><span>High-level commands ↓</span><span>↑ Robot status</span></div><div class="robotics-system-agents"><div><span class="robotics-node-label">Each robot</span><strong>Local agent</strong><p>Sensors &amp; pose → path following → motor commands</p></div><div class="robotics-agent-ownership"><strong>Robot-local execution</strong><span>The robot owns path execution, manual drive, and stopping decisions.</span></div></div><figcaption class="story-caption">High-level commands travel through the supervisor; motor commands are published by each robot agent.</figcaption></figure></div>
-<section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Ownership</p><h2 class="story-section-heading">Control responsibilities</h2><p class="story-copy">The supervisor handles coordination. Each robot reads its own sensors and OptiTrack pose, executes movement, and checks whether that pose is still current.</p></div><dl class="story-notes"><div><dt>Robot agent</dt><dd>Owns path following, manual drive, stopping decisions, and the only local <code>cmd_vel</code> publisher.</dd></div><div><dt>Supervisor bridge</dt><dd>Translates UDP commands into ROS 2 actions and aggregates normalized robot state.</dd></div><div><dt>Operator tools</dt><dd>The Tk interface issues commands. Gama receives fleet state through a separate UDP export.</dd></div></dl></div></section>
-<section class="story-shell story-section"><p class="story-kicker">Interfaces</p><h2 class="story-section-heading">Shared topics and fleet configuration</h2><div class="story-columns"><div><h3>Normalized ROS topics</h3><p class="story-copy">Agents publish Mosaic status, pose, diagnostics, and path progress. The supervisor consumes these interfaces instead of depending on vendor-specific robot topics.</p></div><div><h3>Shared fleet configuration</h3><p class="story-copy">A common configuration defines robot namespaces, endpoints, and device roles. Launch packages and deployment scripts keep startup consistent across machines.</p></div></div></section>
-<section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Lab validation</p><h2 class="story-section-heading">Physical validation requirements</h2></div><p class="story-copy">Fleet membership is configured in advance. Physical validation depends on the robots, their ROS interfaces, OptiTrack, and the lab network.</p></div></section>
-            <div class="story-shell story-end"><a href="https://github.com/Inventure71/SwarmProjectV1" target="_blank" rel="noreferrer">View source <span aria-hidden="true">↗</span></a><a href="../projects.html">All projects <span aria-hidden="true">→</span></a></div>
+<section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Fleet coordination</p><h2 class="story-section-heading">Control responsibilities</h2><p class="story-copy">The supervisor handles coordination. Each robot reads its own sensors and OptiTrack pose, executes movement, and checks whether that pose is still current.</p></div><dl class="story-notes"><div><dt>Robot agent</dt><dd>Owns path following, manual drive, stopping decisions, and the only local <code>cmd_vel</code> publisher.</dd></div><div><dt>Supervisor bridge</dt><dd>Translates UDP commands into ROS 2 actions and aggregates normalized robot state.</dd></div><div><dt>Operator tools</dt><dd>The Tk interface issues commands. Gama receives fleet state through a separate UDP export.</dd></div></dl></div></section>
+<section class="story-shell story-section"><p class="story-kicker">Interfaces</p><h2 class="story-section-heading">Shared topics and fleet configuration</h2><div class="story-columns"><div><h3>Normalized ROS topics</h3><p class="story-copy">Agents publish MOSAIC status, pose, diagnostics, and path progress. The supervisor consumes these interfaces instead of depending on vendor-specific robot topics.</p></div><div><h3>Shared fleet configuration</h3><p class="story-copy">A common configuration defines robot namespaces, endpoints, and device roles. Launch packages and deployment scripts keep startup consistent across machines.</p></div></div></section>
+<section class="story-shell story-section" aria-labelledby="mosaic-visualization"><p class="story-kicker">Visualization &amp; debugging</p><h2 class="story-section-heading" id="mosaic-visualization">Put observations back into physical space</h2><p class="story-copy">MOSAIC’s visualization component maps selected robot telemetry and independent tracking data onto a calibrated floor display. Source timestamps, units, coordinate frames, and provenance stay attached to observations; missing or stale evidence is shown as unavailable.</p><ol class="story-process"><li><strong>Observe</strong><span>Read selected robot telemetry and independent tracking data.</span></li><li><strong>Check</strong><span>Retain the timestamp, coordinate frame, and validity of each observation.</span></li><li><strong>Project</strong><span>Map observations through shared calibration into the floor display.</span></li></ol></section>
+<section class="story-shell story-section" aria-labelledby="mosaic-replay"><div class="story-split"><div><p class="story-kicker">Observation responsibilities</p><h2 class="story-section-heading" id="mosaic-replay">Inspect a run without commanding robots</h2><p class="story-copy">Fleet control and visualization are components of the same project with separate responsibilities. The visualization hub owns calibration between tracking coordinates and the projection surface. Movement and stopping authority remain with each robot agent.</p></div><dl class="story-notes"><div><dt>Independent evidence</dt><dd>External tracking and robot-reported reasoning remain distinguishable in the display.</dd></div><div><dt>Versioned recordings</dt><dd>Typed observations and metadata preserve the timing context of a debugging session.</dd></div><div><dt>Observation-only replay</dt><dd>Recorded evidence feeds the display and checks without sending movement commands to live robots.</dd></div></dl></div></section>
+<section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Evolution</p><h2 class="story-section-heading">From Hydra to robot-local control</h2></div><div><p class="story-copy">The linked public repository documents the earlier Hydra controller: a centralized ROS 1 backend and ROS 2 robot client. The current architecture described here moves path execution and stopping decisions into ROS 2 agents on each robot.</p><p class="story-copy">The public repository is historical source for the fleet controller’s evolution. The visualization and replay component is described separately in the <a href="project-mosaic-floor.html">visualization &amp; debugging detail</a>.</p></div></div></section>
+<section class="story-shell story-section"><div class="story-split"><div><p class="story-kicker">Lab validation</p><h2 class="story-section-heading">Physical validation requirements</h2></div><p class="story-copy">Fleet membership is configured in advance. Validating movement depends on the robots, their ROS interfaces, OptiTrack, and the lab network. The visualization component also requires projector alignment, tracking calibration, and checks on the lab hardware.</p></div></section>
+            <div class="story-shell story-end"><a href="https://github.com/Inventure71/SwarmProjectV1" target="_blank" rel="noreferrer">Historical Hydra source <span aria-hidden="true">↗</span></a><a href="../projects.html">All projects <span aria-hidden="true">→</span></a></div>
         </article>
     </main>
     <footer class="pf-footer py-4 mt-auto"></footer>

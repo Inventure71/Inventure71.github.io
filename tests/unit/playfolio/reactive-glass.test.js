@@ -252,8 +252,9 @@ describe('reactive glass surface', () => {
       rect: { left: 100, top: 30, width: 60, height: 30 },
     });
     surface._children.push(item);
+    surface.matches.mockReturnValue(true);
     surface.ownerDocument = {
-      querySelectorAll: vi.fn((selector) => (selector === ':hover' ? [] : [])),
+      querySelectorAll: vi.fn((selector) => (selector === ':hover' ? [surface, group, item] : [])),
       elementFromPoint: vi.fn((x, y) => (x === 130 && y === 45 ? item : null)),
       defaultView: {
         requestAnimationFrame: vi.fn((callback) => {
@@ -274,6 +275,67 @@ describe('reactive glass surface', () => {
     expect(item.classList.contains('is-glass-target')).toBe(true);
     expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-x', '110.00px');
     expect(surface.style.setProperty).toHaveBeenCalledWith('--pf-glass-y', '35.00px');
+  });
+
+  test('ignores stale navigation coordinates when the pointer has already left', () => {
+    let prime;
+    const surface = createSurface();
+    const { item } = addItem(surface);
+    const storage = { getItem: vi.fn(() => JSON.stringify({ x: 130, y: 45, time: Date.now() })), removeItem: vi.fn() };
+    surface.ownerDocument = {
+      querySelectorAll: () => [], elementFromPoint: () => item,
+      defaultView: { requestAnimationFrame: callback => { prime = callback; return 1; }, sessionStorage: storage },
+    };
+    installReactiveGlassSurface(surface);
+    prime();
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
+    expect(item.classList.contains('is-glass-target')).toBe(false);
+    expect(storage.removeItem).toHaveBeenCalled();
+  });
+
+  test('early pointer tracking restores stationary navigation even before native hover is available', () => {
+    let prime;
+    const surface = createSurface();
+    const { item } = addItem(surface);
+    surface.ownerDocument = {
+      querySelectorAll: () => [], elementFromPoint: (x, y) => x === 130 && y === 45 ? item : null,
+      hasFocus: () => true,
+      defaultView: { MGNavigationPointer: { current: null },
+        requestAnimationFrame: callback => { prime = callback; return 1; },
+        sessionStorage: { getItem: () => JSON.stringify({ x: 130, y: 45, time: Date.now() }), removeItem: vi.fn() } },
+    };
+    installReactiveGlassSurface(surface);
+    prime();
+    expect(item.classList.contains('is-glass-target')).toBe(true);
+  });
+
+  test('early movement outside overrides the old navigation click before hover initialization', () => {
+    let prime;
+    const surface = createSurface();
+    const { item } = addItem(surface);
+    surface.ownerDocument = {
+      querySelectorAll: () => [], elementFromPoint: (x, y) => x === 130 && y === 45 ? item : null,
+      hasFocus: () => true,
+      defaultView: { MGNavigationPointer: { current: { x: 500, y: 300 } },
+        requestAnimationFrame: callback => { prime = callback; return 1; },
+        sessionStorage: { getItem: () => JSON.stringify({ x: 130, y: 45, time: Date.now() }), removeItem: vi.fn() } },
+    };
+    installReactiveGlassSurface(surface);
+    prime();
+    expect(item.classList.contains('is-glass-target')).toBe(false);
+  });
+
+  test('document pointer movement clears hover when the surface leave was missed', () => {
+    const surface = createSurface();
+    const { item } = addItem(surface);
+    const listeners = new Map();
+    surface.ownerDocument = { addEventListener: (name, callback) => listeners.set(name, callback) };
+    installReactiveGlassSurface(surface);
+    surface._listeners.get('pointermove')({ target: item, clientX: 130, clientY: 45 });
+    expect(item.classList.contains('is-glass-target')).toBe(true);
+    listeners.get('pointermove')({ target: createNode() });
+    expect(item.classList.contains('is-glass-target')).toBe(false);
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
   });
 
   test('does not store hover-only pointer movement as a page-navigation handoff', () => {
@@ -341,14 +403,21 @@ describe('reactive glass surface', () => {
 
     expect(storage.setItem).toHaveBeenCalledOnce();
 
+    // The old page's pending prime cannot reapply a glow after its click.
     frameCallback();
-
-    expect(surface.classList.contains('is-glass-item-hovering')).toBe(true);
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
+    const nextSurface = createSurface();
+    nextSurface._children.push(link);
+    nextSurface.matches.mockReturnValue(true);
+    nextSurface.ownerDocument = surface.ownerDocument;
+    installReactiveGlassSurface(nextSurface);
+    frameCallback();
+    expect(nextSurface.classList.contains('is-glass-item-hovering')).toBe(true);
     expect(link.classList.contains('is-glass-target')).toBe(true);
     expect(storage.removeItem).toHaveBeenCalled();
   });
 
-  test('clears the current hover state when a same-tab navigation click is handed off', () => {
+  test('retains current hover through a navigation click until the pointer actually leaves', () => {
     const surface = createSurface();
     const group = createNode({ dataset: { glassGroup: '' } });
     const link = createNode({ dataset: { glassItem: '', glassTone: 'green' }, parent: group });
@@ -381,6 +450,9 @@ describe('reactive glass surface', () => {
     surface._listeners.get('click')({ target: link, clientX: 130, clientY: 45 });
 
     expect(storage.setItem).toHaveBeenCalledOnce();
+    expect(surface.classList.contains('is-glass-item-hovering')).toBe(true);
+    expect(link.classList.contains('is-glass-target')).toBe(true);
+    surface._listeners.get('pointerleave')();
     expect(surface.classList.contains('is-glass-item-hovering')).toBe(false);
     expect(surface.classList.contains('is-glass-bar-hovering')).toBe(false);
     expect(link.classList.contains('is-glass-target')).toBe(false);

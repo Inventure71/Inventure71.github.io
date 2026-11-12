@@ -28,10 +28,11 @@ for (const width of [1440, 390]) {
         await page.evaluate(theme => window.MGTheme?.apply?.(theme), theme);
         await expect(page.locator('h1')).toBeVisible();
         if (route.startsWith('/projects.html')) {
-          // The flags remain visible before the lazy simulator starts.
+          // The status flag and disabled launch action remain visible before lazy startup.
           await expect(page.locator('[data-paddock-shell]')).toHaveAttribute('data-simulator-state', 'preview');
-          await expect(page.locator('.pf-race-guide__marker').first()).toBeVisible();
-          await expect(page.locator('.pf-race-guide__marker').last()).toBeVisible();
+          await expect(page.locator('.pf-race-guide__flag')).toBeVisible();
+          await expect(page.getByRole('button', { name: 'Start race', exact: true })).toBeVisible();
+          await expect(page.getByRole('button', { name: 'Start race', exact: true })).toBeDisabled();
         }
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
         const skip = page.getByRole('link', { name: 'Skip to content', exact: true });
@@ -185,6 +186,9 @@ test('map nodes float gently in place at a bounded frame rate and pause offscree
   expect(Math.max(...displacement)).toBeLessThan(16);
   await page.evaluate(() => { document.querySelector('footer').style.minHeight = '1200px'; window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }); });
   await expect.poll(async () => { const box = await map.boundingBox(); return box.y + box.height; }).toBeLessThanOrEqual(0);
+  // IntersectionObserver delivers the visibility change after layout/paint.
+  // Settle that notification before asserting zero subsequent redraws.
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   const offscreen = await mapFrames(page);
   await page.waitForTimeout(300);
   expect(await mapFrames(page)).toBe(offscreen);
@@ -296,7 +300,7 @@ test('actual renderer startup failure releases controls; retry reuses cached mod
     window.failRaceRenderer = true;
     const getContext = HTMLCanvasElement.prototype.getContext;
     HTMLCanvasElement.prototype.getContext = function(type, ...args) {
-      if (window.failRaceRenderer && /webgl/.test(type)) throw new Error('Controlled renderer failure');
+      if (window.failRaceRenderer && /webgl|webgpu|2d/.test(type)) throw new Error('Controlled renderer failure');
       return getContext.call(this, type, ...args);
     };
   });
@@ -304,48 +308,39 @@ test('actual renderer startup failure releases controls; retry reuses cached mod
   const shell = page.locator('[data-paddock-shell]');
   await expect(shell).toHaveAttribute('data-simulator-state', 'error', { timeout: 20000 });
   await expect(shell).toHaveAttribute('aria-busy', 'false');
-  const retry = page.getByRole('button', { name: 'Retry live race' });
+  const retry = page.getByRole('button', { name: 'Retry project race' });
   await expect(retry).toBeVisible();
   await expect(retry).toBeEnabled();
-  await expect(page.locator('[data-paddock-preview]')).toBeHidden();
+  await expect(shell.locator('[data-paddock-preview]')).toBeHidden();
   await expect(page.locator('#paddock-race-root')).toHaveAttribute('aria-hidden', 'true');
   await expect(page.locator('#paddock-race-root')).toBeEmpty();
   await page.evaluate(() => { window.failRaceRenderer = false; });
   await retry.click();
   await expect(shell).toHaveAttribute('data-simulator-state', 'ready', { timeout: 30000 });
   await expect(shell).toHaveAttribute('aria-busy', 'false');
-  await expect(page.locator('[data-paddock-error]')).toBeHidden();
-  await expect(page.locator('[data-paddock-preview]')).toBeHidden();
+  await expect(shell.locator('[data-paddock-error]')).toBeHidden();
+  await expect(shell.locator('[data-paddock-preview]')).toBeHidden();
   await expect(page.locator('#paddock-race-root')).toHaveAttribute('aria-hidden', 'false');
   await expect(page.locator('#paddock-race-root canvas')).toHaveCount(1);
-  await expect(page.getByRole('button', { name: 'Stop race', exact: true })).toBeEnabled();
-  const guideAction = page.locator('.pf-race-guide__browse:visible strong');
-  await expect(guideAction).toHaveText('Stop race');
-  await page.getByRole('button', { name: 'Stop race', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Start race', exact: true })).toBeEnabled();
-  await expect(guideAction).toHaveText('Start race');
-  await expect(page.getByRole('combobox', { name: 'Jump to grid entry' })).toHaveValue('core');
-  await expect(page.locator('[data-grid-project-banner] a')).toHaveAttribute('href', '/project_details/project-gengame.html');
+  await expect(page.getByRole('combobox', { name: 'Jump to grid entry' })).toHaveValue('noty');
+  await page.getByRole('combobox', { name: 'Jump to grid entry' }).selectOption('noty');
+  await expect(page.locator('[data-grid-project-banner] a')).toHaveAttribute('href', '/project_details/project-noty.html');
   expect(imports).toBe(1);
   expect(errors.some(message => message.includes('Controlled renderer failure'))).toBe(true);
   expect(errors.some(message => message.includes('cleanup failed'))).toBe(false);
   await page.screenshot({ path: 'output/playwright/race-retry.png' });
 });
 
-test('race flag and guide follow running, safety car, paused and resumed state', async ({ page }) => {
+test('race flag follows grid, race and safety-car states', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/projects.html?raceAutoStart=1');
-  const flag = page.locator('[data-race-status]');
-  const guideAction = page.locator('.pf-race-guide__browse:visible strong');
+  const flag = page.locator('project-race-guide [data-race-status]');
+  await expect(flag).toHaveAttribute('data-race-status', 'browsing', { timeout: 30000 });
+  await page.getByRole('button', { name: 'Start race', exact: true }).click();
   await expect(flag).toHaveAttribute('data-race-status', 'racing', { timeout: 30000 });
-  await expect(guideAction).toHaveText('Stop race');
   await page.getByRole('button', { name: 'Safety Car', exact: true }).click();
   await expect(flag).toHaveAttribute('data-race-status', 'safety-car');
-  await page.getByRole('button', { name: 'Stop race', exact: true }).click();
-  await expect(guideAction).toHaveText('Start race');
-  await expect(page.locator('.pf-race-guide__paused-label')).not.toHaveCSS('display', 'none');
-  await page.getByRole('button', { name: 'Start race', exact: true }).click();
-  await expect(guideAction).toHaveText('Stop race');
   await page.getByRole('button', { name: 'Safety Car', exact: true }).click();
   await expect(flag).toHaveAttribute('data-race-status', 'racing');
 });
@@ -357,7 +352,7 @@ test('standalone simulator still auto-mounts', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Stop race', exact: true })).toBeEnabled();
 });
 
-test('Grid Walk releases captured drags and preserves race progress through resizing and resume', async ({ page }) => {
+test('Grid Walk releases drags, preserves paused state through resizing and opens projects', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/projects.html?raceAutoStart=1');
   await expect(page.locator('[data-paddock-shell]')).toHaveAttribute('data-simulator-state', 'ready', { timeout: 30000 });
@@ -366,11 +361,10 @@ test('Grid Walk releases captured drags and preserves race progress through resi
     window.hostRace = await module.initializeProjectsRace();
     window.originalCanvas = document.querySelector('#paddock-race-root canvas');
   });
-  await page.waitForFunction(() => window.hostRace.getSnapshot().time > 6);
-  await page.getByRole('button', { name: 'Stop race', exact: true }).click();
+  expect(await page.evaluate(() => window.hostRace.getView())).toBe('grid-walk');
   const paused = await page.evaluate(() => JSON.stringify(window.hostRace.getSnapshot()));
   await page.getByRole('combobox', { name: 'Jump to grid entry' }).selectOption('noty');
-  const panel = page.locator('.sim-canvas-panel');
+  const panel = page.locator('#paddock-race-root .sim-canvas-panel');
   for (const cancellation of ['blur', 'no-buttons']) {
     await panel.evaluate(el => el.addEventListener('pointerdown', event => { window.dragPointerId = event.pointerId; }, { capture: true, once: true }));
     const label = page.locator('[data-grid-entry="noty"]');
@@ -398,9 +392,7 @@ test('Grid Walk releases captured drags and preserves race progress through resi
     expect(await page.evaluate(() => JSON.stringify(window.hostRace.getSnapshot()))).toBe(paused);
     expect(await page.evaluate(() => document.querySelector('#paddock-race-root canvas') === window.originalCanvas)).toBe(true);
   }
-  await page.getByRole('button', { name: 'Start race', exact: true }).click();
-  await page.waitForFunction(time => window.hostRace.getSnapshot().time > time + 1, JSON.parse(paused).time);
-  await page.getByRole('button', { name: 'Stop race', exact: true }).click();
+  expect(await page.evaluate(() => window.hostRace.getView())).toBe('grid-walk');
   await expect(page.getByRole('combobox', { name: 'Jump to grid entry' })).toHaveValue('noty');
   await page.locator('[data-grid-project-banner]').getByRole('link', { name: 'View project' }).click();
   await expect(page).toHaveURL(/project_details\/project-noty\.html$/);
@@ -451,7 +443,7 @@ test('sitemap routes, canonical URLs and social images resolve; templates and Ma
   const xml = await sitemap.text();
   expect(xml).not.toContain('lastmod');
   const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]);
-  expect(urls).toHaveLength(27);
+  expect(urls).toHaveLength(32);
   expect(urls).toContain('https://mgiorgetti.com/');
   for (const url of urls) {
     expect(url.startsWith('https://mgiorgetti.com/')).toBe(true);
@@ -467,4 +459,96 @@ test('sitemap routes, canonical URLs and social images resolve; templates and Ma
   expect(await (await request.get('/project_details/_template.html')).text()).toContain('content="noindex, nofollow"');
   expect(await (await request.get('/MatricesProject/')).text()).toContain('rel="canonical" href="https://inventure72.github.io/MatricesProject/"');
   expect(await (await request.get('/robots.txt')).text()).toContain('Sitemap: https://mgiorgetti.com/sitemap.xml');
+});
+
+test('navigation hover handoff cannot keep Projects highlighted after the pointer leaves during startup', async ({ page }) => {
+  let hold = false;
+  let release;
+  let requested;
+  const gate = new Promise(resolve => { release = resolve; });
+  const pending = new Promise(resolve => { requested = resolve; });
+  await page.route('**/js/playfolio/reactive-glass.js*', async route => {
+    if (hold) { requested(); await gate; }
+    await route.continue();
+  });
+  try {
+    await quietNavigation(page, '/');
+    const link = page.locator('.navbar a[href="/projects.html"]');
+    await link.hover();
+    await expect(link).toHaveClass(/is-glass-target/);
+    hold = true;
+    await link.click({ noWaitAfter: true });
+    await page.waitForURL(/projects.html/, { waitUntil: 'commit' });
+    await pending;
+    // Navigation/startup can delay installing pointerleave handlers. Move away
+    // before the new page's hover controller initializes, using a real pointer.
+    await page.mouse.move(600, 300);
+    release();
+    await expect(page.locator('[data-command-palette]')).toBeAttached();
+    const nav = page.locator('.navbar');
+    await expect.poll(() => nav.evaluate(el => el.matches(':hover'))).toBe(false);
+    await expect(nav).not.toHaveClass(/is-glass-(item|bar)-hovering/);
+    await expect(nav.locator('.is-glass-target')).toHaveCount(0);
+    const projects = nav.getByRole('link', { name: 'Projects', exact: true });
+    await projects.hover();
+    await expect(projects).toHaveClass(/is-glass-target/);
+    await page.mouse.move(600, 300);
+    await expect(nav).not.toHaveClass(/is-glass-(item|bar)-hovering/);
+  } finally { release(); }
+});
+
+test('navigation preserves a genuine stationary hover and clears it when the pointer moves away', async ({ page }) => {
+  await quietNavigation(page, '/');
+  await page.locator('.navbar a[href="/projects.html"]').click();
+  await expect(page.locator('[data-command-palette]')).toBeAttached();
+  const nav = page.locator('.navbar');
+  const projects = nav.getByRole('link', { name: 'Projects', exact: true });
+  await expect.poll(() => projects.evaluate(el => el.matches(':hover'))).toBe(true);
+  await expect(projects).toHaveClass(/is-glass-target/);
+  await page.mouse.move(600, 300);
+  await expect(nav).not.toHaveClass(/is-glass-(item|bar)-hovering/);
+  await expect(projects).not.toHaveClass(/is-glass-target/);
+});
+
+for (const moveAway of [false, true]) test(`navbar glow during pending navigation: pointer ${moveAway ? 'leaves' : 'stays'}`, async ({ page }) => {
+  let release;
+  let notifyRequest;
+  const gate = new Promise(resolve => { release = resolve; });
+  const requested = new Promise(resolve => { notifyRequest = resolve; });
+  await page.route('**/projects.html', async route => {
+    notifyRequest();
+    await gate;
+    await route.continue();
+  });
+  try {
+    await quietNavigation(page, '/');
+    const projects = page.locator('.navbar a[href="/projects.html"]');
+    await projects.hover();
+    await expect(projects).toHaveClass(/is-glass-target/);
+    let during;
+    let notifyCapture;
+    const captured = new Promise(resolve => { notifyCapture = resolve; });
+    await page.exposeFunction('captureNavigationGlow', state => { during = state; notifyCapture(); });
+    // Capture after the navbar handler, before the browser tears down this
+    // document. Evaluating the old page after navigation starts is too late.
+    await page.evaluate(() => document.addEventListener('click', event => {
+      const target = event.target.closest('.navbar a[href="/projects.html"]');
+      if (target) window.captureNavigationGlow({ hovered: target.matches(':hover'),
+        target: target.classList.contains('is-glass-target'),
+        colored: target.closest('nav').classList.contains('is-glass-item-hovering') });
+    }, { once: true }));
+    const clicking = projects.click({ noWaitAfter: true });
+    await requested;
+    await captured;
+    if (moveAway) await page.mouse.move(600, 300);
+    release();
+    await clicking;
+    expect(during).toEqual({ hovered: true, target: true, colored: true });
+    await page.waitForURL(/projects.html/);
+    await expect(page.locator('[data-command-palette]')).toBeAttached();
+    if (moveAway) await expect(page.locator('.navbar')).not.toHaveClass(/is-glass-(item|bar)-hovering/);
+    else await expect(page.locator('.navbar a[href="/projects.html"]')).toHaveClass(/is-glass-target/);
+    await page.mouse.move(600, 300);
+    await expect(page.locator('.navbar')).not.toHaveClass(/is-glass-(item|bar)-hovering/);
+  } finally { release(); }
 });

@@ -1,0 +1,117 @@
+{
+  "noty": {
+    "problem": "Notes need to remain close to the application windows they describe without disrupting keyboard focus or losing local work.",
+    "scope": "The public case study documents application behavior and recovery boundaries. It does not report adoption, productivity gains or a guarantee that optional AI providers operate offline."
+  },
+  "paddockjs": {
+    "problem": "A racing simulation needs to support an interactive browser presentation and programmable experiments without maintaining separate simulation models.",
+    "scope": "The package powers this portfolio's project race. Its advanced physics supports repeatable experiments; it is not a calibrated model of a real Formula 1 car."
+  },
+  "vigil": {
+    "problem": "A robotics lab needs a consistent way to observe fleet status, investigate a robot and repeat diagnostic or recovery procedures.",
+    "scope": "The case study describes an internal lab platform. It does not publish a reliability benchmark, fleet-wide uptime result or public hosted service."
+  },
+  "project-unity": {
+    "problem": "Working across macOS and Windows requires transferring keyboard and mouse control while recovering cleanly from lost connectivity.",
+    "contribution": "Cross-platform systems development spanning native input capture and injection, pairing, transport and input ownership.",
+    "scope": "The published latency measurements are scoped to the tested transport and injection configurations and exclude application rendering. Protocol review and physical testing across three devices remain open."
+  },
+  "dream2detect": {
+    "problem": "Task-specific photographs of damaged packages can be difficult to obtain and label; the study asks how far synthetic training images transfer to real photographs.",
+    "scope": "The reported ensemble reached 64.16% within one severity band and 21.04% exact-band accuracy on 385 real photographs. The best result used a pretrained visual backbone; synthetic training refers to package-damage training, not earlier pretraining. The study does not establish reliable exact-band grading or larger-dataset performance."
+  },
+  "whos-on-repeat": {
+    "problem": "A shared music game must keep rounds, private answers and scoring consistent across players' devices and reconnects.",
+    "scope": "The offline demo uses a downloadable pack of 100 previews and simulated listening libraries. Spotify mode requires configured provider access and approved participants. Personal Apple Music import is outside scope; live-provider and multi-device audio checks remain separate from automated rule tests."
+  },
+  "victoria": {
+    "problem": "A robot playing Connect Four must translate a camera view into a stable board state and then execute a legal move on the physical board.",
+    "contribution": "Robotics lab prototype integrating board calibration, computer vision, game-state interpretation, search and a ROS-controlled arm.",
+    "scope": "The public case study includes a full-match demonstration and source links. It does not report perception accuracy, win rate or generalized manipulation performance."
+  },
+  "core-conflict": {
+    "problem": "Players' natural-language requests for new game mechanics need to become a compatible shared multiplayer build before play starts.",
+    "contribution": "Lead developer of the multiplayer prototype, including the generation, test-and-repair and patch-combination workflow.",
+    "scope": "The case study demonstrates generated mechanics in a prototype. Passing generated-patch tests is not evidence that arbitrary requested code is correct, safe or balanced; no general success-rate benchmark is published."
+  },
+  "mosaic-swarm": {
+    "problem": "A robot fleet needs coordinated operation and a shared view of telemetry in physical lab space, with movement authority kept separate from visualization.",
+    "contribution": "Robotics systems engineering across fleet coordination, ROS 2 robot agents, operator tools, telemetry contracts, calibrated floor visualization, recording and observation-only replay.",
+    "scope": "MOSAIC is one project with fleet-control and visualization/debugging components. Robot agents own movement execution and stopping; the visualization observes and projects telemetry. The linked public repository documents the earlier Hydra architecture. Current physical validation depends on configured robots, ROS interfaces, OptiTrack, projector alignment and the lab network."
+  },
+  "dottor-sorriso": {
+    "problem": "Inconsistent bank-transfer descriptions made identifying donors and recording donations in the foundation's existing platform labor-intensive.",
+    "contribution": "Solo internal automation project for Fondazione Dottor Sorriso, combining donor extraction, repeated-input caching and Selenium-based entry into the existing platform.",
+    "scope": "The reported operational result covers more than 1,000 donation records and a 90% reduction in manual entry. The 40 administrative hours saved per month is an estimate. Donor records and internal operational data are not published."
+  },
+  "clipclop": {
+    "problem": "Moving text and images between a Mac and Android phone should work over local Wi-Fi despite device-address changes and Android's clipboard restrictions.",
+    "contribution": "Cross-device clipboard prototype integrating a Python Mac application, a Java Android application, pairing and encrypted transport.",
+    "scope": "The working prototype supports automatic Mac-to-Android transfer and user-triggered Android sending. It does not imply unrestricted background clipboard access on Android or publish a security-audit result."
+  },
+  "mattyflow": {
+    "problem": "Dictation should return to the application where recording began, while keeping local model loading and optional rewriting separate from native input handling.",
+    "contribution": "macOS dictation prototype joining a Swift/AppKit application with a Python/FastAPI model service and MLX-based local inference.",
+    "scope": "The prototype requires Apple silicon and Microphone, Input Monitoring and Accessibility permissions. Models download separately; reloading an idle model adds latency. OpenAI is an optional provider, so provider choice affects whether processing remains local."
+  },
+  "ghostyper": {
+    "problem": "Prepared text needs controlled insertion into another application, with configurable typing behavior and a clear way for the user to pause or stop it.",
+    "contribution": "Native macOS application development, including destination selection, typing profiles, a test bench and optional local alternative-phrase generation.",
+    "scope": "The application targets Apple silicon and macOS 14 or later and requires Accessibility access. Some destination applications reject simulated typing. The portfolio animation uses a fixed example rather than running a local model in the browser."
+  },
+  "contextkey": {
+    "problem": "System-wide autocomplete needs useful text context from both native fields and browser editors without taking keyboard focus away from the destination.",
+    "contribution": "Experimental macOS prototype integrating Accessibility context, a Chromium extension, optional OCR, MLX candidate generation and an AppKit suggestion overlay.",
+    "scope": "This is an experimental prototype. The public case study explains candidate filtering and insertion behavior but does not publish completion-quality, latency or application-compatibility benchmarks."
+  },
+  "holovinyl": {
+    "problem": "A physical music interface needs to recognize an object consistently and translate hand gestures into intentional playback controls.",
+    "contribution": "Solo computer-vision prototype joining object recognition, hand tracking, object-to-music configuration and Spotify playback.",
+    "scope": "The case study provides a working-prototype demonstration. Optional object-description and music-query models run locally; Spotify playback still requires a network connection. No recognition-accuracy benchmark is published."
+  },
+  "neural-noir": {
+    "problem": "Generated detective dialogue needs to stay grounded in one underlying case so evidence, interviews and the final accusation remain coherent.",
+    "contribution": "Solo game prototype connecting Unreal Engine 5 gameplay with Python and Gemini-generated case structure and dialogue.",
+    "scope": "The public page links a demonstration, source and downloadable build. It does not report a formal evaluation of narrative consistency or establish that generated dialogue is always correct."
+  },
+  "tcgnet": {
+    "problem": "A trading-card marketplace must distinguish exact printings and update owned, reserved and sold inventory consistently during purchases.",
+    "contribution": "Lead backend and data engineer in a two-person course-project team, responsible for the Django/PostgreSQL data and marketplace service design described in the case study.",
+    "scope": "The course MVP records listings and purchases; payment and shipping are outside scope. The repeatable importer covers 132 default variants from the documented Base and Jungle sets."
+  },
+  "pead-learning-demos": {
+    "problem": "Learning rules are easier to understand when their effects on weights, predictions, geometry and earlier tasks can be inspected step by step.",
+    "contribution": "Course-project demonstrations of Hebbian learning, backpropagation, Oja's rule and continual-learning behavior, using Python/NumPy calculations and browser visualization.",
+    "scope": "The experiments use small datasets and inspectable calculations. They explain learning mechanisms and forgetting; they are not a benchmark of large-scale continual learning."
+  },
+  "algorithms-game": {
+    "problem": "An arena game needs paths that respect troop footprints, consistent drawing order and an opponent that can respond to threats.",
+    "contribution": "Team contribution to an algorithms course project implementing a Pygame recreation with custom pathfinding, sorting and data structures.",
+    "scope": "The course project is completed and has public gameplay and source links. It demonstrates the implemented algorithms rather than reporting competitive AI strength or performance against the original game."
+  },
+  "reminderz": {
+    "problem": "Notes-to-self can become difficult to retrieve, while visual programming needs explicit connections between execution order and data inputs.",
+    "contribution": "Solo development of two desktop prototypes: ReminderZ for message organization and Project Loom for visual Python programming, retrieval and UI-generation experiments.",
+    "scope": "These are separate experiments presented together, not a claim of one finished product. The public case study describes schema-constrained organization, graph compilation and local retrieval without reporting retrieval accuracy or production adoption."
+  },
+  "evolve": {
+    "problem": "A tool-using agent may encounter a task that needs a function unavailable at the start of its execution.",
+    "contribution": "Solo Python agent experiment in dynamic tool creation and reloading, with an original Gemini execution loop and an experimental Ollama backend.",
+    "scope": "The experiment makes newly written functions available without restarting the process. Its initial tool set includes shell execution and a log reader; the public page does not establish sandboxing, safety of generated tools or a general task-completion benchmark."
+  },
+  "budget-buddy": {
+    "problem": "A budget conversation needs spending history, savings goals and earlier decisions as context for useful follow-up questions.",
+    "contribution": "Team contribution to a Python hackathon prototype using transaction categories, merchant information and savings-goal context for a budget assistant.",
+    "scope": "The published page describes a prototype and interaction sketch. It does not report financial outcomes, recommendation accuracy, production deployment or validated financial advice."
+  },
+  "matrices-recommender": {
+    "problem": "A recommendation example should show how sparse ratings and missing observations become reconstructed estimates, rather than hiding the matrix operations.",
+    "contribution": "Matrices course project with a JavaScript browser demonstration and a Python reference for sparse residuals and truncated singular value decomposition.",
+    "scope": "The inspectable example uses ten users and sixteen movies, with one to six retained components. It illustrates matrix reconstruction and does not establish recommendation quality on a real catalog or unseen users."
+  },
+  "gdg-event-website": {
+    "problem": "Participants need to understand an unusual hackathon format, find its schedule and reach the application form quickly.",
+    "contribution": "Team contribution to the GDG on Campus IE University Tech Roulette event website, using semantic static pages, responsive layout and JavaScript navigation. Matteo also judged the final presentations.",
+    "scope": "The site supported the April 13–27, 2026 event. Registration is handled by a linked application form; the website does not provide its own registration backend. No attendance or conversion metrics are claimed."
+  }
+}

@@ -25,11 +25,13 @@
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/playfolio/motion.css" rel="stylesheet" />
     <link href="/css/playfolio/project-browse.css" rel="stylesheet" />
-    <link href="/css/playfolio/selected-work.css" rel="stylesheet" />
+    <link href="/css/playfolio/selected-work.css?v=v9-grid-direction" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
     <!-- /route-styles -->
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
+    <link rel="alternate" type="text/markdown" href="https://mgiorgetti.com/profile.md" title="Profile and resume (Markdown)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
     <meta property="og:title" content="Matteo Giorgetti" />
@@ -61,27 +63,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
             <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
-              
+
                 <li class="nav-item">
                   <a class="nav-link active" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
                 </li>
-              
+
             </ul>
             <div class="d-flex gap-2" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
@@ -145,65 +147,24 @@
                 </div>
 
                 <div class="pf-selected-work">
-                    <a class="pf-work pf-work--core pf-reveal" href="/project_details/project-gengame.html"
-                        aria-labelledby="work-core-title" aria-describedby="work-core-summary"
-                        data-project-card data-title="Core Conflict" data-summary="A multiplayer game whose code can change while you play." data-href="/project_details/project-gengame.html">
-                        <div class="pf-work-visual">
-                            <div class="pf-work-game-viewport">
-                                <img src="/assets/project-media/core-conflict/patched-gameplay.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="Core Conflict gameplay after a live code patch" />
-                            </div>
-                        </div>
-                        <div class="pf-work-caption">
-                            <span class="pf-work-meta">01 <span>Games &amp; systems</span></span>
-                            <h3 id="work-core-title">Core Conflict <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3>
-                            <p id="work-core-summary">A multiplayer game whose code can change while you play.</p>
-                        </div>
+                <!-- featured-projects -->
+                    <a class="pf-work pf-work--noty pf-reveal" href="/project_details/project-noty.html" data-project-card data-project-id="noty" data-title="Noty" data-summary="Notes that stay attached to your Mac windows." data-href="/project_details/project-noty.html">
+                        <div class="pf-work-visual"><div class="pf-work-noty"><strong aria-hidden="true">Noty</strong><img class="pf-work-noty__icon" src="/assets/project-media/noty/noty-icon.webp" width="128" height="128" loading="lazy" decoding="async" alt="" /><img class="pf-work-noty__editor" src="/assets/project-media/noty/noty-editor.webp" width="798" height="678" loading="lazy" decoding="async" alt="Noty’s native note editor with a Friday checklist" /></div></div>
+                        <div class="pf-work-caption"><span class="pf-work-meta">01 <span>Swift · SwiftUI · AppKit · SQLite</span></span><h3>Noty <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3><p>Notes that stay attached to your Mac windows.</p></div>
                     </a>
-                    <a class="pf-work pf-work--victoria pf-reveal" href="/project_details/project-victoria.html"
-                        aria-labelledby="work-victoria-title" aria-describedby="work-victoria-summary"
-                        data-project-card data-title="VictorIA" data-summary="A robotic arm that reads the board and plays Connect Four." data-href="/project_details/project-victoria.html">
-                        <div class="pf-work-visual">
-                            <img src="/assets/project-media/victoria/robot-board-hero.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="VictorIA robotic arm positioned beside its Connect Four board" />
-                        </div>
-                        <div class="pf-work-caption">
-                            <span class="pf-work-meta">02 <span>Robotics</span></span>
-                            <h3 id="work-victoria-title">VictorIA <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3>
-                            <p id="work-victoria-summary">A robotic arm that reads the board and plays Connect Four.</p>
-                        </div>
+                    <a class="pf-work pf-work--paddockjs pf-reveal" href="/project_details/project-paddockjs.html" data-project-card data-project-id="paddockjs" data-title="PaddockJS" data-summary="A reusable racing simulation for browsers and headless experiments." data-href="/project_details/project-paddockjs.html">
+                        <div class="pf-work-visual"><div class="pf-work-paddock" role="img" aria-label="PaddockJS’s current racing cars on the starting grid"><span class="pf-work-paddock__finish" aria-hidden="true"></span><span class="pf-work-paddock__slot pf-work-paddock__slot--purple" aria-hidden="true"><span class="pf-work-paddock__car"><img src="/dist/f1-simulator/assets/f1-car-sprite-game.png" width="320" height="121" loading="lazy" decoding="async" alt="" /></span></span><span class="pf-work-paddock__slot pf-work-paddock__slot--gold" aria-hidden="true"><span class="pf-work-paddock__car"><img src="/dist/f1-simulator/assets/f1-car-sprite-game.png" width="320" height="121" loading="lazy" decoding="async" alt="" /></span></span><span class="pf-work-paddock__slot pf-work-paddock__slot--blue" aria-hidden="true"><span class="pf-work-paddock__car"><img src="/dist/f1-simulator/assets/f1-car-sprite-game.png" width="320" height="121" loading="lazy" decoding="async" alt="" /></span></span></div></div>
+                        <div class="pf-work-caption"><span class="pf-work-meta">02 <span>JavaScript · PixiJS</span></span><h3>PaddockJS <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3><p>A reusable racing simulation for browsers and headless experiments.</p></div>
                     </a>
-                    <a class="pf-work pf-work--ghostyper pf-reveal" href="/project_details/project-ghoststroke.html"
-                        aria-labelledby="work-ghostyper-title" aria-describedby="work-ghostyper-summary"
-                        data-project-card data-title="Ghostyper" data-summary="Text that types itself, with pauses, corrections, and a pace of its own." data-href="/project_details/project-ghoststroke.html">
-                        <div class="pf-work-visual">
-                            <div class="pf-work-typing" aria-hidden="true">
-                                    <img src="/assets/project-media/ghoststroke/ghoststroke-icon.webp" width="128" height="128" loading="lazy" decoding="async" alt="" />
-                                    <span class="pf-work-typed">Let’s make room for<br /><s>another</s> a better idea<span class="pf-work-caret"></span></span>
-                                    <span class="pf-work-rhythm"></span>
-                                </div>
-                        </div>
-                        <div class="pf-work-caption">
-                            <span class="pf-work-meta">03 <span>Mac app</span></span>
-                            <h3 id="work-ghostyper-title">Ghostyper <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3>
-                            <p id="work-ghostyper-summary">Text that types itself, with pauses, corrections, and a pace of its own.</p>
-                        </div>
+                    <a class="pf-work pf-work--dream2detect pf-reveal" href="/project_details/project-dream2detect.html" data-project-card data-project-id="dream2detect" data-title="Dream2Detect" data-summary="Learning package-damage assessment from synthetic images." data-href="/project_details/project-dream2detect.html">
+                        <div class="pf-work-visual"><div class="pf-work-samples"><img src="/assets/project-media/dream2detect/0_10.jpg" width="360" height="240" loading="lazy" alt="Synthetic package image, damage band 0–10" /><img src="/assets/project-media/dream2detect/46_55.jpg" width="360" height="240" loading="lazy" alt="Synthetic package image, damage band 46–55" /><img src="/assets/project-media/dream2detect/86_100.jpg" width="360" height="240" loading="lazy" alt="Synthetic package image, damage band 86–100" /><span>Synthetic images → real photographs</span></div></div>
+                        <div class="pf-work-caption"><span class="pf-work-meta">03 <span>Python · PyTorch · Computer vision</span></span><h3>Dream2Detect <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3><p>Learning package-damage assessment from synthetic images.</p></div>
                     </a>
-                    <a class="pf-work pf-work--dream pf-reveal" href="/project_details/project-dream2detect.html"
-                        aria-labelledby="work-dream-title" aria-describedby="work-dream-summary"
-                        data-project-card data-title="Dream2Detect" data-summary="Learning to estimate package damage from synthetic images, then testing on real photos." data-href="/project_details/project-dream2detect.html">
-                        <div class="pf-work-visual">
-                            <div class="pf-work-samples">
-                                    <img src="/assets/project-media/dream2detect/0_10.jpg" width="360" height="240" loading="lazy" decoding="async" alt="Synthetic reference: package with little damage" />
-                                    <img src="/assets/project-media/dream2detect/46_55.jpg" width="360" height="240" loading="lazy" decoding="async" alt="Synthetic reference: package with moderate damage" />
-                                    <img src="/assets/project-media/dream2detect/86_100.jpg" width="360" height="240" loading="lazy" decoding="async" alt="Synthetic reference: package with severe damage" />
-                                    <span>Synthetic training references</span>
-                                </div>
-                        </div>
-                        <div class="pf-work-caption">
-                            <span class="pf-work-meta">04 <span>Machine learning</span></span>
-                            <h3 id="work-dream-title">Dream2Detect <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3>
-                            <p id="work-dream-summary">Learning to estimate package damage from synthetic images, then testing on real photos.</p>
-                        </div>
+                    <a class="pf-work pf-work--whos-on-repeat pf-reveal" href="/project_details/project-whos-on-repeat.html" data-project-card data-project-id="whos-on-repeat" data-title="Who’s On Repeat" data-summary="A multiplayer music game with shared rooms and an offline demo." data-href="/project_details/project-whos-on-repeat.html">
+                        <div class="pf-work-visual"><div class="pf-work-music"><span aria-hidden="true">♫</span><strong>Listen. Guess. Reveal.</strong></div></div>
+                        <div class="pf-work-caption"><span class="pf-work-meta">04 <span>Python · SQLite · JavaScript</span></span><h3>Who’s On Repeat <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3><p>A multiplayer music game with shared rooms and an offline demo.</p></div>
                     </a>
+                <!-- /featured-projects -->
                 </div>
             </div>
         </section>

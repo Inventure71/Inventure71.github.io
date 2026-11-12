@@ -17,18 +17,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="css/site-core.css" rel="stylesheet" />
     <link href="css/modern.css" rel="stylesheet" />
-    <link href="dist/f1-simulator/paddock-placeholder.css?v=4.3.2-native-scroll" rel="stylesheet" />
+    <link href="dist/f1-simulator/paddock-placeholder.css?v=v9-series" rel="stylesheet" />
     <!-- route-styles: /css/playfolio-projects.css -->
     <link href="/css/playfolio/foundation.css" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
-    <link href="/css/playfolio/race.css" rel="stylesheet" />
-    <link href="/css/project-race-guide.css?v=20261028-soft-flags" rel="stylesheet" />
+    <link href="/css/playfolio/race.css?v=v9-transparent-placeholder" rel="stylesheet" />
+    <link href="/css/project-race-guide.css?v=v9-race-polish" rel="stylesheet" />
     <link href="/css/playfolio/utilities.css" rel="stylesheet" />
     <!-- /route-styles -->
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/projects.html" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
     <meta property="og:title" content="Projects - Matteo Giorgetti" />
@@ -60,27 +61,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
             <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
                 </li>
-              
+
             </ul>
             <div class="d-flex gap-2" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
@@ -104,49 +105,47 @@
             <div class="pf-shell">
                 <header class="pf-section-head pf-reveal">
                     <div>
-                        <h1 class="pf-section-title">Project race</h1>
+                        <h1 class="pf-section-title">Projects</h1>
                     </div>
                 </header>
 
-                <project-race-guide></project-race-guide>
+                <!-- project-series -->
+<nav class="pf-series-selector pf-reveal" aria-label="Project series">
+                    <a class="pf-series-choice" href="?series=F1" data-series-choice="F1"><img src="/dist/f1-simulator/assets/f1Logo.png" alt="F1" data-series-logo="F1" width="120" height="40" /><span>Refined projects</span></a>
+                    <a class="pf-series-choice" href="?series=F2" data-series-choice="F2"><img src="/assets/brand/racing/f2-logo.svg" alt="F2" data-series-logo="F2" width="120" height="40" /><span>Prototypes &amp; explorations</span></a>
+                    <a class="pf-series-choice" href="?series=F3" data-series-choice="F3"><img src="/assets/brand/racing/f3-logo.svg" alt="F3" data-series-logo="F3" width="120" height="40" /><span>Focused work &amp; studies</span></a>
+                </nav>
+                <!-- /project-series -->
 
-                <div class="pf-paddock-layout" data-paddock-shell data-simulator-state="preview"
-                    data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=4.3.2-native-scroll"
-                    data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=4.3.2-native-scroll"
-                    data-paddock-auto-start="idle"
-                    data-paddock-auto-delay-ms="900"
+                <div class="pf-race-toolbar pf-reveal">
+                    <project-race-guide></project-race-guide>
+                    <button class="pf-race-launch" type="button" data-project-race-toggle data-race-action="race" aria-controls="paddock-race-root" disabled>
+                        <span data-race-toggle-label>Start race</span><i class="bi bi-flag-fill" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="pf-paddock-layout" data-paddock-shell data-race-view="grid-walk" data-simulator-state="preview"
+                    data-paddock-script-src="dist/f1-simulator/f1-simulator.js?v=v9-package-loader"
+                    data-paddock-style-href="dist/f1-simulator/f1-simulator.css?v=v9-curation"
+                    data-paddock-auto-start="idle" data-race-series="F1" data-paddock-auto-delay-ms="0"
                     aria-label="PaddockJS project race" aria-busy="false">
                     <div class="pf-paddock-preview paddock-placeholder" data-paddock-preview data-paddock-placeholder
                         data-paddock-placeholder-variant="lights" role="status" aria-live="polite" aria-busy="true">
                         <div class="paddock-placeholder__content">
-                            <div class="paddock-placeholder__lights" aria-hidden="true">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
+                            <div class="paddock-placeholder__lights" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
                             <span class="paddock-placeholder__label">Loading project race</span>
-                            <span class="paddock-placeholder__detail">Preparing race control</span>
                         </div>
                     </div>
                     <div class="pf-paddock-error" data-paddock-error role="alert" hidden>
                         <span>The project race failed to load.</span>
-                        <button class="pf-button is-quiet" type="button" data-paddock-retry>Retry live race</button>
+                        <button class="pf-button is-quiet" type="button" data-paddock-retry>Retry project race</button>
                     </div>
-                    <div class="pf-paddock-grid">
-                        <div id="paddock-race-root" class="f1-sim-component pf-paddock-race"></div>
-                    </div>
+                    <div class="pf-paddock-grid"><div id="paddock-race-root" data-paddock-root class="f1-sim-component pf-paddock-race"></div></div>
                 </div>
+                <p class="pf-package-note"><span>Built with my simulation library,</span> <a href="https://www.npmjs.com/package/@inventure71/paddockjs" target="_blank" rel="noopener">@inventure71/paddockjs</a></p>
 
-                <div class="pf-package-note" aria-label="PaddockJS npm package note">
-                    <span class="pf-package-note__badge">npm</span>
-                    <span>
-                        Built with my simulation library,
-                        <a href="https://www.npmjs.com/package/@inventure71/paddockjs" target="_blank"
-                            rel="noopener">@inventure71/paddockjs</a>.
-                    </span>
-                </div>
+                    <!-- project-directory -->
+<noscript><ul class="pf-project-fallback"><li><a href="/project_details/project-noty.html">Noty</a></li><li><a href="/project_details/project-paddockjs.html">PaddockJS</a></li><li><a href="/project_details/project-dream2detect.html">Dream2Detect</a></li><li><a href="/project_details/project-whos-on-repeat.html">Who’s On Repeat</a></li><li><a href="/project_details/project-ghoststroke.html">Ghostyper</a></li><li><a href="/project_details/project-clipclop.html">ClipClop</a></li><li><a href="/project_details/project-vigil.html">VIGIL</a></li><li><a href="/project_details/project-victoria.html">VictorIA</a></li><li><a href="/project_details/project-neural-noir.html">Neural Noir</a></li><li><a href="/project_details/project-mattyflow.html">MattyFlow</a></li><li><a href="/project_details/project-drsorrisodonations.html">Dr Sorriso Donations</a></li><li><a href="/project_details/project-unity.html">Project Unity</a></li><li><a href="/project_details/project-mosaic.html">MOSAIC</a></li><li><a href="/project_details/project-gengame.html">Core Conflict</a></li><li><a href="/project_details/project-contextkey.html">ContextKey</a></li><li><a href="/project_details/project-holovinyl.html">HoloVinyl</a></li><li><a href="/project_details/project-databases-ie.html">TCGNET</a></li><li><a href="/project_details/project-remainder-v0.html">ReminderZ &amp; Project Loom</a></li><li><a href="/project_details/project-pead.html">Learning Rules</a></li><li><a href="/project_details/project-evolveproject.html">Evolve Project</a></li><li><a href="/project_details/project-algorithms-project.html">Clash Royale in Python</a></li><li><a href="/project_details/project-matrices.html">Sparse SVD Recommender</a></li><li><a href="/project_details/project-budget-buddy.html">Budget Buddy</a></li><li><a href="/project_details/project-gdg-website.html">Tech Roulette Website</a></li></ul></noscript>
+                <!-- /project-directory -->
 
                 <div class="pf-network-jump" aria-label="Open project network view">
                     <span class="pf-network-jump__copy">
@@ -164,8 +163,9 @@
 
     <script defer src="/js/navbar.js"></script>
     <script src="js/theme.js"></script>
-    <script type="module" src="js/project-race-guide.js?v=20261028-flag-poles"></script>
-    <script type="module" src="js/projects-race-loader.js?v=20260605-payload"></script>
+    <script type="module" src="js/project-race-guide.js?v=v9-race-polish"></script>
+    <script type="module" src="js/projects-race-loader.js?v=v9-package-loader"></script>
+    <script type="module" src="js/projects-page.js"></script>
     <script type="module" src="js/playfolio.js?v=2"></script>
 </body>
 

@@ -37,6 +37,8 @@
     <link href="../css/project-stories/apps.css" rel="stylesheet" />
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/project_details/project-remainder-v0.html" />
+    <link rel="describedby" type="text/plain" href="https://mgiorgetti.com/llms.txt" title="Portfolio text index" />
+    <link rel="alternate" type="text/markdown" href="https://mgiorgetti.com/projects/reminderz.md" title="Project case study (Markdown)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
     <meta property="og:title" content="ReminderZ · Project Loom - M.G." />
@@ -68,27 +70,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="ms-auto d-flex align-items-center flex-column flex-lg-row gap-2">
             <ul class="navbar-nav mb-2 mb-lg-0 text-center text-lg-start" data-glass-group>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/index.html" data-glass-item data-glass-tone="blue">Home</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link active" href="/projects.html" data-glass-item data-glass-tone="green">Projects</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/apps.html" data-glass-item data-glass-tone="blue">Apps</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/resume.html" data-glass-item data-glass-tone="amber">Resume</a>
                 </li>
-              
+
                 <li class="nav-item">
                   <a class="nav-link" href="/contact.html" data-glass-item data-glass-tone="coral">Contact</a>
                 </li>
-              
+
             </ul>
             <div class="d-flex gap-2" data-glass-group>
               <button class="pf-icon-button" type="button" data-command-open data-glass-item data-glass-tone="blue" aria-label="Open command menu">
@@ -116,8 +118,8 @@
                 <ul class="story-meta"><li>Python · Gemini · Electron · FAISS</li><li>Solo development</li></ul>
             </header>
             <section class="story-shell story-section story-split" aria-labelledby="reminderz-title">
-                <div><p class="story-kicker">01 / ReminderZ</p><h2 class="story-section-heading" id="reminderz-title">Message organization</h2><p class="story-copy">Gemini organizes Telegram and WhatsApp notes-to-self into projects and reminders. Answers link back to their source messages.</p></div>
-                <figure class="story-diagram reminderz-route"><ol class="story-process"><li><strong>Import</strong><span>Telegram / WhatsApp messages</span></li><li><strong>Organize</strong><span>Schema-constrained Gemini output</span></li><li><strong>Recall</strong><span>Projects, reminders, and source references</span></li></ol><figcaption class="story-caption">Message processing flow</figcaption></figure>
+                <div><p class="story-kicker">01 / ReminderZ</p><h2 class="story-section-heading" id="reminderz-title">Message organization</h2><p class="story-copy">Gemini organizes notes-to-self into projects and reminders. Answers link back to their source messages.</p></div>
+                <figure class="story-diagram reminderz-route"><ol class="story-process"><li><strong>Import</strong><span>Telegram messages</span></li><li><strong>Organize</strong><span>Schema-constrained Gemini output</span></li><li><strong>Recall</strong><span>Projects, reminders, and source references</span></li></ol><figcaption class="story-caption">Message processing flow. Telegram fetching supplies an input path; a separate WhatsApp browser utility explores message access.</figcaption></figure>
             </section>
             <section class="story-shell story-section story-split" aria-labelledby="loom-title">
                 <div><p class="story-kicker">02 / Project Loom</p><h2 class="story-section-heading" id="loom-title">Visual programming</h2><p class="story-copy">Connect execution and value pins in an Electron editor. The compiler walks the graph from BeginPlay to generate Python, with function blocks drawn from existing modules.</p></div>

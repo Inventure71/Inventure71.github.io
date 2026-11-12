@@ -2,15 +2,20 @@ import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { escapeHtml } from '../js/playfolio/dom.js';
+import { projects } from '../js/playfolio/project-catalog.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const origin = 'https://mgiorgetti.com';
+const projectMarkdown = new Map(projects.flatMap(project =>
+  [project.href, ...(project.componentHrefs ?? [])].map(href => [href.slice(1), `/projects/${project.id}.md`]),
+));
 const marker = /\s*<!-- site-metadata -->[\s\S]*?<!-- \/site-metadata -->/;
 const rootRoutes = new Set(['index.html', 'projects.html', 'apps.html', 'resume.html', 'contact.html', 'tags.html', 'f1-simulator.html']);
 const pages = [...rootRoutes, ...readdirSync(path.join(root, 'project_details'))
   .filter(name => name === '_template.html' || /^project-[\w-]+\.html$/.test(name))
   .map(name => `project_details/${name}`)];
 const write = !process.argv.includes('--check');
+if (!existsSync(path.join(root, 'llms.txt'))) throw new Error('Missing llms.txt; run node scripts/sync-agent-content.mjs');
 let changed = 0;
 const urls = [];
 function update(file, next) {
@@ -33,8 +38,13 @@ for (const file of pages) {
   const image = projectImage ? new URL(projectImage, `${origin}/${file}`).pathname : '/assets/profile-1100.webp';
   const imageAlt = projectImage ? html.match(/<figure[^>]*class="[^"]*story-feature[^>]*>\s*<img[^>]*alt="([^"]*)"/)?.[1] || title : 'Portrait of Matteo Giorgetti';
   if (!existsSync(path.join(root, image))) throw new Error(`Missing social image: ${image}`);
+  const markdown = projectMarkdown.get(file) ?? (['index.html', 'resume.html'].includes(file) ? '/profile.md' : null);
+  if (markdown && !existsSync(path.join(root, markdown))) throw new Error(`Missing Markdown alternate: ${markdown}; run node scripts/sync-agent-content.mjs`);
+  const agentDiscovery = publicPage ? `
+    <link rel="describedby" type="text/plain" href="${origin}/llms.txt" title="Portfolio text index" />${markdown ? `
+    <link rel="alternate" type="text/markdown" href="${origin}${markdown}" title="${projectMarkdown.has(file) ? 'Project case study' : 'Profile and resume'} (Markdown)" />` : ''}` : '';
   const metadata = publicPage ? `
-    <link rel="canonical" href="${url}" />
+    <link rel="canonical" href="${url}" />${agentDiscovery}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Matteo Giorgetti" />
     <meta property="og:title" content="${title}" />

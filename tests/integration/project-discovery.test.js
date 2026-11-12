@@ -1,17 +1,26 @@
-import { readdirSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
 import { projectCommandItems } from '../../js/playfolio/catalog.js';
 import { projectMapItems } from '../../js/project-map-data.js';
 import { PORTFOLIO_DRIVERS } from '../../js/portfolio-race-data.js';
+import { projects } from '../../js/playfolio/project-catalog.js';
 
 describe('project discovery consistency', () => {
   test('every published project is reachable exactly once through the catalog, map and race', () => {
     const pages = readdirSync(new URL('../../project_details/', import.meta.url))
       .filter((file) => file.startsWith('project-') && file.endsWith('.html'))
       .map((file) => `/project_details/${file}`).sort();
-    expect(projectCommandItems.map((item) => item.href).sort()).toEqual(pages);
-    expect(projectMapItems.map((item) => `/${item.url}`).sort()).toEqual(pages);
-    expect(PORTFOLIO_DRIVERS.map((driver) => driver.link).sort()).toEqual(pages);
+    const components = projects.flatMap(project => project.componentHrefs ?? []);
+    const mainPages = pages.filter(page => !components.includes(page));
+    expect(projectCommandItems.map((item) => item.href).sort()).toEqual(mainPages);
+    expect(projectMapItems.map((item) => `/${item.url}`).sort()).toEqual(mainPages);
+    expect(PORTFOLIO_DRIVERS.map((driver) => driver.link).sort()).toEqual(mainPages);
+    // Component details remain reachable from their project without another car.
+    for (const project of projects) for (const href of project.componentHrefs ?? []) {
+      expect(pages).toContain(href);
+      const article = readFileSync(new URL(`../..${project.href}`, import.meta.url), 'utf8');
+      expect(article).toContain(href.split('/').at(-1));
+    }
   });
 
   test('the map and race use current portfolio labels rather than package demo copy', () => {

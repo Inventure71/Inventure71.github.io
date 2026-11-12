@@ -5,17 +5,16 @@ export function setPaddockShellState(shell, state) {
   shell.setAttribute('aria-busy', state === 'booting' || state === 'loading' ? 'true' : 'false');
 
   const busy = state === 'booting' || state === 'loading';
-  // Keep the mount measurable during startup; inert/aria-hidden remove its UI
-  // until ready. The placeholder supplies both preview and loading animation.
+  // The host covers the import gap and series changes. Once mounted, PaddockJS
+  // owns the boot screen. Keep its controls inert until startup completes.
   for (const [selector, visible] of [
-    ['[data-paddock-preview]', state === 'preview' || busy],
-    ['[data-paddock-loading]', busy],
+    ['[data-paddock-preview]', state === 'preview' || state === 'loading'],
     ['[data-paddock-error]', state === 'error'],
-    ['#paddock-race-root', state === 'ready'],
+    ['[data-paddock-root]', state === 'ready'],
   ]) {
-    const layer = shell.querySelector(selector);
+    const layer = shell.querySelector(selector) || (selector === '[data-paddock-root]' ? shell.querySelector('#paddock-race-root') : null);
     if (!layer) continue;
-    if (selector !== '#paddock-race-root') layer.hidden = !visible;
+    if (selector !== '[data-paddock-root]') layer.hidden = !visible;
     layer.inert = !visible;
     layer.setAttribute?.('aria-hidden', String(!visible));
     if (selector === '[data-paddock-preview]') layer.setAttribute('aria-busy', String(busy));

@@ -225,18 +225,38 @@ function findCurrentlyHoveredTarget(surface, options) {
 }
 
 function primeStoredPointerState(surface, options) {
-  const pointer = takeStoredPointer(surface);
+  const saved = takeStoredPointer(surface);
+  const tracker = windowFor(surface).MGNavigationPointer;
+  const pointer = tracker?.current ?? saved;
   if (!pointer) return false;
+  // Our early tracker distinguishes stationary handoff from movement during
+  // startup, even before the browser restores its native :hover chain.
+  if (tracker) {
+    if (surface.ownerDocument?.hasFocus?.() === false) { applyIdle(surface); return true; }
+    const element = surface.ownerDocument?.elementFromPoint?.(pointer.x, pointer.y);
+    const target = element?.closest?.(options.itemSelector);
+    if (target && surface.contains?.(target)) {
+      setPointerVarsAt(surface, pointer.x, pointer.y);
+      applyTarget(surface, target, options);
+    } else if (element && surface.contains?.(element)) {
+      setPointerVarsAt(surface, pointer.x, pointer.y);
+      applyBarHover(surface);
+    } else applyIdle(surface);
+    return true;
+  }
+  // Standalone surfaces without the early tracker require native hover proof.
+  if (!surface.matches?.(':hover')) return false;
 
   const element = surface.ownerDocument?.elementFromPoint?.(pointer.x, pointer.y);
   const target = element?.closest?.(options.itemSelector);
-  if (target && typeof surface.contains === 'function' && surface.contains(target)) {
+  const hoveredTarget = findCurrentlyHoveredTarget(surface, options);
+  if (target && target === hoveredTarget && surface.contains?.(target)) {
     setPointerVarsAt(surface, pointer.x, pointer.y);
     applyTarget(surface, target, options);
     return true;
   }
 
-  if (element && typeof surface.contains === 'function' && surface.contains(element)) {
+  if (!target && !hoveredTarget && element && surface.contains?.(element)) {
     setPointerVarsAt(surface, pointer.x, pointer.y);
     applyBarHover(surface);
     return true;
@@ -264,11 +284,20 @@ function primeCurrentHoverState(surface, options) {
 function scheduleHoverPrime(surface, options) {
   const scheduler = surface.ownerDocument?.defaultView?.requestAnimationFrame || globalThis.requestAnimationFrame;
   if (typeof scheduler === 'function') {
-    scheduler(() => primeCurrentHoverState(surface, options));
-    return;
+    let active = true;
+    const frame = scheduler(() => {
+      if (!active) return;
+      active = false;
+      primeCurrentHoverState(surface, options);
+    });
+    return () => {
+      active = false;
+      windowFor(surface).cancelAnimationFrame?.(frame);
+    };
   }
 
   primeCurrentHoverState(surface, options);
+  return () => {};
 }
 
 export function installReactiveGlassSurface(surface, options = {}) {
@@ -284,6 +313,7 @@ export function installReactiveGlassSurface(surface, options = {}) {
   };
 
   const surfaceWindow = windowFor(surface);
+  let cancelHoverPrime = () => {};
   let pointerFrame = 0;
   let pendingPointer = null;
   const renderPointer = () => {
@@ -300,6 +330,7 @@ export function installReactiveGlassSurface(surface, options = {}) {
 
   const handlePointerMove = (event) => {
     if (isTouchPointer(event)) return;
+    cancelHoverPrime();
 
     pendingPointer = { clientX: event.clientX, clientY: event.clientY };
     if (!pointerFrame) {
@@ -315,8 +346,14 @@ export function installReactiveGlassSurface(surface, options = {}) {
   };
 
   const handlePointerLeave = () => {
+    cancelHoverPrime();
     clearPointerFrame();
     applyIdle(surface);
+  };
+
+  const handleOutsidePointerMove = (event) => {
+    if (surface.contains?.(event.target)) return;
+    if (surface._reactiveGlassTarget || surface.classList.contains('is-glass-bar-hovering')) handlePointerLeave();
   };
 
   const handleVisibilityChange = () => {
@@ -329,7 +366,9 @@ export function installReactiveGlassSurface(surface, options = {}) {
     if (isTouchPointer(event) || isModifiedClick(event) || !findSameTabLink(surface, event)) return;
 
     writeStoredPointer(surface, event);
-    handlePointerLeave();
+    // Clicking is not leaving: retain the visible hover until the pointer
+    // actually exits or pagehide tears down the outgoing document.
+    cancelHoverPrime();
   };
 
   surface.dataset.reactiveGlassBound = 'true';
@@ -341,6 +380,11 @@ export function installReactiveGlassSurface(surface, options = {}) {
   surfaceWindow.addEventListener?.('blur', handlePointerLeave);
   surfaceWindow.addEventListener?.('pagehide', handlePointerLeave);
   surface.ownerDocument?.addEventListener?.('visibilitychange', handleVisibilityChange);
+  // A delayed/missed surface leave must not keep the navigation glow alive.
+  surface.ownerDocument?.addEventListener?.('pointermove', handleOutsidePointerMove, { passive: true });
+  surface.ownerDocument?.addEventListener?.('pointerout', event => {
+    if (!event.relatedTarget) handlePointerLeave();
+  }, { passive: true });
   resetPointerVars(surface);
-  scheduleHoverPrime(surface, resolvedOptions);
+  cancelHoverPrime = scheduleHoverPrime(surface, resolvedOptions);
 }

@@ -1,13 +1,8 @@
 const PROJECT_RACE_GUIDE_DEFAULTS = {
-  ariaLabel: 'How to use the project race',
+  ariaLabel: 'Project race guide',
   lead: 'Each car is a project.',
   action: 'Click a car',
   tail: 'to explore it.',
-  browseLead: 'Use',
-  browseAction: 'Stop race',
-  browseTail: 'to explore the cars at your own pace.',
-  resumeAction: 'Start race',
-  resumeTail: 'to see the cars in action.',
 };
 
 function escapeHtml(value) {
@@ -27,30 +22,15 @@ export function buildProjectRaceGuideMarkup(options = {}) {
 
   return `
                 <section class="pf-race-guide" aria-label="${escapeHtml(content.ariaLabel)}">
-                    <div class="pf-race-guide__copy">
-                        <span class="pf-race-guide__marker" aria-hidden="true"><span class="pf-race-guide__fabric"></span></span>
-                        <div>
-                            <p class="pf-race-guide__headline">
-                                ${escapeHtml(content.lead)} <strong>${escapeHtml(content.action)}</strong>
-                                ${escapeHtml(content.tail)}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="pf-race-guide__right">
-                        <p class="pf-race-guide__headline pf-race-guide__browse">
-                            ${escapeHtml(content.browseLead)} <strong>${escapeHtml(content.browseAction)}</strong>
-                            ${escapeHtml(content.browseTail)}
-                        </p>
-                        <p class="pf-race-guide__headline pf-race-guide__browse pf-race-guide__browse--stopped">
-                            ${escapeHtml(content.browseLead)} <strong>${escapeHtml(content.resumeAction)}</strong>
-                            ${escapeHtml(content.resumeTail)}
-                        </p>
+                    <span class="pf-race-guide__marker" aria-hidden="true"><span class="pf-race-guide__fabric"></span></span>
+                    <p class="pf-race-guide__headline">
+                        ${escapeHtml(content.lead)} <strong>${escapeHtml(content.action)}</strong>
+                        ${escapeHtml(content.tail)}
+                    </p>
                         <span class="pf-race-guide__status" data-race-status="loading" role="status">
                             <span class="pf-race-guide__marker pf-race-guide__flag" aria-hidden="true"><span class="pf-race-guide__fabric"></span></span>
                             <span class="pf-race-guide__status-label" data-race-status-label>Loading</span>
-                            <span class="pf-race-guide__status-label pf-race-guide__paused-label">Paused</span>
                         </span>
-                    </div>
                 </section>`;
 }
 
@@ -67,7 +47,10 @@ class ProjectRaceGuideElement extends BaseHTMLElement {
   connectedCallback() {
     if (this.dataset.rendered === 'true') return;
 
-    renderProjectRaceGuide(this);
+    const options = this.dataset.mode === 'browse'
+      ? { ariaLabel: 'Project browser guide', lead: '', action: 'Select a project', tail: 'to see its details.' }
+      : {};
+    renderProjectRaceGuide(this, options);
     this.dataset.rendered = 'true';
   }
 }

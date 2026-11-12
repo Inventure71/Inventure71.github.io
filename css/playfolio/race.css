@@ -1,7 +1,62 @@
 /* Race page and simulator bridge */
 
+.pf-series-selector {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block: 1.25rem 0.25rem;
+}
+.pf-series-choice {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  padding: 0.9rem 0;
+  color: var(--pf-ink);
+  border-bottom: 2px solid var(--pf-line);
+  text-decoration: none;
+  transition: border-color 150ms ease;
+}
+.pf-series-choice img { flex: 0 0 4.5rem; width: 4.5rem; height: 2rem; object-fit: contain; }
+.pf-series-choice span { max-width: 20ch; color: var(--pf-muted); font-size: 0.92rem; line-height: 1.45; }
+.pf-series-choice:hover, .pf-series-choice[aria-current] { border-color: var(--pf-accent); }
+[data-series-logo="F1"] { filter: brightness(0); }
+:root[data-theme="dark"] [data-series-logo="F1"] { filter: none; }
+.pf-series-choice:focus-visible { outline: 2px solid var(--pf-accent); outline-offset: 4px; }
+.pf-project-fallback { columns: 2; padding-left: 1.5rem; }
+.pf-project-fallback a { display: inline-block; padding-block: 0.5rem; }
+.pf-race-toolbar { display: grid; gap: 0.6rem; margin-block: 0 0.75rem; }
+.pf-race-toolbar project-race-guide { min-width: 0; }
+.pf-race-toolbar .pf-race-guide { border: 0; padding-block: 0.25rem !important; }
+.pf-race-launch {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.85rem;
+  min-height: 3.1rem; min-width: 11rem; padding: 0.8rem 1.3rem;
+  width: 100%;
+  border: 1px solid var(--pf-accent-2); border-radius: 7px;
+  background: var(--pf-accent-2); color: #fff;
+  font: inherit; font-size: 1rem; font-weight: 800; line-height: 1.25; cursor: pointer;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+.pf-race-launch:hover:not(:disabled) { transform: translateY(-2px); }
+.pf-race-launch:focus-visible { outline: 3px solid var(--pf-ink); outline-offset: 4px; }
+.pf-race-launch:disabled { opacity: 0.5; cursor: wait; }
+.pf-race-launch[data-race-action="browse"] { background: transparent; color: var(--pf-ink); border-color: var(--pf-line-strong); }
+:root[data-theme="dark"] .pf-race-launch[data-race-action="race"] { color: var(--pf-bg); }
+/* The host owns the single, prominent mode control above the canvas. */
+.project-race-page [data-paddock-component="view-controls"] { display: none !important; }
+.pf-paddock-layout[data-race-view="grid-walk"] .race-telemetry-drawer__toolbar { display: none; }
+
+@media (max-width: 640px) {
+  .pf-series-selector { grid-template-columns: minmax(0, 1fr); gap: 0; margin-block: 0.5rem 0.25rem; }
+  .pf-series-choice { gap: 1.1rem; padding-block: 0.85rem; }
+  .pf-series-choice span { max-width: none; }
+  .pf-project-fallback { columns: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .pf-series-choice, .pf-race-launch { transition: none; } }
+
 .project-race-page .pf-section-head {
   margin-bottom: 1rem;
+  padding-block: 0 0.5rem !important;
 }
 
 .project-race-page .pf-page {
@@ -78,6 +133,13 @@
   text-align: center;
 }
 
+/* Reserve the mount's space without a second visible startup screen. Once a
+   simulator exists, retain this indicator for switches between project series. */
+.pf-paddock-layout:has([data-paddock-root]:empty) .pf-paddock-preview {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .pf-paddock-loading,
 .pf-paddock-error {
   position: absolute;
@@ -99,6 +161,11 @@
 
 /* Author styles must never override the host's semantic hidden state. */
 .pf-paddock-layout [hidden] { display: none !important; }
+
+/* The drawer's package loader covers the whole mounted surface. Its nested
+   component loaders would otherwise show through the translucent overlay. */
+.pf-paddock-layout [data-paddock-component] [data-paddock-component] > [data-paddock-loading] { display: none !important; }
+.pf-paddock-layout [data-paddock-root][aria-hidden="true"] { pointer-events: none; }
 
 .pf-paddock-loading__label,
 .pf-paddock-error {
@@ -173,7 +240,11 @@
 
 .pf-paddock-race .race-telemetry-drawer__toolbar {
   border-bottom: 0;
+  border-radius: 16px;
+  margin-bottom: 0.5rem;
 }
+
+.pf-paddock-race .race-telemetry-drawer { background: transparent; }
 
 .pf-paddock-race .camera-controls--external {
   border-radius: 16px;
@@ -205,46 +276,15 @@
 
 .pf-package-note {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 0.7rem;
-  margin-top: 0.75rem;
-  padding: 0.72rem 1rem;
-  border-top: 1px solid var(--pf-line);
+  flex-wrap: wrap;
+  column-gap: 0.3em;
+  margin: 0.25rem 0 0;
   color: var(--pf-muted);
-  font-size: 0.94rem;
-  line-height: 1.45;
-  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1.35;
 }
-
-.pf-package-note__badge {
-  flex: 0 0 auto;
-  min-width: 2.45rem;
-  padding: 0.28rem 0.48rem;
-  border: 1px solid var(--pf-line-strong);
-  border-radius: 6px;
-  color: var(--pf-ink);
-  font-family: var(--pf-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
-  font-size: 0.72rem;
-  font-weight: 850;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.pf-package-note a {
-  color: var(--pf-ink);
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.pf-package-note a:hover,
-.pf-package-note a:focus-visible {
-  color: #62d995;
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
-}
+.pf-package-note a { font-weight: 750; text-underline-offset: 0.2em; }
 
 .pf-network-jump {
   display: flex;
