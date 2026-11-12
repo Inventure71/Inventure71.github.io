@@ -9,9 +9,13 @@ for (const route of routes) test(`navbar uses available space on ${route}`, asyn
   const nav = page.locator('.navbar');
   const command = nav.getByRole('button', { name: 'Open command menu' });
   const toggle = nav.getByRole('button', { name: 'Toggle navigation' });
+  let inlineHeight;
   for (const [width, layout] of [[850, 'full'], [700, 'compact'], [650, 'collapsed'], [390, 'collapsed'], [700, 'compact'], [850, 'full']]) {
     await page.setViewportSize({ width, height: 900 });
     await expect(nav).toHaveAttribute('data-nav-layout', layout);
+    const height = (await nav.boundingBox()).height;
+    inlineHeight ??= height;
+    expect(Math.abs(height - inlineHeight)).toBeLessThanOrEqual(1);
     if (layout === 'collapsed') {
       await expect(toggle).toBeVisible();
       await expect(nav.getByRole('link', { name: 'Projects', exact: true })).toBeHidden();

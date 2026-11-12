@@ -13,6 +13,7 @@
   --pf-accent-3: #2f6ce5;
   --pf-shadow: 0 24px 70px rgba(23, 23, 23, 0.09);
   --pf-radius: 8px;
+  --pf-nav-control-size: 2.45rem;
   --pf-max: 1180px;
   --pf-pad: clamp(1rem, 4vw, 2rem);
   --pf-section-space: clamp(2.75rem, 6vw, 4.5rem);
@@ -112,6 +113,9 @@ body.playfolio-page {
 }
 
 .playfolio-page .navbar-toggler {
+  width: var(--pf-nav-control-size);
+  height: var(--pf-nav-control-size);
+  padding: 0;
   border: 1px solid var(--pf-line);
   border-radius: 6px;
   color: var(--pf-ink);
@@ -279,8 +283,8 @@ body.playfolio-page {
 
 .playfolio-page .theme-toggle-btn,
 .pf-icon-button {
-  width: 2.45rem;
-  height: 2.45rem;
+  width: var(--pf-nav-control-size);
+  height: var(--pf-nav-control-size);
   border: 1px solid var(--pf-line);
   border-radius: 6px !important;
   background: var(--pf-surface);
