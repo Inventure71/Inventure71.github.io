@@ -88,13 +88,13 @@
   line-height: 1;
 }
 
-.pf-contact-row > i {
+.pf-contact-row > .pf-icon {
   color: var(--pf-muted);
   transition: transform 180ms ease, color 180ms ease;
 }
 
-.pf-contact-row:hover > i,
-.pf-contact-row:focus-visible > i {
+.pf-contact-row:hover > .pf-icon,
+.pf-contact-row:focus-visible > .pf-icon {
   color: var(--pf-ink);
   transform: translate(2px, -2px);
 }

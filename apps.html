@@ -51,24 +51,22 @@
     <!-- Favicon-->
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <!-- Custom Google font-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-        rel="stylesheet" />
+    <!-- site-fonts -->
+    <link rel="preload" href="/assets/fonts/plus-jakarta-sans-v12-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link href="/css/fonts.css?v=c7d7cff84e39" rel="stylesheet" />
+    <!-- /site-fonts -->
     <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Site core CSS -->
     <link href="css/site-core.css" rel="stylesheet" />
     <!-- Modern Design System -->
     <link href="css/modern.css" rel="stylesheet" />
     <!-- route-styles: /css/playfolio-directory.css -->
-    <link href="/css/playfolio/foundation.css?v=v9-inline-icons" rel="stylesheet" />
+    <link href="/css/playfolio/foundation.css?v=v9-site-performance" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
-    <link href="/css/playfolio/directory.css" rel="stylesheet" />
-    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/playfolio/directory.css?v=v9-site-performance" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css?v=v9-site-performance" rel="stylesheet" />
     <!-- /route-styles -->
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/apps.html" />
@@ -161,18 +159,18 @@
                             <p>Notes that stay with the window you’re working in.</p>
                         </div>
                         <a class="pf-button is-quiet" href="project_details/project-noty.html"
-                            aria-label="View Noty project">Details <i class="bi bi-arrow-right"></i></a>
+                            aria-label="View Noty project">Details <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></a>
                     </article>
 
                     <article class="pf-app-row">
-                        <div class="pf-app-icon"><i class="bi bi-clipboard-check"></i></div>
+                        <div class="pf-app-icon"><svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="5" width="14" height="16" rx="2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m8 13 3 3 5-6"/></svg></div>
                         <div>
                             <span class="pf-app-kicker">macOS + Android</span>
                             <h2>ClipClop</h2>
                             <p>Copy text and images between your Mac and Android phone.</p>
                         </div>
                         <a class="pf-button is-quiet" href="https://github.com/Inventure71/ClipClop/releases/latest"
-                            target="_blank" rel="noopener" aria-label="Download ClipClop">Download <i class="bi bi-download"></i></a>
+                            target="_blank" rel="noopener" aria-label="Download ClipClop">Download <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12m-5-5 5 5 5-5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></a>
                     </article>
 
                     <article class="pf-app-row">
@@ -183,7 +181,7 @@
                             <p>Turn prepared text into typing, with your own pace and pauses.</p>
                         </div>
                         <a class="pf-button is-quiet" href="project_details/project-ghoststroke.html"
-                            aria-label="View Ghostyper details and download">Details &amp; download <i class="bi bi-arrow-right"></i></a>
+                            aria-label="View Ghostyper details and download">Details &amp; download <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></a>
                     </article>
                 </div>
             </div>
@@ -195,7 +193,7 @@
     <!-- Bootstrap core JS-->
     <script defer src="/js/navbar.js"></script>
     <script src="js/theme.js"></script>
-    <script type="module" src="/dist/site/playfolio.js?v=0cc62e7d0fb5"></script>
+    <script type="module" src="/dist/site/playfolio.js?v=056e2a6963bc"></script>
 </body>
 
 </html>

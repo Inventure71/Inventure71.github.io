@@ -49,23 +49,22 @@
         content="Matteo Giorgetti is a Computer Science and AI student building interactive systems, AI tools, and practical software." />
     <meta name="author" content="Matteo Giorgetti" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="preload" href="/assets/profile-1100.webp" as="image" fetchpriority="high" />
+    <!-- site-fonts -->
+    <link rel="preload" href="/assets/fonts/plus-jakarta-sans-v12-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link href="/css/fonts.css?v=c7d7cff84e39" rel="stylesheet" />
+    <!-- /site-fonts -->
     <link href="/css/site-core.css" rel="stylesheet" />
     <link href="/css/modern.css" rel="stylesheet" />
     <!-- route-styles: /css/playfolio-home.css -->
-    <link href="/css/playfolio/foundation.css?v=v9-inline-icons" rel="stylesheet" />
+    <link href="/css/playfolio/foundation.css?v=v9-site-performance" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/playfolio/motion.css" rel="stylesheet" />
     <link href="/css/playfolio/project-browse.css" rel="stylesheet" />
-    <link href="/css/playfolio/selected-work.css?v=v9-grid-direction" rel="stylesheet" />
-    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/playfolio/selected-work.css?v=v9-site-performance" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css?v=v9-site-performance" rel="stylesheet" />
     <!-- /route-styles -->
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/" />
@@ -150,8 +149,8 @@
                         I make Mac apps, build robots, and experiment with games and machine learning.
                     </p>
                     <div class="pf-actions">
-                        <a class="pf-button" href="/projects.html"><i class="bi bi-grid-3x3-gap"></i> Explore work</a>
-                        <a class="pf-text-link" href="/resume.html">About me <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+                        <a class="pf-button" href="/projects.html"><svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 3h4v4H3Zm7 0h4v4h-4Zm7 0h4v4h-4ZM3 10h4v4H3Zm7 0h4v4h-4Zm7 0h4v4h-4ZM3 17h4v4H3Zm7 0h4v4h-4Zm7 0h4v4h-4Z"/></svg> Explore work</a>
+                        <a class="pf-text-link" href="/resume.html">About me <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
                     </div>
                 </div>
 
@@ -165,7 +164,7 @@
                             aria-label="Animate OpenAI Codex ambassador logo">
                             <video muted loop playsinline preload="none" data-deferred-video data-load-delay-ms="3500"
                                 poster="/assets/brand/codex/codex-logo-ambassador.webp">
-                                <source data-src="/assets/brand/codex/codex-logo-ambassador-animated-compressed.webm" type="video/webm" />
+                                <source data-src="/assets/brand/codex/codex-logo-ambassador-animated-160.webm" type="video/webm" />
                                 <img width="360" height="360" decoding="async" src="/assets/brand/codex/codex-logo-ambassador.webp" alt="" />
                             </video>
                         </button>
@@ -182,26 +181,26 @@
             <div class="pf-shell">
                 <div class="pf-section-head pf-reveal">
                     <h2 class="pf-section-title" id="selected-work-title">Selected work</h2>
-                    <a class="pf-text-link pf-section-link" href="/projects.html">All projects <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    <a class="pf-text-link pf-section-link" href="/projects.html">All projects <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></a>
                 </div>
 
                 <div class="pf-selected-work">
                 <!-- featured-projects -->
                     <a class="pf-work pf-work--noty pf-reveal" href="/project_details/project-noty.html" data-project-card data-project-id="noty" data-title="Noty" data-summary="Notes that stay attached to your Mac windows." data-href="/project_details/project-noty.html">
                         <div class="pf-work-visual"><div class="pf-work-noty"><strong aria-hidden="true">Noty</strong><img class="pf-work-noty__icon" src="/assets/project-media/noty/noty-icon.webp" width="128" height="128" loading="lazy" decoding="async" alt="" /><img class="pf-work-noty__editor" src="/assets/project-media/noty/noty-editor.webp" width="798" height="678" loading="lazy" decoding="async" alt="Noty’s native note editor with a Friday checklist" /></div></div>
-                        <div class="pf-work-caption"><span class="pf-work-meta">01 <span>Swift · SwiftUI · AppKit · SQLite</span></span><h3>Noty <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3><p>Notes that stay attached to your Mac windows.</p></div>
+                        <div class="pf-work-caption"><span class="pf-work-meta">01 <span>Swift · SwiftUI · AppKit · SQLite</span></span><h3>Noty <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></h3><p>Notes that stay attached to your Mac windows.</p></div>
                     </a>
                     <a class="pf-work pf-work--paddockjs pf-reveal" href="/project_details/project-paddockjs.html" data-project-card data-project-id="paddockjs" data-title="PaddockJS" data-summary="A reusable racing simulation for browsers and headless experiments." data-href="/project_details/project-paddockjs.html">
                         <div class="pf-work-visual"><div class="pf-work-paddock" role="img" aria-label="PaddockJS’s current racing cars on the starting grid"><span class="pf-work-paddock__finish" aria-hidden="true"></span><span class="pf-work-paddock__slot pf-work-paddock__slot--purple" aria-hidden="true"><span class="pf-work-paddock__car"><img src="/dist/f1-simulator/assets/f1-car-sprite-game.png" width="320" height="121" loading="lazy" decoding="async" alt="" /></span></span><span class="pf-work-paddock__slot pf-work-paddock__slot--gold" aria-hidden="true"><span class="pf-work-paddock__car"><img src="/dist/f1-simulator/assets/f1-car-sprite-game.png" width="320" height="121" loading="lazy" decoding="async" alt="" /></span></span><span class="pf-work-paddock__slot pf-work-paddock__slot--blue" aria-hidden="true"><span class="pf-work-paddock__car"><img src="/dist/f1-simulator/assets/f1-car-sprite-game.png" width="320" height="121" loading="lazy" decoding="async" alt="" /></span></span></div></div>
-                        <div class="pf-work-caption"><span class="pf-work-meta">02 <span>JavaScript · PixiJS</span></span><h3>PaddockJS <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3><p>A reusable racing simulation for browsers and headless experiments.</p></div>
+                        <div class="pf-work-caption"><span class="pf-work-meta">02 <span>JavaScript · PixiJS</span></span><h3>PaddockJS <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></h3><p>A reusable racing simulation for browsers and headless experiments.</p></div>
                     </a>
                     <a class="pf-work pf-work--dream2detect pf-reveal" href="/project_details/project-dream2detect.html" data-project-card data-project-id="dream2detect" data-title="Dream2Detect" data-summary="Learning package-damage assessment from synthetic images." data-href="/project_details/project-dream2detect.html">
                         <div class="pf-work-visual"><div class="pf-work-samples"><img src="/assets/project-media/dream2detect/0_10.jpg" width="360" height="240" loading="lazy" alt="Synthetic package image, damage band 0–10" /><img src="/assets/project-media/dream2detect/46_55.jpg" width="360" height="240" loading="lazy" alt="Synthetic package image, damage band 46–55" /><img src="/assets/project-media/dream2detect/86_100.jpg" width="360" height="240" loading="lazy" alt="Synthetic package image, damage band 86–100" /><span>Synthetic images → real photographs</span></div></div>
-                        <div class="pf-work-caption"><span class="pf-work-meta">03 <span>Python · PyTorch · Computer vision</span></span><h3>Dream2Detect <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3><p>Learning package-damage assessment from synthetic images.</p></div>
+                        <div class="pf-work-caption"><span class="pf-work-meta">03 <span>Python · PyTorch · Computer vision</span></span><h3>Dream2Detect <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></h3><p>Learning package-damage assessment from synthetic images.</p></div>
                     </a>
                     <a class="pf-work pf-work--whos-on-repeat pf-reveal" href="/project_details/project-whos-on-repeat.html" data-project-card data-project-id="whos-on-repeat" data-title="Who’s On Repeat" data-summary="A multiplayer music game with shared rooms and an offline demo." data-href="/project_details/project-whos-on-repeat.html">
                         <div class="pf-work-visual"><div class="pf-work-music"><span aria-hidden="true">♫</span><strong>Listen. Guess. Reveal.</strong></div></div>
-                        <div class="pf-work-caption"><span class="pf-work-meta">04 <span>Python · SQLite · JavaScript</span></span><h3>Who’s On Repeat <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3><p>A multiplayer music game with shared rooms and an offline demo.</p></div>
+                        <div class="pf-work-caption"><span class="pf-work-meta">04 <span>Python · SQLite · JavaScript</span></span><h3>Who’s On Repeat <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></h3><p>A multiplayer music game with shared rooms and an offline demo.</p></div>
                     </a>
                 <!-- /featured-projects -->
                 </div>
@@ -214,7 +213,7 @@
                 <div>
                     <p>I study Computer Science and AI at IE University and work in its AI &amp; Robotics Lab.
                         Outside the lab, I build apps and games.</p>
-                    <a class="pf-text-link" href="/resume.html">Experience &amp; education <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+                    <a class="pf-text-link" href="/resume.html">Experience &amp; education <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
                 </div>
             </div>
         </section>
@@ -226,7 +225,7 @@
                         <h2>Contact</h2>
                         <p>For projects, internships, collaborations, or feedback.</p>
                     </div>
-                    <a class="pf-button" href="/contact.html"><i class="bi bi-send"></i> Contact</a>
+                    <a class="pf-button" href="/contact.html"><svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21 3-7 18-4-7-7-4L21 3ZM10 14 21 3"/></svg> Contact</a>
                 </div>
             </div>
         </section>
@@ -235,7 +234,7 @@
 
     <script defer src="/js/navbar.js"></script>
     <script src="/js/theme.js"></script>
-    <script type="module" src="/dist/site/playfolio.js?v=0cc62e7d0fb5"></script>
+    <script type="module" src="/dist/site/playfolio.js?v=056e2a6963bc"></script>
 </body>
 
 </html>

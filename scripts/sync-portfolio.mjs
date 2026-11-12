@@ -1,6 +1,8 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { projects, SERIES } from '../js/playfolio/project-catalog.js';
 import { escapeHtml as e } from '../js/playfolio/dom.js';
+import { buildProjectRaceGuideMarkup } from '../js/project-race-guide.js';
+import { iconMarkup } from '../js/playfolio/icons.js';
 
 const check = process.argv.includes('--check');
 function sync(file, marker, markup) {
@@ -18,6 +20,7 @@ const controls = `<nav class="pf-series-selector pf-reveal" aria-label="Project 
 ${SERIES.map(series => `                    <a class="pf-series-choice" href="?series=${series.id}" data-series-choice="${series.id}"><img src="${series.logo}" alt="${series.label}" data-series-logo="${series.id}" width="120" height="40" /><span>${e(series.description)}</span></a>`).join('\n')}
                 </nav>`;
 sync('projects.html', 'project-series', controls);
+sync('projects.html', 'project-race-guide', `<project-race-guide>${buildProjectRaceGuideMarkup()}</project-race-guide>`);
 const fallback = `<noscript><ul class="pf-project-fallback">${ordered.map(project => `<li><a href="${e(project.href)}">${e(project.label)}</a></li>`).join('')}</ul></noscript>`;
 sync('projects.html', 'project-directory', fallback);
 
@@ -40,7 +43,7 @@ const cards = ordered.slice(0, 4).map((project,index) => {
   const visual = visuals[project.id] ?? (image ? `<img src="${image.src}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async" alt="${e(image.alt)}" />` : `<div class="pf-work-systems"><span>${e(project.label)}</span></div>`);
   return `                    <a class="pf-work pf-work--${project.id} pf-reveal" href="${project.href}" data-project-card data-project-id="${project.id}" data-title="${e(project.label)}" data-summary="${e(project.description)}" data-href="${project.href}">
                         <div class="pf-work-visual">${visual}</div>
-                        <div class="pf-work-caption"><span class="pf-work-meta">${String(index+1).padStart(2,'0')} <span>${e(project.stack)}</span></span><h3>${e(project.label)} <i class="bi bi-arrow-up-right" aria-hidden="true"></i></h3><p>${e(project.description)}</p></div>
+                        <div class="pf-work-caption"><span class="pf-work-meta">${String(index+1).padStart(2,'0')} <span>${e(project.stack)}</span></span><h3>${e(project.label)} ${iconMarkup('arrow-up-right')}</h3><p>${e(project.description)}</p></div>
                     </a>`;
 }).join('\n');
 sync('index.html', 'featured-projects', cards);

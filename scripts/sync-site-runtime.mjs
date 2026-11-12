@@ -12,6 +12,8 @@ export function syncSiteRuntime({ rootDir = root, write = false } = {}) {
     .map(name => readFileSync(path.join(rootDir, 'js', name), 'utf8').trim()).join('\n');
   const boot = `<!-- site-boot -->\n    <script>\n${bootSource}\n    </script>\n    <!-- /site-boot -->`;
   const bootPattern = /<!-- site-boot -->[\s\S]*?<!-- \/site-boot -->/;
+  const fontsPattern = /<!-- site-fonts -->[\s\S]*?<!-- \/site-fonts -->/;
+  const googleFont = /<link\b[^>]*href="https:\/\/fonts\.googleapis\.com\/css2\?family=Plus\+Jakarta\+Sans[^"\n]*"[^>]*>/;
   const runtime = `<script type="module" src="/dist/site/playfolio.js?v=${version}"></script>`;
   const pages = ['', 'project_details'].flatMap(dir => readdirSync(path.join(rootDir, dir))
     .filter(name => name.endsWith('.html')).map(name => path.join(dir, name)));
@@ -26,11 +28,18 @@ export function syncSiteRuntime({ rootDir = root, write = false } = {}) {
     let next = html.replace(pattern, runtime)
       .replace(/(?:\n[^\S\n]*)?<script src="(?:[^"\n]*\/)?js\/theme-boot\.js(?:\?[^"\n]*)?"><\/script>/, '')
       .replace(/(?:\n[^\S\n]*)?<script type="module" src="(?:[^"\n]*\/)?js\/resume-page\.js(?:\?[^"\n]*)?"><\/script>/g, '');
+    next = next.replace(/(?:\n[^\S\n]*)?<script type="module" src="(?:[^"\n]*\/)?js\/neuron-brain\.js(?:\?[^"\n]*)?"><\/script>/g, '');
     if (bootPattern.test(next)) next = next.replace(bootPattern, boot);
     else {
       const charset = /<meta\s+charset=[^>]+>/i;
       if (!charset.test(next)) throw new Error(`Missing early boot insertion point: ${page}`);
       next = next.replace(charset, match => `${match}\n    ${boot}`);
+    }
+    if (fontsPattern.test(next) || googleFont.test(next)) {
+      const fontVersion = createHash('sha256').update(readFileSync(path.join(rootDir, 'css/fonts.css'))).digest('hex').slice(0, 12);
+      const fonts = `<!-- site-fonts -->\n    <link rel="preload" href="/assets/fonts/plus-jakarta-sans-v12-latin.woff2" as="font" type="font/woff2" crossorigin />\n    <link href="/css/fonts.css?v=${fontVersion}" rel="stylesheet" />\n    <!-- /site-fonts -->`;
+      next = next.replace(fontsPattern.test(next) ? fontsPattern : googleFont, fonts)
+        .replace(/[^\S\n]*<link\b(?=[^>]*rel="preconnect")(?=[^>]*href="https:\/\/fonts\.(?:googleapis|gstatic)\.com\/?")[^>]*>\n?/g, '');
     }
     count++;
     if (html !== next) {

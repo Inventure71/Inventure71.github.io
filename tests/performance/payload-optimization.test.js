@@ -71,9 +71,10 @@ describe('payload optimization contracts', () => {
   test('home page does not ship an eager Codex ambassador WebM source', () => {
     const html = readRepoFile('index.html');
 
-    expect(html).not.toMatch(/<source[^>]+\ssrc="\/assets\/brand\/codex\/codex-logo-ambassador-animated-compressed\.webm"/);
+    expect(html).not.toMatch(/<source[^>]+\ssrc="\/assets\/brand\/codex\/codex-logo-ambassador-animated[^"\n]*\.webm"/);
     expect(html).toContain('data-deferred-video');
-    expect(html).toContain('data-src="/assets/brand/codex/codex-logo-ambassador-animated-compressed.webm"');
+    expect(html).toContain('data-src="/assets/brand/codex/codex-logo-ambassador-animated-160.webm"');
+    expect(readFileSync(new URL('assets/brand/codex/codex-logo-ambassador-animated-160.webm', repoRoot)).length).toBeLessThan(200 * 1024);
     expect(html).toContain('preload="none"');
   });
 

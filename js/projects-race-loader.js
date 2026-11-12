@@ -68,8 +68,11 @@ function installRaceShell(shell) {
     setShellState(shell, 'loading');
 
     try {
-      await ensureStylesheet(styleHref);
-      integration = await import(new URL(scriptSrc, window.location.href).href);
+      const [, module] = await Promise.all([
+        ensureStylesheet(styleHref),
+        import(new URL(scriptSrc, window.location.href).href),
+      ]);
+      integration = module;
       await integration.changeProjectsRaceSeries(shell);
     } catch (error) {
       console.error('Project race failed to load.', error);

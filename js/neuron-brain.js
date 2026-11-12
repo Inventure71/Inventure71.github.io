@@ -23,6 +23,9 @@ import { projectMapItems } from './project-map-data.js';
     let framesRemaining = 0;
     let lastFrameTime = null;
     let floatTime = 0;
+    let canvasTop = 0;
+    let canvasHeight = 0;
+    let viewportDirty = true;
     let previousFocus;
     let inertBackground = [];
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -65,6 +68,10 @@ import { projectMapItems } from './project-map-data.js';
     function init() {
         resize();
         window.addEventListener('resize', resize);
+        window.addEventListener('scroll', () => {
+            viewportDirty = true;
+            if (active && animationId === null) animationId = requestAnimationFrame(animate);
+        }, { passive: true });
         new ResizeObserver(resize).observe(container.querySelector('.neuron-ui'));
         
         // Build Graph Data
@@ -223,16 +230,29 @@ import { projectMapItems } from './project-map-data.js';
         width = rect.width;
         height = rect.height;
         dpr = Math.min(window.devicePixelRatio || 1, 2);
-        canvas.width = Math.floor(width * dpr);
-        canvas.height = Math.floor(height * dpr);
-        canvas.style.width = `${width}px`;
-        canvas.style.height = `${height}px`;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        viewportDirty = true;
+        updateCanvasViewport(rect);
 
         if (nodes.length) {
             nodes.forEach((node, index) => placeNode(node, index));
         }
         wake();
+    }
+
+    function updateCanvasViewport(rect = container.getBoundingClientRect()) {
+        // Keep the document and hit targets full-height, but allocate pixels for
+        // only one viewport. All drawing continues to use graph coordinates.
+        canvasHeight = Math.min(height, window.innerHeight);
+        canvasTop = Math.max(0, Math.min(height - canvasHeight, -rect.top));
+        const pixelWidth = Math.floor(width * dpr);
+        const pixelHeight = Math.floor(canvasHeight * dpr);
+        if (canvas.width !== pixelWidth) canvas.width = pixelWidth;
+        if (canvas.height !== pixelHeight) canvas.height = pixelHeight;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${canvasHeight}px`;
+        canvas.style.transform = `translateY(${canvasTop}px)`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, -canvasTop * dpr);
+        viewportDirty = false;
     }
 
     // --- Physics Engine ---
@@ -296,7 +316,8 @@ import { projectMapItems } from './project-map-data.js';
 
     // --- Rendering ---
     function draw() {
-        ctx.clearRect(0, 0, width, height);
+        if (viewportDirty) updateCanvasViewport();
+        ctx.clearRect(0, canvasTop, width, canvasHeight);
 
         nodes.forEach((node, index) => {
             // Keep labels and targets steady while someone is using them.
@@ -308,10 +329,18 @@ import { projectMapItems } from './project-map-data.js';
             }
             node.drawX = node.x + (node.floatX || 0);
             node.drawY = node.y + (node.floatY || 0);
+            const transform = `translate(${node.drawX}px, ${node.drawY}px) translate(-50%, -42px)`;
+            if (node.labelTransform !== transform) {
+                node.button.style.transform = transform;
+                node.labelTransform = transform;
+            }
         });
 
         // Draw Edges
         edges.forEach(edge => {
+            const top = Math.min(edge.source.drawY, edge.target.drawY);
+            const bottom = Math.max(edge.source.drawY, edge.target.drawY);
+            if (bottom < canvasTop - 8 || top > canvasTop + canvasHeight + 8) return;
             const isConnectedToHover = hoveredNode && (edge.source === hoveredNode || edge.target === hoveredNode);
             const isConnectedToSelected = selectedNode && (edge.source === selectedNode || edge.target === selectedNode);
             
@@ -339,6 +368,8 @@ import { projectMapItems } from './project-map-data.js';
 
         // Draw Nodes
         nodes.forEach(node => {
+            const extent = node.radius + 30;
+            if (node.drawY + extent < canvasTop || node.drawY - extent > canvasTop + canvasHeight) return;
             const isHovered = node === hoveredNode;
             const isSelected = node === selectedNode;
             const isConnected = hoveredNode && edges.some(e => 
@@ -376,9 +407,6 @@ import { projectMapItems } from './project-map-data.js';
             ctx.lineWidth = isHovered || isSelected ? 2 : 1;
             ctx.stroke();
 
-            node.button.style.left = `${node.drawX}px`;
-            node.button.style.top = `${node.drawY}px`;
-
         });
     }
 
@@ -414,7 +442,7 @@ import { projectMapItems } from './project-map-data.js';
     function onMouseMove(e) {
         if (draggedNode && e.buttons === 0) onMouseUp();
         wake();
-        const rect = canvas.getBoundingClientRect();
+        const rect = container.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
         mouse.y = e.clientY - rect.top;
 

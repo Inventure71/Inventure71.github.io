@@ -50,7 +50,7 @@ class ProjectRaceGuideElement extends BaseHTMLElement {
     const options = this.dataset.mode === 'browse'
       ? { ariaLabel: 'Project browser guide', lead: '', action: 'Select a project', tail: 'to see its details.' }
       : {};
-    renderProjectRaceGuide(this, options);
+    if (!this.querySelector('.pf-race-guide')) renderProjectRaceGuide(this, options);
     this.dataset.rendered = 'true';
   }
 }

@@ -1,8 +1,8 @@
 /* Resume route Playfolio manifest */
 
-@import url("./playfolio/foundation.css?v=v9-inline-icons");
+@import url("./playfolio/foundation.css?v=v9-site-performance");
 @import url("./playfolio/reactive-glass.css");
 @import url("./playfolio/ai-guide.css");
 @import url("./playfolio/command-palette.css");
 @import url("./playfolio/resume.css?v=v9-stable-filter");
-@import url("./playfolio/utilities.css");
+@import url("./playfolio/utilities.css?v=v9-site-performance");

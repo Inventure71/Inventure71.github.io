@@ -109,12 +109,12 @@
   letter-spacing: -.045em;
   line-height: 1.2;
 }
-.pf-work h3 i {
+.pf-work h3 .pf-icon {
   flex-shrink: 0;
   font-size: 1.2rem;
   transition: transform 180ms ease;
 }
-.pf-work:is(:hover, :focus-visible) h3 i { transform: translate(3px, -3px); }
+.pf-work:is(:hover, :focus-visible) h3 .pf-icon { transform: translate(3px, -3px); }
 .playfolio-home .pf-work p {
   margin: 0;
   color: var(--pf-muted);
@@ -176,7 +176,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .pf-work-visual > img,
-  .pf-work h3 i { transition: none; transform: none !important; }
+  .pf-work h3 .pf-icon { transition: none; transform: none !important; }
 }
 .pf-work-systems {
   display: flex;

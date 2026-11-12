@@ -7,6 +7,7 @@ const setup = vi.hoisted(() => ({
   codex: vi.fn(),
   explorer: vi.fn(),
   navbar: vi.fn(),
+  mapModule: vi.fn(),
 }));
 vi.mock('../../../js/playfolio/motion.js', () => {
   setup.motionModule();
@@ -15,6 +16,10 @@ vi.mock('../../../js/playfolio/motion.js', () => {
 vi.mock('../../../js/playfolio/project-selection.js', () => {
   setup.selectionModule();
   return { setupProjectExplorer: setup.explorer };
+});
+vi.mock('../../../js/neuron-brain.js', () => {
+  setup.mapModule();
+  return {};
 });
 vi.mock('../../../js/playfolio/shared-chrome.js', () => ({
   renderSharedNavbar: setup.navbar,
@@ -39,6 +44,7 @@ describe('page-specific initialization', () => {
     expect(setup.navbar).toHaveBeenCalledWith(root);
     expect(setup.motionModule).not.toHaveBeenCalled();
     expect(setup.selectionModule).not.toHaveBeenCalled();
+    expect(setup.mapModule).not.toHaveBeenCalled();
   });
 
   test('loads and initializes optional components when present', async () => {
@@ -50,5 +56,6 @@ describe('page-specific initialization', () => {
     expect(setup.portrait).toHaveBeenCalledWith(root);
     expect(setup.codex).toHaveBeenCalledWith(root);
     expect(setup.explorer).toHaveBeenCalledWith(root);
+    expect(setup.mapModule).toHaveBeenCalledOnce();
   });
 });

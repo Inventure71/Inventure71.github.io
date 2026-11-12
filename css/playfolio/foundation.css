@@ -75,11 +75,11 @@ body.playfolio-page {
   text-underline-offset: 0.3em;
 }
 
-.pf-text-link i {
+.pf-text-link .pf-icon {
   transition: transform 180ms ease;
 }
 
-.pf-text-link:hover i {
+.pf-text-link:hover .pf-icon {
   transform: translateX(3px);
 }
 

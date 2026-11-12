@@ -48,23 +48,21 @@
     <meta name="author" content="Matteo Giorgetti" />
     <title>Projects - Matteo Giorgetti</title>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- site-fonts -->
+    <link rel="preload" href="/assets/fonts/plus-jakarta-sans-v12-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link href="/css/fonts.css?v=c7d7cff84e39" rel="stylesheet" />
+    <!-- /site-fonts -->
     <link href="css/site-core.css" rel="stylesheet" />
     <link href="css/modern.css" rel="stylesheet" />
     <link href="dist/f1-simulator/paddock-placeholder.css?v=v9-series" rel="stylesheet" />
     <!-- route-styles: /css/playfolio-projects.css -->
-    <link href="/css/playfolio/foundation.css?v=v9-inline-icons" rel="stylesheet" />
+    <link href="/css/playfolio/foundation.css?v=v9-site-performance" rel="stylesheet" />
     <link href="/css/playfolio/reactive-glass.css" rel="stylesheet" />
     <link href="/css/playfolio/ai-guide.css" rel="stylesheet" />
     <link href="/css/playfolio/command-palette.css" rel="stylesheet" />
     <link href="/css/playfolio/race.css?v=v9-transparent-placeholder" rel="stylesheet" />
     <link href="/css/project-race-guide.css?v=v9-race-polish" rel="stylesheet" />
-    <link href="/css/playfolio/utilities.css" rel="stylesheet" />
+    <link href="/css/playfolio/utilities.css?v=v9-site-performance" rel="stylesheet" />
     <!-- /route-styles -->
     <!-- site-metadata -->
     <link rel="canonical" href="https://mgiorgetti.com/projects.html" />
@@ -157,9 +155,22 @@
                 <!-- /project-series -->
 
                 <div class="pf-race-toolbar pf-reveal">
-                    <project-race-guide></project-race-guide>
+                    <!-- project-race-guide -->
+<project-race-guide>
+                <section class="pf-race-guide" aria-label="Project race guide">
+                    <span class="pf-race-guide__marker" aria-hidden="true"><span class="pf-race-guide__fabric"></span></span>
+                    <p class="pf-race-guide__headline">
+                        Each car is a project. <strong>Click a car</strong>
+                        to explore it.
+                    </p>
+                        <span class="pf-race-guide__status" data-race-status="loading" role="status">
+                            <span class="pf-race-guide__marker pf-race-guide__flag" aria-hidden="true"><span class="pf-race-guide__fabric"></span></span>
+                            <span class="pf-race-guide__status-label" data-race-status-label>Loading</span>
+                        </span>
+                </section></project-race-guide>
+                <!-- /project-race-guide -->
                     <button class="pf-race-launch" type="button" data-project-race-toggle data-race-action="race" aria-controls="paddock-race-root" disabled>
-                        <span data-race-toggle-label>Start race</span><i class="bi bi-flag-fill" aria-hidden="true"></i>
+                        <span data-race-toggle-label>Start race</span><svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 22V3"/><path d="M5 3c5-4 9 4 15 0v11c-6 4-10-4-15 0Z" fill="currentColor"/></svg>
                     </button>
                 </div>
                 <div class="pf-paddock-layout" data-paddock-shell data-race-view="grid-walk" data-simulator-state="preview"
@@ -191,7 +202,7 @@
                         Explore the connections between projects.
                     </span>
                     <a class="pf-network-jump__button" href="tags.html">
-                        <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                        <svg class="pf-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="2" y="16" width="6" height="5" rx="1"/><rect x="16" y="16" width="6" height="5" rx="1"/><path d="M12 8v4H5v4m7-4h7v4"/></svg>
                         <span>Browse by topic</span>
                     </a>
                 </div>
@@ -202,10 +213,10 @@
 
     <script defer src="/js/navbar.js"></script>
     <script src="js/theme.js"></script>
-    <script type="module" src="js/project-race-guide.js?v=v9-race-polish"></script>
-    <script type="module" src="js/projects-race-loader.js?v=v9-package-loader"></script>
+    <script type="module" src="js/project-race-guide.js?v=v9-page-performance"></script>
+    <script type="module" src="js/projects-race-loader.js?v=v9-page-performance"></script>
     <script type="module" src="js/projects-page.js"></script>
-    <script type="module" src="/dist/site/playfolio.js?v=0cc62e7d0fb5"></script>
+    <script type="module" src="/dist/site/playfolio.js?v=056e2a6963bc"></script>
 </body>
 
 </html>

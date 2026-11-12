@@ -1,8 +1,8 @@
 /* Project detail Playfolio manifest */
 
-@import url("./playfolio/foundation.css?v=v9-inline-icons");
+@import url("./playfolio/foundation.css?v=v9-site-performance");
 @import url("./playfolio/reactive-glass.css");
 @import url("./playfolio/ai-guide.css");
 @import url("./playfolio/command-palette.css");
 @import url("./project-pages.css?v=20260710-feature-stage-v19");
-@import url("./playfolio/utilities.css");
+@import url("./playfolio/utilities.css?v=v9-site-performance");

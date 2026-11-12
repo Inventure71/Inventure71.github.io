@@ -67,7 +67,7 @@
     transform: none;
   }
 
-  .pf-text-link i {
+  .pf-text-link .pf-icon {
     transition: none;
     transform: none;
   }
@@ -169,7 +169,7 @@
     justify-self: start;
   }
 
-  .pf-contact-row > i {
+  .pf-contact-row > .pf-icon {
     display: none;
   }
 

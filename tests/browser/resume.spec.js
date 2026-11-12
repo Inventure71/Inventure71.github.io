@@ -30,7 +30,7 @@ for (const width of [1440, 390]) test(`delayed Resume startup preserves layout a
     await expect(page.locator('.pf-resume-top')).not.toHaveClass(/is-reveal-ready/);
     await expect(page.locator('#projects')).toHaveClass(/is-reveal-ready/);
     await expect(page.locator('svg.pf-icon')).toHaveCount(5);
-    expect(requests.some(url => /bootstrap-icons|\.woff2?/.test(url) && !url.includes('fonts.gstatic.com'))).toBe(false);
+    expect(requests.some(url => /bootstrap-icons|\.woff2?/.test(url) && !url.includes('/assets/fonts/plus-jakarta-sans-v12-'))).toBe(false);
     expect(requests.filter(url => url.includes('/dist/site/playfolio.js'))).toHaveLength(1);
     expect(requests.some(url => /\/js\/playfolio\//.test(url))).toBe(false);
   } finally { release(); }
