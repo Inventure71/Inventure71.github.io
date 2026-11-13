@@ -98,7 +98,7 @@ def build_pdf(data, selected):
         row.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP'), ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0), ('TOPPADDING', (0, 0), (-1, -1), 0), ('BOTTOMPADDING', (0, 0), (-1, -1), 0)]))
         return row
 
-    def block(entry, include_location=True, include_bullets=True):
+    def block(entry, include_location=True, bullet_limit=None):
         parts = [title_date(text(entry['title']), entry['dates'])]
         meta = entry['organization']
         if include_location and entry.get('location'):
@@ -106,8 +106,8 @@ def build_pdf(data, selected):
         if entry.get('badge'):
             meta += ' | ' + entry['badge']
         parts.append(para(text(meta), 'Meta'))
-        if include_bullets:
-            parts.extend(para('- ' + text(bullet), 'Bullet') for bullet in entry.get('bullets', []))
+        bullets = entry.get('bullets', [])
+        parts.extend(para('- ' + text(bullet), 'Bullet') for bullet in bullets[:bullet_limit])
         parts.append(Spacer(1, 5))
         content.append(KeepTogether(parts))
 
@@ -123,37 +123,36 @@ def build_pdf(data, selected):
     content.append(para(text(identity['location']) + ' | ' + link(identity['email'], 'mailto:' + identity['email']), 'Contact'))
     content.append(para(text(identity['phone']) + ' | ' + link('mgiorgetti.com', identity['website']) + ' | ' + link('GitHub: Inventure71', identity['github']) + ' | ' + link('LinkedIn', identity['linkedin']), 'Contact'))
     content.append(Spacer(1, 8))
-    content.append(para(text(identity['summary'])))
 
     heading('Education')
     for entry in data['education']:
-        block(entry, include_bullets=False)
+        block(entry, bullet_limit=entry.get('cvBulletLimit', 0))
     heading('Experience')
     for entry in data['experience']:
-        block(entry)
+        block(entry, bullet_limit=entry.get('cvBulletLimit'))
 
-    heading('Selected engineering projects')
-    # A deliberate page boundary keeps each project intact and gives both pages
-    # readable body text rather than shrinking type to fit every project.
-    for project in selected[:2]:
-        project_block(project)
+    # Give professional experience the first page and keep the selected projects
+    # together on the second, without shrinking type to fit the full catalog.
     content.append(PageBreak())
-    heading('Selected engineering projects / continued')
-    for project in selected[2:]:
+    heading('Selected engineering projects')
+    for project in selected:
         project_block(project)
 
     heading('Community & leadership')
-    for entry_id in ['codex-ambassador', 'gdg-leadership', 'bot-battle', 'tech-roulette-judge']:
+    for entry_id in ['codex-ambassador', 'gdg-leadership', 'bot-battle']:
         entry = next(entry for entry in data['community'] if entry['id'] == entry_id)
         # Keep the full event contribution, while club/membership entries use a
         # compact line so they do not crowd out technical evidence.
-        if entry_id in ['bot-battle', 'tech-roulette-judge']:
+        if entry_id == 'bot-battle':
             parts = [title_date(link(entry['title'], entry['href']), entry['dates'])]
             parts.extend(para(text(bullet)) for bullet in entry['bullets'])
             parts.append(Spacer(1, 4))
             content.append(KeepTogether(parts))
         else:
-            content.append(KeepTogether([title_date(text(entry['title']), entry['dates']), para(text(entry['bullets'][0])), Spacer(1, 4)]))
+            title = entry['title']
+            if entry_id == 'gdg-leadership':
+                title += ' | ' + entry['organization']
+            content.append(KeepTogether([title_date(text(title), entry['dates']), para(text(entry['bullets'][0])), Spacer(1, 4)]))
 
     heading('Technical skills')
     for skill_id in ['programming', 'native', 'backend', 'ml', 'robotics']:

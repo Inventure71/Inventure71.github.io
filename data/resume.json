@@ -2,30 +2,80 @@
   "identity": {
     "name": "Matteo Giorgetti",
     "headline": "Computer Science & AI student · Software, machine learning and robotics",
-    "summary": "Computer Science and Artificial Intelligence student at IE University, building native applications, reusable simulation tools and robotics software. Research experience in AI and robotics, with projects spanning backend systems, computer vision and on-device AI.",
+    "summary": "Computer Science and Artificial Intelligence student at IE University, building native applications, reusable simulation tools and robotics software. AI/ML internship experience at Focoos AI and research experience at IE CyPhy Life, with projects spanning backend systems, computer vision and on-device AI.",
     "location": "Madrid, Spain / Milan, Italy",
     "email": "matteo.giorgetti.05@gmail.com",
     "phone": "+39 388 363 7191",
     "website": "https://mgiorgetti.com",
     "github": "https://github.com/Inventure71",
-    "linkedin": "https://www.linkedin.com/in/matteo-giorgetti-026172247/"
+    "linkedin": "https://www.linkedin.com/in/matteo-giorgetti/"
   },
   "experience": [
     {
       "id": "ie-robotics-lab-role",
       "title": "Research Assistant",
-      "organization": "IE University AI & Robotics Lab",
+      "organization": "IE CyPhy Life, IE University",
       "location": "Madrid, Spain",
-      "dates": "2024 - Present",
+      "dates": "Sep 2025 - Present",
       "roles": [
         "software-engineering",
         "ai-ml",
         "robotics"
       ],
       "bullets": [
-        "Developed software for robotics research and demonstrations, collaborating with researchers on integration and troubleshooting.",
-        "Worked on MOSAIC, combining robot fleet coordination with calibrated floor visualization, recording and observation-only replay; movement authority remains in the robot application."
+        "Support fellow researchers and maintain, improve and troubleshoot shared lab systems and workflows.",
+        "Develop MOSAIC, integrating multiple projectors, robotic platforms through ROS and OptiTrack motion capture; implement spatial blending and calibration with GAMA and Python.",
+        "Work on robot fleet coordination, calibrated spatial visualization, telemetry recording and observation-only replay within MOSAIC."
+      ],
+      "badge": "Part-time",
+      "cvBulletLimit": 2
+    },
+    {
+      "id": "focoos-ai-intern",
+      "title": "AI/ML Engineer Intern",
+      "organization": "Focoos AI",
+      "location": "Turin, Italy · Hybrid",
+      "dates": "Jun - Sep 2026",
+      "roles": [
+        "software-engineering",
+        "ai-ml"
+      ],
+      "cvBulletLimit": 2,
+      "bullets": [
+        "Researched and fine-tuned open-source vision-language models for video understanding and built modular auto-labeling pipelines.",
+        "Curated datasets, designed prompts and supervision strategies, and ran controlled training, evaluation and quantization experiments using reproducible GPU workflows and human-review tools.",
+        "Documented findings and collaborated through Agile sprints, daily meetings, reviews and retrospectives."
       ]
+    },
+    {
+      "id": "ie-cyphy-life-research-2024",
+      "title": "Research Assistant",
+      "organization": "IE CyPhy Life, IE University",
+      "location": "Madrid, Spain",
+      "dates": "Sep 2024 - Sep 2025",
+      "roles": [
+        "software-engineering",
+        "ai-ml",
+        "robotics"
+      ],
+      "cvBulletLimit": 1,
+      "bullets": [
+        "Developed VictorIA, a robotic arm that plays Connect Four using camera input, computer vision and game-state recognition.",
+        "Designed and built MOSAIC, merging multiple off-the-shelf projectors into a unified display for real-time streaming, interactive visualization and robot debugging.",
+        "Created an automated newsletter pipeline using Gemini to analyze hundreds of technology and robotics newsletters weekly and select relevant news for lab members.",
+        "Built Unreal Engine simulations and games integrated with OptiTrack motion capture for spatial tracking of users and robots; supported fellow researchers with their experiments."
+      ]
+    },
+    {
+      "id": "saica-innovation-lab",
+      "title": "Innovation Lab Intern",
+      "organization": "Saica Group",
+      "location": "Madrid, Spain · Hybrid",
+      "dates": "Jan - Jun 2025",
+      "roles": [
+        "software-engineering"
+      ],
+      "bullets": []
     },
     {
       "id": "dottor-sorriso",
@@ -50,6 +100,8 @@
       "organization": "IE University",
       "location": "Madrid, Spain",
       "dates": "2024 - Expected May 2028",
+      "badge": "GPA: 8.84/10",
+      "cvBulletLimit": 1,
       "essential": true,
       "roles": [
         "software-engineering",
@@ -58,7 +110,8 @@
         "native-apps"
       ],
       "bullets": [
-        "Four-year degree combining computer science, artificial intelligence and mathematics."
+        "Course honors (Matrícula de Honor): Algorithms & Data Structures (9.8/10) and Principles of Programming (9.4/10).",
+        "Additional course honors (Matrícula de Honor): Learning to Observe, Experiment and Survey (9.5/10); Spanish Intermediate 2 (9.6/10, supplementary study)."
       ]
     },
     {
@@ -93,16 +146,16 @@
         "native-apps"
       ],
       "bullets": [
-        "Explore agentic coding workflows and share practical approaches to AI-assisted software development."
+        "Run hands-on sessions, share practical AI-assisted development workflows and create learning resources for the Codex developer community."
       ],
       "href": "https://developers.openai.com/community/codex-ambassadors/directory"
     },
     {
       "id": "gdg-leadership",
-      "title": "Google Developer Group / Students Club",
-      "organization": "IE University",
+      "title": "Club Lead",
+      "organization": "GDG on Campus IE University",
       "location": "Madrid, Spain",
-      "dates": "2024 - Present",
+      "dates": "Sep 2025 - May 2026",
       "roles": [
         "software-engineering",
         "ai-ml",
@@ -110,7 +163,7 @@
         "native-apps"
       ],
       "bullets": [
-        "Progressed from Tech Guru to club lead, contributing to technical workshops and community projects."
+        "Previously Officer / Tech Guru (Sep 2024 - Sep 2025); contributed to technical workshops and community projects."
       ]
     },
     {
@@ -125,7 +178,8 @@
         "robotics"
       ],
       "bullets": [
-        "Created the modular game environment, helped coordinate bot simulations and judged final presentations in a two-week AI hackathon with seven presenting teams."
+        "Created the modular game environment, helped coordinate bot simulations and judged final presentations in a two-week AI hackathon with seven presenting teams.",
+        "Conducted machine-learning workshops to support participating teams."
       ],
       "href": "https://www.linkedin.com/posts/matteo-giorgetti_reinforcementlearning-hackathon-teamwork-activity-7320778992913936384-a3Gh"
     },
@@ -261,6 +315,7 @@
       "title": "AI & machine learning",
       "items": [
         "PyTorch",
+        "vLLM",
         "OpenCV",
         "NumPy",
         "Computer vision",
@@ -337,9 +392,7 @@
   "cvProjectIds": [
     "noty",
     "paddockjs",
-    "whos-on-repeat",
-    "dream2detect",
-    "vigil"
+    "whos-on-repeat"
   ],
   "cvProjectBullets": {
     "noty": [
