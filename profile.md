@@ -3,7 +3,7 @@
 
 Computer Science & AI student · Software, machine learning and robotics
 
-Computer Science and Artificial Intelligence student at IE University, building native applications, reusable simulation tools and robotics software. Research experience in AI and robotics, with projects spanning backend systems, computer vision and on-device AI.
+Computer Science and Artificial Intelligence student at IE University, building native applications, reusable simulation tools and robotics software. AI/ML internship experience at Focoos AI and research experience at IE CyPhy Life, with projects spanning backend systems, computer vision and on-device AI.
 
 ## Contact and public profiles
 
@@ -11,7 +11,7 @@ Computer Science and Artificial Intelligence student at IE University, building 
 - [Website](https://mgiorgetti.com)
 - [Email](mailto:matteo.giorgetti.05@gmail.com)
 - [GitHub](https://github.com/Inventure71)
-- [LinkedIn](https://www.linkedin.com/in/matteo-giorgetti-026172247/)
+- [LinkedIn](https://www.linkedin.com/in/matteo-giorgetti/)
 - [Human-readable resume](https://mgiorgetti.com/resume.html)
 - [Download resume PDF](https://mgiorgetti.com/assets/docs/matteo-giorgetti-resume-current.pdf)
 
@@ -19,10 +19,34 @@ Computer Science and Artificial Intelligence student at IE University, building 
 
 ### Research Assistant
 
-IE University AI & Robotics Lab · Madrid, Spain · 2024 - Present
+IE CyPhy Life, IE University · Madrid, Spain · Sep 2025 - Present
 
-- Developed software for robotics research and demonstrations, collaborating with researchers on integration and troubleshooting.
-- Worked on MOSAIC, combining robot fleet coordination with calibrated floor visualization, recording and observation-only replay; movement authority remains in the robot application.
+Part-time
+
+- Support fellow researchers and maintain, improve and troubleshoot shared lab systems and workflows.
+- Develop MOSAIC, integrating multiple projectors, robotic platforms through ROS and OptiTrack motion capture; implement spatial blending and calibration with GAMA and Python.
+- Work on robot fleet coordination, calibrated spatial visualization, telemetry recording and observation-only replay within MOSAIC.
+
+### AI/ML Engineer Intern
+
+Focoos AI · Turin, Italy · Hybrid · Jun - Sep 2026
+
+- Researched and fine-tuned open-source vision-language models for video understanding and built modular auto-labeling pipelines.
+- Curated datasets, designed prompts and supervision strategies, and ran controlled training, evaluation and quantization experiments using reproducible GPU workflows and human-review tools.
+- Documented findings and collaborated through Agile sprints, daily meetings, reviews and retrospectives.
+
+### Research Assistant
+
+IE CyPhy Life, IE University · Madrid, Spain · Sep 2024 - Sep 2025
+
+- Developed VictorIA, a robotic arm that plays Connect Four using camera input, computer vision and game-state recognition.
+- Designed and built MOSAIC, merging multiple off-the-shelf projectors into a unified display for real-time streaming, interactive visualization and robot debugging.
+- Created an automated newsletter pipeline using Gemini to analyze hundreds of technology and robotics newsletters weekly and select relevant news for lab members.
+- Built Unreal Engine simulations and games integrated with OptiTrack motion capture for spatial tracking of users and robots; supported fellow researchers with their experiments.
+
+### Innovation Lab Intern
+
+Saica Group · Madrid, Spain · Hybrid · Jan - Jun 2025
 
 ### Donation Automation Developer
 
@@ -37,7 +61,10 @@ Fondazione Dottor Sorriso · Milan, Italy · Mar 2023 - Feb 2025
 
 IE University · Madrid, Spain · 2024 - Expected May 2028
 
-- Four-year degree combining computer science, artificial intelligence and mathematics.
+GPA: 8.84/10
+
+- Course honors (Matrícula de Honor): Algorithms & Data Structures (9.8/10) and Principles of Programming (9.4/10).
+- Additional course honors (Matrícula de Honor): Learning to Observe, Experiment and Survey (9.5/10); Spanish Intermediate 2 (9.6/10, supplementary study).
 
 ### International Baccalaureate Diploma
 
@@ -53,21 +80,22 @@ H-FARM International School · Roncade, Italy · Graduated May 2024
 
 Community appointment · Madrid, Spain · Feb 2026 - Present
 
-- Explore agentic coding workflows and share practical approaches to AI-assisted software development.
+- Run hands-on sessions, share practical AI-assisted development workflows and create learning resources for the Codex developer community.
 
 [Public supporting link](https://developers.openai.com/community/codex-ambassadors/directory)
 
-### Google Developer Group / Students Club
+### Club Lead
 
-IE University · Madrid, Spain · 2024 - Present
+GDG on Campus IE University · Madrid, Spain · Sep 2025 - May 2026
 
-- Progressed from Tech Guru to club lead, contributing to technical workshops and community projects.
+- Previously Officer / Tech Guru (Sep 2024 - Sep 2025); contributed to technical workshops and community projects.
 
 ### Bot Battle · Game Environment & Judging
 
 GDG on Campus IE University · Google for Startups, Madrid · Mar - Apr 2025
 
 - Created the modular game environment, helped coordinate bot simulations and judged final presentations in a two-week AI hackathon with seven presenting teams.
+- Conducted machine-learning workshops to support participating teams.
 
 [Public supporting link](https://www.linkedin.com/posts/matteo-giorgetti_reinforcementlearning-hackathon-teamwork-activity-7320778992913936384-a3Gh)
 
@@ -108,7 +136,7 @@ Amazon Web Services · Oct 2025
 - **Programming:** Python; Swift; JavaScript; SQL; Java; C++
 - **Native applications:** SwiftUI; AppKit; SQLite; macOS Accessibility; Android
 - **Backend & systems:** FastAPI; Django; PostgreSQL; HTTP / WebSockets; TCP / UDP; Docker; Git; Automated testing
-- **AI & machine learning:** PyTorch; OpenCV; NumPy; Computer vision; Synthetic data; MLX; LLM integration
+- **AI & machine learning:** PyTorch; vLLM; OpenCV; NumPy; Computer vision; Synthetic data; MLX; LLM integration
 - **Robotics:** ROS 2; OptiTrack; Robot perception; Telemetry; Calibration
 - **Games & simulation:** PixiJS; Pygame; Unreal Engine; Headless simulation
 - **Languages:** Italian - native; English - native; Spanish - intermediate; French - basic

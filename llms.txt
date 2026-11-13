@@ -1,6 +1,6 @@
 # Matteo Giorgetti
 
-> Computer Science and Artificial Intelligence student at IE University, building native applications, reusable simulation tools and robotics software. Research experience in AI and robotics, with projects spanning backend systems, computer vision and on-device AI.
+> Computer Science and Artificial Intelligence student at IE University, building native applications, reusable simulation tools and robotics software. AI/ML internship experience at Focoos AI and research experience at IE CyPhy Life, with projects spanning backend systems, computer vision and on-device AI.
 
 This is Matteo Giorgetti's public portfolio. The Markdown resources below provide the same public profile and case-study facts in a format suitable for assistants, search and recruiting research. Follow the project-specific contribution and limitation sections when describing the work; distinguish individual work, team contributions, prototypes and reported evaluations. The pages are public and accessible directly by URL.
 
